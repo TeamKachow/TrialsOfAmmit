@@ -24,16 +24,14 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "   FragColor = color;\n"
 "}\n\0";
 
-
-
 int main()
 {
 	// Initialize GLFW
 	glfwInit();
 
 	// GLFW what version of OpenGL we are using - OpenGL 4.6
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	// Tell GLFW we are using the CORE profile
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -126,7 +124,7 @@ int main()
 		1, 2, 3    // second triangle
 	};
 
-	// Create reference containers for the Vartex Array Object and the Vertex Buffer Object
+	// Create reference containers for the Vertex Array Object and the Vertex Buffer Object
 	GLuint VAO, VBO, EBO;
 
 	// Generate the VAO, VBO & EBO with only 1 object each
@@ -164,6 +162,7 @@ int main()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 460");
@@ -205,6 +204,8 @@ int main()
 		ImGui::ColorEdit4("Color", color);
 		// Ends the window
 		ImGui::End();
+
+		ImGui::ShowDemoWindow();
 
 		// Export variables to shader
 		glUseProgram(shaderProgram);
