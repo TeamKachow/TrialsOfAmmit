@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>irrKlang.lib;glfw3.lib;opengl32.lib;/NODEFAULT.LIB:MSVCRT;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -129,6 +129,10 @@
     <ClInclude Include="Entity\Component.h" />
     <ClInclude Include="Entity\GameObject.h" />
     <ClInclude Include="Entity\System.h" />
+    <ClCompile Include="AudioSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AudioSystem.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />
