@@ -6,13 +6,16 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
+#include "Camera.h"
+
 // Vertex Shader source code
 const char* vertexShaderSource = "#version 460 core\n"
 "layout (location = 0) in vec3 aPos;\n"
 "uniform float size;\n"
+"uniform mat4 viewProjection;\n"
 "void main()\n"
 "{\n"
-"   gl_Position = vec4(size * aPos.x, size * aPos.y, size * aPos.z, 1.0);\n"
+"   gl_Position = viewProjection * vec4(size * aPos.x, size * aPos.y, size * aPos.z, 1.0);\n"
 "}\0";
 
 //Fragment Shader source code
@@ -24,10 +27,14 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "   FragColor = color;\n"
 "}\n\0";
 
+Camera m_camera(-1.0f, 1.0f, -1.0f, 1.0f);
+
 int main()
 {
 	// Initialize GLFW
 	glfwInit();
+
+	m_camera.SetPosition({0.5f, 0.5f, 0.0f});
 
 	// GLFW what version of OpenGL we are using - OpenGL 4.6
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -211,6 +218,9 @@ int main()
 		glUseProgram(shaderProgram);
 		glUniform1f(glGetUniformLocation(shaderProgram, "size"), size);
 		glUniform4f(glGetUniformLocation(shaderProgram, "color"), color[0], color[1], color[2], color[3]);
+
+		//Camera
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"viewProjection"), 1, GL_FALSE, glm::value_ptr(m_camera.GetViewProjectionMatrix()));
 
 		// Renders the ImGUI elements
 		ImGui::Render();
