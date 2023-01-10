@@ -28,13 +28,14 @@ const char* fragmentShaderSource = "#version 460 core\n"
 "}\n\0";
 
 Camera m_camera(-1.0f, 1.0f, -1.0f, 1.0f);
+float cameraPosX;
+float cameraPosY;
+
 
 int main()
 {
 	// Initialize GLFW
 	glfwInit();
-
-	m_camera.SetPosition({0.5f, 0.5f, 0.0f});
 
 	// GLFW what version of OpenGL we are using - OpenGL 4.6
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -191,6 +192,8 @@ int main()
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		m_camera.SetPosition({ cameraPosX, cameraPosY, 0.0f });
+
 		// Tell OpenGL a new frame is about to begin
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -209,6 +212,9 @@ int main()
 		ImGui::SliderFloat("Size", &size, 0.5f, 2.0f);
 		// Fancy color editor that appears in the window
 		ImGui::ColorEdit4("Color", color);
+		// Camera Position
+		ImGui::DragFloat("Camera Position X", &cameraPosX, 0.005f);
+		ImGui::DragFloat("Camera Position Y", &cameraPosY, 0.005f);
 		// Ends the window
 		ImGui::End();
 
@@ -219,8 +225,8 @@ int main()
 		glUniform1f(glGetUniformLocation(shaderProgram, "size"), size);
 		glUniform4f(glGetUniformLocation(shaderProgram, "color"), color[0], color[1], color[2], color[3]);
 
-		//Camera
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"viewProjection"), 1, GL_FALSE, glm::value_ptr(m_camera.GetViewProjectionMatrix()));
+		// Camera
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewProjection"), 1, GL_FALSE, glm::value_ptr(m_camera.GetViewProjectionMatrix()));
 
 		// Renders the ImGUI elements
 		ImGui::Render();
