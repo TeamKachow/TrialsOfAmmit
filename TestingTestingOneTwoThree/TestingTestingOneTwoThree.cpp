@@ -4,7 +4,7 @@
 #include "HudsonCore/Entity/Component.h"
 #include "HudsonCore/Entity/GameObject.h"
 
-using namespace Hudson::Core::Entity;
+using namespace Hudson::Entity;
 
 class HelloComponent : public Component
 {
@@ -13,6 +13,8 @@ class HelloComponent : public Component
 class WorldComponent : public Component
 {
 };
+
+class NotAComponent {};
 
 template<is_component T>
 void logComponentPtrs(const std::vector<T*>& components)
@@ -25,25 +27,38 @@ void logComponentPtrs(const std::vector<T*>& components)
 
 int main(int argc, char* argv[])
 {
-    auto lightning = new GameObject();
+    auto mcqueen = new GameObject();
+    auto mater = new GameObject();
 
     // add some custom components
-    auto comp1 = lightning->AddComponent(new HelloComponent());
-    auto comp2 = lightning->AddComponent(new HelloComponent());
-    auto comp3 = lightning->AddComponent(new WorldComponent());
+    auto comp1 = mcqueen->AddComponent(new HelloComponent());
+    auto comp2 = mcqueen->AddComponent(new HelloComponent());
+
+    // try adding a component twice
+    auto comp3 = mcqueen->AddComponent(new WorldComponent());
+    mcqueen->AddComponent(comp3);
 
     // search for specific component and log
-    logComponentPtrs(lightning->GetComponents<HelloComponent>());
+    logComponentPtrs(mcqueen->GetComponents<HelloComponent>());
+
+    // this class isn't a component - fails the is_component concept
+    //lightning->GetComponents<NotAComponent>();
+
+    // try adding a component to both
+    auto comp4 = mater->AddComponent(new WorldComponent());
+    mcqueen->AddComponent(comp4);
+    
     std::cout << "\n";
     // search for all components and log
-    logComponentPtrs(lightning->GetComponents<Component>());
+    logComponentPtrs(mcqueen->GetComponents<Component>());
     std::cout << "\n";
 
-    lightning->RemoveComponent(comp1);
+    // remove one of the object's components
+    mcqueen->RemoveComponent(comp1);
     
-    logComponentPtrs(lightning->GetComponents<Component>());
+    logComponentPtrs(mcqueen->GetComponents<Component>());
     std::cout << "\n";
 
-    delete lightning;
+    delete mcqueen;
     return 0;
 }

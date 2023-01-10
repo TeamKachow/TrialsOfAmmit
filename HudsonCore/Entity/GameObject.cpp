@@ -1,13 +1,14 @@
 ﻿#include "GameObject.h"
 
 #include "Component.h"
+#include "../Util/Debug.h"
 
-Hudson::Core::Entity::GameObject::GameObject()
+Hudson::Entity::GameObject::GameObject()
 {
     _id = rand();
 }
 
-Hudson::Core::Entity::GameObject::~GameObject()
+Hudson::Entity::GameObject::~GameObject()
 {
     // Delete all 
     for (auto it = _components.begin(); it < _components.end(); ++it)
@@ -16,7 +17,8 @@ Hudson::Core::Entity::GameObject::~GameObject()
         // Check we didn't somehow end up holding another object's component
         if (toDelete->_parent != this)
         {
-            // TODO: log
+            // TODO Util::Debug::LogError("Found reference to component owned by other object while destroying");
+            Util::Debug::PrintStackTrace();
         }
         else
         {
@@ -27,17 +29,18 @@ Hudson::Core::Entity::GameObject::~GameObject()
     _components.clear();
 }
 
-std::vector<Hudson::Core::Entity::Component*> Hudson::Core::Entity::GameObject::GetAllComponents()
+std::vector<Hudson::Entity::Component*> Hudson::Entity::GameObject::GetAllComponents()
 {
     return _components;
 }
 
-Hudson::Core::Entity::Component* Hudson::Core::Entity::GameObject::AddComponent(Component* component)
+Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* component)
 {
     // Check that the component is not owned by another object
     if (component->_parent != nullptr)
     {
-        // TODO: log an error here!
+        // TODO Util::Debug::LogError("Cannot add a component that already belongs to an object!");
+        Util::Debug::PrintStackTrace();
         return component;
     }
 
@@ -50,14 +53,15 @@ Hudson::Core::Entity::Component* Hudson::Core::Entity::GameObject::AddComponent(
     return component;
 }
 
-Hudson::Core::Entity::Component* Hudson::Core::Entity::GameObject::RemoveComponent(Component* component)
+Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component* component)
 {
     // TODO: consider whether we want to delete components here?
 
     // Check that we own the component
     if (component->_parent != this)
     {
-        // TODO: log an error here!
+        // TODO Util::Debug::LogError("Cannot remove a component that does not belong to this object!");
+        Util::Debug::PrintStackTrace();
         return component;
     }
 

@@ -1,11 +1,10 @@
 ﻿#pragma once
 
-namespace HudsonCore::Util::Debug
+namespace Hudson::Util::Debug
 {
     /**
      * \brief Print the current stack trace.
      */
     void PrintStackTrace();
-
     
 }
