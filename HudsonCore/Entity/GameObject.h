@@ -1,24 +1,13 @@
 ﻿#pragma once
 #include <vector>
+#include "Common.h"
 
 namespace Hudson::Entity
 {
-    class Component;
-}
-
-namespace Hudson::Entity
-{
-    /**
-     * Concepts let you limit what types can be passed in as template parameters.
-     * This one ensures that a type is a component.
-     */
-    template<typename T>
-    concept is_component = std::is_base_of_v<Component, T>;
-
     /**
      * \brief A game object that exists within a scene.
      */
-    class GameObject
+    class GameObject final
     {
     private:
         // TODO: _name
@@ -28,7 +17,7 @@ namespace Hudson::Entity
 
     public:
         GameObject();
-        virtual ~GameObject();
+        ~GameObject();
 
         /**
          * \brief Get a list of all the components of this object to search for.

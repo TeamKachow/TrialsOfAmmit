@@ -1,10 +1,5 @@
 ﻿#pragma once
-
-// forward declare
-namespace Hudson::Entity
-{
-    class GameObject;
-}
+#include "Common.h"
 
 namespace Hudson::Entity
 {
@@ -23,5 +18,7 @@ namespace Hudson::Entity
     public:
         Component() = default;
         virtual ~Component() = default;
+
+        [[nodiscard]] GameObject* GetParent() const;
     };
 }

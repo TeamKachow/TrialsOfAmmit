@@ -10,13 +10,13 @@ namespace Hudson
         class GameObject;
     }
 
-    namespace Scene
+    namespace World
     {
         class SceneManager;
     }
 }
 
-namespace Hudson::Scene
+namespace Hudson::World
 {
     /**
      * \brief A scene is a collection of grouped objects in the game.
@@ -26,13 +26,17 @@ namespace Hudson::Scene
     {
     private:
         /**
-         * \brief The list of objects in this scene.
+         * \brief The vector of objects in this scene.
          */
-        std::vector<Entity::GameObject*> _objects;
+        std::vector<Entity::GameObject*> _objects; // TODO: consider making a map of ID to ptr?
         /**
          * \brief The name of this scene.
          */
         std::string _name;
+        /**
+         * \brief Whether or not the scene is currently active
+         */
+        bool _active;
         
     public:
         /**
