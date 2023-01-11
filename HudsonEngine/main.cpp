@@ -6,31 +6,7 @@
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-#include "Camera.h"
-
-// Vertex Shader source code
-const char* vertexShaderSource = "#version 460 core\n"
-"layout (location = 0) in vec3 aPos;\n"
-"uniform float size;\n"
-"uniform mat4 viewProjection;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = viewProjection * vec4(size * aPos.x, size * aPos.y, size * aPos.z, 1.0);\n"
-"}\0";
-
-//Fragment Shader source code
-const char* fragmentShaderSource = "#version 460 core\n"
-"out vec4 FragColor;\n"
-"uniform vec4 color;\n"
-"void main()\n"
-"{\n"
-"   FragColor = color;\n"
-"}\n\0";
-
-Camera m_camera(-1.0f, 1.0f, -1.0f, 1.0f);
-float cameraPosX;
-float cameraPosY;
-
+#include "shader.h"
 
 int main()
 {
@@ -57,68 +33,19 @@ int main()
 	glfwMakeContextCurrent(window);
 
 	//Load GLAD so it configures OpenGL
-	gladLoadGL();
+	//gladLoadGL();
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
+
 	// Specify the viewport of OpenGL in the Window
 	glViewport(0, 0, 1280, 720);
 
-	// Create Vertex Shader Object and get its reference
-	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	// Attach Vertex Shader source to the Vertex Shader Object
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	// Compile the Vertex Shader into machine code
-	glCompileShader(vertexShader);
-	// Check shader compilation was successful
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	// Create Fragment Shader Object and get its reference
-	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	// Attach Fragment Shader source to the Fragment Shader Object
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	// Compile the Vertex Shader into machine code
-	glCompileShader(fragmentShader);
-	// Check shader compilation was successful
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	/*
-		Create Shader Program Object and get its reference
-		A shader program object is the final linked version of multiple shaders combined.
-		To use the recently compiled shaders we have to link them to a shader program object and then activate this shader program when rendering objects.
-		The activated shader program's shaders will be used when we issue render calls.
-	*/
-	GLuint shaderProgram = glCreateProgram();
-	// Attach the Vertex and Fragment Shaders to the Shader Program
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	// Wrap-up/Link all the shaders together into the Shader Program
-	glLinkProgram(shaderProgram);
-	// Check if shader linking was successful
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-
-	// Delete the now useless Vertex and Fragment Shader objects
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	// build and compile our shader program
+// ------------------------------------
+	Shader ourShader("basicVertShader.glsl", "basicFragShader.glsl"); // you can name your shader files however you like
 
 	// Dummy Vertices coordinates
 	float vertices[] = {
@@ -179,11 +106,6 @@ int main()
 	float size = 1.0f;
 	float color[4] = { 0.8f, 0.3f, 0.02f, 1.0f };
 
-	// Exporting variables to shaders
-	glUseProgram(shaderProgram);
-	glUniform1f(glGetUniformLocation(shaderProgram, "size"), size);
-	glUniform4f(glGetUniformLocation(shaderProgram, "color"), color[0], color[1], color[2], color[3]);
-
 	// Main while loop
 	while (!glfwWindowShouldClose(window))
 	{
@@ -192,15 +114,13 @@ int main()
 		// Clean the back buffer and assign the new color to it
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		m_camera.SetPosition({ cameraPosX, cameraPosY, 0.0f });
-
 		// Tell OpenGL a new frame is about to begin
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
 		// Tell OpenGL which Shader Program we want to use
-		glUseProgram(shaderProgram);
+		ourShader.use();
 		// Bind the VAO so OpenGL knows to use it
 		glBindVertexArray(VAO);
 		// Draw the triangle using the GL_TRIANGLES primitive
@@ -212,21 +132,15 @@ int main()
 		ImGui::SliderFloat("Size", &size, 0.5f, 2.0f);
 		// Fancy color editor that appears in the window
 		ImGui::ColorEdit4("Color", color);
-		// Camera Position
-		ImGui::DragFloat("Camera Position X", &cameraPosX, 0.005f);
-		ImGui::DragFloat("Camera Position Y", &cameraPosY, 0.005f);
 		// Ends the window
 		ImGui::End();
 
 		ImGui::ShowDemoWindow();
 
 		// Export variables to shader
-		glUseProgram(shaderProgram);
-		glUniform1f(glGetUniformLocation(shaderProgram, "size"), size);
-		glUniform4f(glGetUniformLocation(shaderProgram, "color"), color[0], color[1], color[2], color[3]);
-
-		// Camera
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "viewProjection"), 1, GL_FALSE, glm::value_ptr(m_camera.GetViewProjectionMatrix()));
+		ourShader.use();
+		ourShader.setFloat("size", size);
+		ourShader.setFloat4("color", color);
 
 		// Renders the ImGUI elements
 		ImGui::Render();
@@ -247,7 +161,6 @@ int main()
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
-	glDeleteProgram(shaderProgram);
 	// Delete window before ending the program
 	glfwDestroyWindow(window);
 	// Terminate GLFW before ending the program
