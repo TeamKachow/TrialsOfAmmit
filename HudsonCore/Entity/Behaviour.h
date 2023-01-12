@@ -2,6 +2,12 @@
 #include "Common.h"
 #include "Component.h"
 
+// TODO: preprocessor macros that dump out metadata (?)
+// references:
+// - https://www.boost.org/doc/libs/1_81_0/libs/serialization/doc/serialization.html#derivedpointers
+// - https://stackoverflow.com/a/1096743
+// - https://unrealcpp.com/add-component/
+
 namespace Hudson::Entity
 {
     /**

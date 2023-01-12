@@ -98,6 +98,7 @@
     <ClCompile Include="Util\Debug.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common\IEditable.h" />
     <ClInclude Include="Entity\Behaviour.h" />
     <ClInclude Include="Entity\Common.h" />
     <ClInclude Include="Entity\Component.h" />

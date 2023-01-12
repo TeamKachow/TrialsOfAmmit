@@ -1,20 +1,32 @@
 ﻿#pragma once
+#include <string>
 #include <vector>
 #include "Common.h"
+#include "../Common/IEditable.h"
+
+// forward declare
+namespace Hudson::World
+{
+    class Scene;
+}
 
 namespace Hudson::Entity
 {
     /**
      * \brief A game object that exists within a scene.
      */
-    class GameObject final
+    class GameObject final : public Common::IEditable
     {
+        friend World::Scene;
+        
     private:
-        // TODO: _name
-        // TODO: _scene
+        std::string _name;
+        World::Scene* _scene;
         uint32_t _id;
         std::vector<Component*> _components;
 
+        void DrawPropertyUI() override;
+    
     public:
         GameObject();
         ~GameObject();
@@ -48,6 +60,18 @@ namespace Hudson::Entity
          * \return The removed component.
          */
         Component* RemoveComponent(Component* component);
+
+        /**
+         * \brief Get the name of this object instance.
+         * \return The object's name
+         */
+        [[nodiscard]] std::string GetName() const;
+
+        /**
+         * \brief Set the name of this object instance.
+         * \param name The object's new name
+         */
+        void SetName(const std::string& name);
     };
 
     template <is_component T>

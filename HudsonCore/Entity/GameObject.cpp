@@ -3,6 +3,18 @@
 #include "Component.h"
 #include "../Util/Debug.h"
 
+void Hudson::Entity::GameObject::DrawPropertyUI()
+{
+    for (auto component : _components)
+    {
+        IEditable* editableComponent = reinterpret_cast<IEditable*>(component);
+        if (editableComponent == nullptr)
+        {
+            editableComponent->DrawPropertyUI();
+        }
+    }
+}
+
 Hudson::Entity::GameObject::GameObject()
 {
     _id = rand();
@@ -73,4 +85,14 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component
     erase_if(_components, shouldRemove);
 
     return component;
+}
+
+std::string Hudson::Entity::GameObject::GetName() const
+{
+    return _name;
+}
+
+void Hudson::Entity::GameObject::SetName(const std::string& name)
+{
+    _name = name;
 }
