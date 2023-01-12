@@ -1,150 +1,140 @@
-#include <iostream>
-#include <irrKlang.h>
 #include "AudioSystem.h"
-
+#include <irrKlang.h>
 
 using namespace irrklang;
 
-irrklang::ISoundEngine* AudioSystem::engine;
-irrklang::ISound* AudioSystem::music;
-
-
-void AudioSystem::init() 
-{
-    engine = createIrrKlangDevice();
-    volume = 1.0f;
-    pitch = 1.0f;
-    currentSound = nullptr;
-    fx = nullptr;
-    loader = nullptr;
-
-    if (!engine)
-    {
-        std::cout << "Engine couldn't be loaded." << std::endl;
-        return; // error starting the audio engine
-    }
-    music = play2D("audio/breakout.mp3", AudioType::music);
-
-    AudioSystem::setVolume();
+AudioSystem::AudioSystem() {
+    // Initialize the sound engine
+    engine = irrklang::createIrrKlangDevice();
 }
 
-void AudioSystem::deinit() 
-{
-    music->drop();
+AudioSystem::~AudioSystem() {
+    // Stop all sounds and close the sound engine
+    stopAllSounds();
     engine->drop();
 }
 
-void AudioSystem::playSound(const char* filePath, bool loop) 
+void AudioSystem::playSound(const char* file, bool loop, float volume, float pitch, float pan) 
 {
-    if (currentSound)
-    {
-        currentSound->stop();
-        currentSound = nullptr;
+    // Play a sound file
+    irrklang::ISound* sound = engine->play2D(file, loop, false, true);
+    if (sound) {
+        sounds.push_back(sound);
+        sound->setVolume(volume);
+        sound->setPlaybackSpeed(pitch);
+        sound->setPan(pan);
     }
-    currentSound = engine->play2D(filePath, loop);
 }
 
-void AudioSystem::pauseSound() 
+void AudioSystem::stopSound(const char* file) 
 {
-    if (currentSound)
-        currentSound->setIsPaused(true);
-}
-
-void AudioSystem::resumeSound() 
-{
-    if (currentSound)
-        currentSound->setIsPaused(false);
-}
-
-void AudioSystem::stopSound() //stops audio immediately during playback
-{
-    if (currentSound)
-        currentSound->stop();
-}
-
-void AudioSystem::removeAllSounds()  // Removes all sound sources
-{
-    if (currentSound)
-        engine->removeAllSoundSources();
-}
-
-void AudioSystem::soundPitch(float newPitch)
-{
-    pitch = newPitch;
-
-    if (currentSound)
-        currentSound->setPlaybackSpeed();
-}
-
-void AudioSystem::soundPanning()
-{
-
-}
-void AudioSystem::setVolume()
-{
-    AudioSystem::engine->setSoundVolume();
-    music->setVolume();
-   
-
-}
-
-float AudioSystem::getVolume()
-{
-    return volume;
-}
-
-ISound* AudioSystem::getCurrentSound()
-{
-    return currentSound;
-}
-
-ISoundEffectControl* AudioSystem::soundEffect()
-{
-    currentSound = engine->play2D("sound.wav", true, false, true, ESM_AUTO_DETECT, true);
-
-    if (currentSound)
-    {
-        fx = currentSound->getSoundEffectControl();
-        if (fx)
-        {
-            fx->enableEchoSoundEffect();
+    // Stop a sound file
+    for (auto it = sounds.begin(); it != sounds.end(); ++it) {
+        irrklang::ISound* sound = *it;
+        if (sound->getSoundSource()->getName() == file) {
+            sound->stop();
+            sounds.erase(it);
+            break;
         }
     }
-    currentSound->drop();
 }
 
-ISound* AudioSystem::play2D(std::string musicFile, AudioType audiotype, bool playLooped)
+void AudioSystem::stopAllSounds() 
 {
-    ISound* currentSound = engine->play2D(musicFile.c_str(), playLooped, false, true);
-    if (!currentSound)
-    {
-        std::cout << "Sound cannot be played" + musicFile << std::endl;
-        return nullptr;
+    // Stop all sound files
+    for (auto& sound : sounds) {
+        sound->stop();
     }
+    sounds.clear();
+}
 
-    switch (audiotype)
+void AudioSystem::setListenerPosition(float x, float y) 
+{
+    // Set the position of the listener
+    engine->setListenerPosition(irrklang::vec3df(x, y, 0), irrklang::vec3df(0, 0, 1));
+}
+
+void AudioSystem::setSoundVolume(const char* file, float volume) 
+{
+    // Set the volume of a sound file
+    for (auto& sound : sounds) 
     {
-        case AudioType::soundeffect:
+        if (sound-> getSoundSource()->getName() == file) 
         {
-        currentSound->setVolume();
-        break;
-        }
-        case AudioType::ambient:
-        {
-        currentSound->setVolume();
-        break;
-        }
-        case AudioType::music:
-        {
-        currentSound->setVolume();
-        break;
+            sound->setVolume(volume);
+            break;
         }
     }
-    return currentSound;
 }
 
-IAudioStreamLoader* AudioSystem::audioStream()
+void AudioSystem::setSoundPitch(const char* file, float pitch) 
 {
-    
+    // Set the pitch of a sound file
+    for (auto& sound : sounds) {
+        if (sound->getSoundSource()->getName() == file) {
+            sound->setPlaybackSpeed(pitch);
+            break;
+        }
+    }
 }
 
+void AudioSystem::setSoundPan(const char* file, float pan) 
+{
+    // Set the pan of a sound file
+    for (auto& sound : sounds) {
+        if (sound->getSoundSource()->getName() == file) {
+            sound->setPan(pan);
+            break;
+        }
+    }
+}
+
+bool AudioSystem::isSoundPlaying(const char* file) 
+{
+    // Check if a sound file is currently playing
+    for (auto& sound : sounds) 
+    {
+        if (sound->getSoundSource()->getName() == file) 
+        {
+            return !sound->isFinished();
+        }
+    }
+    return false;
+}
+
+//bool AudioSystem::applySoundEffect(const char* file, int effectType, float value) 
+//{
+//    for (auto& sound : sounds) 
+//    {
+//        if (sound->getSoundSource()->getName() == file) 
+//        {
+//            irrklang::ISoundEffectControl* effectControl = sound->getSoundEffectControl();
+//            if (!effectControl)
+//                return false;
+//            effectControl->enableEffect(effectType, true);
+//            effectControl->setEffectParam(effectType, 0, value);
+//            break;
+//        }
+//    }
+//    return true;
+//}
+
+//void AudioSystem::fxDisplayUI()
+//{
+//    ImGui::Begin("Sound Effects");
+//    ImGui::Text("Toggle sound effects:");
+//    if (ImGui::Button("Echo")) toggleEcho();
+//    ImGui::SameLine();
+//    ImGui::Text(echoEnabled_ ? "Enabled" : "Disabled");
+//    if (ImGui::Button("Chorus")) toggleChorus();
+//    ImGui::SameLine();
+//    ImGui::Text(chorusEnabled_ ? "Enabled" : "Disabled");
+//    if (ImGui::Button("Distortion")) toggleDistortion();
+//    ImGui::SameLine();
+//    ImGui::Text(distortionEnabled_ ? "Enabled" : "Disabled");
+//    if (ImGui::Button("Reverb")) toggleReverb();
+//    ImGui::SameLine();
+//    ImGui::Text(reverbEnabled_ ? "Enabled" : "Disabled");
+//    // Add more buttons for other effects
+//    ImGui::End();
+//}

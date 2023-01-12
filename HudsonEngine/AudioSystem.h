@@ -1,56 +1,31 @@
 #pragma once
 #include <irrKlang.h>
-#include <string>
+#pragma comment(lib, "irrklang.lib")
+#include <unordered_map>
 
 using namespace irrklang;
 
-
-static class AudioSystem
+class AudioSystem 
 {
-    enum AudioType
-    {
-        soundeffect,
-        ambient,
-        music,
-    };
+public:
+    AudioSystem();
+    ~AudioSystem();
+    void playSound(const char* file, bool loop = false, float volume = 1.0f, float pitch = 1.0f, float pan = 0.0f);
+    void stopSound(const char* file);
+    void stopAllSounds();
+    void setListenerPosition(float x, float y);
+    void setSoundVolume(const char* file, float volume);
+    void setSoundPitch(const char* file, float pitch);
+    void setSoundPan(const char* file, float pan);
+    bool isSoundPlaying(const char* file);
+    bool applySoundEffect(const char* file, int effectType, float value);
+    void fxDisplayUI();
 
 private:
-	static irrklang::ISoundEngine* engine;
-    static irrklang::ISoundEffectControl* fx;
-    static irrklang::IAudioStreamLoader* loader;
-    static irrklang::ISound* currentSound;
-    static irrklang::ISound* music;
-    static float volume;
-    static float pitch;
-
-public:
-    static void init();
-    static void deinit();
-
-    static void playSound(const char* filePath, bool loop = false);
-    static void pauseSound();
-
-    static void resumeSound();
-    static void stopSound();
-
-    static void removeAllSounds();
-
-    static void soundPitch(float newPitch);
-    static void soundPanning();
-
-    static void setVolume();
-    static float getVolume();
-    static irrklang::ISound* getCurrentSound();
-    static irrklang::ISoundEffectControl* soundEffect();
-    static irrklang::IAudioStreamLoader* audioStream();
-    static irrklang::ISound* play2D(std::string musicFile, AudioType audiotupe = AudioType::soundeffect, bool playLooped = false);
-    
+    irrklang::ISoundEngine* engine;
+    irrklang::ISoundEffectControl* effectControl;
+    std::vector<irrklang::ISound*> sounds;
    
-
 };
-
-
-
-
 
 
