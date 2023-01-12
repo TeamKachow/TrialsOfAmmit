@@ -45,7 +45,7 @@ int main()
 
 	// build and compile our shader program
 // ------------------------------------
-	Shader ourShader("basicVertShader.glsl", "basicFragShader.glsl"); // you can name your shader files however you like
+	Shader ourShader("BasicVertShader.glsl", "BasicFragShader.glsl"); // you can name your shader files however you like
 
 	// Dummy Vertices coordinates
 	float vertices[] = {
