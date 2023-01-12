@@ -143,3 +143,8 @@ ISound* AudioSystem::play2D(std::string musicFile, AudioType audiotype, bool pla
     return currentSound;
 }
 
+IAudioStreamLoader* AudioSystem::audioStream()
+{
+    
+}
+

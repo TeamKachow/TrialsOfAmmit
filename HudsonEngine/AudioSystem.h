@@ -38,16 +38,19 @@ public:
     static void soundPitch(float newPitch);
     static void soundPanning();
 
-    static void updateAudioListener();
-
-
     static void setVolume();
     static float getVolume();
     static irrklang::ISound* getCurrentSound();
     static irrklang::ISoundEffectControl* soundEffect();
+    static irrklang::IAudioStreamLoader* audioStream();
     static irrklang::ISound* play2D(std::string musicFile, AudioType audiotupe = AudioType::soundeffect, bool playLooped = false);
     
+   
 
 };
+
+
+
+
 
 
