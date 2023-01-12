@@ -114,6 +114,7 @@
     <ClCompile Include="Util\glad.c" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="World\SceneManager.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Window.h" />
+    <ClInclude Include="InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basicFragShader.glsl" />
