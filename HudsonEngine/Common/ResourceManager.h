@@ -8,8 +8,8 @@
 #include <glad/glad.h>
 #include <stb-master/stb_image.h>
 
-#include "Shader.h"
-#include "Texture.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture.h"
 
 namespace Hudson::Common {
 	class ResourceManager
