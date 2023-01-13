@@ -18,6 +18,15 @@ namespace Hudson::Entity
     class GameObject final : public Common::IEditable
     {
         friend World::Scene;
+
+    public:
+        struct Transform
+        {
+            // TODO: replace with vec2f
+            float posX, posY; 
+            float scaleX, scaleY;
+            float rotateZ;
+        };
         
     private:
         std::string _name;

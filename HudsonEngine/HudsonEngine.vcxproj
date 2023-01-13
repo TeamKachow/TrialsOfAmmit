@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Entity\Behaviour.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
     <ClCompile Include="Entity\GameObject.cpp" />
@@ -165,6 +166,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common\IEditable.h" />
+    <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Entity\Behaviour.h" />
     <ClInclude Include="Entity\Common.h" />
     <ClInclude Include="Entity\Component.h" />
