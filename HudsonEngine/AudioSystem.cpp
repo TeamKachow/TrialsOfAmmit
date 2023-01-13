@@ -1,11 +1,13 @@
 #include "AudioSystem.h"
 #include <irrKlang.h>
 
+
 using namespace irrklang;
 
 AudioSystem::AudioSystem() {
     // Initialize the sound engine
     engine = irrklang::createIrrKlangDevice();
+  
 }
 
 AudioSystem::~AudioSystem() {
@@ -102,39 +104,4 @@ bool AudioSystem::isSoundPlaying(const char* file)
     return false;
 }
 
-//bool AudioSystem::applySoundEffect(const char* file, int effectType, float value) 
-//{
-//    for (auto& sound : sounds) 
-//    {
-//        if (sound->getSoundSource()->getName() == file) 
-//        {
-//            irrklang::ISoundEffectControl* effectControl = sound->getSoundEffectControl();
-//            if (!effectControl)
-//                return false;
-//            effectControl->enableEffect(effectType, true);
-//            effectControl->setEffectParam(effectType, 0, value);
-//            break;
-//        }
-//    }
-//    return true;
-//}
 
-//void AudioSystem::fxDisplayUI()
-//{
-//    ImGui::Begin("Sound Effects");
-//    ImGui::Text("Toggle sound effects:");
-//    if (ImGui::Button("Echo")) toggleEcho();
-//    ImGui::SameLine();
-//    ImGui::Text(echoEnabled_ ? "Enabled" : "Disabled");
-//    if (ImGui::Button("Chorus")) toggleChorus();
-//    ImGui::SameLine();
-//    ImGui::Text(chorusEnabled_ ? "Enabled" : "Disabled");
-//    if (ImGui::Button("Distortion")) toggleDistortion();
-//    ImGui::SameLine();
-//    ImGui::Text(distortionEnabled_ ? "Enabled" : "Disabled");
-//    if (ImGui::Button("Reverb")) toggleReverb();
-//    ImGui::SameLine();
-//    ImGui::Text(reverbEnabled_ ? "Enabled" : "Disabled");
-//    // Add more buttons for other effects
-//    ImGui::End();
-//}

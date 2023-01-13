@@ -18,12 +18,11 @@ public:
     void setSoundPitch(const char* file, float pitch);
     void setSoundPan(const char* file, float pan);
     bool isSoundPlaying(const char* file);
-    bool applySoundEffect(const char* file, int effectType, float value);
     void fxDisplayUI();
 
 private:
     irrklang::ISoundEngine* engine;
-    irrklang::ISoundEffectControl* effectControl;
+
     std::vector<irrklang::ISound*> sounds;
    
 };
