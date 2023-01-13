@@ -1,37 +1,55 @@
 #include "AudioSystem.h"
+#pragma comment(lib, "irrklang.lib")
 #include <irrKlang.h>
 
 
 using namespace irrklang;
 
-AudioSystem::AudioSystem() {
+AudioSystem::AudioSystem() 
+{
     // Initialize the sound engine
-    engine = irrklang::createIrrKlangDevice();
+    engine = irrklang::createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_DEFAULT_OPTIONS);
+
+    if (engine == NULL)
+    {
+        printf("Failed to create the engine!\n");
+        printf("Press ENTER to continue...");
+        getchar();
+        return;
+    }
+    
   
 }
 
-AudioSystem::~AudioSystem() {
+AudioSystem::~AudioSystem() 
+{
+
+
     // Stop all sounds and close the sound engine
     stopAllSounds();
     engine->drop();
 }
 
-void AudioSystem::playSound(const char* file, bool loop, float volume, float pitch, float pan) 
+void AudioSystem::playSound(const char* file, bool playLooped, float volume, float pitch, float pan, bool enableEffect) 
 {
     // Play a sound file
-    irrklang::ISound* sound = engine->play2D(file, loop, false, true);
-    if (sound) {
+    irrklang::ISound* sound = engine->play2D(file, playLooped, false, true);
+    if (sound) 
+    {
         sounds.push_back(sound);
         sound->setVolume(volume);
         sound->setPlaybackSpeed(pitch);
         sound->setPan(pan);
+
+ 
     }
 }
 
 void AudioSystem::stopSound(const char* file) 
 {
     // Stop a sound file
-    for (auto it = sounds.begin(); it != sounds.end(); ++it) {
+    for (auto it = sounds.begin(); it != sounds.end(); ++it) 
+    {
         irrklang::ISound* sound = *it;
         if (sound->getSoundSource()->getName() == file) {
             sound->stop();
@@ -44,7 +62,8 @@ void AudioSystem::stopSound(const char* file)
 void AudioSystem::stopAllSounds() 
 {
     // Stop all sound files
-    for (auto& sound : sounds) {
+    for (auto& sound : sounds) 
+    {
         sound->stop();
     }
     sounds.clear();
@@ -72,7 +91,8 @@ void AudioSystem::setSoundVolume(const char* file, float volume)
 void AudioSystem::setSoundPitch(const char* file, float pitch) 
 {
     // Set the pitch of a sound file
-    for (auto& sound : sounds) {
+    for (auto& sound : sounds) 
+    {
         if (sound->getSoundSource()->getName() == file) {
             sound->setPlaybackSpeed(pitch);
             break;
@@ -83,7 +103,8 @@ void AudioSystem::setSoundPitch(const char* file, float pitch)
 void AudioSystem::setSoundPan(const char* file, float pan) 
 {
     // Set the pan of a sound file
-    for (auto& sound : sounds) {
+    for (auto& sound : sounds) 
+    {
         if (sound->getSoundSource()->getName() == file) {
             sound->setPan(pan);
             break;
@@ -103,5 +124,6 @@ bool AudioSystem::isSoundPlaying(const char* file)
     }
     return false;
 }
+
 
 
