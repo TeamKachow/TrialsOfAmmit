@@ -5,6 +5,7 @@ using namespace Hudson;
 Render::Window::Window(int width, int height, const char* name) {
 
 	glfwInit();
+
 	// GLFW what version of OpenGL we are using - OpenGL 4.6
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
@@ -13,13 +14,24 @@ Render::Window::Window(int width, int height, const char* name) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of defined pixels
-	window = glfwCreateWindow(width, height, name, glfwGetPrimaryMonitor(), NULL);
+	window = glfwCreateWindow(width, height, name, NULL, NULL);
 
 	// Error check if the window fails to create
 	if (window == NULL)
 	{
+		std::cout << "Failed to create GLFW window" << std::endl;
+
 		glfwTerminate();
 	}
+
+	glfwMakeContextCurrent(window);
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+		std::cout << "Failed to initialize GLAD" << std::endl;
+	}
+
+	//glViewport(0, 0, width, height);
+
 
 }
 
@@ -33,5 +45,6 @@ void Hudson::Render::Window::DestroyWindow()
 
 void Hudson::Render::Window::ChangeContext()
 {
-	glfwMakeContextCurrent(this->window);
+	glfwMakeContextCurrent(window);
+
 }

@@ -1,6 +1,5 @@
 
-#ifndef SHADER_H // Informs compiler to only include and compile this header file if it hasn't been included yet
-#define SHADER_H
+#pragma once
 
 #include <glad/glad.h> // Include glad to get all the required OpenGL headers
 // Math library
@@ -125,5 +124,3 @@ namespace Hudson::Render {
     };
 
 }
-
-#endif
