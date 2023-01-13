@@ -15,37 +15,54 @@ namespace Hudson::Common {
 	class ResourceManager
 	{
 		public:
-			static std::map<std::string, Render::Shader> Shaders;
-			static std::map<std::string, Render::Texture> Textures;
+			std::map<std::string, Render::Shader> Shaders;
+			std::map<std::string, Render::Texture> Textures;
 
 			// Shader
-			static Render::Shader GetShader(std::string name) {
+			Render::Shader GetShader(std::string name) {
 				{
 					return Shaders[name];
 				}
 			};
-			static Render::Shader LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
+			Render::Shader LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
 			{
 				Shaders[name] = loadShaderFromFile(vertShaderFile, fragShaderFile);
 				return Shaders[name];
 			};
 
 			// Textures
-			static Render::Texture GetTexture(std::string name) {
+			Render::Texture GetTexture(std::string name) {
 				return Textures[name];
 			}
-			static Render::Texture LoadTexture(const char* file, bool alpha, std::string name) {
+			Render::Texture LoadTexture(const char* file, bool alpha, std::string name) {
 				Textures[name] = loadTextureFromFile(file, alpha);
 				return Textures[name];
 			};
 
 			// Memory Management
-			static void Clear();
+			static void Setup()
+			{
+				INSTANCE = new ResourceManager();
+			}
+
+			static void Destroy()
+			{
+				delete INSTANCE;
+				INSTANCE = nullptr;
+			}
+
+			static ResourceManager* GetInstance()
+			{
+				return INSTANCE;
+			}
+			void Clear();
 
 		private:
+			static ResourceManager* INSTANCE;
+
 			ResourceManager() {};
 			// loads and generates a shader from file
-			static Render::Shader loadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile) {
+			Render::Shader loadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile) {
 				std::string vertCode;
 				std::string fragCode;
 
@@ -77,7 +94,7 @@ namespace Hudson::Common {
 			};
 
 			// loads a single texture from file
-			static Render::Texture loadTextureFromFile(const char* file, bool alpha) {
+			Render::Texture loadTextureFromFile(const char* file, bool alpha) {
 				// create texture object
 				Render::Texture texture;
 				if (alpha)
