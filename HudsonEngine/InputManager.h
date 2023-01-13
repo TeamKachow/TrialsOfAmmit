@@ -13,11 +13,18 @@ public:
 	InputManager();
 	~InputManager();
 
-	void getKeyInput(string action);
-	void setKeyEvent(string action);
-	void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	bool getKeyInput(GLFWwindow* window, string action);
+	void setKeyEvent(string action, string keyName);
+	static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
 
 private:
-	static std::map<int, string> keys;
+	map<string, int> keys;
+	map<string, int> keyActions;
+	map<int, bool> keyDown;
+	static vector<InputManager*> instances;
+
+	void initialiseKeys();
+	void setKeyDown(int key, bool isDown);
 };
 
