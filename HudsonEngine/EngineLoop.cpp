@@ -12,8 +12,6 @@ void Init() {
 
 	resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
-
-
 	Hudson::Common::ResourceManager::Destroy();
 }
 
