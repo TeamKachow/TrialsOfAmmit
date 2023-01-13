@@ -8,29 +8,24 @@ using namespace irrklang;
 AudioSystem::AudioSystem() 
 {
     // Initialize the sound engine
-    engine = irrklang::createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_DEFAULT_OPTIONS);
+    engine = irrklang::createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_MULTI_THREADED | ESEO_LOAD_PLUGINS | ESEO_USE_3D_BUFFERS);
 
     if (engine == NULL)
     {
         printf("Failed to create the engine!\n");
-        printf("Press ENTER to continue...");
-        getchar();
         return;
     }
     
-  
 }
 
 AudioSystem::~AudioSystem() 
 {
-
-
     // Stop all sounds and close the sound engine
     stopAllSounds();
     engine->drop();
 }
 
-void AudioSystem::playSound(const char* file, bool playLooped, float volume, float pitch, float pan, bool enableEffect) 
+void AudioSystem::playSound(const std::string& file, bool playLooped, float volume, float pitch, float pan) 
 {
     // Play a sound file
     irrklang::ISound* sound = engine->play2D(file, playLooped, false, true);
@@ -40,12 +35,10 @@ void AudioSystem::playSound(const char* file, bool playLooped, float volume, flo
         sound->setVolume(volume);
         sound->setPlaybackSpeed(pitch);
         sound->setPan(pan);
-
- 
     }
 }
 
-void AudioSystem::stopSound(const char* file) 
+void AudioSystem::stopSound(const std::string& file) 
 {
     // Stop a sound file
     for (auto it = sounds.begin(); it != sounds.end(); ++it) 
@@ -69,13 +62,28 @@ void AudioSystem::stopAllSounds()
     sounds.clear();
 }
 
+void AudioSystem::loadSoundFile(const std::string& file)
+{
+    engine->addSoundSourceFromFile(file.c_str());
+}
+
+void AudioSystem::unloadSoundFile(const std::string& file)
+{
+    engine->removeSoundSource(file.c_str());
+}
+
 void AudioSystem::setListenerPosition(float x, float y) 
 {
     // Set the position of the listener
     engine->setListenerPosition(irrklang::vec3df(x, y, 0), irrklang::vec3df(0, 0, 1));
 }
 
-void AudioSystem::setSoundVolume(const char* file, float volume) 
+void AudioSystem::setMasterVolume(float volume)
+{
+    engine->setSoundVolume(volume);
+}
+
+void AudioSystem::setSoundVolume(const std::string& file, float volume) 
 {
     // Set the volume of a sound file
     for (auto& sound : sounds) 
@@ -88,7 +96,7 @@ void AudioSystem::setSoundVolume(const char* file, float volume)
     }
 }
 
-void AudioSystem::setSoundPitch(const char* file, float pitch) 
+void AudioSystem::setSoundPitch(const std::string& file, float pitch) 
 {
     // Set the pitch of a sound file
     for (auto& sound : sounds) 
@@ -100,7 +108,7 @@ void AudioSystem::setSoundPitch(const char* file, float pitch)
     }
 }
 
-void AudioSystem::setSoundPan(const char* file, float pan) 
+void AudioSystem::setSoundPan(const std::string& file, float pan) 
 {
     // Set the pan of a sound file
     for (auto& sound : sounds) 
@@ -112,7 +120,7 @@ void AudioSystem::setSoundPan(const char* file, float pan)
     }
 }
 
-bool AudioSystem::isSoundPlaying(const char* file) 
+bool AudioSystem::isSoundPlaying(const std::string& file) 
 {
     // Check if a sound file is currently playing
     for (auto& sound : sounds) 
@@ -124,6 +132,24 @@ bool AudioSystem::isSoundPlaying(const char* file)
     }
     return false;
 }
+
+
+bool AudioSystem::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader) 
+{
+    for (auto it = audioStreamLoaders.begin(); it != audioStreamLoaders.end(); ++it) 
+    {
+        if (*it == loader) 
+        {
+            audioStreamLoaders.erase(it);
+            return false;
+        }
+    }
+    audioStreamLoaders.push_back(loader);
+    engine->registerAudioStreamLoader(loader);
+    return true;
+        
+}
+
 
 
 
