@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <concepts>
 
 namespace Hudson::Entity
 {

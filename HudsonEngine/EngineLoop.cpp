@@ -18,5 +18,5 @@ void Init() {
 }
 
 int main() {
-	Init();
+	//Init();
 }

@@ -1,8 +1,9 @@
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
-#include "HudsonCore/Entity/Component.h"
-#include "HudsonCore/Entity/GameObject.h"
+#include "HudsonEngine/Entity/Component.h"
+#include "HudsonEngine/Entity/GameObject.h"
 
 using namespace Hudson::Entity;
 

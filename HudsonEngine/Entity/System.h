@@ -59,6 +59,7 @@ std::vector<T*> Hudson::Entity::System<T>::GetComponents() const
 {
     std::vector<T*> foundComponents;
     
+    /*
     foreach _sceneManager->GetScenes() // TODO
     {
         auto sceneComponents = GetComponentsInScene(scene);
@@ -67,6 +68,7 @@ std::vector<T*> Hudson::Entity::System<T>::GetComponents() const
             foundComponents.push_back(sceneComponent);
         }
     }
+    */
 
     return foundComponents;
 }
