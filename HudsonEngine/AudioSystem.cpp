@@ -37,6 +37,33 @@ void AudioSystem::playSound(const std::string& file, bool playLooped, float volu
     }
 }
 
+void AudioSystem::pauseSound(const std::string& file)
+{
+    // Pause a sound file
+    for (auto& sound : sounds)
+    {
+        if (sound->getSoundSource()->getName() == file) {
+            sound->setIsPaused(true);
+            break;
+        }
+    }
+}
+
+
+void AudioSystem::resumeSound(const std::string& file)
+{
+    // resumes the sound file if the sound isn't paused
+    for (auto& sound : sounds)
+    {
+        if (sound->getSoundSource()->getName() == file)
+        {
+            sound->setIsPaused(false);
+            break;
+        }
+    }
+}
+
+
 void AudioSystem::stopSound(const std::string& file) 
 {
     // Stop a sound file
@@ -77,9 +104,13 @@ void AudioSystem::setListenerPosition(float x, float y)
     engine->setListenerPosition(irrklang::vec3df(x, y, 0), irrklang::vec3df(0, 0, 1));
 }
 
-void AudioSystem::setMasterVolume(float volume)
+void AudioSystem::setMasterVolume(const std::string& file, float mVolume)
 {
-    engine->setSoundVolume(volume);
+    for (auto& sound : sounds)
+    {
+        engine->setSoundVolume(mVolume);
+    }
+   
 }
 
 void AudioSystem::setSoundVolume(const std::string& file, float volume) 
@@ -150,7 +181,42 @@ bool AudioSystem::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int
         
 }
 
-
+void AudioSystem::setSoundEffect(const std::string& file, SoundEffectType effectType, bool enable)
+{
+    for (auto& sound : sounds)
+    {
+        if (sound->getSoundSource()->getName() == file)
+        {
+            irrklang::ISoundEffectControl* fx = sound->getSoundEffectControl();
+            switch (effectType)
+            {
+            case SOUND_EFFECT_TYPE_CHORUS:
+                fx->enableChorusSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_COMPRESSOR:
+                fx->enableCompressorSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_DISTORTION:
+                fx->enableDistortionSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_ECHO:
+                fx->enableEchoSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_FLANGER:
+                fx->enableFlangerSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_GARGLE:
+                fx->enableGargleSoundEffect(enable);
+                break;
+            case SOUND_EFFECT_TYPE_DISABLE:
+                fx->disableAllEffects();
+            default:
+                break;
+            }
+            break;
+        }
+    }
+}
 
 
 
