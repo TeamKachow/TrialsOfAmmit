@@ -3,5 +3,5 @@
 void Hudson::Editor::ComponentRegistry::RegisterEngineComponents()
 {
     // TODO:
-    Register<>()
+    //Register<>()
 }

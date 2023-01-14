@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 #include <vector>
+#include "./Common.h"
 
 // forward declare
 namespace Hudson
@@ -9,21 +10,18 @@ namespace Hudson
     {
         class GameObject;
     }
-
-    namespace World
-    {
-        class SceneManager;
-    }
 }
 
 namespace Hudson::World
-{
+{    
     /**
      * \brief A scene is a collection of grouped objects in the game.
      * \details Scenes can be loaded (and saved in the editor). Multiple scenes can run at once; this is managed by the SceneManager.
      */
     class Scene
     {
+    friend SceneManager;
+        
     private:
         /**
          * \brief The vector of objects in this scene.
@@ -34,7 +32,7 @@ namespace Hudson::World
          */
         std::string _name;
         /**
-         * \brief Whether or not the scene is currently active
+         * \brief Whether or not the scene is currently active.
          */
         bool _active;
         
@@ -50,5 +48,6 @@ namespace Hudson::World
          * \return The name of this scene.
          */
         [[nodiscard]] const std::string& GetName() const;
+     
     };
 }

@@ -128,6 +128,7 @@
     <ClInclude Include="Render\SpriteRenderer.h" />
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Util\Debug.h" />
+    <ClInclude Include="World\Common.h" />
     <ClInclude Include="World\Scene.h" />
     <ClInclude Include="World\SceneManager.h" />
   </ItemGroup>
