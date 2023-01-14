@@ -2,6 +2,7 @@
 #include <irrKlang.h>
 #include <unordered_map>
 #include <string>
+#include <vector>
 
 using namespace irrklang;
 
@@ -24,15 +25,16 @@ public:
     void setSoundPan(const std::string& file, float pan);
     bool isSoundPlaying(const std::string& file);
     
-    bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader);
+    bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders = 0);
 
 private:
    
     irrklang::ISoundEngine* engine;
-    irrklang::ISoundEffectControl* fx;
+   /* irrklang::ISoundEffectControl* fx;*/
     std::vector<irrklang::ISound*> sounds;
     std::vector<irrklang::IAudioStreamLoader*> audioStreamLoaders;
     std::unordered_map<std::string, irrklang::IAudioStream*> decoders;
+   
    
 };
 

@@ -1,15 +1,14 @@
-#include "AudioSystem.h"
-#pragma comment(lib, "irrklang.lib")
 #include <irrKlang.h>
-
+#pragma comment(lib, "irrklang.lib")
+#include "AudioSystem.h"
 
 using namespace irrklang;
 
 AudioSystem::AudioSystem() 
 {
     // Initialize the sound engine
-    engine = irrklang::createIrrKlangDevice(ESOD_AUTO_DETECT, ESEO_MULTI_THREADED | ESEO_LOAD_PLUGINS | ESEO_USE_3D_BUFFERS);
-
+    engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
+    
     if (engine == NULL)
     {
         printf("Failed to create the engine!\n");
@@ -28,7 +27,7 @@ AudioSystem::~AudioSystem()
 void AudioSystem::playSound(const std::string& file, bool playLooped, float volume, float pitch, float pan) 
 {
     // Play a sound file
-    irrklang::ISound* sound = engine->play2D(file, playLooped, false, true);
+    irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped, false, true);
     if (sound) 
     {
         sounds.push_back(sound);
@@ -134,21 +133,23 @@ bool AudioSystem::isSoundPlaying(const std::string& file)
 }
 
 
-bool AudioSystem::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader) 
+bool AudioSystem::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders) 
 {
+    
     for (auto it = audioStreamLoaders.begin(); it != audioStreamLoaders.end(); ++it) 
     {
         if (*it == loader) 
         {
-            audioStreamLoaders.erase(it);
             return false;
         }
     }
-    audioStreamLoaders.push_back(loader);
     engine->registerAudioStreamLoader(loader);
+    audioStreamLoaders.push_back(loader);
+    numLoaders++;
     return true;
         
 }
+
 
 
 
