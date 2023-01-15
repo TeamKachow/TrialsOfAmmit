@@ -64,7 +64,7 @@ namespace Hudson::Entity
 
         /**
          * \brief Remove a component from this object.
-         * \remark The component will *not* be deleted - this should be done manually! (This will probably change later on?)
+         * \remark The component will *not* be deleted - this should be done manually! (Subject to change?)
          * \param component The component to remove from this object.
          * \return The removed component.
          */

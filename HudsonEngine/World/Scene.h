@@ -48,7 +48,7 @@ namespace Hudson::World
         [[nodiscard]] const std::string& GetName() const;
 
         /**
-         * \brief 
+         * \brief Tick the objects in this scene if active.
          * \param dt The time since the last tick (should be fixed rate!)
          */
         void Tick(const double dt) const;

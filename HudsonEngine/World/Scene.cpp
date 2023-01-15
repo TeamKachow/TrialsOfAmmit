@@ -15,14 +15,18 @@ const std::string& Hudson::World::Scene::GetName() const
 
 void Hudson::World::Scene::Tick(const double dt) const
 {
+    if (!_active)
+        return;
+    
     for (const auto& object : _objects)
     {
         for (const auto& component : object->_components)
         {
             // TODO: ITickable instead of Behaviour?
-            Entity::Behaviour* behaviour = reinterpret_cast<Entity::Behaviour*>(component);
+            auto behaviour = reinterpret_cast<Entity::Behaviour*>(component);
             if (behaviour != nullptr)
             {
+                // TODO: exception catching -> stacktrace?
                 behaviour->OnTick(dt);
             }
 

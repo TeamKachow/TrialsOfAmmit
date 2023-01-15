@@ -48,6 +48,8 @@ std::vector<Hudson::Entity::Component*> Hudson::Entity::GameObject::GetAllCompon
 
 Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* component)
 {
+    // TODO: queue adds/removal until after object tick
+    
     // Check that the component is not owned by another object
     if (component->_parent != nullptr)
     {
@@ -67,7 +69,7 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
 
 Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component* component)
 {
-    // TODO: consider whether we want to delete components here?
+    // TODO: queue adds/removal until after object tick
 
     // Check that we own the component
     if (component->_parent != this)
