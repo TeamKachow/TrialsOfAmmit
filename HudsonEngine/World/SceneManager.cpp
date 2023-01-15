@@ -8,7 +8,7 @@ void Hudson::World::SceneManager::HandlePostTick()
 {
     Scene* found = nullptr;
     
-    for (Scene* toDelete : _toDelete)
+    for (Scene* toDelete : _toRemove)
     {
         auto iter = std::ranges::find(_loadedScenes, toDelete);
         assert(iter != _loadedScenes.end());
@@ -16,31 +16,54 @@ void Hudson::World::SceneManager::HandlePostTick()
         // TODO: determine the correct way/time to delete from memory
         delete toDelete;
     }
-    _toDelete.clear();
+    _toRemove.clear();
 }
 
 Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& path)
 {
     std::ifstream file(path);
     // todo: cereal archive
+
+    return nullptr;
 }
 
-Hudson::World::Scene* Hudson::World::SceneManager::SaveScene(const std::string& path)
+void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scene)
 {
     std::ofstream file(path);
     // TODO: cereal archive
 }
 
-std::vector<Hudson::World::Scene*> Hudson::World::SceneManager::GetLoadedScenes()
+const std::set<Hudson::World::Scene*> Hudson::World::SceneManager::GetLoadedScenes()
 {
+    return _loadedScenes;
 }
 
 void Hudson::World::SceneManager::AddScene(Scene* scene)
 {
+    if (_isTicking)
+    {
+        // If we're currently ticking the scene, queue the scene to be added
+        _toAdd.emplace(scene);
+    }
+    else
+    {
+        // If we're not currently ticking the scene, add the scene immediately
+        _loadedScenes.emplace(scene);
+    }
 }
 
 void Hudson::World::SceneManager::RemoveScene(Scene* scene)
 {
+    if (_isTicking)
+    {
+        // If we're currently ticking the scene, queue the scene to be removed
+        _toRemove.emplace(scene);
+    }
+    else
+    {
+        // If we're not currently ticking the scene, remove the scene immediately
+        _loadedScenes.erase(scene);
+    }
 }
 
 bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
@@ -48,6 +71,21 @@ bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
     return std::ranges::find(_loadedScenes, scene) != _loadedScenes.end();
 }
 
-void Hudson::World::SceneManager::Tick(const float dt)
+void Hudson::World::SceneManager::Tick(const double dt)
 {
+    // We should never EVER call this method recursively (TODO: consider would a lock be overkill?)
+    assert(!_isTicking);
+
+    // Set ticking flag
+    _isTicking = true;
+
+    // Tick active scenes
+    for (auto& scene : _loadedScenes)
+    {
+        // TODO: always tick SceneType::EDITOR, never tick SceneType::EDITOR_GAME_EDIT
+        scene->Tick(dt);
+    }
+
+    // Clear ticking flag
+    _isTicking = false;
 }

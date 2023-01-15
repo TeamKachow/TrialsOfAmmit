@@ -1,9 +1,7 @@
  
 // Note needs refactoring
 #include <iostream>
-
 #include "HudsonEngine/Common/ResourceManager.h"
-
 
 void Init() {
 	Hudson::Common::ResourceManager::Setup();

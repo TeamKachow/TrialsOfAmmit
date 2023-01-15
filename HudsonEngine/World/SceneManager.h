@@ -1,19 +1,17 @@
 ﻿#pragma once
 #include <set>
 #include <string>
-#include <vector>
 #include "./Common.h"
 
 namespace Hudson::World
 {
     class SceneManager
     {
-    // TODO: all of this
     private:
         std::set<Scene*> _loadedScenes; // TODO: map of ID to ptr?
 
         bool _isTicking = false;
-        std::set<Scene*> _toDelete;
+        std::set<Scene*> _toRemove;
         std::set<Scene*> _toAdd;
 
         /**
@@ -32,15 +30,15 @@ namespace Hudson::World
         /**
          * \brief Saves a scene to a given file.
          * \param path The file to write the scene to.
-         * \return The saved scene.
+         * \param scene The scene to save.
          */
-        static Scene* SaveScene(const std::string& path);
+        static void SaveScene(const std::string& path, Scene* scene);
 
         /**
          * \brief Get all the scenes currently loaded.
-         * \return A vector of all currently-loaded scenes.
+         * \return A set of all currently-loaded scenes.
          */
-        std::vector<Scene*> GetLoadedScenes();
+        const std::set<Scene*> GetLoadedScenes();
 
         /**
          * \brief Add a scene to the list of loaded scenes.
@@ -60,12 +58,12 @@ namespace Hudson::World
           * \brief Check whether the given scene is known to the scene manager.
           * \param scene The scene to check.
           */
-    bool IsSceneLoaded(Scene* scene);
+        bool IsSceneLoaded(Scene* scene);
 
         /**
         * \brief Tick the current scenes.
         * \param dt The time since the last tick.
         */
-        void Tick(const float dt);
+        void Tick(const double dt);
     };
 }
