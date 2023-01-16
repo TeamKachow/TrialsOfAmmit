@@ -121,7 +121,7 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
-    <ClCompile Include="AudioSystem.cpp">
+    <ClCompile Include="AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
   </ItemGroup>
@@ -228,7 +228,7 @@
     <ClInclude Include="InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
-    <ClInclude Include="AudioSystem.h">
+    <ClInclude Include="AudioManager.h">
       <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>

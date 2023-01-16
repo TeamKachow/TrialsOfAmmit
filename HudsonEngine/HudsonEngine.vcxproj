@@ -131,10 +131,10 @@
     <ClInclude Include="Entity\Component.h" />
     <ClInclude Include="Entity\GameObject.h" />
     <ClInclude Include="Entity\System.h" />
-    <ClCompile Include="AudioSystem.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioSystem.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />

@@ -19,11 +19,11 @@ enum SoundEffectType {
 };
 
 
-class AudioSystem 
+class AudioManager
 {
 public:
-    AudioSystem();
-    ~AudioSystem();
+    AudioManager();
+    ~AudioManager();
     void playSound(const std::string& file, bool playLooped = false, float volume = 1.0f, float pitch = 1.0f, float pan = 0.0f);
     void pauseSound(const std::string& file);
     void resumeSound(const std::string& file);
