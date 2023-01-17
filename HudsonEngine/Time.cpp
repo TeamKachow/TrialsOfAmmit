@@ -1,18 +1,14 @@
 #include "Time.h"
-
 Hudson::Util::Time::Time()
 {
-	 deltaTime = 0.0f;
-	 startTime = 0.0f;
-	 currentTime = 0.0f;
-	 accumulator = 0.0f;
+
 }
 
-float Hudson::Util::Time::CalculateDeltaTime60FPS()
+float Hudson::Util::Time::DeltaTime()
 {
-     deltaTime = 0.0f;
-     startTime = 0.0f;
-     currentTime = (float)glfwGetTime();
+	static double deltaTime = 0.0f;
+	double startTime = 0.0f;
+	double currentTime = glfwGetTime();
 
 	if (startTime == 0)
 	{
@@ -23,7 +19,7 @@ float Hudson::Util::Time::CalculateDeltaTime60FPS()
 
 	startTime = currentTime;
 
-	 accumulator = 0.0f;
+	static float accumulator = 0.0f;
 
 	accumulator += deltaTime;
 

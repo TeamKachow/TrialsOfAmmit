@@ -153,7 +153,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="PhysicsManager.cpp" />
-    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="PhysicsMaths.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -172,7 +172,7 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="PhysicsManager.h" />
-    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="PhysicsMaths.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SpriteRenderer.h" />

@@ -1,13 +1,21 @@
 #pragma once
 
-#include "RigidBody.h"
+#include "PhysicsMaths.h"
 #include "Collider.h"
+#include "Time.h"
 
-class PhysicsManager
+namespace Hudson::Physics
 {
-public:
-
-private:
-
-};
+	class PhysicsManager
+	{
+	public:
+		PhysicsManager();
+		void UpdatePhysics();
+		void UpdateCollisions();
+	private:
+		Hudson::Util::Time* time;
+		Hudson::Physics::PhysicsMaths* physics;
+		Hudson::Collision::Collider* collider;
+	};
+}
 
