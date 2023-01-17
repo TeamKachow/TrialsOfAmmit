@@ -7,7 +7,7 @@
 void Hudson::World::SceneManager::HandlePostTick()
 {
     Scene* found = nullptr;
-    
+
     for (Scene* toDelete : _toRemove)
     {
         auto iter = std::ranges::find(_loadedScenes, toDelete);
@@ -17,6 +17,8 @@ void Hudson::World::SceneManager::HandlePostTick()
         delete toDelete;
     }
     _toRemove.clear();
+
+    // TODO: toAdd
 }
 
 Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& path)

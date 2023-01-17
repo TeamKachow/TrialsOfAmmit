@@ -15,8 +15,8 @@ namespace Hudson::Editor
         struct Entry
         {
             std::string name;
-            std::function<Entity::Component*()> constructor;
-            
+            std::function<Entity::Component* ()> constructor;
+
             // TODO: explore using a proper runtime type info library
             // to anyone who ever has to deal with this, I'm sorry
             // - boost::describe?
@@ -25,21 +25,21 @@ namespace Hudson::Editor
         };
 
         static std::vector<Entry> _entries;
-    
+
     public:
         template<Entity::is_editor_component T>
         static void Register(std::string name);
 
         static void RegisterEngineComponents();
-        
+
         // TODO: the rest of this
     };
 
     template <Entity::is_editor_component T>
     void ComponentRegistry::Register(std::string name)
     {
-        _entries.emplace_back(name, []{ return new T(); });
-        
+        _entries.emplace_back(name, [] { return new T(); });
+
         // TODO: look into boost::serialization or cereal support here?
         // TODO: ....ok we may need more advanced RTTI for this, aaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     }

@@ -1,4 +1,4 @@
- 
+
 // Note needs refactoring
 #include <iostream>
 
@@ -7,27 +7,29 @@
 
 void Init() {
 
-	/*
-	Hudson::Common::ResourceManager::Setup();
+    /*
+    Hudson::Common::ResourceManager::Setup();
 
-	auto resManager = Hudson::Common::ResourceManager::GetInstance();
+    auto resManager = Hudson::Common::ResourceManager::GetInstance();
 
-	resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
-	Hudson::Common::ResourceManager::Destroy();
-	*/
-	auto engine = new Hudson::Common::Engine([] (Hudson::Common::Engine* engine)
-	{
-		std::cout << "DemoGame: engine post-setup hook!\n";
-	});
+    Hudson::Common::ResourceManager::Destroy();
+    */
 
-	engine->Run();
+    Hudson::Common::Engine* engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine)
+        {
+            engine->GetSceneManager()->LoadScene("menu.scene");
+    std::cout << "DemoGame: engine post-setup hook!\n";
+        });
 
-	engine->Cleanup();
+    engine->Run();
 
-	delete engine;
+    engine->Cleanup();
+
+    delete engine;
 }
 
 int main() {
-	Init();
+    Init();
 }
