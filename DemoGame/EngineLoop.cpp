@@ -2,7 +2,7 @@
 // Note needs refactoring
 #include <iostream>
 
-#include "HudsonEngine/Common/ResourceManager.h"
+#include <Common/ResourceManager.h>
 
 
 void Init() {

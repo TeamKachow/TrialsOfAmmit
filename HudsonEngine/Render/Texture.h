@@ -1,7 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
-
-#include <glad/glad.h>
+#pragma once
+#include "../stdafx.h"
 
 namespace Hudson::Render {
     class Texture
@@ -46,5 +44,3 @@ namespace Hudson::Render {
         };
     };
 }
-
-#endif

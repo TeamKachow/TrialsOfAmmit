@@ -46,6 +46,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)\Dependencies\includes;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <AllProjectIncludesArePublic>true</AllProjectIncludesArePublic>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)\Dependencies\includes;$(IncludePath)</IncludePath>
@@ -88,7 +89,6 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
-    <ClCompile Include="glad.c" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -97,6 +97,8 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="Render\SpriteRenderer.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Util\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -112,6 +114,7 @@
     <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\SpriteRenderer.h" />
     <ClInclude Include="Render\Texture.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BasicFragShader.glsl">
