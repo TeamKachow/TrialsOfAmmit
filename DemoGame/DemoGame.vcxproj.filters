@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\HudsonEngine\EngineLoop.cpp">
+    <ClCompile Include="EngineLoop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

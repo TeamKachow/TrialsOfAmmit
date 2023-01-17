@@ -1,12 +1,5 @@
-
-#ifndef RESOURCE_MANAGER_H
-#define RESOURCE_MANAGER_H
-
-#include <map>
-#include <string>
-
-#include <glad/glad.h>
-#include <stb-master/stb_image.h>
+#pragma once
+#include "../stdafx.h"
 
 #include "../Render/Shader.h"
 #include "../Render/Texture.h"
@@ -113,8 +106,3 @@ namespace Hudson::Common {
 			};
 	};
 }
-
-	
-
-#endif
-

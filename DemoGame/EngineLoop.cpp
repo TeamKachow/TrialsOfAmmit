@@ -2,8 +2,8 @@
 // Note needs refactoring
 #include <iostream>
 
-#include "HudsonEngine/Common/Engine.h"
-#include "HudsonEngine/Common/ResourceManager.h"
+#include <Common/Engine.h>
+#include <Common/ResourceManager.h>
 
 void Init() {
 
