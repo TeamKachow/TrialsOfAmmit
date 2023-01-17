@@ -69,6 +69,12 @@
     <ClCompile Include="PhysicsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -122,18 +128,21 @@
     <ClInclude Include="PhysicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="BasicFragShader.glsl">
+    <None Include="shaders\basicVertShader.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="BasicVertShader.glsl">
+    <None Include="shaders\SpriteFragShader.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="SpriteFragShader.glsl">
+    <None Include="shaders\SpriteVertShader.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="SpriteVertShader.glsl">
+    <None Include="shaders\basicFragShader.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
