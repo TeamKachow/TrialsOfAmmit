@@ -24,7 +24,7 @@ class AudioManager
 public:
     AudioManager();
     ~AudioManager();
-    irrklang::ISound* playSound(const std::string& file, bool playLooped = true);
+    irrklang::ISound* playSound(const std::string& file, bool playLooped = false);
     irrklang::ISound* pauseSound(const std::string& file);
     irrklang::ISound* resumeSound(const std::string& file);
     irrklang::ISound* stopSound(const std::string& file);

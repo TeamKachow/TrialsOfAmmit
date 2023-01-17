@@ -16,6 +16,7 @@ AudioManager::AudioManager()
     catch (std::exception& e) {
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
     }
+
 }
 
 AudioManager::~AudioManager() 
@@ -30,12 +31,17 @@ irrklang::ISound* AudioManager::playSound(const std::string& file, bool playLoop
 {
     // Play a sound file
     irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped);
-  
+    if (sound)
+    {
+        sounds.push_back(sound);
+
+    }
     return sound;
 }
 
 irrklang::ISound* AudioManager::pauseSound(const std::string& file)
 {
+    irrklang::ISound* sound = engine->play2D(file.c_str());
     // Pause a sound file
     for (auto& sound : sounds)
     {
@@ -51,6 +57,7 @@ irrklang::ISound* AudioManager::pauseSound(const std::string& file)
 
 irrklang::ISound* AudioManager::resumeSound(const std::string& file)
 {
+    irrklang::ISound* sound = engine->play2D(file.c_str());
     // resumes the sound file if the sound isn't paused
     for (auto& sound : sounds)
     {
@@ -66,6 +73,7 @@ irrklang::ISound* AudioManager::resumeSound(const std::string& file)
 
 irrklang::ISound* AudioManager::stopSound(const std::string& file)
 {
+    irrklang::ISound* sound = engine->play2D(file.c_str());
     // Stop a sound file
     for (auto it = sounds.begin(); it != sounds.end(); ++it) 
     {
