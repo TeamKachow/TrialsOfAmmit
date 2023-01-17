@@ -12,13 +12,15 @@ namespace Hudson::Common {
 	class ResourceManager
 	{
 		public:
+			std::map<std::string, Render::Shader> Shaders;
+			std::map<std::string, Render::Texture> Textures;
 			// Shader
-			Render::Shader GetShader(std::string name);
-			Render::Shader LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name);
+			Render::Shader* GetShader(std::string name);
+			Render::Shader* LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name);
 
 			// Textures
-			Render::Texture GetTexture(std::string name);
-			Render::Texture LoadTexture(const char* file, bool alpha, std::string name);
+			Render::Texture* GetTexture(std::string name);
+			Render::Texture* LoadTexture(const char* file, bool alpha, std::string name);
 
 			// Memory Management
 			static ResourceManager* GetInstance() { return INSTANCE; };
@@ -26,10 +28,7 @@ namespace Hudson::Common {
 			static void DestroyInstance();
 			void Clear();
 		private:
-
 			static ResourceManager* INSTANCE;
-			std::map<std::string, Render::Shader> Shaders;
-			std::map<std::string, Render::Texture> Textures;
 
 			ResourceManager() {};
 

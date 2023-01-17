@@ -7,39 +7,45 @@ using namespace Hudson;
 
 Common::ResourceManager* Common::ResourceManager::INSTANCE = nullptr;
 
-Render::Shader Common::ResourceManager::GetShader(std::string name)
+Render::Shader* Common::ResourceManager::GetShader(std::string name)
 {
-	return Shaders[name];
+	return &Shaders[name];
 }
 
-Render::Shader Common::ResourceManager::LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
+Render::Shader* Common::ResourceManager::LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
 {
 	Shaders[name] = loadShaderFromFile(vertShaderFile, fragShaderFile);
-	return Shaders[name];
+	return &Shaders[name];
 }
 
-Render::Texture Common::ResourceManager::GetTexture(std::string name)
+Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 {
-	return Textures[name];
+	return &Textures[name];
 }
 
-Render::Texture Common::ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
+Render::Texture* Common::ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
 {
 	Textures[name] = loadTextureFromFile(file, alpha);
-	return Textures[name];
+	return &Textures[name];
 }
 
 void Common::ResourceManager::SetupInstance()
 {
-	//INSTANCE = new Common::ResourceManager::ResourceManager();
-}
-
-void Common::ResourceManager::DestroyInstance()
-{
+	INSTANCE = new Common::ResourceManager;
 }
 
 void Common::ResourceManager::Clear()
 {
+    for (auto iter : Shaders)
+        glDeleteProgram(iter.second.ID);
+    for (auto iter : Textures)
+        glDeleteTextures(1, &iter.second.ID);
+}
+
+void Common::ResourceManager::DestroyInstance()
+{
+	INSTANCE->Clear();
+	INSTANCE = nullptr;
 }
 
 
@@ -79,11 +85,15 @@ Render::Texture Common::ResourceManager::loadTextureFromFile(const char* file, b
 {
 	// create texture object
 	Render::Texture texture;
-	if (alpha)
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // RGB compatible
+
+	if (alpha) // Alpha should be true for PNG images and false for JPG
 	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // RGBA compatible
 		texture.internalFormat = GL_RGBA;
 		texture.imageFormat = GL_RGBA;
 	}
+
 	// load image
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);

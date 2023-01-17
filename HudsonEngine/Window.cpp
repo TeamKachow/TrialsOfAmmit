@@ -30,7 +30,10 @@ Render::Window::Window(int width, int height, const char* name) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 	}
 
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
+
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
 }
@@ -41,10 +44,4 @@ void Hudson::Render::Window::SetWindow()
 
 void Hudson::Render::Window::DestroyWindow()
 {
-}
-
-void Hudson::Render::Window::ChangeContext()
-{
-	glfwMakeContextCurrent(window);
-
 }

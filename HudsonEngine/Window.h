@@ -17,11 +17,8 @@ namespace Hudson::Render {
 		void SetWindow();
 		void DestroyWindow();
 
-		void ChangeContext();
-
 	private:
 		GLFWwindow* window;
-
 	};
 
 }
