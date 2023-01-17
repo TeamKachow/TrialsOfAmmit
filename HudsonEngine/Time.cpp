@@ -2,25 +2,38 @@
 
 Hudson::Util::Time::Time()
 {
-	currentTime = 0.0f;
-	deltaTime = 0.0f;
-	lastFrameTime = 0.0f;
+	 deltaTime = 0.0f;
+	 startTime = 0.0f;
+	 currentTime = 0.0f;
+	 accumulator = 0.0f;
 }
 
-float Hudson::Util::Time::CalculateDeltaTime()
+float Hudson::Util::Time::CalculateDeltaTime60FPS()
 {
-	currentTime = (float)glfwGetTime();
+     deltaTime = 0.0f;
+     startTime = 0.0f;
+     currentTime = (float)glfwGetTime();
 
-	deltaTime = (currentTime - lastFrameTime) / 1000.0f;
-
-	if (lastFrameTime == 0)
+	if (startTime == 0)
 	{
-		lastFrameTime = currentTime;
+		startTime = currentTime;
 	}
 
-	if (deltaTime < FPS)
+	deltaTime = (currentTime - startTime) / 1000.0f;
+
+	startTime = currentTime;
+
+	 accumulator = 0.0f;
+
+	accumulator += deltaTime;
+
+	if (accumulator >= FPS)
 	{
-		return;
+		accumulator = accumulator - FPS;
+	}
+	else
+	{
+		return 0;
 	}
 
 	return deltaTime;

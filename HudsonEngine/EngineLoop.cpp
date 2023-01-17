@@ -4,6 +4,7 @@
 
 #include "ResourceManager.h"
 
+#include "Time.h"
 
 void Init() {
 	Hudson::Common::ResourceManager::Setup();
@@ -18,5 +19,6 @@ void Init() {
 }
 
 int main() {
-	Init();
+	//Init();
+
 }

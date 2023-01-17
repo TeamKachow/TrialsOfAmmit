@@ -9,18 +9,14 @@ namespace Hudson::Util
 	class Time
 	{
 	public:
-		const float DeltaTime() const { return deltaTime; }
-	private:
 		Time();
-		float CalculateDeltaTime();
-
-		const float GetSeconds() const { return deltaTime; }
-		const float GetMiliSeconds() const { return deltaTime * 1000.0f; }
-
+		float CalculateDeltaTime60FPS();
 	private:
-		float currentTime = 0.0f;
 		float deltaTime = 0.0f;
-		float lastFrameTime = 0.0f;
+		float startTime = 0.0f;
+		float currentTime = 0.0f;
+		float accumulator = 0.0f;
 	};
 }
+
 
