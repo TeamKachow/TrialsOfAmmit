@@ -37,7 +37,7 @@ void Hudson::Common::Engine::Run()
         // TODO: _renderer->Draw();
 
         // Exit if either glfw wants to shut down or Engine::Shutdown was called somewhere
-        //shouldExit = _shutdownFlag || glfwShouldWindowClose();
+        shouldExit = _shutdownFlag /*|| glfwShouldWindowClose()*/;
     }
 
 }
@@ -49,4 +49,9 @@ void Hudson::Common::Engine::Shutdown()
 
 void Hudson::Common::Engine::Cleanup()
 {
+}
+
+Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
+{
+    return _sceneManager.get();
 }

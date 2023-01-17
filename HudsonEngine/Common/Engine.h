@@ -13,8 +13,6 @@ namespace Hudson::Common
     class Engine
     {
     private:
-        // TODO: std::unique_ptr<Timer> _timer; 
-
         std::unique_ptr<World::SceneManager> _sceneManager;
         // TODO: std::unique_ptr<Renderer> _renderer; 
         // TODO: std::unique_ptr<PhysicsManager> _physics; 
@@ -50,5 +48,7 @@ namespace Hudson::Common
          * \brief Clean up engine resources.
          */
         void Cleanup();
+
+        [[nodiscard]] Hudson::World::SceneManager* GetSceneManager() const;
     };
 }
