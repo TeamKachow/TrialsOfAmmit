@@ -1,11 +1,8 @@
 #include <iostream>
-#include <irrKlang.h>
-#pragma comment(lib, "irrklang.lib")
 #include "AudioManager.h"
 
 
-
-AudioManager::AudioManager() 
+AudioManager::AudioManager()
 {
     try {
         // Initialize the sound engine
@@ -19,7 +16,6 @@ AudioManager::AudioManager()
     catch (std::exception& e) {
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
     }
-    
 }
 
 AudioManager::~AudioManager() 
@@ -28,17 +24,24 @@ AudioManager::~AudioManager()
     stopAllSounds();
     engine->drop();
 }
+    
 
-void AudioManager::playSound(const std::string& file, bool playLooped, float volume, float pitch, float pan) 
+void AudioManager::playSound(const std::string& file, bool playLooped) 
 {
+    // Load sound file
+    loadSoundFile(file);
+
     // Play a sound file
-    irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped, false, true);
+    irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped);
     if (sound) 
     {
         sounds.push_back(sound);
-        sound->setVolume(volume);
-        sound->setPlaybackSpeed(pitch);
-        sound->setPan(pan);
+       
+    }
+    else
+    {
+        std::cout << "Error playing sound. " << std::endl;
+        return;
     }
 }
 
