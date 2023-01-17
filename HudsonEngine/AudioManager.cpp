@@ -1,18 +1,23 @@
+#include <iostream>
 #include <irrKlang.h>
 #pragma comment(lib, "irrklang.lib")
 #include "AudioManager.h"
 
-using namespace irrklang;
+
 
 AudioManager::AudioManager() 
 {
-    // Initialize the sound engine
-    engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
-    
-    if (engine == NULL)
-    {
-        printf("Failed to create the engine!\n");
-        return;
+    try {
+        // Initialize the sound engine
+        engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
+        if (engine == NULL)
+        {
+            printf("Failed to create the engine!\n");
+            return;
+        }
+    }
+    catch (std::exception& e) {
+        std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
     }
     
 }
