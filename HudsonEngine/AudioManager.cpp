@@ -26,26 +26,15 @@ AudioManager::~AudioManager()
 }
     
 
-void AudioManager::playSound(const std::string& file, bool playLooped) 
+irrklang::ISound* AudioManager::playSound(const std::string& file, bool playLooped) 
 {
-    // Load sound file
-    loadSoundFile(file);
-
     // Play a sound file
     irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped);
-    if (sound) 
-    {
-        sounds.push_back(sound);
-       
-    }
-    else
-    {
-        std::cout << "Error playing sound. " << std::endl;
-        return;
-    }
+  
+    return sound;
 }
 
-void AudioManager::pauseSound(const std::string& file)
+irrklang::ISound* AudioManager::pauseSound(const std::string& file)
 {
     // Pause a sound file
     for (auto& sound : sounds)
@@ -54,11 +43,13 @@ void AudioManager::pauseSound(const std::string& file)
             sound->setIsPaused(true);
             break;
         }
+        return sound;
     }
+    
 }
 
 
-void AudioManager::resumeSound(const std::string& file)
+irrklang::ISound* AudioManager::resumeSound(const std::string& file)
 {
     // resumes the sound file if the sound isn't paused
     for (auto& sound : sounds)
@@ -68,11 +59,12 @@ void AudioManager::resumeSound(const std::string& file)
             sound->setIsPaused(false);
             break;
         }
+        return sound;
     }
 }
 
 
-void AudioManager::stopSound(const std::string& file) 
+irrklang::ISound* AudioManager::stopSound(const std::string& file)
 {
     // Stop a sound file
     for (auto it = sounds.begin(); it != sounds.end(); ++it) 
@@ -83,6 +75,7 @@ void AudioManager::stopSound(const std::string& file)
             sounds.erase(it);
             break;
         }
+        return sound;
     }
 }
 
@@ -121,14 +114,14 @@ void AudioManager::setMasterVolume(const std::string& file, float mVolume)
    
 }
 
-void AudioManager::setSoundVolume(const std::string& file, float volume) 
+void AudioManager::setSoundVolume(const std::string& file, float sVolume) 
 {
     // Set the volume of a sound file
     for (auto& sound : sounds) 
     {
         if (sound-> getSoundSource()->getName() == file) 
         {
-            sound->setVolume(volume);
+            sound->setVolume(sVolume);
             break;
         }
     }
