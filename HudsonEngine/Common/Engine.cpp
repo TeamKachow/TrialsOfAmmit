@@ -25,45 +25,26 @@ void Hudson::Common::Engine::Run()
     bool shouldExit = false;
     while (!shouldExit)
     {
-        std::vector<Behaviour*> behaviours;
-        std::vector<Behaviour*> sprites;
-        std::vector<Behaviour*> audio;
-
-
-        // todo 
+        // Tick the scene manager (runs Behaviours)
         _sceneManager->Tick();
 
-        // todo audio/physics(/behaviours?)
-        _audioManager->Update();
-        _physicsManager->Update();
+        // TODO: _audioManager->Update();
+        // TODO: _physicsManager->Update();
 
-        // renderer
+        // Render scene
         //std::this_thread::sleep_for(100)
+        // TODO(?): _renderer->SleepUntilDraw();
+        // TODO: _renderer->Draw();
 
-        sceneManager->GetComponents<SpriteComponent>();
-        sceneManager->GetComponents<AudioComponent>();
-        sceneManager->GetComponents<RigidbodyComponent>();
-        sceneManager->GetComponents<CollisionComponent>();
-        sceneManager->GetComponents<Behaviour>();
-
-
-
-        for (auto scene : _sceneManager->GetLoadedScenes())
-        {
-
-            for (auto object : scene->GetObjects())
-            {
-                std::vector<SpriteComponent*> blah = object->GetComponents<SpriteComponent>();
-            }
-        }
-
-        _renderer->Draw();
+        // Exit if either glfw wants to shut down or Engine::Shutdown was called somewhere
+        //shouldExit = _shutdownFlag || glfwShouldWindowClose();
     }
 
 }
 
 void Hudson::Common::Engine::Shutdown()
 {
+    _shutdownFlag = true;
 }
 
 void Hudson::Common::Engine::Cleanup()

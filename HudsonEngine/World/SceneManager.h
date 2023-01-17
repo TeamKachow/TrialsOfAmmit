@@ -54,16 +54,16 @@ namespace Hudson::World
          */
         void RemoveScene(Scene* scene);
 
-         /**
-          * \brief Check whether the given scene is known to the scene manager.
-          * \param scene The scene to check.
-          */
+        /**
+         * \brief Check whether the given scene is known to the scene manager.
+         * \param scene The scene to check.
+         */
         bool IsSceneLoaded(Scene* scene);
 
         /**
         * \brief Tick the current scenes.
         * \param dt The time since the last tick.
         */
-        void Tick(const double dt);
+        void Tick();
     };
 }

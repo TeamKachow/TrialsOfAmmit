@@ -73,8 +73,11 @@ bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
     return std::ranges::find(_loadedScenes, scene) != _loadedScenes.end();
 }
 
-void Hudson::World::SceneManager::Tick(const double dt)
+void Hudson::World::SceneManager::Tick()
 {
+    // TODO: use staffs's Time class for fixed timestep
+    const double dt = 1.0 / 60.0;
+
     // We should never EVER call this method recursively (TODO: consider would a lock be overkill?)
     assert(!_isTicking);
 
