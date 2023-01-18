@@ -4,6 +4,7 @@
 
 AudioManager::AudioManager()
 {
+   
     try {
         // Initialize the sound engine
         engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
@@ -27,84 +28,79 @@ AudioManager::~AudioManager()
 }
     
 
-irrklang::ISound* AudioManager::playSound(const std::string& file, bool playLooped) 
+irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, bool pitch, bool pan) 
 {
     // Play a sound file
-    irrklang::ISound* sound = engine->play2D(file.c_str(), playLooped);
+    irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped);
     if (sound)
     {
-        sounds.push_back(sound);
-
+        sounds[filePath] = sound;
+        sound->setPlaybackSpeed(pitch);
+        sound->setPan(pan);   
     }
     return sound;
 }
 
-irrklang::ISound* AudioManager::pauseSound(const std::string& file)
+irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
 {
-    irrklang::ISound* sound = engine->play2D(file.c_str());
-    // Pause a sound file
-    for (auto& sound : sounds)
+    engine->play2D(filePath.c_str());
+    // pause the sound currently playing
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file) {
-            sound->setIsPaused(true);
-            break;
-        }
-        return sound;
+        sounds[filePath]->setIsPaused(true);
     }
+     
+}
+
+
+irrklang::ISound* AudioManager::resumeSound(const std::string& filePath)
+{
     
-}
-
-
-irrklang::ISound* AudioManager::resumeSound(const std::string& file)
-{
-    irrklang::ISound* sound = engine->play2D(file.c_str());
     // resumes the sound file if the sound isn't paused
-    for (auto& sound : sounds)
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file)
-        {
-            sound->setIsPaused(false);
-            break;
-        }
-        return sound;
+        sounds[filePath]->setIsPaused(false);
     }
 }
 
 
-irrklang::ISound* AudioManager::stopSound(const std::string& file)
+irrklang::ISound* AudioManager::stopSound(const std::string& filePath)
 {
-    irrklang::ISound* sound = engine->play2D(file.c_str());
     // Stop a sound file
-    for (auto it = sounds.begin(); it != sounds.end(); ++it) 
+    if (sounds.count(filePath) > 0)
     {
-        irrklang::ISound* sound = *it;
-        if (sound->getSoundSource()->getName() == file) {
-            sound->stop();
-            sounds.erase(it);
-            break;
+        try 
+        {
+            sounds[filePath]->stop();
+            sounds.erase(filePath);
         }
-        return sound;
+        catch (...)
+        {
+            std::cout << "Sound not found" << std::endl;
+        }
     }
 }
 
-void AudioManager::stopAllSounds() 
+irrklang::ISound* AudioManager::stopAllSounds()
 {
-    // Stop all sound files
-    for (auto& sound : sounds) 
+    for (std::map<std::string, irrklang::ISound*>::iterator it = sounds.begin(); it != sounds.end(); ++it)
     {
-        sound->stop();
+        it->second->stop();
     }
     sounds.clear();
 }
 
-void AudioManager::loadSoundFile(const std::string& file)
+void AudioManager::loadSoundFile(const std::string& filePath)
 {
-    engine->addSoundSourceFromFile(file.c_str());
+    // Load the sound file into the engine
+    engine->addSoundSourceFromFile(filePath.c_str());
 }
 
-void AudioManager::unloadSoundFile(const std::string& file)
+void AudioManager::unloadSoundFile(const std::string& filePath)
 {
-    engine->removeSoundSource(file.c_str());
+   // Unloads the sound file fromn the engine
+    engine->removeSoundSource(filePath.c_str());
+    
 }
 
 void AudioManager::setListenerPosition(float x, float y) 
@@ -113,69 +109,48 @@ void AudioManager::setListenerPosition(float x, float y)
     engine->setListenerPosition(irrklang::vec3df(x, y, 0), irrklang::vec3df(0, 0, 1));
 }
 
-void AudioManager::setMasterVolume(const std::string& file, float mVolume)
-{
-    for (auto& sound : sounds)
-    {
-        engine->setSoundVolume(mVolume);
-    }
-   
-}
 
-void AudioManager::setSoundVolume(const std::string& file, float sVolume) 
+void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
 {
     // Set the volume of a sound file
-    for (auto& sound : sounds) 
+    if (sounds.count(filePath) > 0)
     {
-        if (sound-> getSoundSource()->getName() == file) 
-        {
-            sound->setVolume(sVolume);
-            break;
-        }
+        sounds[filePath]->setVolume(sVolume);
     }
 }
 
-void AudioManager::setSoundPitch(const std::string& file, float pitch) 
+void AudioManager::setSoundPitch(const std::string& filePath, float pitch) 
 {
     // Set the pitch of a sound file
-    for (auto& sound : sounds) 
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file) {
-            sound->setPlaybackSpeed(pitch);
-            break;
-        }
+        sounds[filePath]->setPlaybackSpeed(pitch);
     }
 }
 
-void AudioManager::setSoundPan(const std::string& file, float pan) 
+void AudioManager::setSoundPan(const std::string& filePath, float pan) 
 {
     // Set the pan of a sound file
-    for (auto& sound : sounds) 
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file) {
-            sound->setPan(pan);
-            break;
-        }
+        sounds[filePath]->setPan(pan);
     }
 }
 
-bool AudioManager::isSoundPlaying(const std::string& file) 
+bool AudioManager::isSoundPlaying(const std::string& filePath) 
 {
     // Check if a sound file is currently playing
-    for (auto& sound : sounds) 
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file) 
-        {
-            return !sound->isFinished();
-        }
+        return !sounds[filePath]->isFinished();
     }
     return false;
+        
 }
 
 
-bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders) 
+bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numOfLoaders) 
 {
-    
     for (auto it = audioStreamLoaders.begin(); it != audioStreamLoaders.end(); ++it) 
     {
         if (*it == loader) 
@@ -185,46 +160,45 @@ bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, in
     }
     engine->registerAudioStreamLoader(loader);
     audioStreamLoaders.push_back(loader);
-    numLoaders++;
+    numOfLoaders++;
     return true;
-        
 }
 
-void AudioManager::setSoundEffect(const std::string& file, SoundEffectType effectType, bool enable)
+void AudioManager::setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable)
 {
-    for (auto& sound : sounds)
+    
+    if (sounds.count(filePath) > 0)
     {
-        if (sound->getSoundSource()->getName() == file)
+        irrklang::ISoundEffectControl* fx = sounds[filePath]->getSoundEffectControl();
+        switch (effectType)
         {
-            irrklang::ISoundEffectControl* fx = sound->getSoundEffectControl();
-            switch (effectType)
-            {
-            case SOUND_EFFECT_TYPE_CHORUS:
-                fx->enableChorusSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_COMPRESSOR:
-                fx->enableCompressorSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_DISTORTION:
-                fx->enableDistortionSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_ECHO:
-                fx->enableEchoSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_FLANGER:
-                fx->enableFlangerSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_GARGLE:
-                fx->enableGargleSoundEffect(enable);
-                break;
-            case SOUND_EFFECT_TYPE_DISABLE:
-                fx->disableAllEffects();
-            default:
-                break;
+        case SOUND_EFFECT_TYPE_CHORUS:
+             fx->enableChorusSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_COMPRESSOR:
+             fx->enableCompressorSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_DISTORTION:
+             fx->enableDistortionSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_ECHO:
+             fx->enableEchoSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_FLANGER:
+             fx->enableFlangerSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_GARGLE:
+             fx->enableGargleSoundEffect(enable);
+             break;
+        case SOUND_EFFECT_TYPE_DISABLE:
+             fx->disableAllEffects();
+             break;
+        default:
+             break;
             }
-            break;
-        }
+           
     }
+    
 }
 
 
