@@ -47,7 +47,7 @@ public:
 private:
    
     irrklang::ISoundEngine* engine;
-    std::map<std::string, irrklang::ISound*> sounds;
+    std::map<std::string, std::vector<irrklang::ISound*>> sounds;
 
     std::vector<irrklang::ISoundEffectControl*> fx;
 

@@ -44,11 +44,13 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
 irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
 {
     engine->play2D(filePath.c_str());
-    // pause the sound currently playing
-    if (sounds.count(filePath) > 0)
-    {
-        sounds[filePath]->setIsPaused(true);
-    }
+    // pause the sound currently playing  
+    irrklang::ISound* sound = sounds[filePath];
+      if (sound)
+      {
+         sound->setIsPaused(true);
+      }
+    
     return sounds[filePath];
 }
 
@@ -67,6 +69,7 @@ irrklang::ISound* AudioManager::resumeSound(const std::string& filePath)
 
 void AudioManager::stopSound(const std::string& filePath)
 {
+   
     // Stop a sound file
     if (sounds.count(filePath) > 0)
     {
@@ -85,7 +88,7 @@ void AudioManager::stopSound(const std::string& filePath)
 
 void AudioManager::stopAllSounds()
 {
-    for (std::map<std::string, irrklang::ISound*>::iterator it = sounds.begin(); it != sounds.end(); ++it)
+    for (std::map<std::string,std::vector <irrklang::ISound*>>::iterator it = sounds.begin(); it != sounds.end(); ++it)
     {
         it->second->stop();
     }
