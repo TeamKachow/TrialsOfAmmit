@@ -66,6 +66,7 @@ void Hudson::Common::Engine::Shutdown()
 
 void Hudson::Common::Engine::Cleanup()
 {
+
 }
 
 Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const

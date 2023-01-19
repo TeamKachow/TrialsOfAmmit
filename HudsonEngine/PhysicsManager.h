@@ -5,14 +5,6 @@ constexpr double FPS_60 = 1.0 / 60.0;
 
 namespace Hudson
 {
-	namespace Collision
-	{
-		class Collider;
-	}
-}
-
-namespace Hudson
-{
 	namespace Common
 	{
 		class Engine;
@@ -22,6 +14,7 @@ namespace Hudson
 namespace Hudson::Physics
 {
 	class PhysicsComponent;
+	class ColliderComponent;
 
 	class PhysicsManager
 	{
@@ -30,9 +23,11 @@ namespace Hudson::Physics
 		~PhysicsManager();
 		void UpdatePhysics();
 		void UpdateMovement(float deltaTime);
+		void UpdateCollider();
+
 	private:
 		Hudson::Physics::PhysicsComponent* physics;
-		Hudson::Collision::Collider* collider;
+		Hudson::Physics::ColliderComponent* collider;
 		Hudson::Common::Engine* m_engine;
 		double lastTime;
 		double timer;

@@ -2,13 +2,11 @@
 #include "Entity/GameObject.h"
 #include "Common/Engine.h"
 #include "World/Scene.h"
-#include "Collider.h"
 #include "PhysicsComponent.h"
+#include "ColliderComponent.h"
 
 Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) : m_engine(engine)
 {
-	collider = new Hudson::Collision::Collider();
-
 	lastTime = glfwGetTime();
 	timer = lastTime;
 	accumulator = 0;
@@ -21,8 +19,6 @@ Hudson::Physics::PhysicsManager::~PhysicsManager()
 {
 	delete physics;
 	physics = nullptr;
-	delete collider;
-	collider = nullptr;
 }
 
 void Hudson::Physics::PhysicsManager::UpdatePhysics()
@@ -39,6 +35,7 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 	{
 		//physics->Update(deltaTime);
 		UpdateMovement(FPS_60);
+		UpdateCollider();
 		updates++;
 		accumulator--;
 	}
@@ -70,3 +67,32 @@ void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
 		}
 	}
 }
+
+void Hudson::Physics::PhysicsManager::UpdateCollider()
+{
+	auto scenes = m_engine->GetSceneManager()->GetLoadedScenes();
+	for (auto scene : scenes)
+	{
+		std::vector<ColliderComponent*> vecColliders;
+
+		for (auto gameObject : scene->GetObjects())
+		{
+			// Update Collisions
+			for (auto collider : gameObject->GetComponents<ColliderComponent>())
+			{
+				vecColliders.push_back(collider);
+			}
+		}
+		for (int i = 0; i < vecColliders.size() - 1; i++)
+		{
+			for (int j = i + 1; j < vecColliders.size(); j++)
+			{
+				if (vecColliders[i]->AABBCollision(vecColliders[j]))
+				{
+					std::cout << "COLLISION DETECTED" << std::endl;
+				}
+			}
+		}
+	}
+}
+

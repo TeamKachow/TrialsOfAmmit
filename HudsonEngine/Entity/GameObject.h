@@ -22,9 +22,9 @@ namespace Hudson::Entity
         struct Transform
         {
             // TODO: replace with vec2f
-            float posX, posY; 
-            float scaleX, scaleY;
-            float rotateZ;
+            float posX = 0, posY = 0;
+            float scaleX = 64, scaleY = 64;
+            float rotateZ = 0;
         };
         
     private:
