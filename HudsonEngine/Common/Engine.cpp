@@ -9,6 +9,7 @@
 
 Hudson::Common::Engine::Engine(std::function<void(Engine*)> onSetupComplete)
 {
+    _postSetup = onSetupComplete;
 }
 
 Hudson::Common::Engine::~Engine()
@@ -17,6 +18,15 @@ Hudson::Common::Engine::~Engine()
 
 void Hudson::Common::Engine::Setup()
 {
+    // create renderer
+
+    // create physics
+
+    // create audio system
+
+    // create input system
+
+    // run post-setup hook
     _postSetup(this);
 }
 

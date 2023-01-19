@@ -20,8 +20,10 @@ void Init() {
     Hudson::Common::Engine* engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine)
         {
             engine->GetSceneManager()->LoadScene("menu.scene");
-    std::cout << "DemoGame: engine post-setup hook!\n";
+            std::cout << "DemoGame: engine post-setup hook!\n";
         });
+
+    engine->Setup();
 
     engine->Run();
 
