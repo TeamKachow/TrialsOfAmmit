@@ -1,9 +1,6 @@
 ﻿#include "SceneManager.h"
 #include "Scene.h"
 
-#include <assert.h>
-#include <fstream>
-
 void Hudson::World::SceneManager::HandlePostTick()
 {
     Scene* found = nullptr;

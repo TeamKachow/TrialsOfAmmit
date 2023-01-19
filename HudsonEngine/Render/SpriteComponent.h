@@ -1,21 +1,19 @@
 #pragma once
 #include "../stdafx.h"
-// TODO: fix
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "Shader.h"
 #include "Texture.h"
+#include "../Entity/Component.h"
 
 namespace Hudson::Render {
 
-    class SpriteRenderer
+    class SpriteComponent : public Entity::Component
     {
     public:
-        SpriteRenderer();
-        SpriteRenderer(Shader* shader);
-        SpriteRenderer(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition);
-        ~SpriteRenderer();
+        SpriteComponent();
+        SpriteComponent(Shader* shader);
+        SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition);
+        ~SpriteComponent();
 
         void DrawSprite(Texture* texture, glm::vec2 position);
         void SetGridSize(glm::vec2 gridSize) { this->gridSize = gridSize; };

@@ -1,8 +1,14 @@
 ﻿#pragma once
-#include <functional>
-#include <memory>
 
 #include "../World/SceneManager.h"
+
+namespace Hudson
+{
+    namespace Render
+    {
+        class Renderer;
+    }
+}
 
 namespace Hudson::Common
 {
@@ -14,7 +20,7 @@ namespace Hudson::Common
     {
     private:
         std::unique_ptr<World::SceneManager> _sceneManager;
-        // TODO: std::unique_ptr<Renderer> _renderer; 
+        std::unique_ptr<Render::Renderer> _renderer; 
         // TODO: std::unique_ptr<PhysicsManager> _physics; 
         // TODO: std::unique_ptr<AudioManager> _audio; 
         // TODO: std::unique_ptr<InputManager> _input; 

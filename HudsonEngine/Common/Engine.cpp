@@ -1,9 +1,7 @@
 ﻿#include "Engine.h"
-#include <chrono>
-#include <thread>
 
 #include "../Entity/GameObject.h"
-#include "../World/Scene.h"
+#include "../Renderer.h"
 
 // TODO: EVERYTHING
 
@@ -18,7 +16,11 @@ Hudson::Common::Engine::~Engine()
 
 void Hudson::Common::Engine::Setup()
 {
+    // create scene manager
+    _sceneManager = std::make_unique<Hudson::World::SceneManager>();
+
     // create renderer
+    _renderer = std::make_unique<Render::Renderer>(this);
 
     // create physics
 
@@ -43,11 +45,14 @@ void Hudson::Common::Engine::Run()
 
         // Render scene
         //std::this_thread::sleep_for(100)
-        // TODO(?): _renderer->SleepUntilDraw();
-        // TODO: _renderer->Draw();
+        _renderer->WaitForRender();
+        _renderer->Draw();
+
+        // Poll GLFW events
+        glfwPollEvents();
 
         // Exit if either glfw wants to shut down or Engine::Shutdown was called somewhere
-        shouldExit = _shutdownFlag /*|| glfwShouldWindowClose()*/;
+        shouldExit = _shutdownFlag;
     }
 
 }

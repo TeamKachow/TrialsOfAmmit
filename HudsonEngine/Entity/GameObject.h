@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <string>
-#include <vector>
+#include "../stdafx.h"
 #include "Common.h"
 #include "../Common/IEditable.h"
 

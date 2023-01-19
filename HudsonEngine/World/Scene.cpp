@@ -35,3 +35,9 @@ void Hudson::World::Scene::Tick(const double dt) const
         }
     }
 }
+
+void Hudson::World::Scene::AddObject(Entity::GameObject* object)
+{
+    // TODO: THIS MUST CHECK FOR DUPLICATES EVENTUALLY
+    _objects.push_back(object);
+}

@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include <concepts>
+#include "../stdafx.h"
 
 namespace Hudson::Entity
 {

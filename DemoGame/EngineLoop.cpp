@@ -4,34 +4,57 @@
 
 #include <Common/Engine.h>
 #include <Common/ResourceManager.h>
+#include <SpriteComponent.h>
 
-void Init() {
+#include "DemoBehaviour.h"
+#include "GameObject.h"
+#include "Scene.h"
 
-    /*
-    Hudson::Common::ResourceManager::Setup();
+Hudson::Common::Engine* engine;
+Hudson::Render::SpriteComponent* Sprite1;
+// TODO: this *needs* to move to Hudson ASAP
+Hudson::Common::ResourceManager* resManager;
 
-    auto resManager = Hudson::Common::ResourceManager::GetInstance();
+void Init() 
+{
+    Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
+    resManager = Hudson::Common::ResourceManager::GetInstance();
 
-    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
-
-    Hudson::Common::ResourceManager::Destroy();
-    */
-
-    Hudson::Common::Engine* engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine)
-        {
-            engine->GetSceneManager()->LoadScene("menu.scene");
-            std::cout << "DemoGame: engine post-setup hook!\n";
-        });
+    engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine) {});
 
     engine->Setup();
+}
 
-    engine->Run();
+void GameSetup()
+{
+    Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"));
+    Sprite1->SetSize(glm::vec2(128.0f, 128.0f));
+    Sprite1->SetGridSize(glm::vec2(3, 4));
+    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
-    engine->Cleanup();
+    // Load initial scene from file 
+    // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
+    Hudson::World::Scene* startScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(startScene);
 
-    delete engine;
+    Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
+    blah->AddComponent(Sprite1);
+    blah->AddComponent(new DemoBehaviour(Sprite1));
+    startScene->AddObject(blah);
+
+    std::cout << "DemoGame: engine has been set up!\n";
 }
 
 int main() {
     Init();
+
+    // Set up game scene/resources
+    GameSetup();
+
+    // Run engine loop until it is shut down
+    engine->Run();
+
+    // Clean up
+    engine->Cleanup();
+    delete engine;
 }

@@ -1,22 +1,22 @@
-#include "SpriteRenderer.h"
+#include "SpriteComponent.h"
 
-Hudson::Render::SpriteRenderer::SpriteRenderer(Shader* shader)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader)
 {
     this->shader = shader;
     this->initRenderData();
 }
 
-Hudson::Render::SpriteRenderer::SpriteRenderer(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition)
 {
 
 }
 
-Hudson::Render::SpriteRenderer::~SpriteRenderer()
+Hudson::Render::SpriteComponent::~SpriteComponent()
 {
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void Hudson::Render::SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 position)
+void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 position)
 {
     this->shader->Use();
     glm::mat4 model = glm::mat4(1);
@@ -44,7 +44,7 @@ void Hudson::Render::SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 posi
     glBindVertexArray(0);
 }
 
-void Hudson::Render::SpriteRenderer::initRenderData()
+void Hudson::Render::SpriteComponent::initRenderData()
 {
     unsigned int VBO;
     float vertices[] = {

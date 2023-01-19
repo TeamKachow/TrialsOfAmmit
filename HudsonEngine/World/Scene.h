@@ -1,7 +1,14 @@
 ﻿#pragma once
-#include <string>
-#include <vector>
+#include "../stdafx.h"
 #include "./Common.h"
+
+namespace Hudson
+{
+    namespace Common
+    {
+        class ResourceManager;
+    }
+}
 
 // forward declare
 namespace Hudson
@@ -33,6 +40,8 @@ namespace Hudson::World
          * \brief Whether or not the scene is currently active.
          */
         bool _active;
+
+        // TODO Common::ResourceManager* _resManager;
         
     public:
         /**
@@ -52,6 +61,10 @@ namespace Hudson::World
          * \param dt The time since the last tick (should be fixed rate!)
          */
         void Tick(const double dt) const;
-     
+        /**
+         * \brief Add an object to the scene.
+         * \param object The object to add to the scene.
+         */
+        void AddObject(Entity::GameObject* object);
     };
 }

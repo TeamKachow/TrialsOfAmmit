@@ -1,6 +1,5 @@
 ﻿#pragma once
-#include <set>
-#include <string>
+#include "../stdafx.h"
 #include "./Common.h"
 
 namespace Hudson::World
