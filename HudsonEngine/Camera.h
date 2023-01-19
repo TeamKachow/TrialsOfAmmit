@@ -1,6 +1,8 @@
 #pragma once
 #include "stdafx.h"
 
+// Namespace Hudson::Render
+
 class Camera
 {
 public:
