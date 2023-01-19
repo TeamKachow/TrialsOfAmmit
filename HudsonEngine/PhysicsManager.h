@@ -3,6 +3,9 @@
 #include "PhysicsMaths.h"
 #include "Collider.h"
 #include "Time.h"
+#include <GLFW/glfw3.h>
+
+#define FPS_60 1.0f / 60.0f
 
 namespace Hudson::Physics
 {
@@ -10,12 +13,18 @@ namespace Hudson::Physics
 	{
 	public:
 		PhysicsManager();
+		~PhysicsManager();
 		void UpdatePhysics();
-		void UpdateCollisions();
 	private:
-		Hudson::Util::Time* time;
 		Hudson::Physics::PhysicsMaths* physics;
 		Hudson::Collision::Collider* collider;
+
+		double lastTime;
+		double timer;
+		double deltaTime;
+		double nowTime;
+		int frames;
+		int updates;
 	};
 }
 

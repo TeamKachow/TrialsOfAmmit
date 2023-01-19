@@ -32,6 +32,8 @@ void Init() {
 	// load textures
 	resManager->LoadTexture("textures/images.jpg", false, "Doc");
 
+	phyManager = new Hudson::Physics::PhysicsManager();
+
 }
 
 void Draw()
@@ -50,46 +52,14 @@ int main() {
 
 	Init();
 
-	static double limitFPS = 1.0f / 60.0f;
-	double lastTime = glfwGetTime();
-	double timer = lastTime;
-	double deltaTime = 0;
-	double nowTime = 0;
-	int frames = 0; 
-    int updates = 0;
-
 	while (!glfwWindowShouldClose(mainWindow.GetWindow()))
 	{
 		glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+	    phyManager->UpdatePhysics();
 
-		phyManager->UpdatePhysics();
-
-
-		//// Measure time
-		//nowTime = glfwGetTime();
-		//deltaTime += ((nowTime - lastTime) / limitFPS);
-		//lastTime = nowTime;
-
-		//// Only updates at 60 frames / s - Physics and any 60FPS locked stuff here
-		//while (deltaTime >= 1.0f)
-		//{
-		//	phyManager->UpdatePhysics(updates);
-		//	updates++;
-		//	deltaTime--;
-		//}
-
-		//// Renders at maximum possible frames - Render Here
 		Draw();
-		//frames++;
-		//
-		//// Reset after one second
-		//if (glfwGetTime() - timer > 1.0f) {
-		//	timer++;
-		//	std::cout << "FPS: " << frames << " Updates:" << updates << std::endl;
-		//	updates = 0, frames = 0;
-		//}
 
 		// Swap the back buffer with the front buffer
 		glfwSwapBuffers(mainWindow.GetWindow());

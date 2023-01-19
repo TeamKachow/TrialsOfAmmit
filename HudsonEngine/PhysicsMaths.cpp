@@ -13,7 +13,7 @@ void Hudson::Physics::PhysicsMaths::Update(float deltaTime)
 
 
 	CalculateAcceleration(); // Calculate Acceleration First
-	CalculateVelocity(time); // Calculate Velocity uisng Acceleration
+	CalculateVelocity(deltaTime); // Calculate Velocity uisng Acceleration
 }
 
 void Hudson::Physics::PhysicsMaths::CalculateAcceleration()
