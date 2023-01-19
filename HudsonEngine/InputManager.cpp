@@ -181,3 +181,12 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 	cout << key << endl;
 }
 
+void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	cout << xpos << " : " << ypos << endl;
+}
+
+void InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)
+{
+
+}
