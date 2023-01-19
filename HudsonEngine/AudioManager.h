@@ -29,8 +29,8 @@ public:
     irrklang::ISound* playSound(const std::string& filePath, bool playLooped, bool pitch, bool pan);
     irrklang::ISound* pauseSound(const std::string& filePath);
     irrklang::ISound* resumeSound(const std::string& filePath);
-    irrklang::ISound* stopSound(const std::string& filePath);
-    irrklang::ISound* stopAllSounds();
+    void stopSound(const std::string& filePath);
+    void stopAllSounds();
     void setListenerPosition(float x, float y);
 
     void loadSoundFile(const std::string& filePath);

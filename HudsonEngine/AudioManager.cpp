@@ -7,7 +7,7 @@ AudioManager::AudioManager()
    
     try {
         // Initialize the sound engine
-        engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_MULTI_THREADED | irrklang::ESEO_LOAD_PLUGINS | irrklang::ESEO_USE_3D_BUFFERS);
+        engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_DEFAULT_OPTIONS);
         if (engine == NULL)
         {
             printf("Failed to create the engine!\n");
@@ -49,7 +49,7 @@ irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
     {
         sounds[filePath]->setIsPaused(true);
     }
-     
+    return sounds[filePath];
 }
 
 
@@ -61,10 +61,11 @@ irrklang::ISound* AudioManager::resumeSound(const std::string& filePath)
     {
         sounds[filePath]->setIsPaused(false);
     }
+    return sounds[filePath];
 }
 
 
-irrklang::ISound* AudioManager::stopSound(const std::string& filePath)
+void AudioManager::stopSound(const std::string& filePath)
 {
     // Stop a sound file
     if (sounds.count(filePath) > 0)
@@ -79,21 +80,22 @@ irrklang::ISound* AudioManager::stopSound(const std::string& filePath)
             std::cout << "Sound not found" << std::endl;
         }
     }
+    
 }
 
-irrklang::ISound* AudioManager::stopAllSounds()
+void AudioManager::stopAllSounds()
 {
     for (std::map<std::string, irrklang::ISound*>::iterator it = sounds.begin(); it != sounds.end(); ++it)
     {
         it->second->stop();
     }
-    sounds.clear();
+    /*sounds.clear();*/
 }
 
 void AudioManager::loadSoundFile(const std::string& filePath)
 {
     // Load the sound file into the engine
-    engine->addSoundSourceFromFile(filePath.c_str());
+    engine->addSoundSourceFromFile("../audio/RoomEnter.wav");
 }
 
 void AudioManager::unloadSoundFile(const std::string& filePath)
