@@ -1,12 +1,8 @@
 #pragma once
+#include "../stdafx.h"
 
-#include <map>
-#include <string>
-
-#include <glad/glad.h>
-
-#include "Shader.h"
-#include "Texture.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture.h"
 
 namespace Hudson::Common {
 	class ResourceManager
@@ -39,4 +35,3 @@ namespace Hudson::Common {
 			Render::Texture loadTextureFromFile(const char* file, bool alpha);
 	};
 }
-

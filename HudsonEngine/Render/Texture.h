@@ -1,6 +1,5 @@
 #pragma once
-
-#include <glad/glad.h>
+#include "../stdafx.h"
 
 namespace Hudson::Render {
     class Texture

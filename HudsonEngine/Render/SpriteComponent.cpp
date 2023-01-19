@@ -1,19 +1,22 @@
-#include "SpriteRenderer.h"
+#include "SpriteComponent.h"
 
-Hudson::Render::SpriteRenderer::SpriteRenderer(Shader* shader)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader)
 {
     this->shader = shader;
     this->initRenderData();
+}
 
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition)
+{
 
 }
 
-Hudson::Render::SpriteRenderer::~SpriteRenderer()
+Hudson::Render::SpriteComponent::~SpriteComponent()
 {
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void Hudson::Render::SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 position)
+void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 position)
 {
     this->shader->Use();
     glm::mat4 model = glm::mat4(1);
@@ -27,6 +30,12 @@ void Hudson::Render::SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 posi
     // render textured quad
     this->shader->SetVector3("spriteColor", color);
 
+    this->shader->SetVector2("gridPos", gridPos);
+    this->shader->SetVector2("gridSize", gridSize);
+
+    // GL_TEXTURE0 is the index of how many Textures are bound to one Texture ID
+    // We should only ever expect to start at 0 index so GL_TEXTURE0 is fine
+    // https://www.khronos.org/opengl/wiki/Texture - The glActiveTexture function defines the texture image unit that any function that takes a texture target as a parameter uses. - 
     glActiveTexture(GL_TEXTURE0);
     texture->Bind();
 
@@ -35,17 +44,7 @@ void Hudson::Render::SpriteRenderer::DrawSprite(Texture* texture, glm::vec2 posi
     glBindVertexArray(0);
 }
 
-void Hudson::Render::SpriteRenderer::SetSize(glm::vec2 size)
-{
-    this->size = size;
-}
-
-void Hudson::Render::SpriteRenderer::SetColor(glm::vec3 color)
-{
-    this->color = color;
-}
-
-void Hudson::Render::SpriteRenderer::initRenderData()
+void Hudson::Render::SpriteComponent::initRenderData()
 {
     unsigned int VBO;
     float vertices[] = {
