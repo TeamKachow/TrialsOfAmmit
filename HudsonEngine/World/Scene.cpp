@@ -22,16 +22,12 @@ void Hudson::World::Scene::Tick(const double dt) const
     {
         for (const auto& component : object->_components)
         {
-            // TODO: ITickable instead of Behaviour?
-            auto behaviour = reinterpret_cast<Entity::Behaviour*>(component);
+            auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
             if (behaviour != nullptr)
             {
                 // TODO: exception catching -> stacktrace?
                 behaviour->OnTick(dt);
             }
-
-            // TODO: cache components into list to prevent multiple re-iterations in physics/graphics
-            // TODO: OR consider making systems register a visitor that we call here?
         }
     }
 }
