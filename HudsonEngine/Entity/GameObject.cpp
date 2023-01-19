@@ -98,3 +98,8 @@ void Hudson::Entity::GameObject::SetName(const std::string& name)
 {
     _name = name;
 }
+
+Hudson::Entity::GameObject::Transform& Hudson::Entity::GameObject::GetTransform()
+{
+    return _transform;
+}

@@ -33,6 +33,7 @@ namespace Hudson::Entity
         World::Scene* _scene;
         uint32_t _id;
         std::vector<Component*> _components;
+        Transform _transform;
 
         void DrawPropertyUI() override;
     
@@ -81,6 +82,12 @@ namespace Hudson::Entity
          * \param name The object's new name
          */
         void SetName(const std::string& name);
+
+        /**
+         * \brief Get this object's transform.
+         * \return This object's transform
+         */
+        Transform& GetTransform();
     };
 
     template <is_component T>
