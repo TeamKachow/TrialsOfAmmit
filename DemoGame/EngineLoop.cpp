@@ -36,9 +36,9 @@ void GameSetup()
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
-    Physics1->SetForce(glm::vec2(1.0, 1.0));
-    Physics1->SetAcceleration(glm::vec2(0.008, 0.012));
-    Physics1->SetVelocity(glm::vec2(0.002, 0.002));
+    Physics1->SetForce(glm::vec2(10.0, 0));
+    Physics1->SetAcceleration(glm::vec2(100, 0));
+    Physics1->SetVelocity(glm::vec2(100, 0));
 #
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");

@@ -15,11 +15,12 @@ namespace Hudson::Physics
 		void Update(float deltaTime);
 		void CalculateVelocity(float deltaTime);
 		void CalculateAcceleration();
+		void CalculateConstantAcceleration(float deltaTime);
 		void UpdatePosition(float deltaTime);
 
 		glm::vec2 m_velocity = { 0,0 };
 		glm::vec2 m_acceleration = { 0 ,0 };
-		glm::vec2 m_force = { 1 ,1 };
+		glm::vec2 m_force = { 0 ,0 };
 		float m_mass = 1.0f;
 
 		void SetAcceleration(const glm::vec2& accel) { m_acceleration = accel; }

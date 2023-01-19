@@ -14,12 +14,16 @@ Hudson::Physics::PhysicsComponent::~PhysicsComponent()
 
 void Hudson::Physics::PhysicsComponent::Update(float deltaTime)
 {
-	// Using Semi-Implicit Euler Integragtion
-	static float time = 0;
-	time += deltaTime;
+	// Using Semi-Implicit Euler Integration
 
-	CalculateAcceleration(); // Calculate Acceleration First
-	CalculateVelocity(deltaTime); // Calculate Velocity uisng Acceleration
+	// Calculate Acceleration Or Constant Acceleration
+	//CalculateAcceleration(); 
+	CalculateConstantAcceleration(deltaTime);
+
+	// Calculate Velocity using Acceleration
+	CalculateVelocity(deltaTime);
+
+	// Update Positions
 	UpdatePosition(deltaTime);
 }
 
@@ -28,6 +32,12 @@ void Hudson::Physics::PhysicsComponent::CalculateAcceleration()
 	// a = f / m
 	m_acceleration = m_force / m_mass;
 }
+
+void Hudson::Physics::PhysicsComponent::CalculateConstantAcceleration(float deltaTime)
+{
+	m_acceleration = m_acceleration * deltaTime + 0.5f * m_acceleration * deltaTime * deltaTime;
+}
+
 
 void Hudson::Physics::PhysicsComponent::CalculateVelocity(float deltaTime)
 {
