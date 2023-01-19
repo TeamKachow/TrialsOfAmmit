@@ -87,6 +87,7 @@ namespace Hudson::Entity
          * \return This object's transform
          */
         Transform& GetTransform();
+        void SetTransform(Transform& tsm) { _transform = tsm; }
     };
 
     template <is_component T>

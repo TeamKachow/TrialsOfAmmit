@@ -1,13 +1,17 @@
 #include "PhysicsManager.h"
-#include <iostream>
-Hudson::Physics::PhysicsManager::PhysicsManager()
+#include "Entity/GameObject.h"
+#include "Common/Engine.h"
+#include "World/Scene.h"
+#include "Collider.h"
+#include "PhysicsComponent.h"
+
+Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) : m_engine(engine)
 {
-	physics = new Hudson::Physics::PhysicsMaths();
 	collider = new Hudson::Collision::Collider();
 
 	lastTime = glfwGetTime();
 	timer = lastTime;
-	deltaTime = 0;
+	accumulator = 0;
 	nowTime = 0;
 	frames = 0;
 	updates = 0;
@@ -24,15 +28,19 @@ Hudson::Physics::PhysicsManager::~PhysicsManager()
 void Hudson::Physics::PhysicsManager::UpdatePhysics()
 {
 	nowTime = glfwGetTime();
-	deltaTime += ((nowTime - lastTime) / FPS_60);
+	accumulator += ((nowTime - lastTime) / FPS_60);
 	lastTime = nowTime;
 
+	// todo remove this debug
+	std::cout << "dt = " << accumulator << "\n";
+
 	// Only updates at 60 frames / s - Physics and any 60FPS locked stuff here
-	while (deltaTime >= 1.0f)
+	while (accumulator >= 1.0f)
 	{
-		physics->Update(deltaTime);
+		//physics->Update(deltaTime);
+		UpdateMovement(FPS_60);
 		updates++;
-		deltaTime--;
+		accumulator--;
 	}
 
 	// Renders at maximum possible frames - Render Here
@@ -44,5 +52,21 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 		timer++;
 		std::cout << "FPS: " << frames << std::endl;
 		updates = 0, frames = 0;
+	}
+}
+
+void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
+{
+	auto scenes = m_engine->GetSceneManager()->GetLoadedScenes();
+	for (auto scene : scenes)
+	{
+		for (auto gameObject : scene->GetObjects())
+		{
+			// Update Physics
+			for (auto physics : gameObject->GetComponents<PhysicsComponent>())
+			{
+				physics->Update(deltaTime);
+			}
+		}
 	}
 }

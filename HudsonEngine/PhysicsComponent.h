@@ -1,26 +1,27 @@
 #pragma once
-
-#include<glm/glm.hpp>
-
-#include "Time.h"
+#include "stdafx.h"
+#include "Entity/Component.h"
+#include "PhysicsManager.h"
 
 namespace Hudson::Physics
 {
-	class PhysicsMaths
+
+	class PhysicsComponent : public Entity::Component
 	{
 	public:
-		PhysicsMaths();
-		void Update(float timeDelta);
+		PhysicsComponent();
+		~PhysicsComponent();
+
+		void Update(float deltaTime);
 		void CalculateVelocity(float deltaTime);
 		void CalculateAcceleration();
+		void UpdatePosition(float deltaTime);
 
 		glm::vec2 m_velocity = { 0,0 };
 		glm::vec2 m_acceleration = { 0 ,0 };
 		glm::vec2 m_force = { 1 ,1 };
 		float m_mass = 1.0f;
-		glm::vec2 m_position = { 0 ,0 };
 
-	public:
 		void SetAcceleration(const glm::vec2& accel) { m_acceleration = accel; }
 		const glm::vec2& GetAcceleration() const { return m_acceleration; }
 
@@ -33,6 +34,4 @@ namespace Hudson::Physics
 		void SetMass(const float mass) { m_mass = mass; }
 		const float GetMass() const { return m_mass; }
 	};
-
 }
-

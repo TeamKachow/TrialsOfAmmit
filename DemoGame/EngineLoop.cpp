@@ -5,6 +5,7 @@
 #include <Common/Engine.h>
 #include <Common/ResourceManager.h>
 #include <SpriteComponent.h>
+#include <PhysicsComponent.h>
 
 #include "DemoBehaviour.h"
 #include "GameObject.h"
@@ -12,6 +13,7 @@
 
 Hudson::Common::Engine* engine;
 Hudson::Render::SpriteComponent* Sprite1;
+Hudson::Physics::PhysicsComponent* Physics1;
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
 
@@ -32,6 +34,12 @@ void GameSetup()
     Sprite1->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
+    Physics1 = new Hudson::Physics::PhysicsComponent();
+    Physics1->SetMass(1.0f);
+    Physics1->SetForce(glm::vec2(1.0, 1.0));
+    Physics1->SetAcceleration(glm::vec2(0.008, 0.012));
+    Physics1->SetVelocity(glm::vec2(0.002, 0.002));
+#
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
@@ -40,6 +48,7 @@ void GameSetup()
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite1);
     blah->AddComponent(new DemoBehaviour(Sprite1));
+    blah->AddComponent(Physics1);
     startScene->AddObject(blah);
 
     std::cout << "DemoGame: engine has been set up!\n";
