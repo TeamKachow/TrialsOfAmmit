@@ -91,6 +91,7 @@
     <ClCompile Include="ColliderComponent.cpp" />
     <ClCompile Include="Common\Engine.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
+    <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Entity\Behaviour.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Common\Engine.h" />
     <ClInclude Include="Common\IEditable.h" />
     <ClInclude Include="Common\ResourceManager.h" />
+    <ClInclude Include="Editor.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Entity\Behaviour.h" />
     <ClInclude Include="Entity\Common.h" />
