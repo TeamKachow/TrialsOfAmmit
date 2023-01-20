@@ -22,9 +22,9 @@ namespace Hudson::Entity
         struct Transform
         {
             // TODO: replace with vec2f
-            float posX, posY; 
-            float scaleX, scaleY;
-            float rotateZ;
+            glm::vec2 pos = {0,0};
+            glm::vec2 scale = {64, 64};
+            float rotateZ = 0;
         };
         
     private:
@@ -87,6 +87,7 @@ namespace Hudson::Entity
          * \return This object's transform
          */
         Transform& GetTransform();
+        void SetTransform(Transform& tsm) { _transform = tsm; }
     };
 
     template <is_component T>

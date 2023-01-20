@@ -1,5 +1,7 @@
 #include "SpriteComponent.h"
 
+#include "../Entity/GameObject.h"
+
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader)
 {
     this->shader = shader;
@@ -21,7 +23,10 @@ void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 pos
     this->shader->Use();
     glm::mat4 model = glm::mat4(1);
 
+    size = _parent->GetTransform().scale;
+
     model = glm::translate(model, glm::vec3(position, 0.0f));
+    // TODO: make sprite's size a multiplier of transform's size
     model = glm::translate(model, glm::vec3(0.5f * size.x, 0.5f * size.y, 0.0f));
     model = glm::scale(model, glm::vec3(size, 1.0f));
 

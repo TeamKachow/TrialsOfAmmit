@@ -48,7 +48,7 @@ void Hudson::Render::Renderer::Draw()
             for (auto sprite : gameObject->GetComponents<SpriteComponent>())
             {
                 // TODO: SpriteComponent should know about its texture
-                sprite->DrawSprite(resManager->GetTexture("Mummy"), glm::vec2(200.0f, 200.0f));
+                sprite->DrawSprite(resManager->GetTexture("Mummy"), gameObject->GetTransform().pos);
             }
         }
     }

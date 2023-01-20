@@ -39,7 +39,7 @@ namespace Hudson::World
         /**
          * \brief Whether or not the scene is currently active.
          */
-        bool _active;
+        bool _active = true;
 
         // TODO Common::ResourceManager* _resManager;
         

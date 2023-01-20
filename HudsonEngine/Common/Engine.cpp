@@ -23,7 +23,7 @@ void Hudson::Common::Engine::Setup()
     _renderer = std::make_unique<Render::Renderer>(this);
 
     // create physics
-
+    _physics = std::make_unique<Physics::PhysicsManager>(this);
     // create audio system
 
     // create input system
@@ -42,6 +42,8 @@ void Hudson::Common::Engine::Run()
 
         // TODO: _audioManager->Update();
         // TODO: _physicsManager->Update();
+
+        _physics->UpdatePhysics();
 
         // Render scene
         //std::this_thread::sleep_for(100)
@@ -64,6 +66,7 @@ void Hudson::Common::Engine::Shutdown()
 
 void Hudson::Common::Engine::Cleanup()
 {
+
 }
 
 Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const

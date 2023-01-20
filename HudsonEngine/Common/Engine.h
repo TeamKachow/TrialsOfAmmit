@@ -2,6 +2,8 @@
 
 #include "../World/SceneManager.h"
 
+#include "../PhysicsManager.h"
+
 namespace Hudson
 {
     namespace Render
@@ -21,7 +23,7 @@ namespace Hudson::Common
     private:
         std::unique_ptr<World::SceneManager> _sceneManager;
         std::unique_ptr<Render::Renderer> _renderer; 
-        // TODO: std::unique_ptr<PhysicsManager> _physics; 
+        std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
         // TODO: std::unique_ptr<InputManager> _input; 
 
