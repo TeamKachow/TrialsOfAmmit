@@ -28,7 +28,7 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 	lastTime = nowTime;
 
 	// todo remove this debug
-	std::cout << "dt = " << accumulator << "\n";
+	//std::cout << "dt = " << accumulator << "\n";
 
 	// Only updates at 60 frames / s - Physics and any 60FPS locked stuff here
 	while (accumulator >= 1.0f)
@@ -47,7 +47,7 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 	if (glfwGetTime() - timer > 1.0f)
 	{
 		timer++;
-		std::cout << "FPS: " << frames << std::endl;
+		std::cout << "FPS: " << updates << std::endl;
 		updates = 0, frames = 0;
 	}
 }
