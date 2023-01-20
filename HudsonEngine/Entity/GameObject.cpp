@@ -7,7 +7,7 @@ void Hudson::Entity::GameObject::DrawPropertyUI()
 {
     for (auto component : _components)
     {
-        IEditable* editableComponent = reinterpret_cast<IEditable*>(component);
+        IEditable* editableComponent = dynamic_cast<IEditable*>(component);
         if (editableComponent == nullptr)
         {
             editableComponent->DrawPropertyUI();
