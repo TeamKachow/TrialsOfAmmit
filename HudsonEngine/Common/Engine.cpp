@@ -31,7 +31,6 @@ void Hudson::Common::Engine::Setup()
 
     // create input system
     _input = std::make_unique<InputManager>();
-    glfwSetCursorPosCallback()
 
     // run post-setup hook
     _postSetup(this);
