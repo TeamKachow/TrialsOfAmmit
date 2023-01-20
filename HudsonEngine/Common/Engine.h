@@ -4,6 +4,8 @@
 
 #include "../PhysicsManager.h"
 
+class InputManager;
+
 namespace Hudson
 {
     namespace Render
@@ -25,7 +27,7 @@ namespace Hudson::Common
         std::unique_ptr<Render::Renderer> _renderer; 
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
-        // TODO: std::unique_ptr<InputManager> _input; 
+        std::unique_ptr<InputManager> _input; 
 
         std::function<void(Engine*)> _postSetup;
         bool _shutdownFlag = false;

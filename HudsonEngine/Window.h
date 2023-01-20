@@ -2,6 +2,8 @@
 #include "stdafx.h"
 
 
+class InputManager;
+
 namespace Hudson::Render {
 
 	class Window {
@@ -10,7 +12,7 @@ namespace Hudson::Render {
 
 		Window(int width, int height, const char* name);
 
-		GLFWwindow* GetWindow() { return window; };
+		GLFWwindow* GetWindow() { return window; }
 		void SetWindow();
 		void DestroyWindow();
 

@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "InputManager.h"
+
 using namespace Hudson;
 
 Render::Window::Window(int width, int height, const char* name) {
@@ -41,8 +43,10 @@ Render::Window::Window(int width, int height, const char* name) {
 
 void Hudson::Render::Window::SetWindow()
 {
+	// TODO: implement or remove
 }
 
 void Hudson::Render::Window::DestroyWindow()
 {
+	// TODO: implement or remove
 }

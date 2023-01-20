@@ -1,6 +1,6 @@
 #include "InputManager.h"
 
-vector<InputManager*> InputManager::instances;
+std::vector<InputManager*> InputManager::instances;
 
 InputManager::InputManager()
 {
@@ -20,8 +20,8 @@ void InputManager::initialiseKeys()
 				  262, 263, 264, 265 };
 	for (int key : keyCodes)
 	{
-		string keyName;
-		string action = "Not Assigned";
+		std::string keyName;
+		std::string action = "Not Assigned";
 		switch (key) {
 		case 32:
 			keyName = "Spacebar";
@@ -150,16 +150,16 @@ void InputManager::initialiseKeys()
 			keyName = "Up";
 			break;
 		}
-		pair<string, int>keyInsert(keyName, key);
-		pair<string, int>actionInsert(action, key);
+		std::pair<std::string, int>keyInsert(keyName, key);
+		std::pair<std::string, int>actionInsert(action, key);
 		keys.insert(keyInsert);
-		keyActions.insert(pair<string, int>(actionInsert));
+		keyActions.insert(std::pair<std::string, int>(actionInsert));
 		keyDown[key] = false;
 	}
 
 }
 
-bool InputManager::getKeyInput(GLFWwindow* window, string action)
+bool InputManager::getKeyInput(GLFWwindow* window, std::string action)
 {
 	int actionKey = keyActions.find(action)->second;
 	return true;
@@ -167,9 +167,16 @@ bool InputManager::getKeyInput(GLFWwindow* window, string action)
 
 void InputManager::setKeyDown(int key, bool isDown)
 {
-	map<int, bool>::iterator it = keyDown.find(key);
+	std::map<int, bool>::iterator it = keyDown.find(key);
 	if (it != keyDown.end())
 		keyDown[key] = true;
+}
+
+void InputManager::BindCallbacks(GLFWwindow* window)
+{
+	glfwSetKeyCallback(window, keyCallback);
+	glfwSetCursorPosCallback(window, cursorPosCallback);
+	glfwSetMouseButtonCallback(window, cursorClickCallback);
 }
 
 void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -178,12 +185,12 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 	{
 		keyInput->setKeyDown(key, action != GLFW_RELEASE);
 	}
-	cout << key << endl;
+	std::cout << key << std::endl;
 }
 
 void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	cout << xpos << " : " << ypos << endl;
+	std::cout << xpos << " : " << ypos << std::endl;
 }
 
 void InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)
