@@ -22,8 +22,8 @@ namespace Hudson::Entity
         struct Transform
         {
             // TODO: replace with vec2f
-            float posX = 0, posY = 0;
-            float scaleX = 64, scaleY = 64;
+            glm::vec2 pos = {0,0};
+            glm::vec2 scale = {64, 64};
             float rotateZ = 0;
         };
         

@@ -49,8 +49,8 @@ void Hudson::Physics::PhysicsComponent::UpdatePosition(float deltaTime)
 {
 	Hudson::Entity::GameObject::Transform tempTrans = _parent->GetTransform();
 
-	tempTrans.posX += m_velocity.x * deltaTime;
-	tempTrans.posY += m_velocity.y * deltaTime;
+	tempTrans.pos.x += m_velocity.x * deltaTime;
+	tempTrans.pos.y += m_velocity.y * deltaTime;
 
 	_parent->SetTransform(tempTrans);
 }

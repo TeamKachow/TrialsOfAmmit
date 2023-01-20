@@ -44,13 +44,11 @@ void Hudson::Render::Renderer::Draw()
     {
         for (auto gameObject : scene->GetObjects())
         {
-            Entity::GameObject::Transform& objTransform = gameObject->GetTransform();
-
             // Render sprites
             for (auto sprite : gameObject->GetComponents<SpriteComponent>())
             {
                 // TODO: SpriteComponent should know about its texture
-                sprite->DrawSprite(resManager->GetTexture("Mummy"), glm::vec2(objTransform.posX, objTransform.posY));
+                sprite->DrawSprite(resManager->GetTexture("Mummy"), gameObject->GetTransform().pos);
             }
         }
     }

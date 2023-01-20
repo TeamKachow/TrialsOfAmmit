@@ -36,11 +36,11 @@ bool Hudson::Physics::ColliderComponent::AABBCollision(ColliderComponent* collid
 AABB Hudson::Physics::ColliderComponent::GetAABB()
 {
 	AABB box;
-	box.Left = _parent->GetTransform().posX;
-	box.Right = _parent->GetTransform().posX + _parent->GetTransform().scaleX;
+	box.Left = _parent->GetTransform().pos.x;
+	box.Right = _parent->GetTransform().pos.x + _parent->GetTransform().scale.x;
 
-	box.Up = _parent->GetTransform().posY;
-	box.Down = _parent->GetTransform().posY + _parent->GetTransform().scaleY;
+	box.Up = _parent->GetTransform().pos.y;
+	box.Down = _parent->GetTransform().pos.y + _parent->GetTransform().scale.x;
 
 	return box;
 }

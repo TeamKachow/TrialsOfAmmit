@@ -23,7 +23,7 @@ void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 pos
     this->shader->Use();
     glm::mat4 model = glm::mat4(1);
 
-    size = glm::vec2(_parent->GetTransform().scaleX, _parent->GetTransform().scaleY);
+    size = _parent->GetTransform().scale;
 
     model = glm::translate(model, glm::vec3(position, 0.0f));
     // TODO: make sprite's size a multiplier of transform's size

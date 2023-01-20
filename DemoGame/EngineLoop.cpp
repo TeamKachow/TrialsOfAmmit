@@ -72,7 +72,7 @@ void GameSetup()
     blah->AddComponent(Collider1);
     startScene->AddObject(blah);
 
-    blah->GetTransform().posX = 200.0f;
+    blah->GetTransform().pos.x = 200.0f;
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite2);
@@ -81,7 +81,7 @@ void GameSetup()
     blah2->AddComponent(Collider2);
     startScene->AddObject(blah2);
 
-    blah2->GetTransform().posX = 1400.0f;
+    blah2->GetTransform().pos.x = 1400.0f;
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
