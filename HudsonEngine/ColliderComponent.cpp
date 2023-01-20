@@ -10,6 +10,17 @@ Hudson::Physics::ColliderComponent::~ColliderComponent()
 
 }
 
+void Hudson::Physics::ColliderComponent::SetColliding(ColliderComponent* other)
+{
+	ColliderList.emplace(other);
+}
+
+void Hudson::Physics::ColliderComponent::ClearColliding()
+{
+	ColliderList.clear();
+}
+
+
 bool Hudson::Physics::ColliderComponent::AABBCollision(ColliderComponent* collider)
 {
 	AABB box1 = this->GetAABB();

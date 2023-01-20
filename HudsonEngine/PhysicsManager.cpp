@@ -81,6 +81,7 @@ void Hudson::Physics::PhysicsManager::UpdateCollider()
 			for (auto collider : gameObject->GetComponents<ColliderComponent>())
 			{
 				vecColliders.push_back(collider);
+				collider->ClearColliding();
 			}
 		}
 		for (int i = 0; i < vecColliders.size() - 1; i++)
@@ -89,7 +90,8 @@ void Hudson::Physics::PhysicsManager::UpdateCollider()
 			{
 				if (vecColliders[i]->AABBCollision(vecColliders[j]))
 				{
-					std::cout << "COLLISION DETECTED" << std::endl;
+					vecColliders[i]->SetColliding(vecColliders[j]);
+					vecColliders[j]->SetColliding(vecColliders[i]);
 				}
 			}
 		}

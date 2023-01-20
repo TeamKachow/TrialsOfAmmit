@@ -4,6 +4,7 @@
 #include "Entity/Component.h"
 #include "Entity/GameObject.h"
 
+
 struct AABB
 {
 	double Left; // Left Side Collision
@@ -23,9 +24,13 @@ namespace Hudson::Physics
 		~ColliderComponent();
 
 		bool AABBCollision(ColliderComponent* collider);
+		void SetColliding(ColliderComponent* other);
+		void ClearColliding();
 		AABB GetAABB();
-	private:
 
+		std::set<ColliderComponent*> GetCurrentCollisions() { return ColliderList; }
+	private:
+		std::set<ColliderComponent*> ColliderList;
 	};
 
 }
