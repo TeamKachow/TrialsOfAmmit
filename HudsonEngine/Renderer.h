@@ -1,5 +1,6 @@
 #pragma once
 #include "Camera.h"
+#include "stdafx.h"
 
 namespace Hudson::Common
 {
@@ -15,14 +16,21 @@ namespace Hudson::Render
         Common::Engine* _engine;
 
         std::unique_ptr<Window> _window;
+
+        void* sceneRenderTexture;
+
         Camera _defaultCamera;
 
     public:
         Renderer(Common::Engine* engine);
         ~Renderer();
 
+        void StartImGui();
+
         void Draw();
         void WaitForRender();
+
+
     };
 }
 

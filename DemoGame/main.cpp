@@ -8,12 +8,14 @@
 #include <PhysicsComponent.h>
 #include <ColliderComponent.h>
 #include <glm/vec2.hpp>
+#include "Editor.h"
 
 #include "DemoBehaviour.h"
 #include "GameObject.h"
 #include "Scene.h"
 
 Hudson::Common::Engine* engine;
+Hudson::Editor::Editor* editor;
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Physics::PhysicsComponent* Physics1;
@@ -27,7 +29,9 @@ void Init()
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
-    engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine) {});
+    engine = new Hudson::Common::Engine();
+
+    editor = new Hudson::Editor::Editor(engine);
 
     engine->Setup();
 }
