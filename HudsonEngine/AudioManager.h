@@ -28,8 +28,7 @@ public:
     ~AudioManager();
     
     irrklang::ISound* playSound(const std::string& filePath, bool playLooped, bool pitch, bool pan);
-    irrklang::ISound* pauseSound(const std::string& filePath);
-    irrklang::ISound* resumeSound(const std::string& filePath);
+    bool toggleSound(const std::string& filePath);
     void stopSound(const std::string& filePath);
     void stopAllSounds();
     void setListenerPosition(float x, float y);
@@ -45,11 +44,12 @@ public:
     bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders = 0);  
     void setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable);
 
-    void soundButtonUI(std::string& filePath);
+    void soundButtonUI(const std::string& filePath);
 
 private:
    
     irrklang::ISoundEngine* engine;
+    
     std::map<std::string, std::vector<irrklang::ISound*>> sounds;
 
     std::vector<irrklang::ISoundEffectControl*> fx;

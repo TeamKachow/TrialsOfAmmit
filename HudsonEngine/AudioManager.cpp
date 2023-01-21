@@ -39,44 +39,43 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
     if (sound)
     {
         sounds[filePath].push_back(sound);
+     
         sound->setPlaybackSpeed(pitch);
         sound->setPan(pan);   
     }
     return sound;
 }
 
-irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
+bool AudioManager::toggleSound(const std::string& filePath)
 {
-    // pause the sound currently playing  
-    for (auto& sound : sounds[filePath])
-    {
-        if (sound && sound->getIsPaused())
-        { 
-            sound->setIsPaused(true); 
-            
-        }
-        return sound;
-    }
-    return nullptr;
+    //toggles the sound if the user wants to pause or resume a sound file
     
-  
-}
 
-
-irrklang::ISound* AudioManager::resumeSound(const std::string& filePath)
-{
-    // resumes the sound file if the sound isn't paused  
-   for (auto& sound : sounds[filePath]) 
+    if (isSoundPlaying(filePath))
     {
-        if (sound && !sound->getIsPaused()) 
+        for (auto& sound : sounds[filePath])
         {
-            sound->setIsPaused(false);
-            
+            if (!sound->getIsPaused())
+            {
+                engine->removeSoundSource(filePath.c_str());
+                sound->setIsPaused(true);
+                return true;
+            }
         }
-        return sound;
     }
-   return nullptr;
-
+    else
+    {
+        for (auto& sound : sounds[filePath])
+        {
+            if (sound->getIsPaused())
+            {
+                sound->setIsPaused(false);
+                engine->play2D(filePath.c_str());
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 
@@ -140,7 +139,7 @@ void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
     {
         for (auto& s : sounds[filePath]) 
         {
-            s->setVolume(sVolume);
+            s->setVolume(1.0f);
         }
     }
 }
@@ -241,34 +240,26 @@ void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType e
     
 }
 
-void AudioManager::soundButtonUI(std::string &filePath)
+void AudioManager::soundButtonUI(const std::string& filePath)
 {
-   
     //Play sound button
     if (ImGui::Button("PlaySound"))
     {
         std::cout << "play\n";
+        loadSoundFile(filePath);
         playSound(filePath, true, true, false);
     }
-    //Pause sound button
-    if (ImGui::Button("Pause"))
+    // Play/pause toggle button
+    if (ImGui::Button("Pause/Resume"))
     {
-        std::cout << "pause\n";
-        pauseSound(filePath);
-       
-    }
-    //Resume sound button
-    if (ImGui::Button("Resume"))
-    {
-        std::cout << "resume\n";
-        resumeSound(filePath);
-        
+        toggleSound(filePath);
     }
     //Stop sound button
     if (ImGui::Button("Stop"))
     {
         std::cout << "stop\n";
         stopSound(filePath);
+        unloadSoundFile(filePath);
 
     }
 }
