@@ -239,6 +239,25 @@ void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType e
     }
     
 }
+bool AudioManager::pauseSound(const std::string& filePath)
+{
+    for (auto& s : sounds[filePath])
+    {
+        s->setIsPaused(true);
+        return s;
+    }
+    
+}
+
+bool AudioManager::resumeSound(const std::string& filePath)
+{
+    for (auto& s : sounds[filePath])
+    {
+        s->setIsPaused(false);
+        return s;
+    }
+
+}
 
 void AudioManager::soundButtonUI(const std::string& filePath)
 {
@@ -254,6 +273,19 @@ void AudioManager::soundButtonUI(const std::string& filePath)
     {
         toggleSound(filePath);
     }
+
+    if (ImGui::Button("Pause"))
+    {
+        std::cout << "||\n";
+        isSoundPlaying(filePath);
+    }
+
+    if (ImGui::Button("Resume"))
+    {
+        std::cout << ">>\n";
+        resumeSound(filePath);
+    }
+    
     //Stop sound button
     if (ImGui::Button("Stop"))
     {
