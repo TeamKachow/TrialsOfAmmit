@@ -1,21 +1,24 @@
 #include <iostream>
 #include <map>
 #include "AudioManager.h"
+#include "imgui/imgui.h"
 
 
 AudioManager::AudioManager()
 {
-   
-    try {
+    try 
+    {
         // Initialize the sound engine
         engine = irrklang::createIrrKlangDevice(irrklang::ESOD_AUTO_DETECT, irrklang::ESEO_DEFAULT_OPTIONS);
+
         if (engine == NULL)
         {
             printf("Failed to create the engine!\n");
             return;
         }
     }
-    catch (std::exception& e) {
+    catch (std::exception& e) 
+    {
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
     }
 
@@ -44,18 +47,15 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
 
 irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
 {
-    /*engine->play2D(filePath.c_str());*/
-
     // pause the sound currently playing  
-   /* std::vector<irrklang::ISound*>& soundVec = sounds[filePath];*/
-
     for (auto& sound : sounds[filePath])
     {
-        if (sound && !sound->getIsPaused())
-        {
-            sound->setIsPaused(true);
-            return sound;
+        if (sound && sound->getIsPaused())
+        { 
+            sound->setIsPaused(true); 
+            
         }
+        return sound;
     }
     return nullptr;
     
@@ -65,44 +65,38 @@ irrklang::ISound* AudioManager::pauseSound(const std::string& filePath)
 
 irrklang::ISound* AudioManager::resumeSound(const std::string& filePath)
 {
-    // resumes the sound file if the sound isn't paused
-    
-      
+    // resumes the sound file if the sound isn't paused  
    for (auto& sound : sounds[filePath]) 
     {
         if (sound && !sound->getIsPaused()) 
         {
-            sound->setIsPaused(true);
-            return sound;
+            sound->setIsPaused(false);
+            
         }
+        return sound;
     }
    return nullptr;
 
-   /* if (sounds.count(filePath) > 0)
-    {
-        sounds[filePath]->setIsPaused(false);
-    }
-    return sounds[filePath];*/
 }
 
 
 void AudioManager::stopSound(const std::string& filePath)
 {
-   
     // Stop a sound file
     for (auto& sound : sounds[filePath]) 
     {
         if (sound) 
         {
             sound->stop();
+            engine->removeSoundSource(filePath.c_str());
         }
     }
-
+    
 }
 
 void AudioManager::stopAllSounds()
 {
-
+    // stop all sound files
     for (auto& element : sounds) 
     {
         std::string filePath = element.first;
@@ -114,13 +108,14 @@ void AudioManager::stopAllSounds()
         vec.clear();
     }
     sounds.clear();
+    engine->removeAllSoundSources();
    
 }
 
 void AudioManager::loadSoundFile(const std::string& filePath)
 {
     // Load the sound file into the engine
-    engine->addSoundSourceFromFile("../audio/RoomEnter.wav");
+    engine->addSoundSourceFromFile(filePath.c_str());
 }
 
 void AudioManager::unloadSoundFile(const std::string& filePath)
@@ -207,7 +202,7 @@ bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, in
     return true;
 }
 
-void AudioManager::setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable)
+void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
 {
     for (auto& sound : sounds[filePath])
     {
@@ -244,6 +239,38 @@ void AudioManager::setSoundEffect(const std::string& filePath, SoundEffectType e
         }
     }
     
+}
+
+void AudioManager::soundButtonUI(std::string &filePath)
+{
+   
+    //Play sound button
+    if (ImGui::Button("PlaySound"))
+    {
+        std::cout << "play\n";
+        playSound(filePath, true, true, false);
+    }
+    //Pause sound button
+    if (ImGui::Button("Pause"))
+    {
+        std::cout << "pause\n";
+        pauseSound(filePath);
+       
+    }
+    //Resume sound button
+    if (ImGui::Button("Resume"))
+    {
+        std::cout << "resume\n";
+        resumeSound(filePath);
+        
+    }
+    //Stop sound button
+    if (ImGui::Button("Stop"))
+    {
+        std::cout << "stop\n";
+        stopSound(filePath);
+
+    }
 }
 
 

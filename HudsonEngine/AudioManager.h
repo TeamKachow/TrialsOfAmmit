@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 
+
 using namespace irrklang;
 
 enum SoundEffectType {
@@ -43,6 +44,8 @@ public:
     
     bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders = 0);  
     void setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable);
+
+    void soundButtonUI(std::string& filePath);
 
 private:
    
