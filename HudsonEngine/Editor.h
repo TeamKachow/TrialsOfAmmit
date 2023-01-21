@@ -20,6 +20,7 @@ namespace Hudson::Editor
 
 	private:
 
+		void InfiniteButton();
 		void MenuBar();
 		void Hierarchy();
 		void ContentBrowser();
