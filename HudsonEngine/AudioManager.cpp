@@ -6,6 +6,7 @@
 
 AudioManager::AudioManager()
 {
+   
     try 
     {
         // Initialize the sound engine
@@ -32,12 +33,13 @@ AudioManager::~AudioManager()
 }
     
 
-irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, bool pitch, bool pan) 
+irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
 {
     // Play a sound file
-    irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped);
+    irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, pitch, pan);
     if (sound)
     {
+        
         sounds[filePath].push_back(sound);
      
         sound->setPlaybackSpeed(pitch);
@@ -50,32 +52,18 @@ bool AudioManager::toggleSound(const std::string& filePath)
 {
     //toggles the sound if the user wants to pause or resume a sound file
     
-
-    if (isSoundPlaying(filePath))
-    {
-        for (auto& sound : sounds[filePath])
+        bool isPlaying = isSoundPlaying(filePath);
+        if (isPlaying)
         {
-            if (!sound->getIsPaused())
-            {
-                engine->removeSoundSource(filePath.c_str());
-                sound->setIsPaused(true);
-                return true;
-            }
+            pauseSound(filePath);
         }
-    }
-    else
-    {
-        for (auto& sound : sounds[filePath])
+        else
         {
-            if (sound->getIsPaused())
-            {
-                sound->setIsPaused(false);
-                engine->play2D(filePath.c_str());
-                return true;
-            }
+            resumeSound(filePath);
         }
-    }
-    return false;
+        return !isPlaying;
+    
+  
 }
 
 
@@ -144,29 +132,29 @@ void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
     }
 }
 
-void AudioManager::setSoundPitch(const std::string& filePath, float pitch) 
-{
-    // Set the pitch of a sound file
-    if (sounds.count(filePath) > 0)
-    {
-        for (auto& s : sounds[filePath]) 
-        {
-            s->setPlaybackSpeed(pitch);
-        }
-    }
-}
-
-void AudioManager::setSoundPan(const std::string& filePath, float pan) 
-{
-    // Set the pan of a sound file
-    if (sounds.count(filePath) > 0)
-    {
-        for (auto& s : sounds[filePath]) 
-        {
-            s->setPan(pan);
-        }
-    }
-}
+//void AudioManager::setSoundPitch(const std::string& filePath, float pitch) 
+//{
+//    // Set the pitch of a sound file
+//    if (sounds.count(filePath) > 0)
+//    {
+//        for (auto& s : sounds[filePath]) 
+//        {
+//            s->setPlaybackSpeed(-1.0f);
+//        }
+//    }
+//}
+//
+//void AudioManager::setSoundPan(const std::string& filePath, float pan) 
+//{
+//    // Set the pan of a sound file
+//    if (sounds.count(filePath) > 0)
+//    {
+//        for (auto& s : sounds[filePath]) 
+//        {
+//            s->setPan(pan);
+//        }
+//    }
+//}
 
 bool AudioManager::isSoundPlaying(const std::string& filePath) 
 {
@@ -264,20 +252,15 @@ void AudioManager::soundButtonUI(const std::string& filePath)
     //Play sound button
     if (ImGui::Button("PlaySound"))
     {
-        std::cout << "play\n";
+        std::cout << ">\n";
         loadSoundFile(filePath);
-        playSound(filePath, true, true, false);
+        playSound(filePath, true, 1.5f, -0.5f);
     }
     // Play/pause toggle button
-    if (ImGui::Button("Pause/Resume"))
-    {
-        toggleSound(filePath);
-    }
-
     if (ImGui::Button("Pause"))
     {
         std::cout << "||\n";
-        isSoundPlaying(filePath);
+        toggleSound(filePath);
     }
 
     if (ImGui::Button("Resume"))

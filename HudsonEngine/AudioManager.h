@@ -26,8 +26,10 @@ class AudioManager
 public:
     AudioManager();
     ~AudioManager();
+
+    void setFilePath(std::string& filePath);
     
-    irrklang::ISound* playSound(const std::string& filePath, bool playLooped, bool pitch, bool pan);
+    irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch, float pan);
     bool toggleSound(const std::string& filePath);
     bool pauseSound(const std::string& filePath);
     bool resumeSound(const std::string& filePath);
@@ -50,6 +52,8 @@ public:
 
 private:
    
+    std::string filePath;
+
     irrklang::ISoundEngine* engine;
     
     std::map<std::string, std::vector<irrklang::ISound*>> sounds;
