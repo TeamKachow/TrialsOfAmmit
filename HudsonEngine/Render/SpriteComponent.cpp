@@ -2,15 +2,20 @@
 
 #include "../Entity/GameObject.h"
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture)
 {
     this->shader = shader;
-    this->initRenderData();
+    this->texture = texture;
+    this->initRenderData(); // Initializes quadVAO
 }
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition)
 {
-
+    this->shader = shader;
+    this->texture = texture;
+    this->gridSize = gridSize;
+    this->gridPos = gridPosition;
+    this->initRenderData(); // Initializes quadVAO
 }
 
 Hudson::Render::SpriteComponent::~SpriteComponent()
@@ -18,7 +23,7 @@ Hudson::Render::SpriteComponent::~SpriteComponent()
     glDeleteVertexArrays(1, &this->quadVAO);
 }
 
-void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 position)
+void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 {
     this->shader->Use();
     glm::mat4 model = glm::mat4(1);

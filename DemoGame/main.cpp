@@ -38,12 +38,14 @@ void Init()
 
 void GameSetup()
 {
-    Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"));
+    resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+
+    Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite1->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
-    Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"));
+    Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
@@ -66,6 +68,7 @@ void GameSetup()
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
+    // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);
 

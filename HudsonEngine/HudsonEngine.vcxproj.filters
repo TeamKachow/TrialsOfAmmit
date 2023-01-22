@@ -188,9 +188,6 @@
     <ClInclude Include="World\SceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -211,16 +208,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\basicVertShader.glsl">
+    <None Include="Render\shaders\renderTextureFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\SpriteFragShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\SpriteVertShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\basicFragShader.glsl">
+    <None Include="Render\shaders\renderTextureVert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
