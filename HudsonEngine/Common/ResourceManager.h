@@ -1,5 +1,5 @@
 #pragma once
-#include "../stdafx.h"
+#include "../Util/stdafx.h"
 
 #include "../Render/Shader.h"
 #include "../Render/Texture.h"
@@ -8,13 +8,13 @@ namespace Hudson::Common {
 	class ResourceManager
 	{
 		public:
-			std::map<std::string, Render::Shader> Shaders;
-			std::map<std::string, Render::Texture> Textures;
+			std::map<std::string, Render::Shader> _shaders;
+			std::map<std::string, Render::Texture> _textures;
 			// Shader
 			Render::Shader* GetShader(std::string name);
 			Render::Shader* LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name);
 
-			// Textures
+			// _textures
 			Render::Texture* GetTexture(std::string name);
 			Render::Texture* LoadTexture(const char* file, bool alpha, std::string name);
 
@@ -28,10 +28,10 @@ namespace Hudson::Common {
 
 			ResourceManager() {};
 
-			// loads and generates a shader from file
-			Render::Shader loadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile);
+			// loads and generates a _shader from file
+			Render::Shader LoadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile);
 
 			// loads a single texture from file
-			Render::Texture loadTextureFromFile(const char* file, bool alpha);
+			Render::Texture LoadTextureFromFile(const char* file, bool alpha);
 	};
 }

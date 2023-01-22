@@ -1,5 +1,5 @@
 #pragma once
-#include "../stdafx.h"
+#include "../Util/stdafx.h"
 
 #include "Shader.h"
 #include "Texture.h"
@@ -16,27 +16,27 @@ namespace Hudson::Render {
         ~SpriteComponent();
 
         void DrawSprite(Texture* texture, glm::vec2 position);
-        void SetGridSize(glm::vec2 gridSize) { this->gridSize = gridSize; };
-        glm::vec2 GetGridSize() { return this->gridSize; };
+        void SetGridSize(glm::vec2 gridSize) { this->_gridSize = gridSize; };
+        glm::vec2 GetGridSize() { return this->_gridSize; };
 
-        void SetGridPos(glm::vec2 gridPos) { this->gridPos = gridPos; };
-        glm::vec2 GetGridPos() { return this->gridPos; };
+        void SetGridPos(glm::vec2 gridPos) { this->_gridPos = gridPos; };
+        glm::vec2 GetGridPos() { return this->_gridPos; };
 
-        void SetSize(glm::vec2 size) { this->size = size; };
+        void SetSize(glm::vec2 size) { this->_size = size; };
 
-        void SetColor(glm::vec3 color) { this->color = color; };
+        void SetColor(glm::vec3 color) { this->_color = color; };
 
     private:
-        Shader*       shader;
-        unsigned int quadVAO;
+        Shader*       _shader;
+        unsigned int _quadVAO;
         
         // Sprite Variables
-        glm::vec2 gridSize = glm::vec2(1);
-        glm::vec2 gridPos = glm::vec2(0);
-        glm::vec3 color = glm::vec3(1);
-        glm::vec2 size = glm::vec2(1);
+        glm::vec2 _gridSize = glm::vec2(1);
+        glm::vec2 _gridPos = glm::vec2(0);
+        glm::vec3 _color = glm::vec3(1);
+        glm::vec2 _size = glm::vec2(1);
 
-        void initRenderData();
+        void InitRenderData();
 
     };
 }

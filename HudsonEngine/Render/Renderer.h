@@ -1,6 +1,6 @@
 #pragma once
-#include "Camera.h"
-#include "stdafx.h"
+#include "../Entity/Camera.h"
+#include "../Util/stdafx.h"
 
 namespace Hudson::Common
 {

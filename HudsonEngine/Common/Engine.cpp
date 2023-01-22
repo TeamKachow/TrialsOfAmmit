@@ -1,7 +1,7 @@
 ﻿#include "Engine.h"
 
 #include "../Entity/GameObject.h"
-#include "../Renderer.h"
+#include "../Render/Renderer.h"
 
 Hudson::Common::Engine::Engine()
 {
@@ -19,7 +19,7 @@ void Hudson::Common::Engine::Setup()
     // create renderer
     _renderer = std::make_unique<Render::Renderer>(this);
 
-    // create physics
+    // create _physics
     _physics = std::make_unique<Physics::PhysicsManager>(this);
 
     // create audio system

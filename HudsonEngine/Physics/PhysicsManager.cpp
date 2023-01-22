@@ -1,60 +1,60 @@
 #include "PhysicsManager.h"
-#include "Entity/GameObject.h"
-#include "Common/Engine.h"
-#include "World/Scene.h"
+#include "../Entity/GameObject.h"
+#include "../Common/Engine.h"
+#include "../World/Scene.h"
 #include "PhysicsComponent.h"
 #include "ColliderComponent.h"
 
-Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) : m_engine(engine)
+Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) : _engine(engine)
 {
-	lastTime = glfwGetTime();
-	timer = lastTime;
-	accumulator = 0;
-	nowTime = 0;
-	frames = 0;
-	updates = 0;
+	_lastTime = glfwGetTime();
+	_timer = _lastTime;
+	_accumulator = 0;
+	_nowTime = 0;
+	_frames = 0;
+	_updates = 0;
 }
 
 Hudson::Physics::PhysicsManager::~PhysicsManager()
 {
-	delete physics;
-	physics = nullptr;
+	delete _physics;
+	_physics = nullptr;
 }
 
 void Hudson::Physics::PhysicsManager::UpdatePhysics()
 {
-	nowTime = glfwGetTime();
-	accumulator += ((nowTime - lastTime) / FPS_60);
-	lastTime = nowTime;
+	_nowTime = glfwGetTime();
+	_accumulator += ((_nowTime - _lastTime) / FPS_60);
+	_lastTime = _nowTime;
 
 	// todo remove this debug
-	//std::cout << "dt = " << accumulator << "\n";
+	//std::cout << "dt = " << _accumulator << "\n";
 
-	// Only updates at 60 frames / s - Physics and any 60FPS locked stuff here
-	while (accumulator >= 1.0f)
+	// Only _updates at 60 _frames / s - Physics and any 60FPS locked stuff here
+	while (_accumulator >= 1.0f)
 	{
-		//physics->Update(deltaTime);
+		//_physics->Update(deltaTime);
 		UpdateMovement(FPS_60);
 		UpdateCollider();
-		updates++;
-		accumulator--;
+		_updates++;
+		_accumulator--;
 	}
 
-	// Renders at maximum possible frames - Render Here
-	frames++;
+	// Renders at maximum possible _frames - Render Here
+	_frames++;
 
 	// Reset after one second
-	if (glfwGetTime() - timer > 1.0f)
+	if (glfwGetTime() - _timer > 1.0f)
 	{
-		timer++;
-		std::cout << "FPS: " << updates << std::endl;
-		updates = 0, frames = 0;
+		_timer++;
+		std::cout << "FPS: " << _updates << std::endl;
+		_updates = 0, _frames = 0;
 	}
 }
 
 void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
 {
-	auto scenes = m_engine->GetSceneManager()->GetLoadedScenes();
+	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
 		for (auto gameObject : scene->GetObjects())
@@ -70,7 +70,7 @@ void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
 
 void Hudson::Physics::PhysicsManager::UpdateCollider()
 {
-	auto scenes = m_engine->GetSceneManager()->GetLoadedScenes();
+	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
 		std::vector<ColliderComponent*> vecColliders;

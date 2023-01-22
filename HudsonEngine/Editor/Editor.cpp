@@ -1,5 +1,5 @@
 #include "Editor.h"
-#include "Common/Engine.h"
+#include "../Common/Engine.h"
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine)
 {

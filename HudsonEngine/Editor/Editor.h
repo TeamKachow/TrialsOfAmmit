@@ -1,6 +1,6 @@
 #pragma once
-#include "stdafx.h"
-#include "Editor/ComponentRegistry.h"
+#include "../Util/stdafx.h"
+#include "../Editor/ComponentRegistry.h"
 
 namespace Hudson::Common
 {

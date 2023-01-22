@@ -2,17 +2,16 @@
 // Note needs refactoring
 #include <iostream>
 
-#include <Common/Engine.h>
-#include <Common/ResourceManager.h>
-#include <SpriteComponent.h>
-#include <PhysicsComponent.h>
-#include <ColliderComponent.h>
-#include <glm/vec2.hpp>
-#include "Editor.h"
+#include <../Common/Engine.h>
+#include <../Common/ResourceManager.h>
+#include <../Render/SpriteComponent.h>
+#include <../Physics/PhysicsComponent.h>
+#include <../Physics/ColliderComponent.h>
+#include <../Editor/Editor.h>
+#include <../Entity/GameObject.h>
+#include <../World/Scene.h>
 
 #include "DemoBehaviour.h"
-#include "GameObject.h"
-#include "Scene.h"
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::Editor* editor;
