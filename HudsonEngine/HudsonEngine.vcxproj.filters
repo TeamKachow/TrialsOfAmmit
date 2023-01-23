@@ -225,6 +225,7 @@
     <ClInclude Include="Util\stdafx.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Hudson.h" />
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>

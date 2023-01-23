@@ -2,14 +2,7 @@
 // Note needs refactoring
 #include <iostream>
 
-#include <../Common/Engine.h>
-#include <../Common/ResourceManager.h>
-#include <../Render/SpriteComponent.h>
-#include <../Physics/PhysicsComponent.h>
-#include <../Physics/ColliderComponent.h>
-#include <../Editor/Editor.h>
-#include <../Entity/GameObject.h>
-#include <../World/Scene.h>
+#include <Hudson.h>
 
 #include "DemoBehaviour.h"
 
@@ -23,6 +16,7 @@ Hudson::Physics::ColliderComponent* Collider1;
 Hudson::Physics::ColliderComponent* Collider2;
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
+
 void Init() 
 {
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
@@ -52,7 +46,6 @@ void GameSetup()
     Physics1->SetForce(glm::vec2(10.0, 0));
     Physics1->SetAcceleration(glm::vec2(100, 0), true);
     Physics1->SetVelocity(glm::vec2(100, 0));
-#
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
