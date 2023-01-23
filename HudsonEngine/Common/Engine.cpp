@@ -1,6 +1,6 @@
 ﻿#include "Engine.h"
 
-#include "../InputManager.h"
+#include "../Input/InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
 
