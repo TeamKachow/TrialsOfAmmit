@@ -7,15 +7,30 @@
 #include "DemoBehaviour.h"
 
 Hudson::Common::Engine* engine;
+Hudson::Editor::ComponentRegistry* registry;
+
+#define EDITOR
+
+#ifdef EDITOR
 Hudson::Editor::Editor* editor;
+#endif
+
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
 Hudson::Physics::ColliderComponent* Collider2;
+
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
+
+void InitRegistry()
+{
+    registry->RegisterEngineComponents();
+
+    registry->Register<DemoBehaviour>("Demo Behaviour");
+}
 
 void Init() 
 {
@@ -24,7 +39,11 @@ void Init()
 
     engine = new Hudson::Common::Engine();
 
-    editor = new Hudson::Editor::Editor(engine);
+#ifdef EDITOR
+    registry = new Hudson::Editor::ComponentRegistry();
+    InitRegistry();
+    editor = new Hudson::Editor::Editor(engine, registry);
+#endif
 
     engine->Setup();
 }

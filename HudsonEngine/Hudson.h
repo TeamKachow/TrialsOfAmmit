@@ -13,6 +13,7 @@
 #include "Editor/Editor.h"
 #include "Editor/ComponentRegistry.h"
 
+#include "Entity/Common.h"
 #include "Entity/Behaviour.h"
 #include "Entity/Camera.h"
 #include "Entity/Component.h"
@@ -33,5 +34,6 @@
 
 #include "Util/Debug.h"
 
+#include "World/Common.h"
 #include "World/Scene.h"
 #include "World/SceneManager.h"

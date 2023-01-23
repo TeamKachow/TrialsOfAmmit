@@ -1,8 +1,5 @@
+#include <Hudson.h>
 #include "DemoBehaviour.h"
-
-#include "ColliderComponent.h"
-#include "GameObject.h"
-#include "SpriteComponent.h"
 
 DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double animSpeed)
 {
@@ -13,8 +10,20 @@ DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double ani
 DemoBehaviour::~DemoBehaviour()
 = default;
 
+DemoBehaviour::DemoBehaviour() : _sprite(nullptr), _animSpeed(0.8)
+{
+}
+
 void DemoBehaviour::OnCreate()
 {
+	// If no sprite set yet, look for one on the parent
+	if (_sprite == nullptr)
+	{
+		const auto sprites = _parent->GetComponents<Hudson::Render::SpriteComponent>();
+		if (!sprites.empty())
+			_sprite = sprites[0];
+	}
+
     std::cout << "Demo behaviour added to an object!\n";
 }
 
@@ -41,8 +50,6 @@ void DemoBehaviour::OnTick(const double& dt)
 
 
 	// EXAMPLE: physics collision checks
-	//ColliderComponent* collider = _parent->GetComponent<Hudson::Physics::ColliderComponent>();
-	//if (collider != nullptr) { ... }
 
 	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 	if (!colliders.empty())
@@ -55,8 +62,6 @@ void DemoBehaviour::OnTick(const double& dt)
 			std::cout << this << " is colliding with " << other << "\n";
 		}
 	}
-
-
 }
 
 void DemoBehaviour::OnDestroy()

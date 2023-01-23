@@ -96,6 +96,33 @@ void Hudson::Editor::Editor::ContentBrowser()
 void Hudson::Editor::Editor::ComponentList()
 {
 	ImGui::Begin("Components List");
+
+	if (_registry)
+	{
+		if (_registry->GetKnownComponents().empty())
+		{
+			ImGui::TextColored({ 1, 0.8, 0, 1 }, "No components were registered to the editor!");
+		}
+		else
+		{
+			ImGui::TextColored({ 0.6, 0.6, 0.6, 1 }, "Select a component below to add.");
+
+			for (auto element : _registry->GetKnownComponents())
+			{
+				if (ImGui::SmallButton(element.name.c_str()))
+				{
+				    // TODO: add component to selected item
+					std::cout << "Would add a " << element.name << " right now\n";
+				}
+			}
+
+		}
+	}
+	else
+	{
+		ImGui::TextColored({ 1, 0.8, 0, 1 }, "Component creation not set up.\nMake sure you create a ComponentRegistry!");
+	}
+
 	ImGui::End();
 }
 
