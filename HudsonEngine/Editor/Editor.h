@@ -15,7 +15,7 @@ namespace Hudson::Editor
 		ComponentRegistry* _registry;
 
 	public:
-		Editor(Common::Engine* engine);
+		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();
 
 	private:

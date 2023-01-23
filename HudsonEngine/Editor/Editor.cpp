@@ -1,7 +1,7 @@
 #include "../Editor/Editor.h"
 #include "../Common/Engine.h"
 
-Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine)
+Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry)
 {
 	engine->RegisterFrameHook([this](Common::Engine* engine)
 		{
