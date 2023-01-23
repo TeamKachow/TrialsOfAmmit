@@ -13,6 +13,9 @@ Render::Window::Window(int width, int height, const char* name) {
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
 	// Create a GLFWwindow object of defined pixels
 	window = glfwCreateWindow(width, height, name, NULL, NULL);
 

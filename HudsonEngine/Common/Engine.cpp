@@ -40,7 +40,6 @@ void Hudson::Common::Engine::Run()
         _sceneManager->Tick();
 
         // TODO: _audioManager->Update();
-        // TODO: _physicsManager->Update();
 
         _physics->UpdatePhysics();
 

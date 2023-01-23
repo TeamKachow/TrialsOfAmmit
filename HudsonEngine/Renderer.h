@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #include "Render/Shader.h"
 
+
 namespace Hudson::Common
 {
     class Engine;
@@ -21,6 +22,7 @@ namespace Hudson::Render
 
         // Render to Texture
         Shader* screenShader;
+
         unsigned int screenVertexArrayObject;
         unsigned int frameBufferObject;
         unsigned int textureColorBuffer;
