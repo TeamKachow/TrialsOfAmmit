@@ -1,4 +1,4 @@
-#include "Editor.h"
+#include "../Editor/Editor.h"
 #include "../Common/Engine.h"
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine)
@@ -82,7 +82,7 @@ void Hudson::Editor::Editor::MenuBar()
 
 void Hudson::Editor::Editor::Hierarchy()
 {
-	ImGui::Begin("Hierarchy", NULL, ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("Hierarchy");
 
 
 	ImGui::End();

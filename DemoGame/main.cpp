@@ -50,14 +50,14 @@ void GameSetup()
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
     Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(100, 0));
+    Physics1->SetAcceleration(glm::vec2(100, 0), true);
     Physics1->SetVelocity(glm::vec2(100, 0));
 #
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
     Physics2->SetForce(glm::vec2(-10.0, 0));
-    Physics2->SetAcceleration(glm::vec2(-100, 0));
+    Physics2->SetAcceleration(glm::vec2(-100, 0), true);
     Physics2->SetVelocity(glm::vec2(-100, 0));
 
     Collider1 = new Hudson::Physics::ColliderComponent();

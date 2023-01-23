@@ -2,8 +2,8 @@
 #include "../Entity/GameObject.h"
 #include "../Common/Engine.h"
 #include "../World/Scene.h"
-#include "PhysicsComponent.h"
-#include "ColliderComponent.h"
+#include "../Physics/PhysicsComponent.h"
+#include "../Physics/ColliderComponent.h"
 
 Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) : _engine(engine)
 {

@@ -1,4 +1,4 @@
-#include "PhysicsComponent.h"
+#include "../Physics/PhysicsComponent.h"
 #include "../Entity/GameObject.h"
 
 Hudson::Physics::PhysicsComponent::PhysicsComponent()
@@ -17,8 +17,8 @@ void Hudson::Physics::PhysicsComponent::Update(float deltaTime)
 	// Using Semi-Implicit Euler Integration
 
 	// Calculate Acceleration Or Constant Acceleration
-	//CalculateAcceleration(); 
-	CalculateConstantAcceleration(deltaTime);
+	CalculateAcceleration(deltaTime); 
+	//CalculateConstantAcceleration(deltaTime);
 
 	// Calculate Velocity using Acceleration
 	CalculateVelocity(deltaTime);
@@ -27,17 +27,19 @@ void Hudson::Physics::PhysicsComponent::Update(float deltaTime)
 	UpdatePosition(deltaTime);
 }
 
-void Hudson::Physics::PhysicsComponent::CalculateAcceleration()
+void Hudson::Physics::PhysicsComponent::CalculateAcceleration(float deltaTime)
 {
 	// a = f / m
-	_acceleration = _force / _mass;
-}
 
-void Hudson::Physics::PhysicsComponent::CalculateConstantAcceleration(float deltaTime)
-{
-	_acceleration = _acceleration * deltaTime + 0.5f * _acceleration * deltaTime * deltaTime;
+	if(_constantAccel == true)
+	{
+		_acceleration = _acceleration * deltaTime + 0.5f * _acceleration * deltaTime * deltaTime;
+	}
+	else
+	{
+		_acceleration = _force / _mass;
+	}
 }
-
 
 void Hudson::Physics::PhysicsComponent::CalculateVelocity(float deltaTime)
 {
