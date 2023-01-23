@@ -4,6 +4,12 @@
 #include "imgui/imgui.h"
 
 
+// Firstly, the sound engine needs to be initialised, the engine value is creating the irrklang device with the auto detect
+// and default options - which ables the complier to recognise a sound driver in order for sounds to be played.
+
+// namespaces and includes of the irrklang high level api is in the audiomanager header, which ables the program
+//to load in the library.
+
 AudioManager::AudioManager()
 {
    
@@ -20,10 +26,13 @@ AudioManager::AudioManager()
     }
     catch (std::exception& e) 
     {
+        // error checking 
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
     }
 
 }
+
+// Deintialise the engine - delete the engine and all sound files entirely once theyre no longer in use
 
 AudioManager::~AudioManager() 
 {
@@ -31,7 +40,10 @@ AudioManager::~AudioManager()
     stopAllSounds();
     engine->drop();
 }
-    
+ 
+
+// This is an important fuhnction which allows the sound to be played with settings, so you can adjust the pitch and pan of the sound
+// The playlooped setting can be adjusted in the UI function which controls if a sound file repeats a sound infinitely or not.
 
 irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
 {
@@ -48,6 +60,9 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
     return sound;
 }
 
+
+// optional button instead of two separate button for pausing and resuming a sound. This toggle is determined
+//by the issoundplaying function
 bool AudioManager::toggleSound(const std::string& filePath)
 {
     //toggles the sound if the user wants to pause or resume a sound file
@@ -66,7 +81,7 @@ bool AudioManager::toggleSound(const std::string& filePath)
   
 }
 
-
+// function only stops a source source, not all sounds like the stopAllSounds function.
 void AudioManager::stopSound(const std::string& filePath)
 {
     // Stop a sound file
@@ -81,6 +96,8 @@ void AudioManager::stopSound(const std::string& filePath)
     
 }
 
+// engine removes all sound sources - meaning all sound files. The elements are part of the std::map which finds
+//the file path and number of sound files currently there and clears them.
 void AudioManager::stopAllSounds()
 {
     // stop all sound files
@@ -99,11 +116,15 @@ void AudioManager::stopAllSounds()
    
 }
 
+// This function tells the engine to load the sound file into the engine runtime from the sound file folder
+
 void AudioManager::loadSoundFile(const std::string& filePath)
 {
     // Load the sound file into the engine
     engine->addSoundSourceFromFile(filePath.c_str());
 }
+
+// engine unloads file when no longer used
 
 void AudioManager::unloadSoundFile(const std::string& filePath)
 {
@@ -112,6 +133,7 @@ void AudioManager::unloadSoundFile(const std::string& filePath)
     
 }
 
+// Set the position of the sound file
 void AudioManager::setListenerPosition(float x, float y) 
 {
     // Set the position of the listener
@@ -119,6 +141,7 @@ void AudioManager::setListenerPosition(float x, float y)
 }
 
 
+// Sets the appropriate volume value for the sound file
 void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
 {
     // Set the volume of a sound file
@@ -156,6 +179,8 @@ void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
 //    }
 //}
 
+// Function which checks current conditon of the sound file, it checks the sound file to see if the sound
+//is finished playing or not.
 bool AudioManager::isSoundPlaying(const std::string& filePath) 
 {
     // Check if a sound file is currently playing
@@ -173,6 +198,8 @@ bool AudioManager::isSoundPlaying(const std::string& filePath)
         
 }
 
+// Additional feature which creates and adds a number of audio streams from a file. Essentially, reads and decodes
+// data from the sound files.
 
 bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numOfLoaders) 
 {
@@ -188,6 +215,11 @@ bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, in
     numOfLoaders++;
     return true;
 }
+
+
+// This function toggles through the APi's avaliable sound effects such as chorus and distortion. This would then be
+//applied to a sound file which can be set inside of the UI button function. For example, a sound filepath, the effect
+//you specifically want, then toggle true or false to apply that effect.
 
 void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
 {
@@ -227,6 +259,8 @@ void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType e
     }
     
 }
+
+// Pauses sound files currently playing - looping through them to check if the files are playing.
 bool AudioManager::pauseSound(const std::string& filePath)
 {
     for (auto& s : sounds[filePath])
@@ -237,6 +271,7 @@ bool AudioManager::pauseSound(const std::string& filePath)
     
 }
 
+// You can unpause the sound file with this function, goes through a loop of sound files and sets any paused files to resume.
 bool AudioManager::resumeSound(const std::string& filePath)
 {
     for (auto& s : sounds[filePath])
@@ -246,6 +281,9 @@ bool AudioManager::resumeSound(const std::string& filePath)
     }
 
 }
+
+// This is the function which helps to display all the available sound prompt buttons for the engine, this includes playing, pause, resume
+//and stop buttons to influence the way sound files work. Buttons are present in the ImGui window.
 
 void AudioManager::soundButtonUI(const std::string& filePath)
 {
@@ -267,6 +305,7 @@ void AudioManager::soundButtonUI(const std::string& filePath)
     {
         std::cout << ">>\n";
         resumeSound(filePath);
+        
     }
     
     //Stop sound button
