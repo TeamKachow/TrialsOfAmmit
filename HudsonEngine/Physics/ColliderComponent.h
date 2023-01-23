@@ -1,8 +1,8 @@
 #pragma once
 
-#include "stdafx.h"
-#include "Entity/Component.h"
-#include "Entity/GameObject.h"
+#include "../Util/stdafx.h"
+#include "../Entity/Component.h"
+#include "../Entity/GameObject.h"
 
 
 struct AABB
@@ -28,9 +28,9 @@ namespace Hudson::Physics
 		void ClearColliding();
 		AABB GetAABB();
 
-		std::set<ColliderComponent*> GetCurrentCollisions() { return ColliderList; }
+		std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
 	private:
-		std::set<ColliderComponent*> ColliderList;
+		std::set<ColliderComponent*> _colliderList;
 	};
 
 }

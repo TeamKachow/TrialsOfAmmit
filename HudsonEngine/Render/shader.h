@@ -1,5 +1,5 @@
 #pragma once
-#include "../stdafx.h"
+#include "../Util/stdafx.h"
 
 namespace Hudson::Render {
     class Shader
@@ -30,7 +30,7 @@ namespace Hudson::Render {
                 glCompileShader(fragShader);
                 checkCompileErrors(fragShader, "FRAGMENT");
 
-                // shader program
+                // _shader program
                 this->ID = glCreateProgram();
                 glAttachShader(this->ID, vertShader);
                 glAttachShader(this->ID, fragShader);
@@ -42,7 +42,7 @@ namespace Hudson::Render {
                 glDeleteShader(fragShader);
             }
 
-            // utility functions for uniform functions - Brandon - This will likely need expanding to allow for further shader support
+            // utility functions for uniform functions - Brandon - This will likely need expanding to allow for further _shader support
             void setBool(const char* name, bool value) const
             {
                 glUniform1i(glGetUniformLocation(ID, name), (int)value);
@@ -85,7 +85,7 @@ namespace Hudson::Render {
             };
 
         private:
-            // Function for checking shader compilation/linking errors.
+            // Function for checking _shader compilation/linking errors.
             void checkCompileErrors(unsigned int shader, std::string type)
             {
                 int success;

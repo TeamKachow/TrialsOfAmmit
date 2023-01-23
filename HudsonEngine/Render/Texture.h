@@ -1,5 +1,5 @@
 #pragma once
-#include "../stdafx.h"
+#include "../Util/stdafx.h"
 
 namespace Hudson::Render {
     class Texture
@@ -8,15 +8,15 @@ namespace Hudson::Render {
         // holds the ID of the texture object
         unsigned int ID;
         // texture image dimensions
-        unsigned int width, height;
+        unsigned int _width, _height;
         // texture format
-        unsigned int internalFormat; // format of texture object
-        unsigned int imageFormat; // format of loaded image
+        unsigned int _internalFormat; // format of texture object
+        unsigned int _imageFormat; // format of loaded image
         // texture configuration
-        unsigned int wrapS; // wrapping mode on S axis
-        unsigned int wrapT; // wrapping mode on T axis
-        unsigned int filterMin; // filtering mode if texture pixels < screen pixels
-        unsigned int filterMax; // filtering mode if texture pixels > screen pixels
+        unsigned int _wrapS; // wrapping mode on S axis
+        unsigned int _wrapT; // wrapping mode on T axis
+        unsigned int _filterMin; // filtering mode if texture pixels < screen pixels
+        unsigned int _filterMax; // filtering mode if texture pixels > screen pixels
 
         // constructor
         Texture();

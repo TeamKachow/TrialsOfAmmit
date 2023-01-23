@@ -2,13 +2,10 @@
 
 #include "../InputManager.h"
 #include "../Entity/GameObject.h"
-#include "../Renderer.h"
+#include "../Render/Renderer.h"
 
-// TODO: EVERYTHING
-
-Hudson::Common::Engine::Engine(std::function<void(Engine*)> onSetupComplete)
+Hudson::Common::Engine::Engine()
 {
-    _postSetup = onSetupComplete;
 }
 
 Hudson::Common::Engine::~Engine()
@@ -23,7 +20,7 @@ void Hudson::Common::Engine::Setup()
     // create renderer
     _renderer = std::make_unique<Render::Renderer>(this);
 
-    // create physics
+    // create _physics
     _physics = std::make_unique<Physics::PhysicsManager>(this);
 
     // create audio system
@@ -32,8 +29,6 @@ void Hudson::Common::Engine::Setup()
     // create input system
     _input = std::make_unique<InputManager>();
 
-    // run post-setup hook
-    _postSetup(this);
 }
 
 void Hudson::Common::Engine::Run()
@@ -41,6 +36,9 @@ void Hudson::Common::Engine::Run()
     bool shouldExit = false;
     while (!shouldExit)
     {
+        // ImGui
+        _renderer->StartImGui();
+
         // Tick the scene manager (runs Behaviours)
         _sceneManager->Tick();
 
@@ -49,8 +47,15 @@ void Hudson::Common::Engine::Run()
 
         _physics->UpdatePhysics();
 
+        // Call imgui hooks
+        for (std::function<void(Engine*)> hook : _frameHooks)
+        {
+            hook(this);
+        }
+
+        ImGui::ShowDemoWindow();
+
         // Render scene
-        //std::this_thread::sleep_for(100)
         _renderer->WaitForRender();
         _renderer->Draw();
 
@@ -76,4 +81,9 @@ void Hudson::Common::Engine::Cleanup()
 Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
 {
     return _sceneManager.get();
+}
+
+void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> frameHook)
+{
+    _frameHooks.push_back(frameHook);
 }

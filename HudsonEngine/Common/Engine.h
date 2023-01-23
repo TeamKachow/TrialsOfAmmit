@@ -2,7 +2,7 @@
 
 #include "../World/SceneManager.h"
 
-#include "../PhysicsManager.h"
+#include "../Physics/PhysicsManager.h"
 
 class InputManager;
 
@@ -28,12 +28,11 @@ namespace Hudson::Common
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
         std::unique_ptr<InputManager> _input; 
-
-        std::function<void(Engine*)> _postSetup;
         bool _shutdownFlag = false;
+        std::vector<std::function<void(Engine*)>> _frameHooks;
 
     public:
-        Engine(std::function<void(Engine*)> onSetupComplete);
+        Engine();
         ~Engine();
 
         // TODO: figure out which things belong in which parts of the engine lifecycle
@@ -59,6 +58,16 @@ namespace Hudson::Common
          */
         void Cleanup();
 
+        /**
+         * \brief Get the engine's scene manager.
+         * \return The scene manager
+         */
         [[nodiscard]] Hudson::World::SceneManager* GetSceneManager() const;
+
+        /**
+         * \brief Register a hook to run after engine systems have run for the frame but before it renders.
+         * \param frameHook The function to call before a frame renders.
+         */
+        void RegisterFrameHook(std::function<void(Engine*)> frameHook);
     };
 }

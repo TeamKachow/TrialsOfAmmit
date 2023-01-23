@@ -2,18 +2,19 @@
 // Note needs refactoring
 #include <iostream>
 
-#include <Common/Engine.h>
-#include <Common/ResourceManager.h>
-#include <SpriteComponent.h>
-#include <PhysicsComponent.h>
-#include <ColliderComponent.h>
-#include <glm/vec2.hpp>
+#include <../Common/Engine.h>
+#include <../Common/ResourceManager.h>
+#include <../Render/SpriteComponent.h>
+#include <../Physics/PhysicsComponent.h>
+#include <../Physics/ColliderComponent.h>
+#include <../Editor/Editor.h>
+#include <../Entity/GameObject.h>
+#include <../World/Scene.h>
 
 #include "DemoBehaviour.h"
-#include "GameObject.h"
-#include "Scene.h"
 
 Hudson::Common::Engine* engine;
+Hudson::Editor::Editor* editor;
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Physics::PhysicsComponent* Physics1;
@@ -27,7 +28,9 @@ void Init()
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
-    engine = new Hudson::Common::Engine([](Hudson::Common::Engine* engine) {});
+    engine = new Hudson::Common::Engine();
+
+    editor = new Hudson::Editor::Editor(engine);
 
     engine->Setup();
 }
@@ -47,14 +50,14 @@ void GameSetup()
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
     Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(100, 0));
+    Physics1->SetAcceleration(glm::vec2(100, 0), true);
     Physics1->SetVelocity(glm::vec2(100, 0));
 #
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
     Physics2->SetForce(glm::vec2(-10.0, 0));
-    Physics2->SetAcceleration(glm::vec2(-100, 0));
+    Physics2->SetAcceleration(glm::vec2(-100, 0), true);
     Physics2->SetVelocity(glm::vec2(-100, 0));
 
     Collider1 = new Hudson::Physics::ColliderComponent();

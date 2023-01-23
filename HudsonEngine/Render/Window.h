@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "../Util/stdafx.h"
 
 
 class InputManager;
@@ -11,13 +11,13 @@ namespace Hudson::Render {
 	public:
 
 		Window(int width, int height, const char* name);
-
-		GLFWwindow* GetWindow() { return window; }
+		
+		GLFWwindow* GetWindow() { return _window; };
 		void SetWindow();
 		void DestroyWindow();
 
 	private:
-		GLFWwindow* window;
+		GLFWwindow* _window;
 	};
 
 }

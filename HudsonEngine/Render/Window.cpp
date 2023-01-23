@@ -16,17 +16,17 @@ Render::Window::Window(int width, int height, const char* name) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Create a GLFWwindow object of defined pixels
-	window = glfwCreateWindow(width, height, name, NULL, NULL);
+	_window = glfwCreateWindow(width, height, name, NULL, NULL);
 
-	// Error check if the window fails to create
-	if (window == NULL)
+	// Error check if the _window fails to create
+	if (_window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
+		std::cout << "Failed to create GLFW _window" << std::endl;
 
 		glfwTerminate();
 	}
 
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(_window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
