@@ -83,8 +83,6 @@ void Hudson::Editor::Editor::MenuBar()
 void Hudson::Editor::Editor::Hierarchy()
 {
 	ImGui::Begin("Hierarchy");
-
-
 	ImGui::End();
 }
 

@@ -14,7 +14,7 @@ namespace Hudson::Physics
 		void Update(float deltaTime);
 
 		/**
-        * Sets the Acceleration of the Object.
+        * Sets the Acceleration of the Object, False for Acceleration or True for Constant Acceleration.
         */
 		void SetAcceleration(const glm::vec2& accel, bool Const) { _acceleration = accel; _constantAccel = Const; }
 		/**
