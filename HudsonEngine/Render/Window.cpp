@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include "InputManager.h"
+#include "../InputManager.h"
 
 using namespace Hudson;
 
