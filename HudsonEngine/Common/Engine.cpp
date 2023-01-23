@@ -1,5 +1,6 @@
 ﻿#include "Engine.h"
 
+#include "../InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
 
@@ -23,8 +24,10 @@ void Hudson::Common::Engine::Setup()
     _physics = std::make_unique<Physics::PhysicsManager>(this);
 
     // create audio system
+    // TODO
 
     // create input system
+    _input = std::make_unique<InputManager>();
 
 }
 

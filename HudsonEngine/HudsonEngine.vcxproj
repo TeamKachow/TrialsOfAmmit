@@ -115,6 +115,7 @@
     <ClCompile Include="World\Scene.cpp" />
     <ClCompile Include="World\SceneManager.cpp" />
     <ClCompile Include="Util\glad.c" />
+    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Engine.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="World\Common.h" />
     <ClInclude Include="World\Scene.h" />
     <ClInclude Include="World\SceneManager.h" />
+    <ClInclude Include="InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basicFragShader.glsl" />

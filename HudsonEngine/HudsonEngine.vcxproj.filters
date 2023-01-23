@@ -118,6 +118,9 @@
     <ClCompile Include="World\Scene.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -218,6 +221,9 @@
     </ClInclude>
     <ClInclude Include="Render\Texture.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
