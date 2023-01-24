@@ -57,6 +57,10 @@ void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
+		// Don't run physics on inactive scenes
+		if (!scene->IsActive())
+			continue;
+
 		for (auto gameObject : scene->GetObjects())
 		{
 			// Update Physics
@@ -73,6 +77,10 @@ void Hudson::Physics::PhysicsManager::UpdateCollider()
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
+		// Don't update collisions on inactive scenes
+		if (!scene->IsActive())
+			continue;
+
 		std::vector<ColliderComponent*> vecColliders;
 
 		for (auto gameObject : scene->GetObjects())

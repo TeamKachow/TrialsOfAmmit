@@ -87,7 +87,22 @@ namespace Hudson::Entity
          * \return This object's transform
          */
         Transform& GetTransform();
+
+        /**
+         * \brief Set the object's transform.
+         * \param tsm The new object's transform
+         */
         void SetTransform(Transform& tsm) { _transform = tsm; }
+
+        /**
+         * \brief Handle when the object gets added to the scene.
+         */
+        void OnSceneAdd();
+
+        /**
+         * \brief Handle when the object gets removed from the scene.
+         */
+        void OnSceneRemove();
     };
 
     template <is_component T>

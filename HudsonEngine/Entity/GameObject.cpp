@@ -103,3 +103,13 @@ Hudson::Entity::GameObject::Transform& Hudson::Entity::GameObject::GetTransform(
 {
     return _transform;
 }
+
+void Hudson::Entity::GameObject::OnSceneAdd()
+{
+    // TODO: call Behaviour OnAdd
+}
+
+void Hudson::Entity::GameObject::OnSceneRemove()
+{
+    // TODO: call Behaviour OnRemove
+}

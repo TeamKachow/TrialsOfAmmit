@@ -66,6 +66,10 @@ void Hudson::Render::Renderer::Draw()
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
+		// Don't render scenes if the render flag is disabled
+		if (!scene->IsRendering())
+			continue;
+
 		for (auto gameObject : scene->GetObjects())
 		{
 			// Render sprites
