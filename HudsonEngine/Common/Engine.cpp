@@ -51,6 +51,9 @@ void Hudson::Common::Engine::Run()
 
         ImGui::ShowDemoWindow();
 
+        // TODO Setup and ifdef or run config to tell the renderer that it can recreate it's framebuffers if GLFWwindow is resized
+        // TODO when the editor is attached renderer will recreate its framebuffers based on the size of the imgui window it is rendering to
+
         // Render scene
         _renderer->WaitForRender();
         _renderer->Draw();

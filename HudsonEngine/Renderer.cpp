@@ -27,7 +27,7 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	// Due to it being 2D rendering we can disable this from the start
 	glDisable(GL_DEPTH_TEST);
 
-	InitRenderToTexture(1280, 720);
+	InitRenderToTexture();
 
 	// TODO Have the resource manager load shaders and textures in dynamically - Brandon B
 	// I may make it so that when creating components we pass in the resource manager so the constructor adds things to it
@@ -47,6 +47,9 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	resManager->GetShader("spriteShader")->SetMatrix4("projection", _defaultCamera.GetProjectionMatrix());
 
 	screenShader = resManager->GetShader("screenShader");
+
+	//screenShader->Compile("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl");
+
 }
 
 Hudson::Render::Renderer::~Renderer()
@@ -62,10 +65,10 @@ void Hudson::Render::Renderer::StartImGui()
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	//ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 }
 
-void Hudson::Render::Renderer::InitRenderToTexture(int screenWidth, int screenHeight)
+void Hudson::Render::Renderer::InitRenderToTexture()
 {
 	unsigned int VBO;
 	float vertices[] = {
@@ -92,7 +95,12 @@ void Hudson::Render::Renderer::InitRenderToTexture(int screenWidth, int screenHe
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
 
 	// TODO this may need slight rework depending on window resizing as the framebuffers are tied to screen size, so a callback into initializing the frame buffers might be needed
+	CreateFramebuffers(_window.get()->GetWindowExtent().x, _window.get()->GetWindowExtent().y);
 
+}
+
+void Hudson::Render::Renderer::CreateFramebuffers(unsigned extentWidth, unsigned extentHeight)
+{
 	glGenFramebuffers(1, &frameBufferObject);
 	// All the next read and write framebuffer operations will affect the currently bound framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
@@ -100,7 +108,8 @@ void Hudson::Render::Renderer::InitRenderToTexture(int screenWidth, int screenHe
 	// Create texture color buffer
 	glGenTextures(1, &textureColorBuffer);
 	glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, screenWidth, screenHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, extentWidth, extentHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // May need GL_LINEAR 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -113,6 +122,7 @@ void Hudson::Render::Renderer::InitRenderToTexture(int screenWidth, int screenHe
 		std::cout << "ERROR::FRAMEBUFFER::Framebuffer is not complete!" << std::endl;
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, extentWidth, extentHeight);
 
 }
 
@@ -125,8 +135,10 @@ void Hudson::Render::Renderer::Draw()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 	// Clear back buffer
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
+	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black
+
+	glClear(GL_COLOR_BUFFER_BIT);
 	//glClear(GL_COLOR_BUFFER_BIT);
 
 
@@ -146,6 +158,7 @@ void Hudson::Render::Renderer::Draw()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	screenShader->Use();
@@ -168,5 +181,14 @@ void Hudson::Render::Renderer::Draw()
 
 void Hudson::Render::Renderer::WaitForRender()
 {
+	nowTime = glfwGetTime();
+	deltaTime = nowTime - lastTime;
+	lastTime = nowTime;
+
+
 	// TODO: FPS limiter goes here
+
+	std::cout << "Render Delta: " << deltaTime << std::endl;
+	deltaTime = 0;
+
 }

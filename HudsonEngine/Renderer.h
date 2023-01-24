@@ -20,6 +20,14 @@ namespace Hudson::Render
         std::unique_ptr<Window> _window;
         Camera _defaultCamera;
 
+        // Debug
+        double lastTime;
+        double nowTime;
+
+        double deltaTime;
+
+        double updates++;
+
         // Render to Texture
         Shader* screenShader;
 
@@ -33,7 +41,11 @@ namespace Hudson::Render
 
         void StartImGui();
 
-        void InitRenderToTexture(int screenWidth, int screenHeight);
+        void InitRenderToTexture();
+        void CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight);
+
+        Window* GetWindow() { return _window.get(); }
+        unsigned int GetRenderedSceneTexture() { return textureColorBuffer; }
 
         void Draw();
         void WaitForRender();

@@ -75,7 +75,7 @@ void GameSetup()
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite1);
     blah->AddComponent(new DemoBehaviour(Sprite1));
-	blah->AddComponent(Physics1);
+	//blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
     startScene->AddObject(blah);
 
@@ -84,7 +84,7 @@ void GameSetup()
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite2);
     blah2->AddComponent(new DemoBehaviour(Sprite2));
-    blah2->AddComponent(Physics2);
+    //blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
     startScene->AddObject(blah2);
 

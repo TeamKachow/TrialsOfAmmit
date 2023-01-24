@@ -3,6 +3,7 @@
 #include "../World/SceneManager.h"
 
 #include "../PhysicsManager.h"
+#include "../Renderer.h"
 
 namespace Hudson
 {
@@ -44,6 +45,11 @@ namespace Hudson::Common
          * \brief Run the engine loop. This will return when the game/editor exits.
          */
         void Run();
+
+        /**
+		 * \brief Run the engine loop. This will return when the game/editor exits.
+		 */
+    	 Render::Renderer* GetRenderer() { return _renderer.get(); }
 
         /**
          * \brief Shut down the engine at the end of the current update loop.

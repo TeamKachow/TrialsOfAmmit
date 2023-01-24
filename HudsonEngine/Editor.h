@@ -21,6 +21,7 @@ namespace Hudson::Editor
 	private:
 
 		void MenuBar();
+		void Scene();
 		void Hierarchy();
 		void ContentBrowser();
 		void ComponentList();

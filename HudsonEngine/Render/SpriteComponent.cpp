@@ -54,6 +54,8 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     glBindVertexArray(0);
 }
 
+
+
 void Hudson::Render::SpriteComponent::initRenderData()
 {
     unsigned int VBO;
