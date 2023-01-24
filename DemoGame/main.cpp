@@ -1,5 +1,3 @@
-
-// Note needs refactoring
 #include <iostream>
 
 #include <Hudson.h>
@@ -9,9 +7,12 @@
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
 
-#define EDITOR
+#define ENABLE_EDITOR
+#ifdef ENABLE_EDITOR
+#pragma message("Creating an editor build")
+#endif
 
-#ifdef EDITOR
+#ifdef ENABLE_EDITOR
 Hudson::Editor::Editor* editor;
 #endif
 
@@ -39,7 +40,7 @@ void Init()
 
     engine = new Hudson::Common::Engine();
 
-#ifdef EDITOR
+#ifdef ENABLE_EDITOR
     registry = new Hudson::Editor::ComponentRegistry();
     InitRegistry();
     editor = new Hudson::Editor::Editor(engine, registry);
