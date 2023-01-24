@@ -28,7 +28,7 @@ namespace Hudson::Entity
         };
         
     private:
-        std::string _name;
+        std::string _name = "Object";
         World::Scene* _scene;
         uint32_t _id;
         std::vector<Component*> _components;
@@ -74,7 +74,7 @@ namespace Hudson::Entity
          * \brief Get the name of this object instance.
          * \return The object's name
          */
-        [[nodiscard]] std::string GetName() const;
+        [[nodiscard]] std::string& GetName();
 
         /**
          * \brief Set the name of this object instance.

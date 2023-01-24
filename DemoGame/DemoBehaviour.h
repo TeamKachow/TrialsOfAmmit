@@ -8,7 +8,7 @@ namespace Hudson
     }
 }
 
-class DemoBehaviour : public Hudson::Entity::Behaviour
+class DemoBehaviour : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 private:
     Hudson::Render::SpriteComponent* _sprite;
@@ -25,5 +25,7 @@ public:
     void OnCreate() override;
     void OnTick(const double& dt) override;
     void OnDestroy() override;
+
+    void DrawPropertyUI() override;
 };
 

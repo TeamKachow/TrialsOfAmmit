@@ -1,6 +1,6 @@
 #include "ColliderComponent.h"
 
-Hudson::Physics::ColliderComponent::ColliderComponent()
+Hudson::Physics::ColliderComponent::ColliderComponent() : Component("Box Collider")
 {
 
 }

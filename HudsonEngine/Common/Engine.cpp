@@ -15,7 +15,7 @@ Hudson::Common::Engine::~Engine()
 void Hudson::Common::Engine::Setup()
 {
     // create scene manager
-    _sceneManager = std::make_unique<Hudson::World::SceneManager>();
+    _sceneManager = std::make_unique<World::SceneManager>();
 
     // create renderer
     _renderer = std::make_unique<Render::Renderer>(this);
@@ -43,17 +43,19 @@ void Hudson::Common::Engine::Run()
         _sceneManager->Tick();
 
         // TODO: _audioManager->Update();
-        // TODO: _physicsManager->Update();
 
         _physics->UpdatePhysics();
 
-        // Call imgui hooks
+        // Call frame hooks
         for (std::function<void(Engine*)> hook : _frameHooks)
         {
             hook(this);
         }
 
+#ifdef _DEBUG
+        // Render ImGui demo window
         ImGui::ShowDemoWindow();
+#endif
 
         // Render scene
         _renderer->WaitForRender();
@@ -75,7 +77,11 @@ void Hudson::Common::Engine::Shutdown()
 
 void Hudson::Common::Engine::Cleanup()
 {
-
+    // Call shutdown hooks
+    for (std::function<void(Engine*)> hook : _shutdownHooks)
+    {
+        hook(this);
+    }
 }
 
 Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
@@ -83,7 +89,22 @@ Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
     return _sceneManager.get();
 }
 
+Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager() const
+{
+    return _physics.get();
+}
+
+InputManager* Hudson::Common::Engine::GetInputManager() const
+{
+    return _input.get();
+}
+
 void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> frameHook)
 {
     _frameHooks.push_back(frameHook);
+}
+
+void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> shutdownHook)
+{
+    _shutdownHooks.push_back(shutdownHook);
 }

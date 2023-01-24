@@ -14,6 +14,9 @@ namespace Hudson::Editor
 		Common::Engine* _engine;
 		ComponentRegistry* _registry;
 
+		Entity::GameObject* _selected = nullptr;
+		bool _showIds = false;
+
 	public:
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();

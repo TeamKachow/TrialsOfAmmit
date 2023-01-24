@@ -27,15 +27,17 @@ namespace Hudson::Common
         std::unique_ptr<Render::Renderer> _renderer; 
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
-        std::unique_ptr<InputManager> _input; 
+        std::unique_ptr<InputManager> _input;
+
         bool _shutdownFlag = false;
+
         std::vector<std::function<void(Engine*)>> _frameHooks;
+        std::vector<std::function<void(Engine*)>> _shutdownHooks;
 
     public:
         Engine();
         ~Engine();
-
-        // TODO: figure out which things belong in which parts of the engine lifecycle
+        
         /**
          * \brief Set up game engine resources and run setup function if provided
          */
@@ -64,10 +66,36 @@ namespace Hudson::Common
          */
         [[nodiscard]] Hudson::World::SceneManager* GetSceneManager() const;
 
+        // GetRenderer();
+
+        /**
+         * \brief Get the engine's physics manager.
+         * \return The physics manager
+         */
+        [[nodiscard]] Physics::PhysicsManager* GetPhysicsManager() const;
+
+        /**
+         * \brief Get the engine's audio manager.
+         * \return The audio manager
+         */
+        // TODO: Audio::AudioManager* GetAudioManager() const;
+
+        /**
+         * \brief Get the engine's input manager.
+         * \return The input manager
+         */
+        [[nodiscard]] InputManager* GetInputManager() const;
+
         /**
          * \brief Register a hook to run after engine systems have run for the frame but before it renders.
          * \param frameHook The function to call before a frame renders.
          */
         void RegisterFrameHook(std::function<void(Engine*)> frameHook);
+
+        /**
+         * \brief Register a hook to run before the engine shuts down.
+         * \param shutdownHook The function to call before the engine shuts down
+         */
+        void RegisterShutdownHook(std::function<void(Engine*)> shutdownHook);
     };
 }

@@ -14,11 +14,14 @@ namespace Hudson::Entity
         
     protected:
         GameObject* _parent = nullptr;
+        const char* _name;
         
     public:
-        Component() = default;
+        Component(const char* name);
         virtual ~Component() = default;
 
         [[nodiscard]] GameObject* GetParent() const;
+
+        const char* GetName() const;
     };
 }

@@ -2,15 +2,14 @@
 
 #include "../Entity/GameObject.h"
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader) : Component("Sprite")
 {
     this->_shader = shader;
     this->InitRenderData();
 }
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _gridSize(gridSize), _gridPos(gridPosition)
 {
-
 }
 
 Hudson::Render::SpriteComponent::~SpriteComponent()

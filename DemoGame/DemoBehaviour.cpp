@@ -1,7 +1,7 @@
 #include <Hudson.h>
 #include "DemoBehaviour.h"
 
-DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double animSpeed)
+DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double animSpeed) : Behaviour("Demo Behaviour")
 {
 	_sprite = sprite;
     _animSpeed = animSpeed;
@@ -10,7 +10,7 @@ DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double ani
 DemoBehaviour::~DemoBehaviour()
 = default;
 
-DemoBehaviour::DemoBehaviour() : _sprite(nullptr), _animSpeed(0.8)
+DemoBehaviour::DemoBehaviour() : Behaviour("Demo Behaviour"), _sprite(nullptr), _animSpeed(0.8)
 {
 }
 
@@ -29,6 +29,14 @@ void DemoBehaviour::OnCreate()
 
 void DemoBehaviour::OnTick(const double& dt)
 {
+	// TODO: remove this when OnCreate is implemented
+	if (_sprite == nullptr)
+	{
+		const auto sprites = _parent->GetComponents<Hudson::Render::SpriteComponent>();
+		if (!sprites.empty())
+			_sprite = sprites[0];
+	}
+
 	// EXAMPLE: sprite animation
     _animAcc += dt;
     if (_animAcc >= _animSpeed)
@@ -67,4 +75,10 @@ void DemoBehaviour::OnTick(const double& dt)
 void DemoBehaviour::OnDestroy()
 {
     std::cout << "Demo behaviour removed from an object!\n";
+}
+
+void DemoBehaviour::DrawPropertyUI()
+{
+	ImGui::DragScalar("Anim spd", ImGuiDataType_Double, &_animSpeed, 0.05);
+	ImGui::Text("Acc: %lf", _animAcc);
 }

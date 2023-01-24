@@ -127,6 +127,9 @@
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="imgui\imgui_stdlib.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -228,6 +231,9 @@
     <ClInclude Include="Hudson.h" />
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_stdlib.h">
+      <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,7 +35,7 @@ namespace Hudson::World
         /**
          * \brief The name of this scene.
          */
-        std::string _name;
+        std::string _name = "Untitled";
         /**
          * \brief Whether or not the scene is currently actively ticking.
          */
