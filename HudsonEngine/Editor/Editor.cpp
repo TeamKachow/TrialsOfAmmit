@@ -49,7 +49,7 @@ void Hudson::Editor::Editor::MenuBar()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("Menu"))
+		if (ImGui::BeginMenu("Very Useful Menu"))
 		{
 			if (ImGui::MenuItem("File"))
 			{
@@ -182,9 +182,9 @@ void Hudson::Editor::Editor::ComponentList()
 	ImGui::End();
 }
 
-void Hudson::Editor::Editor::ObjectComponents()
+void Hudson::Editor::Editor::ObjectProperties()
 {
-	ImGui::Begin("Object Components");
+	ImGui::Begin("Object Properties");
 
 	if (_selected == nullptr)
 	{
@@ -219,15 +219,48 @@ void Hudson::Editor::Editor::ObjectComponents()
 				ImGui::TableNextColumn();
 
 				ImGui::Text("%u", /*_selected.GetSerialID()*/ 0); // TODO
+				ImGui::TableNextColumn();
 			}
+
+			ImGui::Text("Position");
+			ImGui::TableNextColumn();
+
+			ImGui::PushID("ObjEditor_Pos");
+			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+			ImGui::DragFloat2("", &_selected->GetTransform().pos.x, 0.05f);
+			ImGui::PopID();
+			ImGui::TableNextColumn();
+
+			ImGui::Text("Scale");
+			ImGui::TableNextColumn();
+
+			ImGui::PushID("ObjEditor_Scale");
+			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+			ImGui::DragFloat2("", &_selected->GetTransform().scale.x, 0.05f);
+			ImGui::PopID();
+			ImGui::TableNextColumn();
+
+			ImGui::Text("Rotation");
+			ImGui::TableNextColumn();
+
+			ImGui::PushID("ObjEditor_Rotate");
+			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+			ImGui::DragFloat("", &_selected->GetTransform().rotateZ, 0.05f);
+			ImGui::PopID();
+			ImGui::TableNextColumn();
 
 			ImGui::EndTable();
 		}
 
         for (auto component : _selected->GetAllComponents())
         {
+			Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
+			ImGuiTreeNodeFlags headerFlags = 0;
+			if (!editable && !_showIds)
+				headerFlags |= ImGuiTreeNodeFlags_Leaf;
+
 			ImGui::PushID((void*)component);
-			if (ImGui::CollapsingHeader(component->GetName()))
+			if (ImGui::CollapsingHeader(component->GetName(), headerFlags))
 			{
 				if (_showIds)
 				{
@@ -250,14 +283,9 @@ void Hudson::Editor::Editor::ObjectComponents()
 					}
 				}
 
-				Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
 				if (editable)
 				{
 					editable->DrawPropertyUI();
-				}
-				else
-				{
-					ImGui::TextColored(IM_COLOR_GRAY, "Component is not editable");
 				}
 			}
 			ImGui::PopID();
@@ -287,7 +315,7 @@ void Hudson::Editor::Editor::Draw()
 	Hierarchy();
 	ContentBrowser();
 	ComponentList();
-	ObjectComponents();
+	ObjectProperties();
 	Tools();
 	Debug();
 }

@@ -29,7 +29,7 @@ namespace Hudson::Editor
 		void ContentBrowser();
 		void ComponentList();
 		void Tools();
-		void ObjectComponents();
+		void ObjectProperties();
 		void Debug();
 
 		void Draw();
