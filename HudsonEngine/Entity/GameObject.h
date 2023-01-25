@@ -3,6 +3,14 @@
 #include "Common.h"
 #include "../Common/IEditable.h"
 
+namespace Hudson
+{
+    namespace Editor
+    {
+        class Editor;
+    }
+}
+
 // forward declare
 namespace Hudson::World
 {

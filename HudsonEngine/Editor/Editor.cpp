@@ -260,7 +260,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 				headerFlags |= ImGuiTreeNodeFlags_Leaf;
 
 			ImGui::PushID((void*)component);
-			if (ImGui::CollapsingHeader(component->GetName(), headerFlags))
+			if (ImGui::CollapsingHeader(component->GetTypeName(), headerFlags))
 			{
 				if (_showIds)
 				{
