@@ -12,7 +12,11 @@ Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) 
 
 	_collider = new Hudson::Physics::ColliderComponent();
 
-	_timestep = new Hudson::Util::Timestep();
+	_timestep = new Hudson::Util::Timestep([&](const double dt)
+		{
+			UpdateMovement(dt);
+			UpdateCollider();
+		});
 }
 
 Hudson::Physics::PhysicsManager::~PhysicsManager()
@@ -30,13 +34,6 @@ Hudson::Physics::PhysicsManager::~PhysicsManager()
 void Hudson::Physics::PhysicsManager::UpdatePhysics()
 {
 	_timestep->CalculateTimestep();
-
-	_timestep->_doTick = [&]()
-	{
-		UpdateMovement(_timestep->DeltaTime);
-		UpdateCollider();
-	};
-
 }
 
 void Hudson::Physics::PhysicsManager::UpdateMovement(double deltaTime)

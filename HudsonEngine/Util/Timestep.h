@@ -7,7 +7,7 @@ namespace  Hudson::Util
 	class Timestep
 	{
 	public:
-		Timestep();
+		Timestep(std::function<void(double dt)> doTick);
 		~Timestep();
 
 		void CalculateTimestep();
@@ -23,6 +23,6 @@ namespace  Hudson::Util
 		double _nowTime;
 		int _frames;
 		int _updates;
-		std::function<void()> _doTick;
+		std::function<void(double dt)> _doTick;
 	};
 }

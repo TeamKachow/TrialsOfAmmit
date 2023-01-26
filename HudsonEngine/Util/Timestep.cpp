@@ -1,6 +1,6 @@
 #include "Timestep.h"
 
-Hudson::Util::Timestep::Timestep()
+Hudson::Util::Timestep::Timestep(std::function<void(double dt)> doTick) : _doTick(doTick)
 {
 	_lastTime = glfwGetTime();
 	_timer = _lastTime;
@@ -13,7 +13,6 @@ Hudson::Util::Timestep::Timestep()
 
 Hudson::Util::Timestep::~Timestep()
 {
-
 }
 
 void Hudson::Util::Timestep::CalculateTimestep()
@@ -24,9 +23,9 @@ void Hudson::Util::Timestep::CalculateTimestep()
 
 	while (_accumulator >= 1.0)
 	{
-		_doTick();
-		DeltaTime = FPS_60;
-		_updates++;
+        DeltaTime = FPS_60;
+        _doTick(DeltaTime);
+        _updates++;
 		_accumulator--;
 	}
 
