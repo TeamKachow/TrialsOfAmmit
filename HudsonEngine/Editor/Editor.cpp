@@ -103,7 +103,7 @@ void Hudson::Editor::Editor::MenuBar()
 void Hudson::Editor::Editor::Scene()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-	ImGui::Begin("Scene");
+	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoScrollbar);
 	//ImGui::Scale
 	ImTextureID textureID = reinterpret_cast<ImTextureID>(_engine->GetRenderer()->GetRenderedSceneTexture());
 
