@@ -6,6 +6,8 @@
 
 class InputManager;
 
+class AudioManager;
+
 namespace Hudson
 {
     namespace Render
@@ -26,7 +28,7 @@ namespace Hudson::Common
         std::unique_ptr<World::SceneManager> _sceneManager;
         std::unique_ptr<Render::Renderer> _renderer; 
         std::unique_ptr<Physics::PhysicsManager> _physics;
-        // TODO: std::unique_ptr<AudioManager> _audio; 
+        std::unique_ptr<AudioManager> _audio; 
         std::unique_ptr<InputManager> _input;
 
         bool _shutdownFlag = false;
@@ -83,7 +85,7 @@ namespace Hudson::Common
          * \brief Get the engine's audio manager.
          * \return The audio manager
          */
-        // TODO: Audio::AudioManager* GetAudioManager() const;
+        [[nodiscard]] AudioManager* GetAudioManager() const;
 
         /**
          * \brief Get the engine's input manager.

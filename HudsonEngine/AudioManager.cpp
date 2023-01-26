@@ -54,8 +54,8 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
         
         sounds[filePath].push_back(sound);
      
-        sound->setPlaybackSpeed(pitch);
-        sound->setPan(pan);   
+       /* sound->setPlaybackSpeed(pitch);
+        sound->setPan(pan); */  
     }
     return sound;
 }
@@ -268,7 +268,7 @@ bool AudioManager::pauseSound(const std::string& filePath)
         s->setIsPaused(true);
         return s;
     }
-    
+    return NULL;
 }
 
 // You can unpause the sound file with this function, goes through a loop of sound files and sets any paused files to resume.
@@ -279,7 +279,7 @@ bool AudioManager::resumeSound(const std::string& filePath)
         s->setIsPaused(false);
         return s;
     }
-
+    return NULL;
 }
 
 // This is the function which helps to display all the available sound prompt buttons for the engine, this includes playing, pause, resume
@@ -293,6 +293,7 @@ void AudioManager::soundButtonUI(const std::string& filePath)
         std::cout << ">\n";
         loadSoundFile(filePath);
         playSound(filePath, true, 1.5f, -0.5f);
+        setSoundEffect(filePath, SOUND_EFFECT_TYPE_DISTORTION, true);
     }
     // Play/pause toggle button
     if (ImGui::Button("Pause"))
@@ -301,6 +302,7 @@ void AudioManager::soundButtonUI(const std::string& filePath)
         toggleSound(filePath);
     }
 
+    // Resume sound button
     if (ImGui::Button("Resume"))
     {
         std::cout << ">>\n";
