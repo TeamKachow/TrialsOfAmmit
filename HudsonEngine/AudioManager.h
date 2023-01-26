@@ -22,9 +22,9 @@ public:
     AudioManager();
     ~AudioManager();
 
-    void setFilePath(std::string& filePath);
+   /* void setFilePath(std::string& filePath);*/
     
-    irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch, float pan);
+    irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
     bool toggleSound(const std::string& filePath);
     bool pauseSound(const std::string& filePath);
     bool resumeSound(const std::string& filePath);
@@ -36,8 +36,8 @@ public:
     void unloadSoundFile(const std::string& filePath);
 
     void setSoundVolume(const std::string& filePath, float sVolume = 1.0f);
-    void setSoundPitch(const std::string& filePath, float pitch = 1.0f);
-    void setSoundPan(const std::string& filePath, float pan = 0.0f);
+    //void setSoundPitch(const std::string& filePath, float pitch = 1.0f);
+    //void setSoundPan(const std::string& filePath, float pan = 0.0f);
     bool isSoundPlaying(const std::string& filePath);
     
     bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders = 0);  

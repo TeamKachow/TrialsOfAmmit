@@ -47,17 +47,24 @@ AudioManager::~AudioManager()
 
 irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
 {
-    // Play a sound file
-    irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, pitch, pan);
-    if (sound)
+    try
     {
-        
-        sounds[filePath].push_back(sound);
-     
-       /* sound->setPlaybackSpeed(pitch);
-        sound->setPan(pan); */  
+        // Play a sound file
+        irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, pitch, pan);
+        if (sound)
+        {
+
+            sounds[filePath].push_back(sound);
+
+            /* sound->setPlaybackSpeed(pitch);
+             sound->setPan(pan); */
+        }
+        return sound;
     }
-    return sound;
+    catch (std::exception& e)
+    {
+        std::cout << "Exception: Sound couldn't be played!" << e.what() << std::endl;
+    }
 }
 
 
@@ -315,6 +322,7 @@ void AudioManager::soundButtonUI(const std::string& filePath)
     {
         std::cout << "stop\n";
         stopSound(filePath);
+        setSoundEffect(filePath, SOUND_EFFECT_TYPE_DISABLE, true);
         unloadSoundFile(filePath);
 
     }
