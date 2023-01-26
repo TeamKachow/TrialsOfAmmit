@@ -76,9 +76,6 @@
     <ClCompile Include="Entity\Behaviour.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Camera.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Component.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -133,6 +130,10 @@
     <ClCompile Include="Util\Timestep.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Render\Camera.cpp" />
+    <ClCompile Include="Common\QueuingObjectHolder.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -175,9 +176,6 @@
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Behaviour.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Camera.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Component.h">
@@ -240,6 +238,10 @@
     </ClInclude>
     <ClInclude Include="Util\Timestep.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h" />
+    <ClInclude Include="Common\QueuingObjectHolder.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Common\Engine.cpp" />
+    <ClCompile Include="Common\QueuingObjectHolder.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
@@ -123,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="Common\Engine.h" />
     <ClInclude Include="Common\IEditable.h" />
+    <ClInclude Include="Common\QueuingObjectHolder.h" />
     <ClInclude Include="Common\ResourceManager.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />

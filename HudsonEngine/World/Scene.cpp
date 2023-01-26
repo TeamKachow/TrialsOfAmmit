@@ -54,6 +54,7 @@ Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* 
 
 Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObject* object)
 {
+    // TODO: queue for deletion until after tick
     if (!_objects.contains(object))
     {
         std::stringstream msg;
