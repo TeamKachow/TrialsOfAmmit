@@ -9,24 +9,24 @@ Common::ResourceManager* Common::ResourceManager::INSTANCE = nullptr;
 
 Render::Shader* Common::ResourceManager::GetShader(std::string name)
 {
-	return &Shaders[name];
+	return &_shaders[name];
 }
 
 Render::Shader* Common::ResourceManager::LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
 {
-	Shaders[name] = loadShaderFromFile(vertShaderFile, fragShaderFile);
-	return &Shaders[name];
+	_shaders[name] = LoadShaderFromFile(vertShaderFile, fragShaderFile);
+	return &_shaders[name];
 }
 
 Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 {
-	return &Textures[name];
+	return &_textures[name];
 }
 
 Render::Texture* Common::ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
 {
-	Textures[name] = loadTextureFromFile(file, alpha);
-	return &Textures[name];
+	_textures[name] = LoadTextureFromFile(file, alpha);
+	return &_textures[name];
 }
 
 void Common::ResourceManager::SetupInstance()
@@ -36,9 +36,9 @@ void Common::ResourceManager::SetupInstance()
 
 void Common::ResourceManager::Clear()
 {
-    for (auto iter : Shaders)
+    for (auto iter : _shaders)
         glDeleteProgram(iter.second.ID);
-    for (auto iter : Textures)
+    for (auto iter : _textures)
         glDeleteTextures(1, &iter.second.ID);
 }
 
@@ -49,7 +49,7 @@ void Common::ResourceManager::DestroyInstance()
 }
 
 
-Render::Shader Common::ResourceManager::loadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile)
+Render::Shader Common::ResourceManager::LoadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile)
 {
 	std::string vertCode;
 	std::string fragCode;
@@ -81,7 +81,7 @@ Render::Shader Common::ResourceManager::loadShaderFromFile(const char* vertShade
 	return shader;
 };
 
-Render::Texture Common::ResourceManager::loadTextureFromFile(const char* file, bool alpha)
+Render::Texture Common::ResourceManager::LoadTextureFromFile(const char* file, bool alpha)
 {
 	// create texture object
 	Render::Texture texture;
@@ -90,8 +90,8 @@ Render::Texture Common::ResourceManager::loadTextureFromFile(const char* file, b
 	if (alpha) // Alpha should be true for PNG images and false for JPG
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // RGBA compatible
-		texture.internalFormat = GL_RGBA;
-		texture.imageFormat = GL_RGBA;
+		texture._internalFormat = GL_RGBA;
+		texture._imageFormat = GL_RGBA;
 	}
 
 	// load image

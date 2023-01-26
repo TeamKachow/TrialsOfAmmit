@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "../Input/InputManager.h"
+
 using namespace Hudson;
 
 Render::Window::Window(int width, int height, const char* name) {
@@ -20,19 +22,19 @@ Render::Window::Window(int width, int height, const char* name) {
 	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 	// Create a GLFWwindow object of defined pixels
-	windowExtent.x = width;
-	windowExtent.y = height;
-	window = glfwCreateWindow(width, height, name, NULL, NULL);
+	_windowExtent.x = width;
+	_windowExtent.y = height;
+	_window = glfwCreateWindow(width, height, name, NULL, NULL);
 
-	// Error check if the window fails to create
-	if (window == NULL)
+	// Error check if the _window fails to create
+	if (_window == NULL)
 	{
-		std::cout << "Failed to create GLFW window" << std::endl;
+		std::cout << "Failed to create GLFW _window" << std::endl;
 
 		glfwTerminate();
 	}
 
-	glfwMakeContextCurrent(window);
+	glfwMakeContextCurrent(_window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
@@ -49,8 +51,10 @@ Render::Window::Window(int width, int height, const char* name) {
 
 void Hudson::Render::Window::SetWindow()
 {
+	// TODO: implement or remove
 }
 
 void Hudson::Render::Window::DestroyWindow()
 {
+	// TODO: implement or remove
 }

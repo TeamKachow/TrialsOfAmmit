@@ -1,6 +1,6 @@
 #pragma once
-#include "stdafx.h"
-#include "Editor/ComponentRegistry.h"
+#include "../Util/stdafx.h"
+#include "../Editor/ComponentRegistry.h"
 
 namespace Hudson::Common
 {
@@ -20,6 +20,7 @@ namespace Hudson::Editor
 
 	private:
 
+		void InfiniteButton();
 		void MenuBar();
 		void Scene();
 		void Hierarchy();

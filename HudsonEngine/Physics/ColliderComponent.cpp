@@ -12,12 +12,12 @@ Hudson::Physics::ColliderComponent::~ColliderComponent()
 
 void Hudson::Physics::ColliderComponent::SetColliding(ColliderComponent* other)
 {
-	ColliderList.emplace(other);
+	_colliderList.emplace(other);
 }
 
 void Hudson::Physics::ColliderComponent::ClearColliding()
 {
-	ColliderList.clear();
+	_colliderList.clear();
 }
 
 

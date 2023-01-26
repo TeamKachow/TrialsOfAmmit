@@ -1,8 +1,7 @@
 #pragma once
-#include "Camera.h"
-#include "stdafx.h"
-#include "Render/Shader.h"
-
+#include "../Util/stdafx.h"
+#include "../Render/Shader.h"
+#include "../Entity/Camera.h"
 
 namespace Hudson::Common
 {
@@ -26,7 +25,7 @@ namespace Hudson::Render
 
         double deltaTime;
 
-        double updates++;
+        //double updates++;
 
         // Render to Texture
         Shader* screenShader;

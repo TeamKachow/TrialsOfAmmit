@@ -1,5 +1,5 @@
 #pragma once
-#include "stdafx.h"
+#include "../Util/stdafx.h"
 
 constexpr double FPS_60 = 1.0 / 60.0;
 
@@ -26,15 +26,15 @@ namespace Hudson::Physics
 		void UpdateCollider();
 
 	private:
-		Hudson::Physics::PhysicsComponent* physics;
-		Hudson::Physics::ColliderComponent* collider;
-		Hudson::Common::Engine* m_engine;
-		double lastTime;
-		double timer;
-		double accumulator;
-		double nowTime;
-		int frames;
-		int updates;
+		Hudson::Physics::PhysicsComponent* _physics;
+		Hudson::Physics::ColliderComponent* _collider;
+		Hudson::Common::Engine* _engine;
+		double _lastTime;
+		double _timer;
+		double _accumulator;
+		double _nowTime;
+		int _frames;
+		int _updates;
 	};
 }
 

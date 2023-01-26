@@ -1,10 +1,10 @@
 #include "Renderer.h"
-#include "Window.h"
-#include "Common/Engine.h"
-#include "Common/ResourceManager.h"
-#include "Entity/GameObject.h"
-#include "Render/SpriteComponent.h"
-#include "World/Scene.h"
+#include "../Render/Window.h"
+#include "../Common/Engine.h"
+#include "../Common/ResourceManager.h"
+#include "../Entity/GameObject.h"
+#include "../Render/SpriteComponent.h"
+#include "../World/Scene.h"
 
 Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	_engine(engine),

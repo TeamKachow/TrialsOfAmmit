@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "../stdafx.h"
+#include "../Util/stdafx.h"
 
 namespace Hudson::Util::Debug
 {
