@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Common.h"
+#include "../Entity/Common.h"
 
 namespace Hudson
 {

@@ -1,5 +1,5 @@
-﻿#include "SceneManager.h"
-#include "Scene.h"
+﻿#include "../World/SceneManager.h"
+#include "../World/Scene.h"
 
 void Hudson::World::SceneManager::HandlePostTick()
 {

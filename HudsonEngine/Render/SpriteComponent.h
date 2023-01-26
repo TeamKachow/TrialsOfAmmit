@@ -1,8 +1,8 @@
 #pragma once
 #include "../Util/stdafx.h"
 
-#include "Shader.h"
-#include "Texture.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture.h"
 #include "../Entity/Component.h"
 
 namespace Hudson::Render {

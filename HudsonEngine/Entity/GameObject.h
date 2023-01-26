@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
-#include "Common.h"
+#include "../Entity/Common.h"
 #include "../Common/IEditable.h"
 
 namespace Hudson

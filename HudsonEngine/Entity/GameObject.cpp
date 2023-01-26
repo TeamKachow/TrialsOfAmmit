@@ -1,6 +1,6 @@
-﻿#include "GameObject.h"
+﻿#include "../Entity/GameObject.h"
 
-#include "Component.h"
+#include "../Entity/Component.h"
 #include "../Util/Debug.h"
 
 void Hudson::Entity::GameObject::DrawPropertyUI()

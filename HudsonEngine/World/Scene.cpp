@@ -1,4 +1,4 @@
-﻿#include "Scene.h"
+﻿#include "../World/Scene.h"
 
 #include "../Entity/Behaviour.h"
 #include "../Entity/GameObject.h"

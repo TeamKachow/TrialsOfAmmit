@@ -1,4 +1,4 @@
-#include "SpriteComponent.h"
+#include "../Render/SpriteComponent.h"
 
 #include "../Entity/GameObject.h"
 

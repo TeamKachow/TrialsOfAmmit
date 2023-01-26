@@ -22,6 +22,7 @@ namespace Hudson::Physics
 {
 	class PhysicsComponent;
 	class ColliderComponent;
+	class Timestep;
 
 	class PhysicsManager
 	{

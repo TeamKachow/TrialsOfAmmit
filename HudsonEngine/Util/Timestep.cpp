@@ -24,8 +24,8 @@ void Hudson::Util::Timestep::CalculateTimestep()
 
 	while (_accumulator >= 1.0)
 	{
-		DeltaTime = FPS_60;
 		_doTick();
+		DeltaTime = FPS_60;
 		_updates++;
 		_accumulator--;
 	}

@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <vector>
 
-#include "Common.h"
-#include "GameObject.h"
+#include "../Entity/Common.h"
+#include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 #include "../World/SceneManager.h"
 
