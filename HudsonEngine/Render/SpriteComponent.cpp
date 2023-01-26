@@ -2,14 +2,16 @@
 
 #include "../Entity/GameObject.h"
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader) : Component("Sprite")
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture) : Component("Sprite")
 {
     this->_shader = shader;
+    this->_texture = texture;
     this->InitRenderData();
 }
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _gridSize(gridSize), _gridPos(gridPosition)
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _texture(texture), _gridSize(gridSize), _gridPos(gridPosition)
 {
+    this->InitRenderData(); // Initializes quadVAO
 }
 
 Hudson::Render::SpriteComponent::~SpriteComponent()
@@ -17,7 +19,7 @@ Hudson::Render::SpriteComponent::~SpriteComponent()
     glDeleteVertexArrays(1, &this->_quadVAO);
 }
 
-void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 position)
+void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 {
     this->_shader->Use();
     glm::mat4 model = glm::mat4(1);
@@ -41,7 +43,7 @@ void Hudson::Render::SpriteComponent::DrawSprite(Texture* texture, glm::vec2 pos
     // We should only ever expect to start at 0 index so GL_TEXTURE0 is fine
     // https://www.khronos.org/opengl/wiki/Texture - The glActiveTexture function defines the texture image unit that any function that takes a texture target as a parameter uses. - 
     glActiveTexture(GL_TEXTURE0);
-    texture->Bind();
+    _texture->Bind();
 
     glBindVertexArray(this->_quadVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);

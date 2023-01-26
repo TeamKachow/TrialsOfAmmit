@@ -43,11 +43,14 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 	// Renders at maximum possible _frames - Render Here
 	_frames++;
 
+	std::cout << "Timer: " << _timer << std::endl;
+
+
 	// Reset after one second
 	if (glfwGetTime() - _timer > 1.0f)
 	{
 		_timer++;
-		std::cout << "FPS: " << _updates << std::endl;
+		std::cout << "Physics FPS: " << _updates << std::endl;
 		_updates = 0, _frames = 0;
 	}
 }

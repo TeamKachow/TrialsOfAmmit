@@ -49,6 +49,11 @@ namespace Hudson::Common
         void Run();
 
         /**
+		 * \brief Run the engine loop. This will return when the game/editor exits.
+		 */
+    	 Render::Renderer* GetRenderer() { return _renderer.get(); }
+
+        /**
          * \brief Shut down the engine at the end of the current update loop.
          * \details If currently running, this will set a flag to stop at the end of the current update loop.
          * \details This will *not* clean up the game resources - for that, see Cleanup()
