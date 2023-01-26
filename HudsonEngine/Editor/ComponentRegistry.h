@@ -22,23 +22,32 @@ namespace Hudson::Editor
             // - https://www.rttr.org/ ?
         };
 
-        static std::vector<Entry> _entries;
+        std::vector<Entry> _entries;
 
     public:
+        /**
+         * \brief Register a component or behaviour to be visible to the editor.
+         * \tparam T The class of the component/behaviour to register
+         * \param name The name of the component/behaviour to register
+         */
         template<Entity::is_editor_component T>
-        static void Register(std::string name);
+        void Register(std::string name);
 
-        static void RegisterEngineComponents();
+        /**
+         * \brief Register engine components to be visible in the editor.
+         */
+        void RegisterEngineComponents();
 
-        // TODO: the rest of this
+        /**
+         * \brief Get all registered components.
+         * \return The registered components
+         */
+        std::vector<Entry>& GetKnownComponents();
     };
 
     template <Entity::is_editor_component T>
     void ComponentRegistry::Register(std::string name)
     {
         _entries.emplace_back(name, [] { return new T(); });
-
-        // TODO: look into boost::serialization or cereal support here?
-        // TODO: ....ok we may need more advanced RTTI for this, aaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
     }
 }

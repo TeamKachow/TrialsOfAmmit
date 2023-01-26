@@ -43,11 +43,14 @@ void Hudson::Physics::PhysicsManager::UpdatePhysics()
 	// Renders at maximum possible _frames - Render Here
 	_frames++;
 
+	std::cout << "Timer: " << _timer << std::endl;
+
+
 	// Reset after one second
 	if (glfwGetTime() - _timer > 1.0f)
 	{
 		_timer++;
-		std::cout << "FPS: " << _updates << std::endl;
+		std::cout << "Physics FPS: " << _updates << std::endl;
 		_updates = 0, _frames = 0;
 	}
 }
@@ -57,6 +60,10 @@ void Hudson::Physics::PhysicsManager::UpdateMovement(float deltaTime)
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
+		// Don't run physics on inactive scenes
+		if (!scene->IsActive())
+			continue;
+
 		for (auto gameObject : scene->GetObjects())
 		{
 			// Update Physics
@@ -73,6 +80,10 @@ void Hudson::Physics::PhysicsManager::UpdateCollider()
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
 	{
+		// Don't update collisions on inactive scenes
+		if (!scene->IsActive())
+			continue;
+
 		std::vector<ColliderComponent*> vecColliders;
 
 		for (auto gameObject : scene->GetObjects())

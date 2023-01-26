@@ -1,7 +1,7 @@
 #include "../Physics/PhysicsComponent.h"
 #include "../Entity/GameObject.h"
 
-Hudson::Physics::PhysicsComponent::PhysicsComponent()
+Hudson::Physics::PhysicsComponent::PhysicsComponent() : Component("Physics")
 {
 
 }

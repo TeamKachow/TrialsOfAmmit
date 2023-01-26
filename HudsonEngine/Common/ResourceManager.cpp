@@ -71,7 +71,7 @@ Render::Shader Common::ResourceManager::LoadShaderFromFile(const char* vertShade
 	}
 	catch (std::exception e)
 	{
-		std::cout << "ERROR::SHADER: Failed to read shader files" << std::endl;
+		std::cout << "Failed to read shader files" << std::endl;
 	}
 	const char* vertShaderCode = vertCode.c_str();
 	const char* fragShaderCode = fragCode.c_str();

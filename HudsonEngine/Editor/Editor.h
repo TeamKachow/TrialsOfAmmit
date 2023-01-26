@@ -14,19 +14,23 @@ namespace Hudson::Editor
 		Common::Engine* _engine;
 		ComponentRegistry* _registry;
 
+		Entity::GameObject* _selected = nullptr;
+		bool _showIds = false;
+
 	public:
-		Editor(Common::Engine* engine);
+		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();
 
 	private:
 
 		void InfiniteButton();
 		void MenuBar();
+		void Scene();
 		void Hierarchy();
 		void ContentBrowser();
 		void ComponentList();
 		void Tools();
-		void ObjectComponents();
+		void ObjectProperties();
 		void Debug();
 
 		void Draw();

@@ -1,5 +1,5 @@
 #pragma once
-#include "./Util/stdafx.h"
+#include "../Util/stdafx.h"
 
 class InputManager
 {

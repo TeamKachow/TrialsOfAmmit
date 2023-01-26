@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include "../InputManager.h"
+#include "../Input/InputManager.h"
 
 using namespace Hudson;
 
@@ -15,7 +15,15 @@ Render::Window::Window(int width, int height, const char* name) {
 	// So that means we only have the modern functions
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+	// TODO Tie this into tools for the editor
+	// Should also be exposed for the game settings
+
+	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+
 	// Create a GLFWwindow object of defined pixels
+	_windowExtent.x = width;
+	_windowExtent.y = height;
 	_window = glfwCreateWindow(width, height, name, NULL, NULL);
 
 	// Error check if the _window fails to create
@@ -32,7 +40,7 @@ Render::Window::Window(int width, int height, const char* name) {
 		std::cout << "Failed to initialize GLAD" << std::endl;
 	}
 
-	glViewport(0, 0, width, height);
+	//glViewport(0, 0, width, height);
 
 	// Forces background of textures to blend
 	glEnable(GL_BLEND);
