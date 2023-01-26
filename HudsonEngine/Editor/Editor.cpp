@@ -11,7 +11,12 @@ constexpr ImVec4 IM_COLOR_ORANGE	= { 1.0f, 0.8f, 0.0f, 1.0f };
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry)
 {
-	engine->RegisterFrameHook([this](Common::Engine* engine)
+	engine->RegisterPreFrameHook([](Common::Engine* engine)
+		{
+			engine->GetRenderer()->SetImguiDockspace(true);
+		});
+
+	engine->RegisterMidFrameHook([this](Common::Engine* engine)
 		{
 			this->Draw();
 		});
@@ -103,10 +108,10 @@ void Hudson::Editor::Editor::Scene()
 	ImTextureID textureID = reinterpret_cast<ImTextureID>(_engine->GetRenderer()->GetRenderedSceneTexture());
 
 	// TODO take an Unreal approach and make it so that the image caps at a certain size
-	ImVec2 imageSize = { ImGui::GetContentRegionMax().x,ImGui::GetContentRegionMax().y };
+	ImVec2 imageSize = { ImGui::GetContentRegionAvail().x,ImGui::GetContentRegionAvail().y };
 
-	ImVec2 uv_min = ImVec2(1.0f, 1.0f); // Top-left
-	ImVec2 uv_max = ImVec2(0.0f, 0.0f); // Lower-right
+	ImVec2 uv_min = ImVec2(0.0f, 1.0f); // Top-left
+	ImVec2 uv_max = ImVec2(1.0f, 0.0f); // Lower-right
 	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
 
@@ -114,10 +119,10 @@ void Hudson::Editor::Editor::Scene()
 
 	// TODO clean this up, doesnt need to run every frame but testing for now
 	// TODO detect a change easy enough
-	if(ImGui::GetContentRegionMax().x > 0 && ImGui::GetContentRegionMax().y > 0)
+	if(imageSize.x > 0 && imageSize.y > 0)
 	{
 		// Framebuffer can't have 0 or less so, this queues framebuffer recreate for when the application isnt minimized
-		_engine->GetRenderer()->CreateFramebuffers(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y);
+		_engine->GetRenderer()->CreateFramebuffers(imageSize.x, imageSize.y);
 	}
 
 	ImGui::End();
@@ -258,7 +263,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Pos");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().pos.x, 0.05f);
+			ImGui::DragFloat2("", &_selected->GetTransform().pos.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -267,7 +272,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Scale");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().scale.x, 0.05f);
+			ImGui::DragFloat2("", &_selected->GetTransform().scale.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -276,7 +281,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Rotate");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat("", &_selected->GetTransform().rotateZ, 0.05f);
+			ImGui::DragFloat("", &_selected->GetTransform().rotateZ, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 

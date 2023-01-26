@@ -31,7 +31,8 @@ namespace Hudson::Common
 
         bool _shutdownFlag = false;
 
-        std::vector<std::function<void(Engine*)>> _frameHooks;
+        std::vector<std::function<void(Engine*)>> _preFrameHooks;
+        std::vector<std::function<void(Engine*)>> _midFrameHooks;
         std::vector<std::function<void(Engine*)>> _shutdownHooks;
 
     public:
@@ -71,8 +72,6 @@ namespace Hudson::Common
          */
         [[nodiscard]] Hudson::World::SceneManager* GetSceneManager() const;
 
-        // GetRenderer();
-
         /**
          * \brief Get the engine's physics manager.
          * \return The physics manager
@@ -92,15 +91,21 @@ namespace Hudson::Common
         [[nodiscard]] InputManager* GetInputManager() const;
 
         /**
-         * \brief Register a hook to run after engine systems have run for the frame but before it renders.
-         * \param frameHook The function to call before a frame renders.
+         * \brief Register a hook to run before engine systems have run.
+         * \param hook The function to call before engine systems run.
          */
-        void RegisterFrameHook(std::function<void(Engine*)> frameHook);
+        void RegisterPreFrameHook(std::function<void(Engine*)> hook);
+
+        /**
+         * \brief Register a hook to run after engine systems have run for the frame but before it renders.
+         * \param hook The function to call before a frame renders.
+         */
+        void RegisterMidFrameHook(std::function<void(Engine*)> hook);
 
         /**
          * \brief Register a hook to run before the engine shuts down.
-         * \param shutdownHook The function to call before the engine shuts down
+         * \param hook The function to call before the engine shuts down
          */
-        void RegisterShutdownHook(std::function<void(Engine*)> shutdownHook);
+        void RegisterShutdownHook(std::function<void(Engine*)> hook);
     };
 }

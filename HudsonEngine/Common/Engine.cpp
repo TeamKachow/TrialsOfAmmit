@@ -38,6 +38,12 @@ void Hudson::Common::Engine::Run()
     bool shouldExit = false;
     while (!shouldExit)
     {
+        // Call pre-frame hooks
+        for (std::function<void(Engine*)> hook : _preFrameHooks)
+        {
+            hook(this);
+        }
+
         // ImGui
         _renderer->StartImGui();
 
@@ -48,8 +54,8 @@ void Hudson::Common::Engine::Run()
 
         _physics->UpdatePhysics();
 
-        // Call frame hooks
-        for (std::function<void(Engine*)> hook : _frameHooks)
+        // Call mid-frame hooks
+        for (std::function<void(Engine*)> hook : _midFrameHooks)
         {
             hook(this);
         }
@@ -104,12 +110,17 @@ InputManager* Hudson::Common::Engine::GetInputManager() const
     return _input.get();
 }
 
-void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> frameHook)
+void Hudson::Common::Engine::RegisterPreFrameHook(std::function<void(Engine*)> hook)
 {
-    _frameHooks.push_back(frameHook);
+    _preFrameHooks.push_back(hook);
 }
 
-void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> shutdownHook)
+void Hudson::Common::Engine::RegisterMidFrameHook(std::function<void(Engine*)> hook)
 {
-    _shutdownHooks.push_back(shutdownHook);
+    _midFrameHooks.push_back(hook);
+}
+
+void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> hook)
+{
+    _shutdownHooks.push_back(hook);
 }

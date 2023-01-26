@@ -7,7 +7,10 @@
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
 
+#ifdef _DEBUG
 #define ENABLE_EDITOR
+#endif
+
 #ifdef ENABLE_EDITOR
 #pragma message("Creating an editor build")
 #endif
@@ -30,6 +33,7 @@ Hudson::Common::ResourceManager* resManager;
 
 void InitRegistry()
 {
+    registry = new Hudson::Editor::ComponentRegistry();
     registry->RegisterEngineComponents();
 
     registry->Register<DemoBehaviour>("Demo Behaviour");
@@ -43,7 +47,6 @@ void Init()
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
-    registry = new Hudson::Editor::ComponentRegistry();
     InitRegistry();
     editor = new Hudson::Editor::Editor(engine, registry);
 #endif

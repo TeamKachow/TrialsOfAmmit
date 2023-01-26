@@ -8,13 +8,19 @@
 
 Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	_engine(engine),
-	_window(std::make_unique<Window>(1280, 720, "DemoGame (TEMP): Hudson render window"))
+	_window(std::make_unique<Window>(1280, 720, "DemoGame (TEMP): Hudson render window")),
+    _imguiDockspace(false)
 {
 	static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
+
+#ifdef _DEBUG
+	io.IniFilename = "editor.ini";
+#endif
+
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
@@ -62,8 +68,11 @@ void Hudson::Render::Renderer::StartImGui()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
-	
-	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+
+	if (_imguiDockspace)
+	{
+		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+	}
 }
 
 void Hudson::Render::Renderer::InitRenderToTexture()
@@ -190,4 +199,9 @@ void Hudson::Render::Renderer::WaitForRender()
 	//std::cout << "Render Delta: " << deltaTime << std::endl;
 	//deltaTime = 0;
 
+}
+
+void Hudson::Render::Renderer::SetImguiDockspace(bool enabled)
+{
+	_imguiDockspace = enabled;
 }

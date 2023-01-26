@@ -31,6 +31,8 @@ namespace Hudson::Render
         unsigned int frameBufferObject;
         unsigned int textureColorBuffer;
 
+        bool _imguiDockspace;
+
     public:
         Renderer(Common::Engine* engine);
         ~Renderer();
@@ -46,7 +48,7 @@ namespace Hudson::Render
         void Draw();
         void WaitForRender();
 
-
+        void SetImguiDockspace(bool enabled);
     };
 }
 
