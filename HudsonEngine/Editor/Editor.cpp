@@ -1,5 +1,7 @@
 #include "../Editor/Editor.h"
 #include "../Common/Engine.h"
+#include "../Render/Renderer.h"
+#include "../Render/Window.h"
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine)
 {
@@ -80,6 +82,35 @@ void Hudson::Editor::Editor::MenuBar()
 	}
 }
 
+void Hudson::Editor::Editor::Scene()
+{
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+	ImGui::Begin("Scene");
+	//ImGui::Scale
+	ImTextureID textureID = reinterpret_cast<ImTextureID>(_engine->GetRenderer()->GetRenderedSceneTexture());
+
+	// TODO take an Unreal approach and make it so that the image caps at a certain size
+	ImVec2 imageSize = { ImGui::GetContentRegionMax().x,ImGui::GetContentRegionMax().y };
+
+	ImVec2 uv_min = ImVec2(1.0f, 1.0f); // Top-left
+	ImVec2 uv_max = ImVec2(0.0f, 0.0f); // Lower-right
+	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
+	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
+
+	ImGui::Image(textureID, imageSize, uv_min, uv_max, tint_col, border_col);
+
+	// TODO clean this up, doesnt need to run every frame but testing for now
+	// TODO detect a change easy enough
+	if(ImGui::GetContentRegionMax().x > 0 && ImGui::GetContentRegionMax().y > 0)
+	{
+		// Framebuffer can't have 0 or less so, this queues framebuffer recreate for when the application isnt minimized
+		_engine->GetRenderer()->CreateFramebuffers(ImGui::GetContentRegionMax().x, ImGui::GetContentRegionMax().y);
+	}
+
+	ImGui::End();
+	ImGui::PopStyleVar();
+}
+
 void Hudson::Editor::Editor::Hierarchy()
 {
 	ImGui::Begin("Hierarchy");
@@ -121,6 +152,7 @@ void Hudson::Editor::Editor::Debug()
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
+	Scene();
 	Hierarchy();
 	ContentBrowser();
 	ComponentList();

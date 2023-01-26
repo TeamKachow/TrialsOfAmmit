@@ -11,11 +11,11 @@ namespace Hudson::Render {
     {
     public:
         SpriteComponent();
-        SpriteComponent(Shader* shader);
-        SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition);
+        SpriteComponent(Shader* shader, Texture* texture);
+        SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition);
         ~SpriteComponent();
 
-        void DrawSprite(Texture* texture, glm::vec2 position);
+        void DrawSprite(glm::vec2 position);
         void SetGridSize(glm::vec2 gridSize) { this->_gridSize = gridSize; };
         glm::vec2 GetGridSize() { return this->_gridSize; };
 
@@ -28,7 +28,8 @@ namespace Hudson::Render {
 
     private:
         Shader*       _shader;
-        unsigned int _quadVAO;
+        Texture*      _texture;
+        unsigned int  _quadVAO;
         
         // Sprite Variables
         glm::vec2 _gridSize = glm::vec2(1);

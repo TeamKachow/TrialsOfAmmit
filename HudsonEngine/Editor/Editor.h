@@ -22,6 +22,7 @@ namespace Hudson::Editor
 
 		void InfiniteButton();
 		void MenuBar();
+		void Scene();
 		void Hierarchy();
 		void ContentBrowser();
 		void ComponentList();
