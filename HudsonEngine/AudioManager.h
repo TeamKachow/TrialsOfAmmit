@@ -1,10 +1,5 @@
 #pragma once
-#include <irrKlang.h>
-#include <unordered_map>
-#include <string>
-#include <vector>
-#include <map>
-
+#include "./Util/stdafx.h"
 
 using namespace irrklang;
 
