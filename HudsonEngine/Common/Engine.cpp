@@ -1,6 +1,5 @@
 ﻿#include "Engine.h"
 
-#include "../InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
 
@@ -28,7 +27,6 @@ void Hudson::Common::Engine::Setup()
 
     // create input system
     _input = std::make_unique<InputManager>();
-
 }
 
 void Hudson::Common::Engine::Run()
@@ -86,4 +84,9 @@ Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
 void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> frameHook)
 {
     _frameHooks.push_back(frameHook);
+}
+
+Hudson::Common::InputManager* Hudson::Common::Engine::GetInputManager()
+{
+    return _input.get();
 }

@@ -13,6 +13,9 @@ namespace Hudson::Editor
 	{
 		Common::Engine* _engine;
 		ComponentRegistry* _registry;
+		bool openInput;
+		char selected;
+		char keyAction[255]{};
 
 	public:
 		Editor(Common::Engine* engine);
@@ -28,6 +31,7 @@ namespace Hudson::Editor
 		void Tools();
 		void ObjectComponents();
 		void Debug();
+		void Input();
 
 		void Draw();
 	};

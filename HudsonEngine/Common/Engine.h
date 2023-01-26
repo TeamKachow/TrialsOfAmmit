@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "../World/SceneManager.h"
-
+#include "../Common/InputManager.h"
 #include "../Physics/PhysicsManager.h"
 
 class InputManager;
@@ -27,7 +27,7 @@ namespace Hudson::Common
         std::unique_ptr<Render::Renderer> _renderer; 
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
-        std::unique_ptr<InputManager> _input; 
+        std::unique_ptr<Common::InputManager> _input; 
         bool _shutdownFlag = false;
         std::vector<std::function<void(Engine*)>> _frameHooks;
 
@@ -69,5 +69,10 @@ namespace Hudson::Common
          * \param frameHook The function to call before a frame renders.
          */
         void RegisterFrameHook(std::function<void(Engine*)> frameHook);
+
+        /**
+         * \brief Get the engine's input manager
+         */
+        [[nodiscard]] Hudson::Common::InputManager* GetInputManager();
     };
 }

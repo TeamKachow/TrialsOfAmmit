@@ -30,7 +30,7 @@ namespace Hudson::Render
         void Draw();
         void WaitForRender();
 
-
+        GLFWwindow* GetWindow();
     };
 }
 

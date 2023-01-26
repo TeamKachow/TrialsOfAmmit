@@ -98,3 +98,8 @@ void Hudson::Render::Renderer::WaitForRender()
 {
 	// TODO: FPS limiter goes here
 }
+
+GLFWwindow* Hudson::Render::Renderer::GetWindow()
+{
+	return _window->GetWindow();
+}
