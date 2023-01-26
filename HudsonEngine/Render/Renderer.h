@@ -1,7 +1,6 @@
 #pragma once
 #include "../Util/stdafx.h"
 #include "../Render/Shader.h"
-#include "../Entity/Camera.h"
 
 namespace Hudson::Common
 {
@@ -15,9 +14,7 @@ namespace Hudson::Render
     class Renderer
     {
         Common::Engine* _engine;
-
         std::unique_ptr<Window> _window;
-        Camera _defaultCamera;
 
         // Debug
         double lastTime;

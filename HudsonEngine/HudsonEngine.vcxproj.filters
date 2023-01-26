@@ -76,9 +76,6 @@
     <ClCompile Include="Entity\Behaviour.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Camera.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Component.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -130,6 +127,9 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -172,9 +172,6 @@
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Behaviour.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Camera.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Component.h">
@@ -234,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

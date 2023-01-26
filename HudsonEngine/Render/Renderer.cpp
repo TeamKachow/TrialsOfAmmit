@@ -8,9 +8,7 @@
 
 Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	_engine(engine),
-	_window(std::make_unique<Window>(1280, 720, "DemoGame (TEMP): Hudson render window")),
-	_defaultCamera(0.0f, 1600.0f, 900.0f, 0.0f)
-
+	_window(std::make_unique<Window>(1280, 720, "DemoGame (TEMP): Hudson render window"))
 {
 	static ImGuiDockNodeFlags dockspaceFlags = ImGuiDockNodeFlags_None;
 	IMGUI_CHECKVERSION();
@@ -26,6 +24,8 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	// Depth is enabled by default but needs to be disabled for RTT to work
 	// Due to it being 2D rendering we can disable this from the start
 	glDisable(GL_DEPTH_TEST);
+	glGenFramebuffers(1, &frameBufferObject);
+	glGenTextures(1, &textureColorBuffer);
 
 	InitRenderToTexture();
 
@@ -39,15 +39,13 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	// TODO move this into Demo Project as all loading should be handled by the creation of a scene
 	auto resManager = Hudson::Common::ResourceManager::GetInstance();
 
-	resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
 	resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-
-	resManager->GetShader("spriteShader")->Use().SetInteger("image", 0);
-	resManager->GetShader("spriteShader")->SetMatrix4("projection", _defaultCamera.GetProjectionMatrix());
-
 	screenShader = resManager->GetShader("screenShader");
 
+	//resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+	//resManager->GetShader("spriteShader")->Use();
+	//resManager->GetShader("spriteShader")->SetMatrix4("projection", _defaultCamera.GetProjectionMatrix());
 	//screenShader->Compile("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl");
 
 }
@@ -93,20 +91,18 @@ void Hudson::Render::Renderer::InitRenderToTexture()
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+	glBindVertexArray(this->screenVertexArrayObject);
 
-	// TODO this may need slight rework depending on window resizing as the framebuffers are tied to screen size, so a callback into initializing the frame buffers might be needed
 	CreateFramebuffers(_window.get()->GetWindowExtent().x, _window.get()->GetWindowExtent().y);
 
 }
 
 void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight)
 {
-	glGenFramebuffers(1, &frameBufferObject);
 	// All the next read and write framebuffer operations will affect the currently bound framebuffer
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 
 	// Create texture color buffer
-	glGenTextures(1, &textureColorBuffer);
 	glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, extentWidth, extentHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1280, 720, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
@@ -141,7 +137,6 @@ void Hudson::Render::Renderer::Draw()
 	glClear(GL_COLOR_BUFFER_BIT);
 	//glClear(GL_COLOR_BUFFER_BIT);
 
-
 	// Render objects in all scenes
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	for (auto scene : scenes)
@@ -165,7 +160,7 @@ void Hudson::Render::Renderer::Draw()
 	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	screenShader->Use();
+	//screenShader->Use();
 	glBindVertexArray(screenVertexArrayObject);
 	glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
