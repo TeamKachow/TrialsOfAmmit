@@ -16,6 +16,8 @@ Hudson::Editor::ComponentRegistry* registry;
 Hudson::Editor::Editor* editor;
 #endif
 
+Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f);
+
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Physics::PhysicsComponent* Physics1;
@@ -51,6 +53,10 @@ void Init()
 
 void GameSetup()
 {
+    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    // Shader needs to be Use() to pass values over
+    resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
+
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
@@ -104,6 +110,7 @@ void GameSetup()
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
+
 
 int main() {
     Init();
