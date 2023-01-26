@@ -99,7 +99,7 @@ void Hudson::Render::Renderer::InitRenderToTexture()
 
 }
 
-void Hudson::Render::Renderer::CreateFramebuffers(unsigned extentWidth, unsigned extentHeight)
+void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight)
 {
 	glGenFramebuffers(1, &frameBufferObject);
 	// All the next read and write framebuffer operations will affect the currently bound framebuffer
