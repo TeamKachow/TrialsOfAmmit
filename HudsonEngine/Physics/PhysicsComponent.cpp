@@ -12,7 +12,7 @@ Hudson::Physics::PhysicsComponent::~PhysicsComponent()
 }
 
 
-void Hudson::Physics::PhysicsComponent::Update(float deltaTime)
+void Hudson::Physics::PhysicsComponent::Update(double deltaTime)
 {
 	// Using Semi-Implicit Euler Integration
 

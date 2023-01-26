@@ -115,6 +115,7 @@
     <ClCompile Include="Render\Window.cpp" />
     <ClCompile Include="Util\Debug.cpp" />
     <ClCompile Include="Util\stdafx.cpp" />
+    <ClCompile Include="Util\Timestep.cpp" />
     <ClCompile Include="World\Scene.cpp" />
     <ClCompile Include="World\SceneManager.cpp" />
     <ClCompile Include="Util\glad.c" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="Util\Debug.h" />
     <ClInclude Include="Util\stdafx.h" />
+    <ClInclude Include="Util\Timestep.h" />
     <ClInclude Include="World\Common.h" />
     <ClInclude Include="World\Scene.h" />
     <ClInclude Include="World\SceneManager.h" />

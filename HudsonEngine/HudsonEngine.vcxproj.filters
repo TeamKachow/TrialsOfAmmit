@@ -130,6 +130,9 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Util\Timestep.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -234,6 +237,9 @@
     </ClInclude>
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Timestep.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

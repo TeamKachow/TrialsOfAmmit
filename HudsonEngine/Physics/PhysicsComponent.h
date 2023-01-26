@@ -11,7 +11,7 @@ namespace Hudson::Physics
 		PhysicsComponent();
 		~PhysicsComponent();
 
-		void Update(float deltaTime);
+		void Update(double deltaTime);
 
 		/**
         * Sets the Acceleration of the Object, False for Acceleration or True for Constant Acceleration.

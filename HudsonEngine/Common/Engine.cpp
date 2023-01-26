@@ -14,6 +14,8 @@ Hudson::Common::Engine::~Engine()
 
 void Hudson::Common::Engine::Setup()
 {
+
+
     // create scene manager
     _sceneManager = std::make_unique<World::SceneManager>();
 

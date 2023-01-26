@@ -185,14 +185,14 @@ void Hudson::Render::Renderer::Draw()
 
 void Hudson::Render::Renderer::WaitForRender()
 {
-	nowTime = glfwGetTime();
-	deltaTime = nowTime - lastTime;
-	lastTime = nowTime;
+	//nowTime = glfwGetTime();
+	//deltaTime = nowTime - lastTime;
+	//lastTime = nowTime;
 
 
-	// TODO: FPS limiter goes here
+	//// TODO: FPS limiter goes here
 
-	std::cout << "Render Delta: " << deltaTime << std::endl;
-	deltaTime = 0;
+	//std::cout << "Render Delta: " << deltaTime << std::endl;
+	//deltaTime = 0;
 
 }
