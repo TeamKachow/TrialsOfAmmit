@@ -4,10 +4,11 @@
 #include "../Render/Shader.h"
 #include "../Render/Texture.h"
 #include "../Entity/Component.h"
+#include "../Common/IEditable.h"
 
 namespace Hudson::Render {
 
-    class SpriteComponent : public Entity::Component
+    class SpriteComponent : public Entity::Component, public Common::IEditable
     {
     public:
         SpriteComponent();
@@ -25,6 +26,8 @@ namespace Hudson::Render {
         void SetSize(glm::vec2 size) { this->_size = size; };
 
         void SetColor(glm::vec3 color) { this->_color = color; };
+
+        void DrawPropertyUI() override;
 
     private:
         Shader*       _shader;

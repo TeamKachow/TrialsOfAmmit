@@ -54,6 +54,14 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     glBindVertexArray(0);
 }
 
+void Hudson::Render::SpriteComponent::DrawPropertyUI()
+{
+    ImGui::InputFloat2("Grid Size", &_gridSize.r);
+    ImGui::InputFloat2("Grid Position", &_gridPos.r);
+    ImGui::ColorEdit3("Colour Tint", &_color.r);
+    ImGui::InputFloat2("Size", &_size.r); 
+}
+
 void Hudson::Render::SpriteComponent::InitRenderData()
 {
     unsigned int VBO;

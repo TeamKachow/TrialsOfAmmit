@@ -41,6 +41,15 @@ void Hudson::Physics::PhysicsComponent::CalculateAcceleration(float deltaTime)
 	}
 }
 
+void Hudson::Physics::PhysicsComponent::DrawPropertyUI()
+{
+	ImGui::DragFloat("Mass", &_mass, 0.1, 0.0001);
+	ImGui::DragFloat2("Velocity", &_velocity.x, 0.5);
+	ImGui::DragFloat2("Acceleration", &_acceleration.x, 0.5);
+	ImGui::DragFloat2("Force", &_force.x, 0.5);
+	ImGui::Checkbox("Const Accel.", &_constantAccel);
+}
+
 void Hudson::Physics::PhysicsComponent::CalculateVelocity(float deltaTime)
 {
 	// v = u + at 
