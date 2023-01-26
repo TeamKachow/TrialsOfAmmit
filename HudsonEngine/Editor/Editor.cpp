@@ -154,6 +154,18 @@ void Hudson::Editor::Editor::Hierarchy()
 				{
 					_selected = object;
 				}
+				if (ImGui::BeginPopupContextItem())
+				{
+					ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+					if (ImGui::Selectable("Delete"))
+					{
+						ImGui::CloseCurrentPopup();
+						// TODO: this crashes because iterators don't like you deleting things
+						scene->RemoveObject(object);
+						delete object; 
+					}
+					ImGui::EndPopup();
+				}
 				++j;
             }
 			ImGui::TreePop();
