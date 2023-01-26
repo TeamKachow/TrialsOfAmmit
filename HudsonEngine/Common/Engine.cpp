@@ -32,6 +32,7 @@ void Hudson::Common::Engine::Setup()
 void Hudson::Common::Engine::Run()
 {
     bool shouldExit = false;
+    _input->BindCallbacks(_renderer->GetWindow());
     while (!shouldExit)
     {
         // ImGui
@@ -89,4 +90,9 @@ void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> fram
 Hudson::Common::InputManager* Hudson::Common::Engine::GetInputManager()
 {
     return _input.get();
+}
+
+Hudson::Render::Renderer* Hudson::Common::Engine::GetRenderer()
+{
+    return _renderer.get();
 }

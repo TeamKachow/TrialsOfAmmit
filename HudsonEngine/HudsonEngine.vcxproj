@@ -88,6 +88,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Common\Engine.cpp" />
+    <ClCompile Include="Common\InputManager.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
@@ -115,11 +116,11 @@
     <ClCompile Include="World\Scene.cpp" />
     <ClCompile Include="World\SceneManager.cpp" />
     <ClCompile Include="Util\glad.c" />
-    <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Engine.h" />
     <ClInclude Include="Common\IEditable.h" />
+    <ClInclude Include="Common\InputManager.h" />
     <ClInclude Include="Common\ResourceManager.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />
@@ -150,7 +151,6 @@
     <ClInclude Include="World\Common.h" />
     <ClInclude Include="World\Scene.h" />
     <ClInclude Include="World\SceneManager.h" />
-    <ClInclude Include="InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basicFragShader.glsl" />

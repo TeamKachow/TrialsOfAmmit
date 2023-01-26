@@ -237,5 +237,5 @@ void Hudson::Common::InputManager::cursorPosCallback(GLFWwindow* window, double 
 
 void Hudson::Common::InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)
 {
-
+	std::cout << button << " has been clicked" << std::endl;
 }

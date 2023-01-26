@@ -74,5 +74,10 @@ namespace Hudson::Common
          * \brief Get the engine's input manager
          */
         [[nodiscard]] Hudson::Common::InputManager* GetInputManager();
+
+        /*
+        * \brief Get the engine's renderer
+        */
+        [[nodiscard]] Hudson::Render::Renderer* GetRenderer();
     };
 }
