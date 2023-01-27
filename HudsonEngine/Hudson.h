@@ -31,6 +31,7 @@
 #include "Render/SpriteComponent.h"
 #include "Render/Texture.h"
 #include "Render/Window.h"
+#include "Render/TextComponent.h"
 
 #include "Util/Debug.h"
 #include  "Util/Timestep.h"

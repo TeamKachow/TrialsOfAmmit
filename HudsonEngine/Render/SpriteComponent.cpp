@@ -11,7 +11,8 @@ Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* textur
 
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _texture(texture), _gridSize(gridSize), _gridPos(gridPosition)
 {
-    this->InitRenderData(); // Initializes quadVAO
+    this->InitRenderData(); // Initializes quad
+
 }
 
 Hudson::Render::SpriteComponent::~SpriteComponent()
