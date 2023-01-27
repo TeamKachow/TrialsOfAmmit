@@ -10,7 +10,7 @@
 // namespaces and includes of the irrklang high level api is in the audiomanager header, which ables the program
 //to load in the library.
 
-AudioManager::AudioManager()
+Hudson::Audio::AudioManager::AudioManager()
 {
    
     try 
@@ -34,7 +34,7 @@ AudioManager::AudioManager()
 
 // Deintialise the engine - delete the engine and all sound files entirely once theyre no longer in use
 
-AudioManager::~AudioManager() 
+Hudson::Audio::AudioManager::~AudioManager() 
 {
     // Stop all sounds and close the sound engine
     stopAllSounds();
@@ -45,7 +45,7 @@ AudioManager::~AudioManager()
 // This is an important fuhnction which allows the sound to be played with settings, so you can adjust the pitch and pan of the sound
 // The playlooped setting can be adjusted in the UI function which controls if a sound file repeats a sound infinitely or not.
 
-irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
+irrklang::ISound* Hudson::Audio::AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
 {
     try
     {
@@ -54,45 +54,45 @@ irrklang::ISound* AudioManager::playSound(const std::string& filePath, bool play
         if (sound)
         {
 
-            sounds[filePath].push_back(sound);
+            sounds[filePath.c_str()].push_back(sound);
 
-            /* sound->setPlaybackSpeed(pitch);
-             sound->setPan(pan); */
         }
         return sound;
     }
     catch (std::exception& e)
     {
-        std::cout << "Exception: Sound couldn't be played!" << e.what() << std::endl;
+        std::cout << "Exception: Sound could not be played!" << e.what() << std::endl;
     }
 }
 
 
 // optional button instead of two separate button for pausing and resuming a sound. This toggle is determined
 //by the issoundplaying function
-bool AudioManager::toggleSound(const std::string& filePath)
+bool Hudson::Audio::AudioManager::toggleSound(const std::string& filePath)
 {
     //toggles the sound if the user wants to pause or resume a sound file
-    
-        bool isPlaying = isSoundPlaying(filePath);
+    for (auto& sound : sounds[filePath.c_str()])
+    {
+        bool isPlaying = isSoundPlaying(filePath.c_str());
         if (isPlaying)
         {
-            pauseSound(filePath);
+            pauseSound(filePath.c_str());
         }
         else
         {
-            resumeSound(filePath);
+            resumeSound(filePath.c_str());
         }
         return !isPlaying;
+    }
     
   
 }
 
 // function only stops a source source, not all sounds like the stopAllSounds function.
-void AudioManager::stopSound(const std::string& filePath)
+void Hudson::Audio::AudioManager::stopSound(const std::string& filePath)
 {
     // Stop a sound file
-    for (auto& sound : sounds[filePath]) 
+    for (auto& sound : sounds[filePath.c_str()])
     {
         if (sound) 
         {
@@ -105,7 +105,7 @@ void AudioManager::stopSound(const std::string& filePath)
 
 // engine removes all sound sources - meaning all sound files. The elements are part of the std::map which finds
 //the file path and number of sound files currently there and clears them.
-void AudioManager::stopAllSounds()
+void Hudson::Audio::AudioManager::stopAllSounds()
 {
     // stop all sound files
     for (auto& element : sounds) 
@@ -125,7 +125,7 @@ void AudioManager::stopAllSounds()
 
 // This function tells the engine to load the sound file into the engine runtime from the sound file folder
 
-void AudioManager::loadSoundFile(const std::string& filePath)
+void Hudson::Audio::AudioManager::loadSoundFile(const std::string& filePath)
 {
     // Load the sound file into the engine
     engine->addSoundSourceFromFile(filePath.c_str());
@@ -133,7 +133,7 @@ void AudioManager::loadSoundFile(const std::string& filePath)
 
 // engine unloads file when no longer used
 
-void AudioManager::unloadSoundFile(const std::string& filePath)
+void Hudson::Audio::AudioManager::unloadSoundFile(const std::string& filePath)
 {
    // Unloads the sound file fromn the engine
     engine->removeSoundSource(filePath.c_str());
@@ -141,7 +141,7 @@ void AudioManager::unloadSoundFile(const std::string& filePath)
 }
 
 // Set the position of the sound file
-void AudioManager::setListenerPosition(float x, float y) 
+void Hudson::Audio::AudioManager::setListenerPosition(float x, float y) 
 {
     // Set the position of the listener
     engine->setListenerPosition(irrklang::vec3df(x, y, 0), irrklang::vec3df(0, 0, 1));
@@ -149,51 +149,29 @@ void AudioManager::setListenerPosition(float x, float y)
 
 
 // Sets the appropriate volume value for the sound file
-void AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
+void Hudson::Audio::AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
 {
     // Set the volume of a sound file
 
-    if (sounds.count(filePath) > 0)
+    if (sounds.count(filePath.c_str()) > 0)
     {
-        for (auto& s : sounds[filePath]) 
+        for (auto& s : sounds[filePath.c_str()])
         {
             s->setVolume(1.0f);
+            engine->getSoundVolume();
         }
     }
 }
 
-//void AudioManager::setSoundPitch(const std::string& filePath, float pitch) 
-//{
-//    // Set the pitch of a sound file
-//    if (sounds.count(filePath) > 0)
-//    {
-//        for (auto& s : sounds[filePath]) 
-//        {
-//            s->setPlaybackSpeed(-1.0f);
-//        }
-//    }
-//}
-//
-//void AudioManager::setSoundPan(const std::string& filePath, float pan) 
-//{
-//    // Set the pan of a sound file
-//    if (sounds.count(filePath) > 0)
-//    {
-//        for (auto& s : sounds[filePath]) 
-//        {
-//            s->setPan(pan);
-//        }
-//    }
-//}
 
 // Function which checks current conditon of the sound file, it checks the sound file to see if the sound
 //is finished playing or not.
-bool AudioManager::isSoundPlaying(const std::string& filePath) 
+bool Hudson::Audio::AudioManager::isSoundPlaying(const std::string& filePath) 
 {
     // Check if a sound file is currently playing
-    if (sounds.count(filePath) > 0)
+    if (sounds.count(filePath.c_str()) > 0)
     {
-        for (auto& s : sounds[filePath]) 
+        for (auto& s : sounds[filePath.c_str()])
         {
             if (!s->isFinished()) 
             {
@@ -208,7 +186,7 @@ bool AudioManager::isSoundPlaying(const std::string& filePath)
 // Additional feature which creates and adds a number of audio streams from a file. Essentially, reads and decodes
 // data from the sound files.
 
-bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numOfLoaders) 
+bool Hudson::Audio::AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numOfLoaders) 
 {
     for (auto it = audioStreamLoaders.begin(); it != audioStreamLoaders.end(); ++it) 
     {
@@ -228,9 +206,9 @@ bool AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, in
 //applied to a sound file which can be set inside of the UI button function. For example, a sound filepath, the effect
 //you specifically want, then toggle true or false to apply that effect.
 
-void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
+void Hudson::Audio::AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
 {
-    for (auto& sound : sounds[filePath])
+    for (auto& sound : sounds[filePath.c_str()])
     {
         if (sound)
         {
@@ -268,9 +246,9 @@ void AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType e
 }
 
 // Pauses sound files currently playing - looping through them to check if the files are playing.
-bool AudioManager::pauseSound(const std::string& filePath)
+bool Hudson::Audio::AudioManager::pauseSound(const std::string& filePath)
 {
-    for (auto& s : sounds[filePath])
+    for (auto& s : sounds[filePath.c_str()])
     {
         s->setIsPaused(true);
         return s;
@@ -279,9 +257,9 @@ bool AudioManager::pauseSound(const std::string& filePath)
 }
 
 // You can unpause the sound file with this function, goes through a loop of sound files and sets any paused files to resume.
-bool AudioManager::resumeSound(const std::string& filePath)
+bool Hudson::Audio::AudioManager::resumeSound(const std::string& filePath)
 {
-    for (auto& s : sounds[filePath])
+    for (auto& s : sounds[filePath.c_str()])
     {
         s->setIsPaused(false);
         return s;
@@ -292,28 +270,28 @@ bool AudioManager::resumeSound(const std::string& filePath)
 // This is the function which helps to display all the available sound prompt buttons for the engine, this includes playing, pause, resume
 //and stop buttons to influence the way sound files work. Buttons are present in the ImGui window.
 
-void AudioManager::soundButtonUI(const std::string& filePath)
+void Hudson::Audio::AudioManager::soundButtonUI(const std::string& filePath)
 {
     //Play sound button
     if (ImGui::Button("PlaySound"))
     {
         std::cout << ">\n";
-        loadSoundFile(filePath);
-        playSound(filePath, true, 1.5f, -0.5f);
-        setSoundEffect(filePath, SOUND_EFFECT_TYPE_DISTORTION, true);
+        loadSoundFile(filePath.c_str());
+        playSound(filePath.c_str(), true, 1.5f, -0.5f);
+        setSoundEffect(filePath.c_str(), SOUND_EFFECT_TYPE_DISTORTION, true);
     }
     // Play/pause toggle button
     if (ImGui::Button("Pause"))
     {
         std::cout << "||\n";
-        toggleSound(filePath);
+        toggleSound(filePath.c_str());
     }
 
     // Resume sound button
     if (ImGui::Button("Resume"))
     {
         std::cout << ">>\n";
-        resumeSound(filePath);
+        resumeSound(filePath.c_str());
         
     }
     
@@ -321,9 +299,9 @@ void AudioManager::soundButtonUI(const std::string& filePath)
     if (ImGui::Button("Stop"))
     {
         std::cout << "stop\n";
-        stopSound(filePath);
-        setSoundEffect(filePath, SOUND_EFFECT_TYPE_DISABLE, true);
-        unloadSoundFile(filePath);
+        stopSound(filePath.c_str());
+        setSoundEffect(filePath.c_str(), SOUND_EFFECT_TYPE_DISABLE, true);
+        unloadSoundFile(filePath.c_str());
 
     }
 }
