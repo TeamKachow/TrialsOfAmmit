@@ -12,12 +12,19 @@ private:
 	double _playerFireRate = 0.9;
 	playerDirections playerDirection = Down;
 
+	//std::map<std::string, Ability*> abilites;
+
+	//ability.startCooldown
+
 	void Fire();
 
 	
 public:
 	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
 	~Player() override;
+
+
+
 
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
