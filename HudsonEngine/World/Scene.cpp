@@ -22,7 +22,7 @@ void Hudson::World::Scene::Tick(const double dt) const
     
     for (const auto& object : _objects)
     {
-        for (const auto& component : object->_components)
+        for (const auto& component : object->GetAllComponents())
         {
             auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
             if (behaviour != nullptr)
@@ -31,6 +31,8 @@ void Hudson::World::Scene::Tick(const double dt) const
                 behaviour->OnTick(dt);
             }
         }
+        // Run cached component adds/removals
+        object->_components.Update();
     }
 }
 

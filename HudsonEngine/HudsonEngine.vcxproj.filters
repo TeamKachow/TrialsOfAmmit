@@ -130,8 +130,13 @@
     <ClCompile Include="Util\Timestep.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Camera.cpp" />
-    <ClCompile Include="Common\QueuingObjectHolder.cpp">
+    <ClCompile Include="Common\DeferredObjectSet.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EngineAccessor.cpp">
       <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,8 +244,13 @@
     <ClInclude Include="Util\Timestep.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Camera.h" />
-    <ClInclude Include="Common\QueuingObjectHolder.h">
+    <ClInclude Include="Common\DeferredObjectSet.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EngineAccessor.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

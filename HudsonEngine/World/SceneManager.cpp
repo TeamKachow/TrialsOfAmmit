@@ -3,19 +3,8 @@
 
 void Hudson::World::SceneManager::HandlePostTick()
 {
-    Scene* found = nullptr;
-
-    for (Scene* toDelete : _toRemove)
-    {
-        auto iter = std::ranges::find(_loadedScenes, toDelete);
-        assert(iter != _loadedScenes.end());
-        _loadedScenes.erase(iter);
-        // TODO: determine the correct way/time to delete from memory
-        delete toDelete;
-    }
-    _toRemove.clear();
-
-    // TODO: toAdd
+    // Do queued updates to loaded scenes
+    _scenes.Update();
 }
 
 Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& path)
@@ -34,40 +23,34 @@ void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scen
 
 const std::set<Hudson::World::Scene*> Hudson::World::SceneManager::GetLoadedScenes()
 {
-    return _loadedScenes;
+    return _scenes.Get();
 }
 
 void Hudson::World::SceneManager::AddScene(Scene* scene)
 {
-    if (_isTicking)
+    // Queue scene for addition
+    _scenes.Add(scene);
+    // If not ticking, update now (TODO: not sure if this is desired)
+    if (!_isTicking)
     {
-        // If we're currently ticking the scene, queue the scene to be added
-        _toAdd.emplace(scene);
-    }
-    else
-    {
-        // If we're not currently ticking the scene, add the scene immediately
-        _loadedScenes.emplace(scene);
+        _scenes.Update();
     }
 }
 
 void Hudson::World::SceneManager::RemoveScene(Scene* scene)
 {
-    if (_isTicking)
+    // Queue scene for removal
+    _scenes.Remove(scene);
+    // If not ticking, update now (TODO: not sure if this is desired)
+    if (!_isTicking)
     {
-        // If we're currently ticking the scene, queue the scene to be removed
-        _toRemove.emplace(scene);
-    }
-    else
-    {
-        // If we're not currently ticking the scene, remove the scene immediately
-        _loadedScenes.erase(scene);
+        _scenes.Update();
     }
 }
 
 bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
 {
-    return std::ranges::find(_loadedScenes, scene) != _loadedScenes.end();
+    return _scenes.Get().contains(scene);
 }
 
 void Hudson::World::SceneManager::Tick()
@@ -82,7 +65,7 @@ void Hudson::World::SceneManager::Tick()
     _isTicking = true;
 
     // Tick active scenes
-    for (auto& scene : _loadedScenes)
+    for (auto& scene : _scenes.Get())
     {
         scene->Tick(dt);
     }

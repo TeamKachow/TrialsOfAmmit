@@ -1,17 +1,16 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
 #include "./Common.h"
+#include "../Common/DeferredObjectSet.h"
 
 namespace Hudson::World
 {
     class SceneManager
     {
     private:
-        std::set<Scene*> _loadedScenes; // TODO: map of ID to ptr?
+        Common::DeferredObjectSet<Scene*> _scenes;
 
         bool _isTicking = false;
-        std::set<Scene*> _toRemove;
-        std::set<Scene*> _toAdd;
 
         /**
          * \brief Handles pending scene removals then additions after each tick.

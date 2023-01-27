@@ -2,6 +2,7 @@
 #include "../Util/stdafx.h"
 #include "../Entity/Common.h"
 #include "../Common/IEditable.h"
+#include "../Common/DeferredObjectSet.h"
 
 namespace Hudson
 {
@@ -39,10 +40,11 @@ namespace Hudson::Entity
         std::string _name = "Object";
         World::Scene* _scene;
         uint32_t _id;
-        std::vector<Component*> _components;
+        Hudson::Common::DeferredObjectSet<Component*> _components;
         Transform _transform;
 
         void DrawPropertyUI() override;
+        void OnQueueUpdate(Common::DeferredObjectSet<Component*>::Action action);
     
     public:
         GameObject();
@@ -60,7 +62,7 @@ namespace Hudson::Entity
          * \brief Get all the components on this object.
          * \return A vector of components on this object.
          */
-        std::vector<Component*> GetAllComponents();
+        std::set<Component*> GetAllComponents();
 
         /**
          * \brief Add a new component to this object.
@@ -118,7 +120,7 @@ namespace Hudson::Entity
     {
         std::vector<T*> foundComponents;
 
-        for (auto component : _components)
+        for (auto component : GetAllComponents())
         {
             auto castPtr = dynamic_cast<T*>(component);
             // if this component is the type we want, add to the list

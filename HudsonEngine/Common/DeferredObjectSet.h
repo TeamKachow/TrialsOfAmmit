@@ -4,32 +4,35 @@
 namespace Hudson::Common
 {
     /**
-     * \brief Holds a vector of objects, to which modifications can be queued until a fixed point in time.
-     * \details Additions and removals will be queued and run in order. Take care if adding/removing multiple times!
+     * \brief Holds a set of objects, to which modifications can be queued until a fixed point in time.
+     * \details Additions and removals will be queued and run in order. Take care if adding/removing multiple times between updates!
      * \tparam T The type of object to hold
      */
     template <typename T>
-    class QueuingObjectHolder
+    class DeferredObjectSet
     {
+    public:
+        enum class ActionType { ADD, REMOVE };
+        using Action = std::pair<T, ActionType>;
+
     private:
-        enum class Action { ADD, REMOVE };
-        std::vector<T> _current;
-        std::vector<std::pair<T, Action>> _pending;
-        std::function<void(std::pair<T, Action>&)> _callback;
+        std::set<T> _current;
+        std::vector<Action> _pending;
+        std::function<void(Action&)> _callback;
 
     public:
         /**
          * \brief Create a queuing object holder.
          * \param callback An optional callback to run after the queued action has run
          */
-        QueuingObjectHolder(std::function<void(std::pair<T, Action>&)> callback = {}) : _callback(callback)
+        DeferredObjectSet(std::function<void(Action&)> callback = {}) : _callback(callback)
         {}
 
         /**
          * \brief Get a view of the object currently held at this point in time.
          * \return A view of currently-held objects.
          */
-        const std::vector<T>& Get() const
+        const std::set<T>& Get() const
         {
             return _current;
         }
@@ -43,10 +46,10 @@ namespace Hudson::Common
             {
                 switch (action.second)
                 {
-                case Action::ADD:
-                    _current.push_back(action.first);
+                case ActionType::ADD:
+                    _current.insert(action.first);
                     break;
-                case Action::REMOVE:
+                case ActionType::REMOVE:
                     _current.erase(action.first);
                     break;
                 default:
@@ -58,6 +61,8 @@ namespace Hudson::Common
                     _callback(action);
                 }
             }
+
+            _pending.clear();
         }
 
         /**
@@ -66,7 +71,7 @@ namespace Hudson::Common
          */
         void Add(T object)
         {
-            _pending.push_back(std::make_pair(object, Action::ADD));
+            _pending.push_back(std::make_pair(object, ActionType::ADD));
         }
 
         /**
@@ -75,8 +80,13 @@ namespace Hudson::Common
          */
         void Remove(T object)
         {
-            _pending.push_back(std::make_pair(object, Action::REMOVE));
+            _pending.push_back(std::make_pair(object, ActionType::REMOVE));
         }
-    };
 
+        void SetCallback(std::function<void(Action&)> callback)
+        {
+            _callback = callback;
+        }
+
+    };
 }
