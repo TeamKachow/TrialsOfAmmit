@@ -13,6 +13,8 @@ namespace Hudson::Render
 
     class Renderer
     {
+        
+
         Common::Engine* _engine;
         std::unique_ptr<Window> _window;
 
@@ -32,6 +34,11 @@ namespace Hudson::Render
         unsigned int textureColorBuffer;
 
         bool _imguiDockspace;
+
+        // Freetype
+        FT_Library _ft;
+        FT_Face _face;
+
 
     public:
         Renderer(Common::Engine* engine);
