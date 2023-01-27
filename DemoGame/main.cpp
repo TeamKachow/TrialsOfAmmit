@@ -22,6 +22,9 @@ Hudson::Editor::Editor* editor;
 
 Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f);
 
+Hudson::Render::TextComponent* Text1;
+Hudson::Render::TextComponent* Text2;
+
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Physics::PhysicsComponent* Physics1;
@@ -110,6 +113,14 @@ void GameSetup()
     Collider2 = new Hudson::Physics::ColliderComponent();
     playerCollider = new Hudson::Physics::ColliderComponent();
 
+    Text1 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
+    Text1->SetText("the");
+    Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
+
+    Text2 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
+    Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
+    Text2->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
+
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
@@ -134,16 +145,20 @@ void GameSetup()
 
     blah2->GetTransform().pos.x = 1400.0f;
 
+    Hudson::Entity::GameObject* hud = new Hudson::Entity::GameObject();
+    hud->SetName("Text");
+    hud->AddComponent(Text1);
+    Hudson::Entity::GameObject::Transform transform = { glm::vec2(-10,100), glm::vec2(1,1), 0 };
+    hud->SetTransform(transform);
+    startScene->AddObject(hud);
 
-    Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(playerSprite);
-    player->AddComponent(new Player(playerSprite));
-    player->AddComponent(playerPhysics);
-    player->AddComponent(playerCollider);
-    startScene->AddObject(player);
+    Hudson::Entity::GameObject* hud2 = new Hudson::Entity::GameObject();
+    hud2->SetName("Text");
+    hud2->AddComponent(Text2);
+    transform = { glm::vec2(-10,200), glm::vec2(1,1), 0 };
+    hud2->SetTransform(transform);
+    //startScene->AddObject(hud2);
 
-    player->GetTransform().pos.x = 500.0f;
-    player->GetTransform().pos.y = 500.0f;
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
