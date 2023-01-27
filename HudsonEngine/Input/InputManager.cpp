@@ -174,9 +174,9 @@ void InputManager::setKeyDown(int key, bool isDown)
 
 void InputManager::BindCallbacks(GLFWwindow* window)
 {
-	glfwSetKeyCallback(window, keyCallback);
-	glfwSetCursorPosCallback(window, cursorPosCallback);
-	glfwSetMouseButtonCallback(window, cursorClickCallback);
+	//glfwSetKeyCallback(window, keyCallback);
+	//glfwSetCursorPosCallback(window, cursorPosCallback);
+	//glfwSetMouseButtonCallback(window, cursorClickCallback);
 }
 
 void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
