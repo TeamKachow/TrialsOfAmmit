@@ -1,21 +1,22 @@
 #pragma once
 #include "../Util/stdafx.h"
 
-#include "Shader.h"
-#include "Texture.h"
+#include "../Render/Shader.h"
+#include "../Render/Texture.h"
 #include "../Entity/Component.h"
+#include "../Common/IEditable.h"
 
 namespace Hudson::Render {
 
-    class SpriteComponent : public Entity::Component
+    class SpriteComponent : public Entity::Component, public Common::IEditable
     {
     public:
         SpriteComponent();
-        SpriteComponent(Shader* shader);
-        SpriteComponent(Shader* shader, glm::vec2 gridSize, glm::vec2 gridPosition);
+        SpriteComponent(Shader* shader, Texture* texture);
+        SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition);
         ~SpriteComponent();
 
-        void DrawSprite(Texture* texture, glm::vec2 position);
+        void DrawSprite(glm::vec2 position);
         void SetGridSize(glm::vec2 gridSize) { this->_gridSize = gridSize; };
         glm::vec2 GetGridSize() { return this->_gridSize; };
 
@@ -26,9 +27,12 @@ namespace Hudson::Render {
 
         void SetColor(glm::vec3 color) { this->_color = color; };
 
+        void DrawPropertyUI() override;
+
     private:
         Shader*       _shader;
-        unsigned int _quadVAO;
+        Texture*      _texture;
+        unsigned int  _quadVAO;
         
         // Sprite Variables
         glm::vec2 _gridSize = glm::vec2(1);

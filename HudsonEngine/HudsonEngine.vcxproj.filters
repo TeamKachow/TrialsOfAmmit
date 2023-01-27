@@ -32,6 +32,12 @@
     <Filter Include="Render">
       <UniqueIdentifier>{dce2a7f1-3cfc-49e5-8df6-823923d690df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{fea4d848-9a80-4b0d-8257-6e94201a542c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Audio">
+      <UniqueIdentifier>{715deb62-4c4f-4d51-a1a2-2627e898127c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="imgui\imgui.cpp">
@@ -70,9 +76,6 @@
     <ClCompile Include="Entity\Behaviour.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Camera.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Component.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -109,18 +112,25 @@
     <ClCompile Include="Util\glad.c">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Util\stdafx.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
     <ClCompile Include="World\SceneManager.cpp">
       <Filter>World</Filter>
     </ClCompile>
     <ClCompile Include="World\Scene.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="Common\InputManager.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="Util\stdafx.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_stdlib.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Timestep.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -165,9 +175,6 @@
     <ClInclude Include="Entity\Behaviour.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Camera.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="Entity\Component.h">
       <Filter>Entity</Filter>
     </ClInclude>
@@ -201,9 +208,6 @@
     <ClInclude Include="Util\Debug.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Util\stdafx.h">
-      <Filter>Util</Filter>
-    </ClInclude>
     <ClInclude Include="World\SceneManager.h">
       <Filter>World</Filter>
     </ClInclude>
@@ -219,21 +223,26 @@
     <ClInclude Include="Render\Texture.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Common\InputManager.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Util\stdafx.h">
+      <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="Hudson.h" />
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_stdlib.h">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\Timestep.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\basicVertShader.glsl">
+    <None Include="Render\shaders\renderTextureFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\SpriteFragShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\SpriteVertShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\basicFragShader.glsl">
+    <None Include="Render\shaders\renderTextureVert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,19 +1,19 @@
 #include "InputManager.h"
 
-std::vector<Hudson::Common::InputManager*> Hudson::Common::InputManager::instances;
+std::vector<InputManager*> InputManager::instances;
 
-Hudson::Common::InputManager::InputManager()
+InputManager::InputManager()
 {
 	initialiseKeys();
 	InputManager::instances.push_back(this);
 }
 
-Hudson::Common::InputManager::~InputManager()
+InputManager::~InputManager()
 {
 	instances.erase(remove(instances.begin(), instances.end(), this), instances.end());
 }
 
-void Hudson::Common::InputManager::initialiseKeys()
+void InputManager::initialiseKeys()
 {
 	int keyCodes[] = { 32, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 65, 66, 67, 68, 69, 70, 71, 72,
 				  73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 256,
@@ -21,6 +21,7 @@ void Hudson::Common::InputManager::initialiseKeys()
 	for (int key : keyCodes)
 	{
 		std::string keyName;
+		std::string action = "Not Assigned";
 		switch (key) {
 		case 32:
 			keyName = "Spacebar";
@@ -150,93 +151,35 @@ void Hudson::Common::InputManager::initialiseKeys()
 			break;
 		}
 		std::pair<std::string, int>keyInsert(keyName, key);
-		std::pair<std::string , std::string>actionInsert(keyName, "Not Assigned");
+		std::pair<std::string, int>actionInsert(action, key);
 		keys.insert(keyInsert);
-		keyActions.insert(std::pair<std::string, std::string>(actionInsert));
+		keyActions.insert(std::pair<std::string, int>(actionInsert));
 		keyDown[key] = false;
 	}
 
 }
 
-bool Hudson::Common::InputManager::getActionInput(std::string action)
+bool InputManager::getKeyInput(GLFWwindow* window, std::string action)
 {
-	std::string actionStr = action;
-	std::string keyName;
-	int keyID;
-	std::map <std::string, std::string> ::iterator it1 = actionKeys.find(actionStr);
-	if (it1 != actionKeys.end())
-	{
-		keyName = actionKeys[actionStr];
-		std::map <std::string, int>::iterator it2 = keys.find(keyName);
-		if (it2 != keys.end())
-		{
-			keyID = keys[keyName];
-			std::map <int, bool>::iterator it3 = keyDown.find(keyID);
-			if (it3 != keyDown.end())
-			{
-				return keyDown[keyID];
-			}
-		}
-	}
-
-	return false;
+	int actionKey = keyActions.find(action)->second;
+	return true;
 }
 
-void Hudson::Common::InputManager::setKeyEvent(std::string action, std::string keyName)
-{
-	std::string actionStr = action;
-	std::map <std::string, std::string> ::iterator it1 = keyActions.find(keyName);
-	if (it1 != keyActions.end())
-		keyActions[keyName] = action;
-
-	std::map <std::string, std::string> ::iterator it2 = actionKeys.find(action);
-	if (it2 != actionKeys.end())
-		actionKeys[action] = keyName;
-	else
-	{
-		std::pair<std::string, std::string>insertAction(action, keyName);
-		actionKeys.insert(std::pair<std::string, std::string>(insertAction));
-	}
-}
-
-std::string Hudson::Common::InputManager::getAction(std::string keyName)
-{
-	std::map <std::string ,std::string> ::iterator it = keyActions.find(keyName);
-	if (it != keyActions.end())
-		return keyActions[keyName];
-}
-
-void Hudson::Common::InputManager::setKeyDown(int key, bool isDown)
+void InputManager::setKeyDown(int key, bool isDown)
 {
 	std::map<int, bool>::iterator it = keyDown.find(key);
 	if (it != keyDown.end())
 		keyDown[key] = true;
 }
 
-void Hudson::Common::InputManager::setM1Down(bool isDown)
-{
-	m1Click = isDown;
-}
-
-void Hudson::Common::InputManager::setM2Down(bool isDown)
-{
-	m2Click = isDown;
-}
-
-void Hudson::Common::InputManager::setMPos(double mouseX, double mouseY)
-{
-	mouseXpos = mouseX;
-	mouseYpos = mouseY;
-}
-
-void Hudson::Common::InputManager::BindCallbacks(GLFWwindow* window)
+void InputManager::BindCallbacks(GLFWwindow* window)
 {
 	glfwSetKeyCallback(window, keyCallback);
 	glfwSetCursorPosCallback(window, cursorPosCallback);
 	glfwSetMouseButtonCallback(window, cursorClickCallback);
 }
 
-void Hudson::Common::InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	for (InputManager* keyInput : instances)
 	{
@@ -245,16 +188,12 @@ void Hudson::Common::InputManager::keyCallback(GLFWwindow* window, int key, int 
 	std::cout << key << std::endl;
 }
 
-void Hudson::Common::InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	std::cout << xpos << " : " << ypos << std::endl;
-	for (InputManager* posInput : instances)
-	{
-		posInput->setMPos(xpos, ypos);
-	}
 }
 
-void Hudson::Common::InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)
+void InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)
 {
-	std::cout << button << " has been clicked" << std::endl;
+
 }

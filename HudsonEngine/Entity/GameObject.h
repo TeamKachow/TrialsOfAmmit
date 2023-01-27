@@ -1,7 +1,15 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
-#include "Common.h"
+#include "../Entity/Common.h"
 #include "../Common/IEditable.h"
+
+namespace Hudson
+{
+    namespace Editor
+    {
+        class Editor;
+    }
+}
 
 // forward declare
 namespace Hudson::World
@@ -28,7 +36,7 @@ namespace Hudson::Entity
         };
         
     private:
-        std::string _name;
+        std::string _name = "Object";
         World::Scene* _scene;
         uint32_t _id;
         std::vector<Component*> _components;
@@ -74,7 +82,7 @@ namespace Hudson::Entity
          * \brief Get the name of this object instance.
          * \return The object's name
          */
-        [[nodiscard]] std::string GetName() const;
+        [[nodiscard]] std::string& GetName();
 
         /**
          * \brief Set the name of this object instance.
@@ -87,7 +95,22 @@ namespace Hudson::Entity
          * \return This object's transform
          */
         Transform& GetTransform();
+
+        /**
+         * \brief Set the object's transform.
+         * \param tsm The new object's transform
+         */
         void SetTransform(Transform& tsm) { _transform = tsm; }
+
+        /**
+         * \brief Handle when the object gets added to the scene.
+         */
+        void OnSceneAdd();
+
+        /**
+         * \brief Handle when the object gets removed from the scene.
+         */
+        void OnSceneRemove();
     };
 
     template <is_component T>

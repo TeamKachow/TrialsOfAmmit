@@ -1,6 +1,6 @@
-﻿#include "GameObject.h"
+﻿#include "../Entity/GameObject.h"
 
-#include "Component.h"
+#include "../Entity/Component.h"
 #include "../Util/Debug.h"
 
 void Hudson::Entity::GameObject::DrawPropertyUI()
@@ -15,7 +15,7 @@ void Hudson::Entity::GameObject::DrawPropertyUI()
     }
 }
 
-Hudson::Entity::GameObject::GameObject()
+Hudson::Entity::GameObject::GameObject() : _scene(nullptr)
 {
     _id = rand();
 }
@@ -29,8 +29,9 @@ Hudson::Entity::GameObject::~GameObject()
         // Check we didn't somehow end up holding another object's component
         if (toDelete->_parent != this)
         {
-            // TODO Util::Debug::LogError("Found reference to component owned by other object while destroying");
-            Util::Debug::PrintStackTrace();
+            std::stringstream msg;
+            msg << "Found reference to component owned by other object while destroying " << this;
+            Util::Debug::LogError(msg.str());
         }
         else
         {
@@ -53,8 +54,9 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
     // Check that the component is not owned by another object
     if (component->_parent != nullptr)
     {
-        // TODO Util::Debug::LogError("Cannot add a component that already belongs to an object!");
-        Util::Debug::PrintStackTrace();
+        std::stringstream msg;
+        msg << "Cannot add component " << component << " to object " << this << " that already belongs to object " << component->_parent;
+        Util::Debug::LogError(msg.str());
         return component;
     }
 
@@ -75,7 +77,9 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component
     if (component->_parent != this)
     {
         // TODO Util::Debug::LogError("Cannot remove a component that does not belong to this object!");
-        Util::Debug::PrintStackTrace();
+        std::stringstream msg;
+        msg << "Cannot remove component " << component << " from object " << this << " that belongs to object " << component->_parent;
+        Util::Debug::LogError(msg.str());
         return component;
     }
 
@@ -89,7 +93,7 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component
     return component;
 }
 
-std::string Hudson::Entity::GameObject::GetName() const
+std::string& Hudson::Entity::GameObject::GetName()
 {
     return _name;
 }
@@ -102,4 +106,14 @@ void Hudson::Entity::GameObject::SetName(const std::string& name)
 Hudson::Entity::GameObject::Transform& Hudson::Entity::GameObject::GetTransform()
 {
     return _transform;
+}
+
+void Hudson::Entity::GameObject::OnSceneAdd()
+{
+    // TODO: call Behaviour OnAdd
+}
+
+void Hudson::Entity::GameObject::OnSceneRemove()
+{
+    // TODO: call Behaviour OnRemove
 }

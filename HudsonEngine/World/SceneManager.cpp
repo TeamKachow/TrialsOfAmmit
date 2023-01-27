@@ -1,5 +1,5 @@
-﻿#include "SceneManager.h"
-#include "Scene.h"
+﻿#include "../World/SceneManager.h"
+#include "../World/Scene.h"
 
 void Hudson::World::SceneManager::HandlePostTick()
 {
@@ -75,7 +75,7 @@ void Hudson::World::SceneManager::Tick()
     // TODO: use staffs's Time class for fixed timestep
     const double dt = 1.0 / 60.0;
 
-    // We should never EVER call this method recursively (TODO: consider would a lock be overkill?)
+    // We should never EVER call this method recursively
     assert(!_isTicking);
 
     // Set ticking flag
@@ -84,7 +84,6 @@ void Hudson::World::SceneManager::Tick()
     // Tick active scenes
     for (auto& scene : _loadedScenes)
     {
-        // TODO: always tick SceneType::EDITOR, never tick SceneType::EDITOR_GAME_EDIT
         scene->Tick(dt);
     }
 

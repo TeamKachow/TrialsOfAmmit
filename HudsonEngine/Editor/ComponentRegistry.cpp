@@ -20,17 +20,13 @@ namespace Hudson
 void Hudson::Editor::ComponentRegistry::RegisterEngineComponents()
 {
     // TODO:
-    // Register<Render::SpriteComponent>("Sprite Component");
-    // Register<Physics::PhysicsComponent>("Physics Component");
+    // Register<Render::SpriteComponent>("Sprite");
+    // Register<Physics::PhysicsComponent>("Physics");
     // Register<Physics::ColliderComponent>("Box Collider");
 
+}
 
-
-    // in <game-editor>/main.cpp
-    //Register<AIBehaviour>()
-    //Register<EmeneyBehaviour>()
-    //Register<PlayersBehaviour>()
-    //Register<PotatoBehaviour>()
-    //new Editor(componentRegistry)
-
+std::vector<Hudson::Editor::ComponentRegistry::Entry>& Hudson::Editor::ComponentRegistry::GetKnownComponents()
+{
+    return _entries;
 }
