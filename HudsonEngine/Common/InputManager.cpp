@@ -158,9 +158,28 @@ void Hudson::Common::InputManager::initialiseKeys()
 
 }
 
-bool Hudson::Common::InputManager::getKeyInput(GLFWwindow* window, std::string action)
+bool Hudson::Common::InputManager::getKeyInput(std::string action)
 {
-	return true;
+	std::string actionStr = action;
+	std::string keyName;
+	int keyID;
+	std::map <std::string, std::string> ::iterator it1 = actionKeys.find(actionStr);
+	if (it1 != actionKeys.end())
+	{
+		keyName = actionKeys[actionStr];
+		std::map <std::string, int>::iterator it2 = keys.find(keyName);
+		if (it2 != keys.end())
+		{
+			keyID = keys[keyName];
+			std::map <int, bool>::iterator it3 = keyDown.find(keyID);
+			if (it3 != keyDown.end())
+			{
+				return keyDown[keyID];
+			}
+		}
+	}
+
+	return false;
 }
 
 void Hudson::Common::InputManager::setKeyEvent(std::string action, std::string keyName)
