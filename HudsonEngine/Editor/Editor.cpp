@@ -108,6 +108,8 @@ void Hudson::Editor::Editor::MenuBar()
 			ImGui::EndMenu();
 		}
 
+		if (ImGui::MenuItem("Help", 0, &_showHelp));
+
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -156,6 +158,10 @@ void Hudson::Editor::Editor::Hierarchy()
 
 			if (ImGui::BeginPopupContextItem())
 			{
+				ImGui::PushID(&scene);
+				ImGui::InputText("", &scene->_name);
+				ImGui::PopID();
+				ImGui::Separator();
 				if (ImGui::MenuItem("Active?", 0, scene->IsActive()))
 				{
 					scene->SetActive(!scene->IsActive());
@@ -421,6 +427,20 @@ void Hudson::Editor::Editor::Debug()
 	ImGui::End();
 }
 
+void Hudson::Editor::Editor::Help()
+{
+	if (ImGui::BeginPopupModal("'How to Hudson', a memoir by best-selling author Doc Hudson", &_showHelp))
+	{
+		ImGui::Text("Just try right-clicking things to see what menus exist");
+		ImGui::Text("The end");
+
+		ImGui::EndPopup();
+	}
+
+	if (_showHelp)
+		ImGui::OpenPopup("'How to Hudson', a memoir by best-selling author Doc Hudson");
+}
+
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
@@ -431,5 +451,6 @@ void Hudson::Editor::Editor::Draw()
 	ObjectProperties();
 	Tools();
 	Debug();
+	Help();
 }
 

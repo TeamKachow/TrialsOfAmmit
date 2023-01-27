@@ -2,17 +2,17 @@
 #include "../Util/stdafx.h"
 #include "./Common.h"
 
+// forward declare
 namespace Hudson
 {
+    namespace Editor
+    {
+        class Editor;
+    }
     namespace Common
     {
         class ResourceManager;
     }
-}
-
-// forward declare
-namespace Hudson
-{
     namespace Entity
     {
         class GameObject;
@@ -26,7 +26,8 @@ namespace Hudson::World
      * \details Scenes can be loaded (and saved in the editor). Multiple scenes can run at once; this is managed by the SceneManager.
      */
     class Scene
-    {        
+    {
+        friend Editor::Editor;
     private:
         /**
          * \brief The vector of objects in this scene.
