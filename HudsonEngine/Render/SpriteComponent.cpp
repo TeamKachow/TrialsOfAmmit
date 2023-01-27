@@ -2,6 +2,10 @@
 
 #include "../Entity/GameObject.h"
 
+Hudson::Render::SpriteComponent::SpriteComponent() : Component("Sprite")
+{
+}
+
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture) : Component("Sprite")
 {
     this->_shader = shader;
@@ -21,6 +25,10 @@ Hudson::Render::SpriteComponent::~SpriteComponent()
 
 void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 {
+    // If these aren't set, don't draw
+    if (!_texture || !_shader || _quadVAO >= UINT_MAX)
+        return;
+
     _shader->Use();
     glm::mat4 model = glm::mat4(1);
 

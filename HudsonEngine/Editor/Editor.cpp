@@ -90,6 +90,18 @@ void Hudson::Editor::Editor::MenuBar()
 			ImGui::EndMenu();
 		}
 
+		ImGui::Separator();
+
+		if (ImGui::BeginMenu("Scenes"))
+		{
+			if (ImGui::MenuItem("New Empty Scene"))
+			{
+				_engine->GetSceneManager()->AddScene(new World::Scene());
+			}
+			ImGui::MenuItem("Load Scene...", 0, false, false);
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Debug"))
 		{
 			ImGui::MenuItem("Show IDs", "", &_showIds);
@@ -141,6 +153,41 @@ void Hudson::Editor::Editor::Hierarchy()
 
 		if (ImGui::TreeNode((void*)(intptr_t)i, "Scene %d - %s", i, scene->GetName().c_str()))
 		{
+
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Active?", 0, scene->IsActive()))
+				{
+					scene->SetActive(!scene->IsActive());
+				}
+				if (ImGui::MenuItem("Rendering?", 0, scene->IsRendering()))
+				{
+					scene->SetRendering(!scene->IsRendering());
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Create Empty Object"))
+				{
+					scene->AddObject(new Entity::GameObject());
+				}
+				if (ImGui::MenuItem("Paste Object", 0, false, false))
+				{
+					// TODO: object/component clipboard
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Save Scene...", 0, false, false))
+				{
+					// TODO: save
+				}
+				if (ImGui::MenuItem("Duplicate Scene", 0, false, false))
+				{
+					// TODO: duplicate
+				}
+				if (ImGui::MenuItem("Delete Scene (!)"))
+				{
+					_engine->GetSceneManager()->RemoveScene(scene);
+				}
+				ImGui::EndPopup();
+			}
 		    for (auto object : scene->GetObjects())
             {
 				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
@@ -156,13 +203,18 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				if (ImGui::BeginPopupContextItem())
 				{
-					ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-					if (ImGui::Selectable("Delete"))
+					if (ImGui::MenuItem("Save Object...", 0, false, false))
+					{
+						// TODO: save
+					}
+					if (ImGui::MenuItem("Copy Object", 0, false, false))
+					{
+						// TODO: copy
+					}
+					if (ImGui::MenuItem("Delete Object"))
 					{
 						ImGui::CloseCurrentPopup();
-						// TODO: this crashes because iterators don't like you deleting things
 						scene->RemoveObject(object);
-						delete object; 
 					}
 					ImGui::EndPopup();
 				}
@@ -205,17 +257,16 @@ void Hudson::Editor::Editor::ComponentList()
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select a component below to add.");
 
-			for (auto element : _registry->GetKnownComponents())
+			for (auto& element : _registry->GetKnownComponents())
 			{
 				ImGui::Text(element.name.c_str());
 				ImGui::SameLine();
-				ImGui::PushID((void*)(&element.constructor));
+				ImGui::PushID((void*)(&element));
 				if (ImGui::SmallButton("+"))
 				{
 					// Add the component
 					auto component = element.constructor();
 					_selected->AddComponent(component);
-					std::cout << "Would add a " << element.name << " right now\n";
 				}
 				ImGui::PopID();
 			}
@@ -311,10 +362,12 @@ void Hudson::Editor::Editor::ObjectProperties()
 			bool compOpen = ImGui::CollapsingHeader(component->GetTypeName(), headerFlags);
 			if (ImGui::BeginPopupContextItem())
 			{
-				ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-				if (ImGui::Selectable("Delete"))
+				if (ImGui::MenuItem("Copy Component...", 0, false, false))
 				{
-					ImGui::CloseCurrentPopup();
+					// TODO
+				}
+				if (ImGui::MenuItem("Delete Component"))
+				{
 					component->GetParent()->RemoveComponent(component);
 				}
 				ImGui::EndPopup();
