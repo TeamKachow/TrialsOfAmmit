@@ -31,6 +31,7 @@ void Player::OnTick(const double& dt)
 		if (!_playerPhysics.empty())
 		{
 			auto _playerPhysic =  _playerPhysics.front();
+			_playerPhysic->SetForce(glm::vec2(10.0, 0));
 		}
 		_testTimer -= _playerFireRate;
 	}
