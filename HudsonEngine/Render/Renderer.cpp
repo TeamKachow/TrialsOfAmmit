@@ -1,9 +1,11 @@
 #include "../Render/Renderer.h"
+
+#include "../Hudson.h"
+#include "../Hudson.h"
 #include "../Render/Window.h"
 #include "../Common/Engine.h"
 #include "../Common/ResourceManager.h"
 #include "../Entity/GameObject.h"
-#include "../Render/SpriteComponent.h"
 #include "../World/Scene.h"
 
 Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
@@ -45,7 +47,6 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	// TODO move this into Demo Project as all loading should be handled by the creation of a scene
 	auto resManager = Hudson::Common::ResourceManager::GetInstance();
 
-
 	resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
 	screenShader = resManager->GetShader("screenShader");
 
@@ -73,6 +74,7 @@ void Hudson::Render::Renderer::StartImGui()
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	}
+
 }
 
 void Hudson::Render::Renderer::InitRenderToTexture()
@@ -161,6 +163,11 @@ void Hudson::Render::Renderer::Draw()
 			{
 				sprite->DrawSprite(gameObject->GetTransform().pos);
 			}
+
+			for (auto text : gameObject->GetComponents<TextComponent>())
+			{
+				text->Draw(gameObject->GetTransform().pos);
+			}
 		}
 	}
 
@@ -205,3 +212,4 @@ void Hudson::Render::Renderer::SetImguiDockspace(bool enabled)
 {
 	_imguiDockspace = enabled;
 }
+

@@ -251,5 +251,11 @@
     <None Include="Render\shaders\renderTextureVert.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
+    <None Include="Render\shaders\textVert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Render\shaders\textFrag.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

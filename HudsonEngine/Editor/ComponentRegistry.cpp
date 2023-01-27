@@ -1,5 +1,7 @@
 ﻿#include "ComponentRegistry.h"
 
+#include "../Render/TextComponent.h"
+
 namespace Hudson
 {
 	namespace Physics
@@ -23,6 +25,7 @@ void Hudson::Editor::ComponentRegistry::RegisterEngineComponents()
     // Register<Render::SpriteComponent>("Sprite");
     // Register<Physics::PhysicsComponent>("Physics");
     // Register<Physics::ColliderComponent>("Box Collider");
+	// Register<Render::TextComponent>("Text");
 
 }
 
