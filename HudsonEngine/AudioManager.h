@@ -1,7 +1,7 @@
 #pragma once
 #include "./Util/stdafx.h"
 
-namespace Hudson::Audio
+namespace Audio
 {
     using namespace irrklang;
 
