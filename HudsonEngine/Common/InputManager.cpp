@@ -158,7 +158,7 @@ void Hudson::Common::InputManager::initialiseKeys()
 
 }
 
-bool Hudson::Common::InputManager::getKeyInput(std::string action)
+bool Hudson::Common::InputManager::getActionInput(std::string action)
 {
 	std::string actionStr = action;
 	std::string keyName;
