@@ -308,7 +308,18 @@ void Hudson::Editor::Editor::ObjectProperties()
 				headerFlags |= ImGuiTreeNodeFlags_Leaf;
 
 			ImGui::PushID((void*)component);
-			if (ImGui::CollapsingHeader(component->GetTypeName(), headerFlags))
+			bool compOpen = ImGui::CollapsingHeader(component->GetTypeName(), headerFlags);
+			if (ImGui::BeginPopupContextItem())
+			{
+				ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
+				if (ImGui::Selectable("Delete"))
+				{
+					ImGui::CloseCurrentPopup();
+					component->GetParent()->RemoveComponent(component);
+				}
+				ImGui::EndPopup();
+			}
+			if (compOpen)
 			{
 				if (_showIds)
 				{

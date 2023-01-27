@@ -30,6 +30,7 @@ void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Compone
     case Common::DeferredObjectSet<Hudson::Entity::Component*>::ActionType::REMOVE:
         if (behaviour != nullptr) behaviour->OnDestroy();
         component->_parent = nullptr;
+        delete component;
         break;
     }
 }
