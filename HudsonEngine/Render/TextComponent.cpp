@@ -185,11 +185,7 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 {
 	ImGui::InputTextMultiline("Text: ", &text);
 
-
-	ImGui::DragFloat("Scale", &scale, 0.5);
-	ImGui::DragFloat("Color R", &color.x, 0.5);
-	ImGui::DragFloat("Color G", &color.y, 0.5);
-	ImGui::DragFloat("Color B", &color.z, 0.5);
+	ImGui::DragFloat3("Color RGB", &color.x, 0.1f, 0.0f, 1.0f);
 	ImGui::DragFloat("Line Spacing: ", &newLineOffset, 0.5);
 
 }

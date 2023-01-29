@@ -92,11 +92,11 @@ void GameSetup()
 
     Text1 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
     Text1->SetText("the");
-    Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
+    Text1->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 
     Text2 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
     Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
-    Text2->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
+    Text2->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
