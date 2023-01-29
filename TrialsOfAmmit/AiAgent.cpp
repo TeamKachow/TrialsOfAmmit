@@ -6,11 +6,17 @@ AiAgent::AiAgent():Behaviour("AiBehavior")
 	_maxHealth = 100.0f;
 	_currentHealth = _maxHealth;
 	_meleeDamage = 10.0f;
+	_alive = true;
 	//Starting state
 	_target = vec2(0, 0);
 	_currentState = WANDER;
+	//sets from parent phyics componant 
 	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
+	auto _aiPhysics = _aiPhysicsComponent.front();
+	_velocity = _aiPhysics->GetVelocity();
+	_mass = _aiPhysics->GetMass();
+	_acceleration = _aiPhysics->GetAcceleration();
+	//need to add _position
 }
 
 AiAgent::~AiAgent()
@@ -20,12 +26,14 @@ AiAgent::~AiAgent()
 
 void AiAgent::OnTick(const double& dt)
 {
+	float deltatime = dt;
 	switch (_currentState)
 	{
 	case SEEK:
-		Seek(_target);
+		
 		break;
 	case WANDER:
+		RandomTargetSelector();
 		Wander(_target);
 		break;
 	case ATTACK:
@@ -38,6 +46,9 @@ void AiAgent::OnTick(const double& dt)
 
 		break;
 	}
+	auto _aiPhysics = _aiPhysicsComponent.front();
+	//sets velocity
+	_aiPhysics->SetVelocity(_velocity * deltatime);
 }
 
 bool AiAgent::CollisionCheck()
@@ -54,8 +65,11 @@ vec2 AiAgent::Seek(vec2 Target)
 
 vec2 AiAgent::Wander(vec2 Target)
 {
-	//returns a velocity 
-	return vec2(0, 0);
+	vec2 target = Target;
+	vec2 _moveForce = (Target - _position);
+	//_distanceFromTarget = _moveForce.length;
+	_moveForce = _moveForce * _maxSpeed;
+	return (_moveForce - _velocity);
 }
 
 void AiAgent::AiAttack()
@@ -65,5 +79,12 @@ void AiAgent::AiAttack()
 
 void AiAgent::AiDead()
 {
+	_alive = false;
+}
 
+void AiAgent::RandomTargetSelector()
+{
+	int x = (rand() % 1920) - (1080 / 2);
+	int y = (rand() % 1920) - (1080 / 2);
+	_target = vec2(x, y);
 }
