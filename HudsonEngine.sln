@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HudsonEngine", "HudsonEngin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DemoGame", "DemoGame\DemoGame.vcxproj", "{D3450023-521D-4C7B-B4A9-C3372307A840}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TrialOfAmmit", "TrialOfAmmit\TrialOfAmmit.vcxproj", "{513CF8FB-A0DD-4888-8C1D-11F19F34F3C4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TrialsOfAmmit", "TrialsOfAmmit\TrialsOfAmmit.vcxproj", "{513CF8FB-A0DD-4888-8C1D-11F19F34F3C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
