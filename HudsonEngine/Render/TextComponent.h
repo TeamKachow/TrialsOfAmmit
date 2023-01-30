@@ -1,5 +1,4 @@
 #pragma once
-#pragma warning(disable : 4996)
 
 #include "../Entity/Component.h"
 #include "../Util/stdafx.h"
