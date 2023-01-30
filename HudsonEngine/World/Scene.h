@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
+#include "../Common/DeferredObjectSet.h"
 #include "./Common.h"
 
 // forward declare
@@ -20,7 +21,7 @@ namespace Hudson
 }
 
 namespace Hudson::World
-{    
+{
     /**
      * \brief A scene is a collection of grouped objects in the game.
      * \details Scenes can be loaded (and saved in the editor). Multiple scenes can run at once; this is managed by the SceneManager.
@@ -32,7 +33,7 @@ namespace Hudson::World
         /**
          * \brief The vector of objects in this scene.
          */
-        std::set<Entity::GameObject*> _objects; // TODO: ReferencePtr? or maybe not here
+        Hudson::Common::DeferredObjectSet<Entity::GameObject*> _objects; // TODO: ReferencePtr? or maybe not here
         /**
          * \brief The name of this scene.
          */
@@ -45,10 +46,20 @@ namespace Hudson::World
          * \brief Whether or not the scene is currently visible.
          */
         bool _rendering = true;
+        /**
+         * \brief Whether or not the scene is currently being ticked.
+         */
+        bool _isCurrentlyTicking = false;
+
+        SceneManager* _manager;
+
+        void OnQueueUpdate(Common::DeferredObjectSet<Entity::GameObject*>::Action action);
 
         // TODO Common::ResourceManager* _resManager;
-        
+
     public:
+        Scene();
+
         /**
          * \brief Get the objects currently in the scene.
          * \return The objects currently in the scene.
@@ -95,7 +106,7 @@ namespace Hudson::World
          * \brief Tick the objects in this scene if active.
          * \param dt The time since the last tick (should be fixed rate!)
          */
-        void Tick(const double dt) const;
+        void Tick(const double dt);
 
         /**
          * \brief Add an object to the scene.
