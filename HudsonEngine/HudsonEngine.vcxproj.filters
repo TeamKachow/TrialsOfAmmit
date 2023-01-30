@@ -139,6 +139,9 @@
     <ClCompile Include="Common\EngineAccessors.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Render\TextComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -253,12 +256,21 @@
     <ClInclude Include="Common\EngineAccessors.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Render\TextComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Render\shaders\renderTextureFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Render\shaders\renderTextureVert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Render\shaders\textVert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Render\shaders\textFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

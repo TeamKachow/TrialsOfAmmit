@@ -113,6 +113,7 @@
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="Render\SpriteComponent.cpp" />
+    <ClCompile Include="Render\TextComponent.cpp" />
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Render\Window.cpp" />
     <ClCompile Include="Util\Debug.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\SpriteComponent.h" />
+    <ClInclude Include="Render\TextComponent.h" />
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="Util\Debug.h" />
@@ -164,13 +166,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Render\shaders\renderTextureFrag.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="Render\shaders\renderTextureVert.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Render\shaders\textFrag.glsl" />
+    <None Include="Render\shaders\textVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
