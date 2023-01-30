@@ -14,6 +14,7 @@ namespace Hudson::Render {
         SpriteComponent();
         SpriteComponent(Shader* shader, Texture* texture);
         SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition);
+        SpriteComponent(const SpriteComponent& other) = default;
         ~SpriteComponent();
 
         void DrawSprite(glm::vec2 position);
@@ -32,7 +33,7 @@ namespace Hudson::Render {
     private:
         Shader*       _shader;
         Texture*      _texture;
-        unsigned int  _quadVAO;
+        unsigned int  _quadVAO = UINT_MAX;
         
         // Sprite Variables
         glm::vec2 _gridSize = glm::vec2(1);
