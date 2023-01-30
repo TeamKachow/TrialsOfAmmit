@@ -38,6 +38,7 @@ protected:
 	float _maxSpeed;
 	float _mass;
 	bool _alive;
+	bool _arrive;
 
 private: 
 	void OnTick(const double& dt) override;
@@ -45,6 +46,7 @@ private:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 	void RandomTargetSelector();
+	void Move(float deltatime);
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
 };
