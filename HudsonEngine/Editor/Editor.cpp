@@ -28,6 +28,36 @@ Hudson::Editor::Editor::~Editor()
 
 }
 
+bool Hudson::Editor::Editor::LoadImGuiImage(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
+{
+	int image_width = 0;
+	int image_height = 0;
+	unsigned char* image_data = stbi_load(filename, &image_width, &image_height, NULL, 4);
+	if (image_data == NULL)
+		return false;
+
+	GLuint image_texture;
+	glGenTextures(1, &image_texture);
+	glBindTexture(GL_TEXTURE_2D, image_texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	//#if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
+	//	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+	//#endif
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image_width, image_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image_data);
+	stbi_image_free(image_data);
+
+	*out_texture = image_texture;
+	*out_width = image_width;
+	*out_height = image_height;
+
+	return true;
+}
+
 void Hudson::Editor::Editor::InfiniteButton()
 {
 	if (ImGui::BeginMenu("Make Engine"))
@@ -182,6 +212,9 @@ void Hudson::Editor::Editor::Hierarchy()
 //const char* contentDirectory = "DemoGame";
 void Hudson::Editor::Editor::ContentBrowser()
 {
+	static bool image1 = LoadImGuiImage("../DemoGame/textures/DirectoryIcon.png", &directoryIcon, &my_image_width, &my_image_height);
+	static bool image2 = LoadImGuiImage("../DemoGame/textures/FileIcon.png", &fileIcon, &my_image_width, &my_image_height);
+
 	ImGui::Begin("Content Browser");
 
 	if (currentPath != std::filesystem::path(filePath))
@@ -216,19 +249,16 @@ void Hudson::Editor::Editor::ContentBrowser()
 		auto relativePath = std::filesystem::relative(entry.path(), filePath);
 		std::string filenameString = relativePath.filename().string();
 
-		Render::Texture* icon = entry.is_directory() ? directoryIcon : fileIcon;
+		auto icon = entry.is_directory() ? directoryIcon : fileIcon;
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		ImGui::ImageButton(icon, { thumbnailSize, thumbnailSize }, { 0,1 }, { 1,0 });
+		ImGui::ImageButton((ImTextureID)icon, {thumbnailSize, thumbnailSize}, {0,1}, {1,0});
 		ImGui::PopStyleColor();
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 		{
 			const wchar_t* contentPath = relativePath.c_str();
 			ImGui::SetDragDropPayload("ContentItem", contentPath, (wcslen(contentPath) + 1) * sizeof(wchar_t));
-
-		//	std::cout << "Payload Item is: " << relativePath.string().c_str() << std::endl;
-
 			ImGui::EndDragDropSource();
 		}
 

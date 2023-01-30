@@ -24,6 +24,7 @@ namespace Hudson::Editor
 
 	private:
 
+		static bool LoadImGuiImage(const char* filename, unsigned int* out_texture, int* out_width, int* out_height);
 		void InfiniteButton();
 		void MenuBar();
 		void Scene();
@@ -39,8 +40,11 @@ namespace Hudson::Editor
 	private:
 		// const std::filesystem::path  filePath = "../DemoGame";
 
-		Render::Texture* directoryIcon = nullptr;
-		Render::Texture* fileIcon = nullptr;
+		int my_image_width = 0;
+		int my_image_height = 0;
+		GLuint directoryIcon = 0;
+		GLuint fileIcon = 0;
+
 		std::filesystem::path currentPath;
 
         
