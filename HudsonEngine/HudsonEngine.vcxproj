@@ -89,6 +89,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Common\Engine.cpp" />
+    <ClCompile Include="Common\DeferredObjectSet.cpp" />
+    <ClCompile Include="Common\EngineAccessors.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
@@ -123,7 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Engine.h" />
+    <ClInclude Include="Common\EngineAccessors.h" />
     <ClInclude Include="Common\IEditable.h" />
+    <ClInclude Include="Common\DeferredObjectSet.h" />
     <ClInclude Include="Common\ResourceManager.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />
