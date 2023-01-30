@@ -21,6 +21,7 @@ namespace Hudson::Physics
 	{
 	public:
 		ColliderComponent();
+		ColliderComponent(const ColliderComponent& other) = default;
 		~ColliderComponent();
 
 		bool AABBCollision(ColliderComponent* collider);
