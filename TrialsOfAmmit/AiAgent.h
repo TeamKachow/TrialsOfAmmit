@@ -44,7 +44,6 @@ private:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 	void RandomTargetSelector();
-	//These return types may be wrong 
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
 };

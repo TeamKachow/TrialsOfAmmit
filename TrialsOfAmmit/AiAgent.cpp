@@ -22,7 +22,6 @@ void AiAgent::OnCreate()
 	_mass = _aiPhysics->GetMass();
 	_acceleration = _aiPhysics->GetAcceleration();
 	//need to add _position
-
 }
 
 AiAgent::~AiAgent()
@@ -57,9 +56,12 @@ void AiAgent::OnTick(const double& dt)
 		break;
 	}
 
-	auto _aiPhysics = _aiPhysicsComponent.front();
-	//sets velocity
-	_aiPhysics->SetVelocity(_velocity);
+	if (!_aiPhysicsComponent.empty())
+	{
+		auto _aiPhysics = _aiPhysicsComponent.front();
+		//sets velocity
+		_aiPhysics->SetVelocity(_velocity);
+	}
 }
 
 bool AiAgent::CollisionCheck()
