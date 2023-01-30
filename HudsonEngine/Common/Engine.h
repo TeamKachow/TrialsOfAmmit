@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "EngineAccessors.h"
 #include "../World/SceneManager.h"
 
 #include "../Physics/PhysicsManager.h"
@@ -20,11 +21,11 @@ namespace Hudson::Common
      * \brief The entrypoint to the engine.
      * \details This manages the lifecycle (start -> game loop -> exit) of the game.
      */
-    class Engine
+    class Engine : public EngineAccessors
     {
     private:
         std::unique_ptr<World::SceneManager> _sceneManager;
-        std::unique_ptr<Render::Renderer> _renderer; 
+        std::unique_ptr<Render::Renderer> _renderer;
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
         std::unique_ptr<InputManager> _input;
@@ -35,10 +36,13 @@ namespace Hudson::Common
         std::vector<std::function<void(Engine*)>> _midFrameHooks;
         std::vector<std::function<void(Engine*)>> _shutdownHooks;
 
+    protected:
+        EngineAccessors* GetEngineAccessorDelegate() override;
+
     public:
         Engine();
         ~Engine();
-        
+
         /**
          * \brief Set up game engine resources and run setup function if provided
          */
@@ -48,11 +52,6 @@ namespace Hudson::Common
          * \brief Run the engine loop. This will return when the game/editor exits.
          */
         void Run();
-
-        /**
-		 * \brief Run the engine loop. This will return when the game/editor exits.
-		 */
-    	 Render::Renderer* GetRenderer() { return _renderer.get(); }
 
         /**
          * \brief Shut down the engine at the end of the current update loop.
@@ -67,28 +66,37 @@ namespace Hudson::Common
         void Cleanup();
 
         /**
+         * \brief Run the engine loop. This will return when the game/editor exits.
+         */
+        [[nodiscard]] Render::Renderer* GetRenderer() override;
+
+        /**
          * \brief Get the engine's scene manager.
          * \return The scene manager
          */
-        [[nodiscard]] Hudson::World::SceneManager* GetSceneManager() const;
+        [[nodiscard]] World::SceneManager* GetSceneManager() override;
 
         /**
          * \brief Get the engine's physics manager.
          * \return The physics manager
          */
-        [[nodiscard]] Physics::PhysicsManager* GetPhysicsManager() const;
+        [[nodiscard]] Physics::PhysicsManager* GetPhysicsManager() override;
 
         /**
          * \brief Get the engine's audio manager.
          * \return The audio manager
          */
-        // TODO: Audio::AudioManager* GetAudioManager() const;
+         // TODO: Audio::AudioManager* GetAudioManager() const;
 
-        /**
-         * \brief Get the engine's input manager.
-         * \return The input manager
-         */
-        [[nodiscard]] InputManager* GetInputManager() const;
+         /**
+          * \brief Get the engine's input manager.
+          * \return The input manager
+          */
+        [[nodiscard]] InputManager* GetInputManager() override;
+
+        Engine* GetEngine() override;
+
+        static Engine* GetInstance();
 
         /**
          * \brief Register a hook to run before engine systems have run.

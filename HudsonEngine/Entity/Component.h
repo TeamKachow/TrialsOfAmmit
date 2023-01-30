@@ -32,6 +32,9 @@ namespace Hudson::Entity
          * \param name The name of this type of component
          */
         Component(const char* name);
+
+        Component(const Component& other);
+
         virtual ~Component() = default;
 
         /**
