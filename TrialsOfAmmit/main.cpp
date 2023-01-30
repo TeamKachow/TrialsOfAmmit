@@ -34,9 +34,6 @@ Hudson::Render::SpriteComponent* playerSprite;
 Hudson::Physics::PhysicsComponent* playerPhysics;
 Hudson::Physics::ColliderComponent* playerCollider;
 
-
-
-
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
 
@@ -70,11 +67,13 @@ void GameSetup()
     resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
 
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+    resManager->LoadTexture("textures/ArrowSprite.png", true, "Projectile");
+    resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
 
-    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
+    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
     playerSprite->SetGridSize(glm::vec2(3, 4));
-    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 0.0f));
+    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
     playerPhysics = new Hudson::Physics::PhysicsComponent();
     playerPhysics->SetMass(1.0f);
