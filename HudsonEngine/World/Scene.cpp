@@ -9,12 +9,12 @@ void Hudson::World::Scene::OnQueueUpdate(Common::DeferredObjectSet<Entity::GameO
     Entity::GameObject* object = action.first;
     switch (action.second)
     {
-    case Common::DeferredObjectSet<Hudson::Entity::Component*>::ActionType::ADD:
+    case Common::DeferredObjectSet<Hudson::Entity::GameObject*>::ActionType::ADD:
         object->_scene = this;
         object->OnSceneAdd();
         break;
 
-    case Common::DeferredObjectSet<Hudson::Entity::Component*>::ActionType::REMOVE:
+    case Common::DeferredObjectSet<Hudson::Entity::GameObject*>::ActionType::REMOVE:
         object->OnSceneRemove();
         object->_scene = nullptr;
         delete object;
@@ -28,6 +28,14 @@ Hudson::World::Scene::Scene()
         {
             this->OnQueueUpdate(action);
         });
+}
+
+Hudson::World::Scene::~Scene()
+{
+    for (auto object : _objects.Get())
+    {
+        delete object;
+    }
 }
 
 const std::set<Hudson::Entity::GameObject*>& Hudson::World::Scene::GetObjects() const
@@ -55,6 +63,7 @@ void Hudson::World::Scene::Tick(const double dt)
     }
 
     _isCurrentlyTicking = false;
+    _objects.Update();
 }
 
 Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* object)
@@ -68,11 +77,6 @@ Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* 
     }
 
     _objects.Add(object);
-
-    if (!_isCurrentlyTicking)
-    {
-        _objects.Update();
-    }
 
     return object;
 }
@@ -94,11 +98,6 @@ Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObjec
     }
 
     _objects.Remove(object);
-
-    if (!_isCurrentlyTicking)
-    {
-        _objects.Update();
-    }
 
     return object;
 }

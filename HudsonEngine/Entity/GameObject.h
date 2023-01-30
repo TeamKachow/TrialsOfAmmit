@@ -161,11 +161,15 @@ namespace Hudson::Entity
     template <is_component T>
     T* GameObject::GetComponent()
     {
-        T* foundComponent = nullptr;
-
         for (auto component : GetAllComponents())
         {
-
+            auto castPtr = dynamic_cast<T*>(component);
+            // if this component is the type we want, return it
+            if (castPtr != nullptr)
+            {
+                return castPtr;
+            }
         }
+        return nullptr;
     }
 }

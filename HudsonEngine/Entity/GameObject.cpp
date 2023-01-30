@@ -51,26 +51,23 @@ Hudson::Entity::GameObject::GameObject() : _scene(nullptr)
 
 Hudson::Entity::GameObject::~GameObject()
 {
-    // TODO: all of this 
-
-    //// Delete all
-    //for (auto it = _components.begin(); it < _components.end(); ++it)
-    //{
-    //    auto toDelete = *it;
-    //    // Check we didn't somehow end up holding another object's component
-    //    if (toDelete->_parent != this)
-    //    {
-    //        std::stringstream msg;
-    //        msg << "Found reference to component owned by other object while destroying " << this;
-    //        Util::Debug::LogError(msg.str());
-    //    }
-    //    else
-    //    {
-    //        delete toDelete;
-    //    }
-    //}
-
-    //_components.clear();
+    // Delete all
+    auto& components = _components.Get();
+    for (auto component : components)
+    {
+        // Check we didn't somehow end up holding another object's component
+        if (component->_parent != this)
+        {
+            std::stringstream msg;
+            msg << "Found reference to component owned by other object while destroying " << this;
+            Util::Debug::LogError(msg.str());
+        }
+        else
+        {
+            delete component;
+            _components.Remove(component);
+        }
+    }
 }
 
 std::set<Hudson::Entity::Component*> Hudson::Entity::GameObject::GetAllComponents()
@@ -92,12 +89,6 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
     // Queue for addition
     _components.Add(component);
 
-    // Update immediately if not currently ticking
-    if (!_isCurrentlyTicking)
-    {
-        _components.Update();
-    }
-
     return component;
 }
 
@@ -115,12 +106,6 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component
 
     // Queue component for removal
     _components.Remove(component);
-
-    // Update immediately if not currently ticking
-    if (!_isCurrentlyTicking)
-    {
-        _components.Update();
-    }
 
     return component;
 }
@@ -152,6 +137,10 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
 {
     _isCurrentlyTicking = true;
 
+    // Run cached component adds/removals
+    _components.Update();
+
+    // Update behaviours
     for (const auto& component : _components.Get())
     {
         auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
@@ -161,8 +150,6 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
             behaviour->OnTick(dt);
         }
     }
-    // Run cached component adds/removals
-    _components.Update();
 
     _isCurrentlyTicking = false;
 }

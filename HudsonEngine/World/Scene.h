@@ -59,6 +59,7 @@ namespace Hudson::World
 
     public:
         Scene();
+        ~Scene();
 
         /**
          * \brief Get the objects currently in the scene.
