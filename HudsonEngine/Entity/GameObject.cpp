@@ -16,6 +16,11 @@ void Hudson::Entity::GameObject::DrawPropertyUI()
     }
 }
 
+void Hudson::Entity::GameObject::UpdateComponents()
+{
+    _components.Update();
+}
+
 void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Component*>::Action action)
 {
     Component* component = action.first;
@@ -86,7 +91,13 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
 
     // Queue for addition
     _components.Add(component);
-    
+
+    // Update immediately if not currently ticking
+    if (!_isCurrentlyTicking)
+    {
+        _components.Update();
+    }
+
     return component;
 }
 
@@ -104,6 +115,12 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::RemoveComponent(Component
 
     // Queue component for removal
     _components.Remove(component);
+
+    // Update immediately if not currently ticking
+    if (!_isCurrentlyTicking)
+    {
+        _components.Update();
+    }
 
     return component;
 }
@@ -131,10 +148,34 @@ void Hudson::Entity::GameObject::OnSceneAdd()
     }
 }
 
+void Hudson::Entity::GameObject::OnSceneTick(const double dt)
+{
+    _isCurrentlyTicking = true;
+
+    for (const auto& component : _components.Get())
+    {
+        auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
+        if (behaviour != nullptr)
+        {
+            // TODO: exception catching -> stacktrace?
+            behaviour->OnTick(dt);
+        }
+    }
+    // Run cached component adds/removals
+    _components.Update();
+
+    _isCurrentlyTicking = false;
+}
+
 void Hudson::Entity::GameObject::OnSceneRemove()
 {
     for (auto behaviour : this->GetComponents<Behaviour>())
     {
         behaviour->OnDestroy();
     }
+}
+
+Hudson::World::Scene* Hudson::Entity::GameObject::GetScene() const
+{
+    return _scene;
 }

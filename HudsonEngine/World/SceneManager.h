@@ -60,7 +60,6 @@ namespace Hudson::World
 
         /**
         * \brief Tick the current scenes.
-        * \param dt The time since the last tick.
         */
         void Tick();
     };

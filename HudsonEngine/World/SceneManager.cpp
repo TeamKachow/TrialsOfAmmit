@@ -30,7 +30,7 @@ void Hudson::World::SceneManager::AddScene(Scene* scene)
 {
     // Queue scene for addition
     _scenes.Add(scene);
-    // If not ticking, update now (TODO: not sure if this is desired)
+    // If not ticking, update now
     if (!_isTicking)
     {
         _scenes.Update();
@@ -41,7 +41,7 @@ void Hudson::World::SceneManager::RemoveScene(Scene* scene)
 {
     // Queue scene for removal
     _scenes.Remove(scene);
-    // If not ticking, update now (TODO: not sure if this is desired)
+    // If not ticking, update now
     if (!_isTicking)
     {
         _scenes.Update();

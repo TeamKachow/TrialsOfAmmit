@@ -26,26 +26,32 @@ namespace Hudson::Entity
     class GameObject final : public Common::IEditable
     {
         friend World::Scene;
+        friend Editor::Editor;
 
     public:
         struct Transform
         {
             // TODO: replace with vec2f
-            glm::vec2 pos = {0,0};
-            glm::vec2 scale = {64, 64};
+            glm::vec2 pos = { 0,0 };
+            glm::vec2 scale = { 64, 64 };
             float rotateZ = 0;
         };
-        
+
     private:
         std::string _name = "Object";
         World::Scene* _scene;
         uint32_t _id;
         Hudson::Common::DeferredObjectSet<Component*> _components;
         Transform _transform;
+        /**
+         * \brief Whether or not the object is currently being ticked.
+         */
+        bool _isCurrentlyTicking = false;
 
         void DrawPropertyUI() override;
+        void UpdateComponents();
         void OnQueueUpdate(Common::DeferredObjectSet<Component*>::Action action);
-    
+
     public:
         GameObject();
         ~GameObject();
@@ -57,6 +63,14 @@ namespace Hudson::Entity
          */
         template<is_component T>
         std::vector<T*> GetComponents();
+
+        /**
+         * \brief Get a list of all the components of this object to search for.
+         * \tparam T The type of the components to search for.
+         * \return A vector of components that match the given type.
+         */
+        template<is_component T>
+        T* GetComponent();
 
         /**
          * \brief Get all the components on this object.
@@ -110,9 +124,20 @@ namespace Hudson::Entity
         void OnSceneAdd();
 
         /**
+         * \brief Handle when the scene is ticked.
+         */
+        void OnSceneTick(const double dt);
+
+        /**
          * \brief Handle when the object gets removed from the scene.
          */
         void OnSceneRemove();
+
+        /**
+         * \brief Get the scene this object is currently in.
+         * \return The scene this object currently is in, or null if none.
+         */
+        [[nodiscard]] World::Scene* GetScene() const;
     };
 
     template <is_component T>
@@ -131,5 +156,16 @@ namespace Hudson::Entity
         }
 
         return foundComponents;
+    }
+
+    template <is_component T>
+    T* GameObject::GetComponent()
+    {
+        T* foundComponent = nullptr;
+
+        for (auto component : GetAllComponents())
+        {
+
+        }
     }
 }
