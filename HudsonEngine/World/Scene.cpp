@@ -102,6 +102,11 @@ Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObjec
     return object;
 }
 
+uint32_t Hudson::World::Scene::GetSerialID()
+{
+    return _serialId;
+}
+
 void Hudson::World::Scene::SetName(const std::string& name)
 {
     _name = name;

@@ -222,7 +222,7 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				if (ImGui::MenuItem("Delete Scene (!)"))
 				{
-					_selected = nullptr;
+					_selectedObj = nullptr;
 					_engine->GetSceneManager()->RemoveScene(scene);
 				}
 				ImGui::EndPopup();
@@ -230,7 +230,7 @@ void Hudson::Editor::Editor::Hierarchy()
 		    for (auto object : scene->GetObjects())
             {
 				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
-				if (_selected == object)
+				if (_selectedObj == object)
 				{
 					objNodeFlags |= ImGuiTreeNodeFlags_Selected;
 				}
@@ -238,7 +238,7 @@ void Hudson::Editor::Editor::Hierarchy()
 				ImGui::TreePop();
 				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 				{
-					_selected = object;
+					_selectedObj = object;
 				}
 				if (ImGui::BeginPopupContextItem())
 				{
@@ -253,9 +253,9 @@ void Hudson::Editor::Editor::Hierarchy()
 					if (ImGui::MenuItem("Delete Object"))
 					{
 						ImGui::CloseCurrentPopup();
-						if (_selected == object)
+						if (_selectedObj == object)
 						{
-							_selected = nullptr;
+							_selectedObj = nullptr;
 						}
 						scene->RemoveObject(object);
 					}
@@ -361,7 +361,7 @@ void Hudson::Editor::Editor::ComponentList()
 		{
 			ImGui::TextColored(IM_COLOR_ORANGE, "No components registered!");
 		}
-		else if (_selected == nullptr)
+		else if (_selectedObj == nullptr)
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select an object from Hierarchy.");
 		}
@@ -378,7 +378,7 @@ void Hudson::Editor::Editor::ComponentList()
 				{
 					// Add the component
 					auto component = element.constructor();
-					_selected->AddComponent(component);
+					_selectedObj->AddComponent(component);
 				}
 				ImGui::PopID();
 			}
@@ -397,7 +397,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 {
 	ImGui::Begin("Object Properties");
 
-	if (_selected == nullptr)
+	if (_selectedObj == nullptr)
 	{
 		ImGui::TextColored(IM_COLOR_GRAY, "Select an object from Hierarchy.");
 	}
@@ -412,7 +412,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Rename");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::InputText("", &_selected->GetName());
+			ImGui::InputText("", &_selectedObj->GetName());
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -422,14 +422,14 @@ void Hudson::Editor::Editor::ObjectProperties()
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%p", (void*)_selected);
+				ImGui::Text("%p", (void*)_selectedObj);
 				ImGui::TableNextColumn();
 
 				ImGui::Text("Serial ID (?)");
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%u", /*_selected.GetSerialID()*/ 0); // TODO
+				ImGui::Text("%u", /*_selectedObj.GetSerialID()*/ 0); // TODO
 				ImGui::TableNextColumn();
 			}
 
@@ -438,7 +438,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Pos");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().pos.x, 0.5f);
+			ImGui::DragFloat2("", &_selectedObj->GetTransform().pos.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -447,7 +447,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Scale");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().scale.x, 0.5f);
+			ImGui::DragFloat2("", &_selectedObj->GetTransform().scale.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -456,15 +456,15 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Rotate");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat("", &_selected->GetTransform().rotateZ, 0.5f);
+			ImGui::DragFloat("", &_selectedObj->GetTransform().rotateZ, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
 			ImGui::EndTable();
 		}
 
-		for (auto component : _selected->GetAllComponents())
-		{
+        for (auto component : _selectedObj->GetAllComponents())
+        {
 			Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
 			ImGuiTreeNodeFlags headerFlags = 0;
 			if (!editable && !_showIds)
@@ -495,14 +495,14 @@ void Hudson::Editor::Editor::ObjectProperties()
 						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
 						ImGui::TableNextColumn();
 
-						ImGui::Text("%p", (void*)_selected);
+						ImGui::Text("%p", (void*)_selectedObj);
 						ImGui::TableNextColumn();
 
 						ImGui::Text("Serial ID (?)");
 						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
 						ImGui::TableNextColumn();
 
-						ImGui::Text("%u", /*_selected.GetSerialID()*/ 0); // TODO
+						ImGui::Text("%u", _selectedObj->GetSerialID()); // TODO
 						ImGui::EndTable();
 					}
 				}

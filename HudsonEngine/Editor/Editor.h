@@ -24,7 +24,7 @@ namespace Hudson::Editor
 		char selected;
 		char keyAction[255]{};
 
-		Entity::GameObject* _selected = nullptr;
+		Entity::GameObject* _selectedObj = nullptr;
 		bool _showIds = false;
 		bool _showHelp = false;
 

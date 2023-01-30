@@ -42,7 +42,6 @@ void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Compone
 
 Hudson::Entity::GameObject::GameObject() : _scene(nullptr)
 {
-    _id = rand();
     _components.SetCallback([&](auto action)
         {
             this->OnQueueUpdate(action);
@@ -165,4 +164,9 @@ void Hudson::Entity::GameObject::OnSceneRemove()
 Hudson::World::Scene* Hudson::Entity::GameObject::GetScene() const
 {
     return _scene;
+}
+
+uint32_t Hudson::Entity::GameObject::GetSerialID()
+{
+    return _serialId;
 }

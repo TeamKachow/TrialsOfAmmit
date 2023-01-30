@@ -64,6 +64,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\imgui;$(SolutionDir)\Dependencies\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level1</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +95,8 @@
     <ClCompile Include="Common\Engine.cpp" />
     <ClCompile Include="Common\DeferredObjectSet.cpp" />
     <ClCompile Include="Common\EngineAccessors.cpp" />
+    <ClCompile Include="Common\IResource.cpp" />
+    <ClCompile Include="Common\ISerialisable.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
@@ -131,6 +134,8 @@
     <ClInclude Include="Common\EngineAccessors.h" />
     <ClInclude Include="Common\IEditable.h" />
     <ClInclude Include="Common\DeferredObjectSet.h" />
+    <ClInclude Include="Common\IResource.h" />
+    <ClInclude Include="Common\ISerialisable.h" />
     <ClInclude Include="Common\ResourceManager.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />

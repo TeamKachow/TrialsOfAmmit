@@ -154,7 +154,9 @@
     <ClCompile Include="Util\Timestep.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Camera.cpp" />
+    <ClCompile Include="Common\ISerialisable.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -277,6 +279,9 @@
     </ClInclude>
     <ClInclude Include="Util\GlmJsonFunctions.h">
       <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ISerialisable.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
