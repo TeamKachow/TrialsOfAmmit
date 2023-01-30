@@ -97,8 +97,8 @@ void GameSetup()
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
     Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(100, 0), true);
-    Physics1->SetVelocity(glm::vec2(100, 0));
+    Physics1->SetAcceleration(glm::vec2(10, 0), true);
+    Physics1->SetVelocity(glm::vec2(0, 0));
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
@@ -122,8 +122,8 @@ void GameSetup()
     //blah->AddComponent(new DemoBehaviour(Sprite1));
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
-    startScene->AddObject(blah);
     blah->AddComponent(new AiAgent());
+    startScene->AddObject(blah);
 
     blah->GetTransform().pos.x = 200.0f;
 

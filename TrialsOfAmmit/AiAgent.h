@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Hudson.h>
+#include<string.h>
 
 using namespace glm;
 using namespace std;

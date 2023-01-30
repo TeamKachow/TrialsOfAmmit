@@ -13,14 +13,7 @@ void AiAgent::OnCreate()
 	_meleeDamage = 10.0f;
 	_alive = true;
 	//Starting state
-	_target = vec2(0, 0);
-	_currentState = WANDER;
 	//sets from parent phyics componant 
-	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-	auto _aiPhysics = _aiPhysicsComponent.front();
-	_velocity = _aiPhysics->GetVelocity();
-	_mass = _aiPhysics->GetMass();
-	_acceleration = _aiPhysics->GetAcceleration();
 	//need to add _position
 }
 
@@ -36,14 +29,23 @@ void AiAgent::OnDestroy()
 
 void AiAgent::OnTick(const double& dt)
 {
+	_target = vec2(200.0f, 0.0f);
+	_currentState = WANDER;
+	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
+	auto _aiPhysics = _aiPhysicsComponent.front();
+	_velocity = _aiPhysics->GetVelocity();
+	_mass = _aiPhysics->GetMass();
+	_acceleration = _aiPhysics->GetAcceleration();
 	switch (_currentState)
 	{
 	case SEEK:
 		
 		break;
 	case WANDER:
-		RandomTargetSelector();
-		Wander(_target);
+		if (_parent->GetTransform().pos == _target)
+		{
+			_velocity = Wander(_target);
+		}
 		break;
 	case ATTACK:
 		AiAttack();
@@ -78,8 +80,9 @@ vec2 AiAgent::Seek(vec2 Target)
 
 vec2 AiAgent::Wander(vec2 Target)
 {
+	RandomTargetSelector();
 	vec2 target = Target;
-	vec2 _moveForce = (Target - _parent->GetTransform().pos);
+	vec2 _moveForce = (target - _parent->GetTransform().pos);
 	_distanceFromTarget = length(_moveForce);
 	normalize(_moveForce);
 	_moveForce = _moveForce * _maxSpeed;
@@ -98,9 +101,16 @@ void AiAgent::AiDead()
 
 void AiAgent::RandomTargetSelector()
 {
-	int x = (rand() % 1920) - (1080 / 2);
+	int max_distance = 5;
+
+	int delta_x = rand() % (2 * max_distance + 1) - max_distance;
+	int delta_y = rand() % (2 * max_distance + 1) - max_distance;
+
+	_target = { _parent->GetTransform().pos.x + delta_x, _parent->GetTransform().pos.y + delta_y};
+
+	/*int x = (rand() % 1920) - (1080 / 2);
 	int y = (rand() % 1920) - (1080 / 2);
-	_target = vec2(x, y);
+	_target = vec2(x, y);*/
 }
 
 void AiAgent::DrawPropertyUI()
