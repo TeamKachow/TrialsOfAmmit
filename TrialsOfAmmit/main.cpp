@@ -3,6 +3,7 @@
 #include <Hudson.h>
 
 //#include "DemoBehaviour.h"
+#include "AiAgent.h"
 #include "Player.h"
 
 Hudson::Common::Engine* engine;
@@ -122,6 +123,7 @@ void GameSetup()
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
     startScene->AddObject(blah);
+    blah->AddComponent(new AiAgent());
 
     blah->GetTransform().pos.x = 200.0f;
 

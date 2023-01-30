@@ -32,7 +32,6 @@ protected:
 	vec2 _moveForce;
 	vec2 _velocity;
 	vec2 _acceleration;
-	vec2 _position;
 	float _distanceFromTarget;
 	float _currentSpeed;
 	float _maxSpeed;
@@ -41,6 +40,9 @@ protected:
 
 private: 
 	void OnTick(const double& dt) override;
+	void OnCreate() override;
+	void OnDestroy() override;
+	void DrawPropertyUI() override;
 	void RandomTargetSelector();
 	//These return types may be wrong 
 	vec2 Seek(vec2 Target);

@@ -2,6 +2,11 @@
 
 AiAgent::AiAgent():Behaviour("AiBehavior")
 {
+
+}
+
+void AiAgent::OnCreate()
+{
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_currentHealth = _maxHealth;
@@ -17,6 +22,7 @@ AiAgent::AiAgent():Behaviour("AiBehavior")
 	_mass = _aiPhysics->GetMass();
 	_acceleration = _aiPhysics->GetAcceleration();
 	//need to add _position
+
 }
 
 AiAgent::~AiAgent()
@@ -24,9 +30,13 @@ AiAgent::~AiAgent()
 	
 }
 
+void AiAgent::OnDestroy()
+{
+
+}
+
 void AiAgent::OnTick(const double& dt)
 {
-	float deltatime = dt;
 	switch (_currentState)
 	{
 	case SEEK:
@@ -46,9 +56,10 @@ void AiAgent::OnTick(const double& dt)
 
 		break;
 	}
+
 	auto _aiPhysics = _aiPhysicsComponent.front();
 	//sets velocity
-	_aiPhysics->SetVelocity(_velocity * deltatime);
+	_aiPhysics->SetVelocity(_velocity);
 }
 
 bool AiAgent::CollisionCheck()
@@ -66,8 +77,9 @@ vec2 AiAgent::Seek(vec2 Target)
 vec2 AiAgent::Wander(vec2 Target)
 {
 	vec2 target = Target;
-	vec2 _moveForce = (Target - _position);
-	//_distanceFromTarget = _moveForce.length;
+	vec2 _moveForce = (Target - _parent->GetTransform().pos);
+	_distanceFromTarget = length(_moveForce);
+	normalize(_moveForce);
 	_moveForce = _moveForce * _maxSpeed;
 	return (_moveForce - _velocity);
 }
@@ -87,4 +99,9 @@ void AiAgent::RandomTargetSelector()
 	int x = (rand() % 1920) - (1080 / 2);
 	int y = (rand() % 1920) - (1080 / 2);
 	_target = vec2(x, y);
+}
+
+void AiAgent::DrawPropertyUI()
+{
+
 }
