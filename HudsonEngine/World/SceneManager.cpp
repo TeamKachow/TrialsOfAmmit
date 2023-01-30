@@ -1,5 +1,6 @@
 ﻿#include "../World/SceneManager.h"
 #include "../World/Scene.h"
+#include "../Util/Timestep.h"
 
 void Hudson::World::SceneManager::HandlePostTick()
 {
@@ -73,7 +74,7 @@ bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
 void Hudson::World::SceneManager::Tick()
 {
     // TODO: use staffs's Time class for fixed timestep
-    const double dt = 1.0 / 60.0;
+   const double dt = 1.0 / 60.0;
 
     // We should never EVER call this method recursively
     assert(!_isTicking);

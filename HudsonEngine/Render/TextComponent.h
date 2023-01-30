@@ -1,7 +1,7 @@
 #pragma once
+#pragma warning(disable : 4996)
 
 #include "../Entity/Component.h"
-#include "../Util/stdafx.h"
 #include "../Util/stdafx.h"
 
 #include "../Render/Shader.h"
@@ -15,21 +15,21 @@ struct Character {
 	unsigned int Advance;   // Horizontal offset to advance to next glyph
 };
 
-
 namespace Hudson::Render
 {
 	class TextComponent : public Entity::Component, public Hudson::Common::IEditable
 	{
 	public:
 		TextComponent();
-		TextComponent(const char* fontPathName, glm::mat4 projection, glm::vec2 position);
+		TextComponent(glm::mat4 projection, glm::vec2 position);
 		~TextComponent();
 
-		void StartFreeType(const char* fontPathName);
-		void StoreCharacters(const char* filePathName);
+        void StartFreeType(const std::filesystem::path& path);
+		void StoreCharacters(const std::filesystem::path& path);
+
+		const char* GetCH(const wchar_t* wc);
 
 		void Draw(glm::vec2 position);
-
 
 		void SetText(std::string txt) { text = txt; }
 		void SetColor(glm::vec3 col) { color = col; }
@@ -46,7 +46,6 @@ namespace Hudson::Render
 
 		unsigned int VAO;
 		unsigned int VBO;
-
 		// Some of this can be passed in via GameObject
 		std::string text;
 		float scale;

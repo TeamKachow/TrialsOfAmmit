@@ -1,6 +1,7 @@
 #pragma once
 #include "../Util/stdafx.h"
 #include "../Editor/ComponentRegistry.h"
+#include "../Render/Texture.h"
 
 namespace Hudson::Common
 {
@@ -34,5 +35,14 @@ namespace Hudson::Editor
 		void Debug();
 
 		void Draw();
+
+	private:
+		// const std::filesystem::path  filePath = "../DemoGame";
+
+		Render::Texture* directoryIcon = nullptr;
+		Render::Texture* fileIcon = nullptr;
+		std::filesystem::path currentPath;
+
+        
 	};
 }

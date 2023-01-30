@@ -2,6 +2,14 @@
 #include "../Util/stdafx.h"
 #include "./Common.h"
 
+namespace Hudson
+{
+	namespace Util
+	{
+		class Timestep;
+	}
+}
+
 namespace Hudson::World
 {
     class SceneManager
@@ -12,7 +20,7 @@ namespace Hudson::World
         bool _isTicking = false;
         std::set<Scene*> _toRemove;
         std::set<Scene*> _toAdd;
-
+        Hudson::Util::Timestep* _time;
         /**
          * \brief Handles pending scene removals then additions after each tick.
          */

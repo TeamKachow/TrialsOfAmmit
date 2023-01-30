@@ -5,11 +5,12 @@
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
 #include "../Render/Window.h"
+constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
+constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
 
-constexpr ImVec4 IM_COLOR_GRAY		= { 0.7f, 0.7f, 0.7f, 1.0f };
-constexpr ImVec4 IM_COLOR_ORANGE	= { 1.0f, 0.8f, 0.0f, 1.0f };
+extern const std::filesystem::path filePath = "../DemoGame";
 
-Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry)
+Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry), currentPath(filePath)
 {
 	engine->RegisterPreFrameHook([](Common::Engine* engine)
 		{
@@ -119,7 +120,7 @@ void Hudson::Editor::Editor::Scene()
 
 	// TODO clean this up, doesnt need to run every frame but testing for now
 	// TODO detect a change easy enough
-	if(imageSize.x > 0 && imageSize.y > 0)
+	if (imageSize.x > 0 && imageSize.y > 0)
 	{
 		// Framebuffer can't have 0 or less so, this queues framebuffer recreate for when the application isnt minimized
 		_engine->GetRenderer()->CreateFramebuffers(imageSize.x, imageSize.y);
@@ -135,14 +136,14 @@ void Hudson::Editor::Editor::Hierarchy()
 
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
 	int i = 0, j = 0;
-    for (auto scene : scenes)
-    {
+	for (auto scene : scenes)
+	{
 		ImGui::SetNextItemOpen(true, ImGuiCond_Once);
 
 		if (ImGui::TreeNode((void*)(intptr_t)i, "Scene %d - %s", i, scene->GetName().c_str()))
 		{
-		    for (auto object : scene->GetObjects())
-            {
+			for (auto object : scene->GetObjects())
+			{
 				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
 				if (_selected == object)
 				{
@@ -162,27 +163,93 @@ void Hudson::Editor::Editor::Hierarchy()
 						ImGui::CloseCurrentPopup();
 						// TODO: this crashes because iterators don't like you deleting things
 						scene->RemoveObject(object);
-						delete object; 
+						delete object;
 					}
 					ImGui::EndPopup();
 				}
 				++j;
-            }
+			}
 			ImGui::TreePop();
 		}
 
 		j = 0;
 		++i;
-    }
+	}
 
 	ImGui::End();
 }
 
+//const char* contentDirectory = "DemoGame";
 void Hudson::Editor::Editor::ContentBrowser()
 {
 	ImGui::Begin("Content Browser");
 
-	ImGui::TextColored(IM_COLOR_GRAY, "Not yet implemented");
+	if (currentPath != std::filesystem::path(filePath))
+	{
+		if (ImGui::Button("<--"))
+		{
+			currentPath = currentPath.parent_path();
+		}
+	}
+
+	float padding = 16.0f;
+	float thumbnailSize = 64.0f;
+	float cellSize = thumbnailSize + padding;
+
+	float panelWidth = ImGui::GetContentRegionAvail().x;
+	int columnCount = (int)(panelWidth / cellSize);
+	if (columnCount < 1)
+	{
+		columnCount = 1;
+	}
+
+	ImGui::Columns(columnCount, 0, false);
+
+	// Loops over every file path
+
+	int i = 0;
+	for (auto& entry : std::filesystem::directory_iterator(currentPath))
+	{
+		ImGui::PushID(i++);
+
+		const auto& path = entry.path();
+		auto relativePath = std::filesystem::relative(entry.path(), filePath);
+		std::string filenameString = relativePath.filename().string();
+
+		Render::Texture* icon = entry.is_directory() ? directoryIcon : fileIcon;
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		ImGui::ImageButton(icon, { thumbnailSize, thumbnailSize }, { 0,1 }, { 1,0 });
+		ImGui::PopStyleColor();
+
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			const wchar_t* contentPath = relativePath.c_str();
+			ImGui::SetDragDropPayload("ContentItem", contentPath, (wcslen(contentPath) + 1) * sizeof(wchar_t));
+
+		//	std::cout << "Payload Item is: " << relativePath.string().c_str() << std::endl;
+
+			ImGui::EndDragDropSource();
+		}
+
+
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			if (entry.is_directory())
+			{
+				currentPath /= path.filename();
+			}
+
+			std::cout << relativePath.string() << std::endl;
+		}
+
+		ImGui::TextWrapped(filenameString.c_str());
+
+		ImGui::NextColumn();
+
+		ImGui::PopID();
+	}
+	ImGui::Columns(1);
 
 	ImGui::End();
 }
@@ -244,14 +311,14 @@ void Hudson::Editor::Editor::ObjectProperties()
 		{
 			ImGui::TableNextColumn();
 
-		    ImGui::Text("Name");
+			ImGui::Text("Name");
 			ImGui::TableNextColumn();
 
 			ImGui::PushID("ObjEditor_Rename");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
 			ImGui::InputText("", &_selected->GetName());
 			ImGui::PopID();
-		    ImGui::TableNextColumn();
+			ImGui::TableNextColumn();
 
 			if (_showIds)
 			{
@@ -300,8 +367,8 @@ void Hudson::Editor::Editor::ObjectProperties()
 			ImGui::EndTable();
 		}
 
-        for (auto component : _selected->GetAllComponents())
-        {
+		for (auto component : _selected->GetAllComponents())
+		{
 			Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
 			ImGuiTreeNodeFlags headerFlags = 0;
 			if (!editable && !_showIds)
@@ -313,7 +380,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 				if (_showIds)
 				{
 					if (ImGui::BeginTable("CompEditor", 2, ImGuiTableFlags_Resizable))
-				    {
+					{
 						ImGui::TableNextColumn();
 						ImGui::Text("Runtime ID (?)");
 						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
@@ -337,7 +404,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 				}
 			}
 			ImGui::PopID();
-        }
+		}
 	}
 
 	ImGui::End();
