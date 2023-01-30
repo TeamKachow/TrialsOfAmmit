@@ -136,7 +136,7 @@
     <ClCompile Include="Render\Camera.cpp">
       <Filter>Render</Filter>
     </ClCompile>
-    <ClCompile Include="Common\EngineAccessor.cpp">
+    <ClCompile Include="Common\EngineAccessors.cpp">
       <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
@@ -250,7 +250,7 @@
     <ClInclude Include="Render\Camera.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Common\EngineAccessor.h">
+    <ClInclude Include="Common\EngineAccessors.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

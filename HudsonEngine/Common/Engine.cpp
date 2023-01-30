@@ -4,18 +4,21 @@
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
 
+static Hudson::Common::Engine* INSTANCE;
+
 Hudson::Common::Engine::Engine()
 {
+    assert(INSTANCE == nullptr);
+    INSTANCE = this;
 }
 
 Hudson::Common::Engine::~Engine()
 {
+    INSTANCE = nullptr;
 }
 
 void Hudson::Common::Engine::Setup()
 {
-
-
     // create scene manager
     _sceneManager = std::make_unique<World::SceneManager>();
 
@@ -95,19 +98,39 @@ void Hudson::Common::Engine::Cleanup()
     }
 }
 
-Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
+Hudson::Render::Renderer* Hudson::Common::Engine::GetRenderer()
+{
+    return _renderer.get();
+}
+
+Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager()
 {
     return _sceneManager.get();
 }
 
-Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager() const
+Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager()
 {
     return _physics.get();
 }
 
-InputManager* Hudson::Common::Engine::GetInputManager() const
+InputManager* Hudson::Common::Engine::GetInputManager()
 {
     return _input.get();
+}
+
+Hudson::Common::Engine* Hudson::Common::Engine::GetEngine()
+{
+    return this;
+}
+
+Hudson::Common::Engine* Hudson::Common::Engine::GetInstance()
+{
+    return INSTANCE;
+}
+
+Hudson::Common::EngineAccessors* Hudson::Common::Engine::GetEngineAccessorDelegate()
+{
+    return nullptr;
 }
 
 void Hudson::Common::Engine::RegisterPreFrameHook(std::function<void(Engine*)> hook)

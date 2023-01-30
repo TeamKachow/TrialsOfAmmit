@@ -1,6 +1,7 @@
-#pragma once
+﻿#pragma once
 #include "Common.h"
 #include "Component.h"
+#include "../Common/EngineAccessors.h"
 
 // TODO: preprocessor macros that dump out metadata (?)
 // references:
@@ -13,8 +14,11 @@ namespace Hudson::Entity
     /**
      * \brief A scripted behaviour, which acts on certain parts of an object's update loop.
      */
-    class Behaviour : public Component
+    class Behaviour : public Component, public Common::EngineAccessors
     {
+    protected:
+        Hudson::Common::EngineAccessors* GetEngineAccessorDelegate() override;
+
     public:
         Behaviour(const char* name);
 
