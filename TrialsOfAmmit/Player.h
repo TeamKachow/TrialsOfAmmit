@@ -1,6 +1,10 @@
 #pragma once
 #include <Hudson.h>
-enum playerDirections { Down = 1, Left, Right, Up, Stopped };
+#include "BaseWeaponClass.h"
+#include "Axe.h"
+#include "Khopesh.h"
+#include "facingDirection.h"
+#include "Projectile.h"
 class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 private:
@@ -10,10 +14,17 @@ private:
 	double _testTimer = 0;
 	double _playerFireRate = 0.9;
 	float _playerHealth = 100.0f;
-	Hudson::Physics::PhysicsComponent* _playerPhysic;
+	Hudson::Physics::PhysicsComponent* _playerPhysics;
+	Hudson::World::Scene* _currentScene;
 	int _gridX = 0;
 	int _gridY = 0;
-	playerDirections _playerDirection = Down;
+	facingDirections _playerDirection = Down;
+	Hudson::Entity::GameObject* _projectile;
+
+	Axe _axe;
+	Khopesh _khopesh;
+
+	BaseWeaponClass* _playersWeapon = &_axe;
 
 	void Fire();
 	void MoveUp();
@@ -27,9 +38,8 @@ private:
 public:
 	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
 	~Player() override;
-
-
 	void TakeDamage(float _damageTaken);
+
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;

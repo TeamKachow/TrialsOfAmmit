@@ -1,16 +1,15 @@
 #include "Player.h"
 
-
-
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
 {
 	_playerSprite = playerSprite;
-	_playerAnimSpeed = animSpeed;
-	_playerDirection = Down;
+	_playerAnimSpeed = 0.5;
+	_playerDirection = Right;
 	_playerFireRate = 0.8;
 	_testTimer = 0;
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
+
 }
 
 Player::~Player()
@@ -18,15 +17,22 @@ Player::~Player()
 	
 }
 
+void Player::OnCreate()
+{
+	_currentScene = _parent->GetScene();
+
+	std::cout<< _playersWeapon->_weaponName << "\n";
+	_playersWeapon = &_khopesh;
+	std::cout << _playersWeapon->_weaponName << "\n";
+	Fire();
+
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	_playerHealth = _playerHealth - _damageTaken;
 }
 
-void Player::OnCreate()
-{
-	
-}
 
 void Player::OnTick(const double& dt)
 {
@@ -51,98 +57,46 @@ void Player::OnTick(const double& dt)
 	}
 
 	_playerAnimTimer += dt;
-
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
-	
 
 }
 
 void Player::Fire()
 {
-	/*Hudson::Common::Engine* engine;
-	auto AllScenes = Hudson::Common::Engine*::GetSceneManager();
-	auto CurrentScene = AllScenes.find(0);*/
-
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-
-	Hudson::Render::SpriteComponent* _projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));;
-	Hudson::Physics::PhysicsComponent* _projectilePhysics = new Hudson::Physics::PhysicsComponent();;
-	Hudson::Physics::ColliderComponent* _projectileCollider = new Hudson::Physics::ColliderComponent();
-
-	_projectileSprite->SetSize(glm::vec2(32.0f, 32.0f));
-	_projectileSprite->SetGridSize(glm::vec2(3, 0));
-	_projectileSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	_projectilePhysics->SetMass(1.0f);
-	_projectilePhysics->SetForce(glm::vec2(0.0, 0));
-	_projectilePhysics->SetAcceleration(glm::vec2(0, 0), true);
-	_projectilePhysics->SetVelocity(glm::vec2(0, 0));
-
-
-	Hudson::Entity::GameObject* _projectile = new Hudson::Entity::GameObject();
-	_projectile->AddComponent(_projectileSprite);
-	//_projectile->AddComponent(new Player(playerSprite));
-	_projectile->AddComponent(_projectilePhysics);
-	_projectile->AddComponent(_projectileCollider);
-	/*CurrentScene->AddObject(_projectile);*/
-	
+	_projectile = new Hudson::Entity::GameObject();
+	_projectile->AddComponent(new Projectile(_playerDirection, _parent->GetTransform().pos, _currentScene, _projectile));
 }
 
 void Player::MoveUp()
 {
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 3;
 	AnimMove();
-	std::vector<Hudson::Physics::PhysicsComponent*> _playerPhysics = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
-	if (!_playerPhysics.empty())
-	{
-		_playerPhysic = _playerPhysics.front();
-
-	}
-	_playerPhysic->SetVelocity(glm::vec2(0, -20));
+	_playerPhysics->SetVelocity(glm::vec2(0, -45));
 }
 
 void Player::MoveDown()
 {
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 0;
 	AnimMove();
-	Fire();
-	std::vector<Hudson::Physics::PhysicsComponent*> _playerPhysics = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
-	if (!_playerPhysics.empty())
-	{
-		_playerPhysic = _playerPhysics.front();
-
-	}
-	_playerPhysic->SetVelocity(glm::vec2(0, 20));
+	_playerPhysics->SetVelocity(glm::vec2(0, 45));
 }
 
 void Player::MoveRight()
 {
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 2;
 	AnimMove();
-	std::vector<Hudson::Physics::PhysicsComponent*> _playerPhysics = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
-	if (!_playerPhysics.empty())
-	{
-		_playerPhysic = _playerPhysics.front();
-
-	}
-	_playerPhysic->SetVelocity(glm::vec2(20, 0));
+	_playerPhysics->SetVelocity(glm::vec2(45, 0));
 }
 
 void Player::MoveLeft()
 {
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 1;
 	AnimMove();
-	std::vector<Hudson::Physics::PhysicsComponent*> _playerPhysics = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
-	if (!_playerPhysics.empty())
-	{
-		_playerPhysic = _playerPhysics.front();
-
-	}
-	_playerPhysic->SetVelocity(glm::vec2(-20, 0));
+	_playerPhysics->SetVelocity(glm::vec2(-45, 0));
 }
 
 void Player::StopMove()
@@ -174,4 +128,24 @@ void Player::OnDestroy()
 
 void Player::DrawPropertyUI()
 {
+	if(ImGui::Button("Right"))
+	{
+		_playerDirection = Right;
+	}
+	if (ImGui::Button("Left"))
+	{
+		_playerDirection = Left;
+	}
+	if (ImGui::Button("Down"))
+	{
+		_playerDirection = Down;
+	}
+	if (ImGui::Button("Up"))
+	{
+		_playerDirection = Up;
+	}
+	if (ImGui::Button("Fire"))
+	{
+		Fire();
+	}
 }

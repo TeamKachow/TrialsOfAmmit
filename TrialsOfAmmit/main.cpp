@@ -67,7 +67,7 @@ void GameSetup()
     resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
 
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
-    resManager->LoadTexture("textures/ArrowSprite.png", true, "Projectile");
+    resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
