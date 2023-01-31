@@ -4,6 +4,7 @@
 #include "Axe.h"
 #include "Khopesh.h"
 #include "facingDirection.h"
+#include "Bow.h"
 #include "Projectile.h"
 class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
@@ -23,6 +24,7 @@ private:
 
 	Axe _axe;
 	Khopesh _khopesh;
+	Bow _bow;
 
 	BaseWeaponClass* _playersWeapon = &_axe;
 

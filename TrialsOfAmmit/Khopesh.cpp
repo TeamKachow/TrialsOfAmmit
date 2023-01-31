@@ -9,4 +9,5 @@ Khopesh::Khopesh()
 
 Khopesh::~Khopesh()
 {
+
 }
