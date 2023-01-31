@@ -2,6 +2,12 @@
 #include "../Util/stdafx.h"
 #include "../Editor/ComponentRegistry.h"
 
+struct Action
+{
+	std::string actionName;
+	bool isSelected;
+};
+
 namespace Hudson::Common
 {
 	class Engine;

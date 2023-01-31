@@ -237,6 +237,9 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Render\Camera.h" />
+    <ClInclude Include="Input\json.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Render\shaders\renderTextureFrag.glsl">

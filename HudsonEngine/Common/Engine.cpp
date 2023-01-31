@@ -36,7 +36,7 @@ void Hudson::Common::Engine::Setup()
 void Hudson::Common::Engine::Run()
 {
     bool shouldExit = false;
-    _input->BindCallbacks(_renderer.get()->GetWindow()->GetWindow());
+    //_input->BindCallbacks(_renderer.get()->GetWindow()->GetWindow());
     while (!shouldExit)
     {
         // Call pre-frame hooks

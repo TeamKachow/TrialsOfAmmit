@@ -366,28 +366,66 @@ void Hudson::Editor::Editor::Input()
 	else
 	{
 		ImGui::Text("Key Mapping: ");
-		const char* listbox_items[] = { "Spacebar", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+		const char* listbox_keyNames[] = { "Spacebar", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
 										"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Escape", "Right", "Left", "Down", "Up" };
-
-		static int listbox_item_current = -1, listbox_item_current2 = -1;
-		ImGui::ListBox("##KeyMapping", &listbox_item_current, listbox_items, IM_ARRAYSIZE(listbox_items), 4);
+		static int listbox_keyNames_current = -1;
+		static int listbox_keyActions_current = -1;
+		std::vector<Action> actionItems;
+		ImGui::PushItemWidth(100.0f);
+		ImGui::ListBox("##KeyMapping", &listbox_keyNames_current, listbox_keyNames, IM_ARRAYSIZE(listbox_keyNames), 4);
 		ImGui::Text("Selected Key:"); ImGui::SameLine();
-		if (listbox_item_current > -1)
+		if (listbox_keyNames_current > -1)
 		{
-			ImGui::Text(listbox_items[listbox_item_current]);
-			strcpy_s(keyAction, _engine->GetInputManager()->getAction(listbox_items[listbox_item_current]).c_str());
+			ImGui::Text(listbox_keyNames[listbox_keyNames_current]);
+			ImGui::Text("Key Actions:");
+			std::vector<std::string> keyActions = _engine->GetInputManager()->getKeyActions(listbox_keyNames[listbox_keyNames_current]);
+			for (std::string& tempActionName : keyActions)
+			{
+				Action tempAction;
+				tempAction.actionName = tempActionName;
+				actionItems.push_back(tempAction);
+			}
+			int selectionNum = 0;
+			ImGui::ListBoxHeader("##KeyActions", ImVec2(100.0f, 75.0f));
+			for (int i = 0; i < actionItems.size(); i++)
+			{
+				const bool itemSelected = (i == listbox_keyActions_current);
+				std::string& actionName = actionItems[i].actionName;
+				if (ImGui::Selectable(actionName.c_str(), itemSelected))
+				{
+					listbox_keyActions_current = i;
+				}
+			}
+			ImGui::ListBoxFooter();
+
+			ImGui::Text("Set Action: "); ImGui::SameLine();
+			if (ImGui::InputText("##Action", keyAction, sizeof(keyAction), ImGuiInputTextFlags_EnterReturnsTrue))
+			{
+				_engine->GetInputManager()->setKeyEvent(std::string(keyAction), std::string(listbox_keyNames[listbox_keyNames_current]));
+			}
 		}
 		else
+		{
 			ImGui::Text("None Selected");
-		ImGui::Text("Action: "); ImGui::SameLine();
-		if (ImGui::InputText("##Action", keyAction, sizeof(keyAction), ImGuiInputTextFlags_EnterReturnsTrue))
-			_engine->GetInputManager()->setKeyEvent(std::string(keyAction), std::string(listbox_items[listbox_item_current]));
-		if (ImGui::Button("Unassign"))
-			_engine->GetInputManager()->setKeyEvent("Not Assigned", std::string(listbox_items[listbox_item_current]));
-		ImGui::PushItemWidth(-1);
+			listbox_keyActions_current = -1;
+		}
+
+		if (listbox_keyActions_current > -1)
+		{
+			if (ImGui::Button("Unassign"))
+			{
+				_engine->GetInputManager()->delKeyEvent(actionItems[listbox_keyActions_current].actionName, std::string(listbox_keyNames[listbox_keyNames_current]));
+			}
+		}
+
+		ImGui::PushItemWidth(300.0f);
+
+		if (ImGui::Button("Save Changes"))
+		{
+			_engine->GetInputManager()->WriteToJSON();
+		}
 		ImGui::Dummy(ImVec2(0.0f, 20.0f));
 		ImGui::Text("Controller Mapping(Soon):");
-		ImGui::ListBox("##listbox2", &listbox_item_current2, listbox_items, IM_ARRAYSIZE(listbox_items), 4);
 		ImGui::End();
 	}
 }
