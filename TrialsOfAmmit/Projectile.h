@@ -26,8 +26,6 @@ public:
 	int _gridY;
 
 
-
-
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;

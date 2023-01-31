@@ -9,6 +9,7 @@
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
 
+
 #ifdef _DEBUG
 #define ENABLE_EDITOR
 #endif
@@ -29,6 +30,8 @@ Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
 Hudson::Physics::ColliderComponent* Collider2;
+
+Hudson::Render::TextComponent* Text;
 
 //Player 
 Hudson::Render::SpriteComponent* playerSprite;
@@ -82,6 +85,10 @@ void GameSetup()
     playerPhysics->SetForce(glm::vec2(0.0, 0));
     playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
     playerPhysics->SetVelocity(glm::vec2(0, 0));
+
+    Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
+    Text->SetText("Top Text");
+    Text->SetColor(glm::vec3(0, 400, 0));
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
@@ -142,8 +149,13 @@ void GameSetup()
     player->SetName("Player");
     startScene->AddObject(player);
 
+
     player->GetTransform().pos.x = 500.0f;
     player->GetTransform().pos.y = 500.0f;
+
+    Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
+    text->AddComponent(Text);
+    startScene->AddObject(text);
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
