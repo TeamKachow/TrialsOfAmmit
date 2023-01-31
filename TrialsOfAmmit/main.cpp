@@ -101,9 +101,9 @@ void GameSetup()
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
-    Physics2->SetForce(glm::vec2(-10.0, 0));
-    Physics2->SetAcceleration(glm::vec2(-100, 0), true);
-    Physics2->SetVelocity(glm::vec2(-100, 0));
+    Physics2->SetForce(glm::vec2(10.0, 0));
+    Physics2->SetAcceleration(glm::vec2(10, 0), true);
+    Physics2->SetVelocity(glm::vec2(0, 0));
 
 
     Collider1 = new Hudson::Physics::ColliderComponent();
@@ -117,6 +117,7 @@ void GameSetup()
     engine->GetSceneManager()->AddScene(startScene);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
+    blah->SetName("Ai1");
     blah->AddComponent(Sprite1);
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
@@ -125,15 +126,18 @@ void GameSetup()
     blah->GetTransform().pos.x = 200.0f;
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
-    blah2->AddComponent(Sprite2);
+    blah2->SetName("Ai2");
+    blah2->AddComponent(Sprite1);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
+    blah2->AddComponent(new AiAgent(Sprite1));
     startScene->AddObject(blah2);
-
     blah2->GetTransform().pos.x = 1400.0f;
+    blah2->GetTransform().pos.y = 100.0f;
 
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
+    player->SetName("Player");
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
     player->AddComponent(playerPhysics);
