@@ -2,7 +2,6 @@
 
 #include <Hudson.h>
 #include "Player.h"
-#include <string.h>
 #include <random>
 
 using namespace glm;
@@ -19,19 +18,19 @@ enum AiState
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
-	AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed = 0.8);
+	AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed);
 	~AiAgent();
 	void TakeDamage(int damageAmount);
 	Hudson::Render::SpriteComponent* _aiSprite;
 	float _maxHealth;
 	float _currentHealth;
 	float _meleeDamage;
-
+	virtual void AiDead();
 protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
 	virtual void AiAttack();
-	virtual void AiDead();
+	
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
 	Hudson::World::Scene* _currentscene;
 	Player* _player;

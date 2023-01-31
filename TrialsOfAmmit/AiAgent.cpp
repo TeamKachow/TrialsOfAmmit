@@ -11,7 +11,7 @@ void AiAgent::OnCreate()
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
-	_maxSpeed = 15;
+	_maxSpeed = 30;
 	_maxRange = 250;
 	_minRange = -250;
 	_currentHealth = _maxHealth;
@@ -31,8 +31,10 @@ void AiAgent::OnCreate()
 
 	_currentscene = _parent->GetScene();
 	auto _sceneObjects = _currentscene->GetObjects();
+
 	for(Hudson::Entity::GameObject* other: _sceneObjects)
 	{
+		
 		if (other->GetName() == "Player")
 		{
 			_player = other->GetComponent<Player>();
@@ -204,6 +206,7 @@ void AiAgent::AiDead()
 {
 	//needs to be able to remove the object from the scene 
 	_alive = false;
+	cout << "ISDEAD" << "\n";
 	_currentscene->RemoveObject(_parent);
 }
 
@@ -234,8 +237,27 @@ void AiAgent::RandomTargetSelector()
 
 void AiAgent::GetPlayerPos()
 {
+	if (_player == nullptr)
+	{
+		auto _sceneObjects = _currentscene->GetObjects();
+
+		for (Hudson::Entity::GameObject* other : _sceneObjects)
+		{
+
+			if (other->GetName() == "Player")
+			{
+				_player = other->GetComponent<Player>();
+				break;
+			}
+		}
+
+	}
 	//TODO
-	_target = _player->GetParent()->GetTransform().pos;
+	if(_player != nullptr)
+	{
+		_target = _player->GetParent()->GetTransform().pos;
+	}
+	
 }
 
 void AiAgent::Move(float deltatime)

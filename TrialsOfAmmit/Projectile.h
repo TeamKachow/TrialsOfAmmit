@@ -12,6 +12,7 @@ public:
 	Hudson::Entity::GameObject* _projectile;
 	Hudson::Physics::PhysicsComponent* _projectilePhysics;
 	Hudson::Render::SpriteComponent* _projectileSprite;
+	Hudson::Physics::ColliderComponent* _projectileCollider;
 	facingDirections _projectileDirection;
 
 	glm::vec2 _spawnPos;
