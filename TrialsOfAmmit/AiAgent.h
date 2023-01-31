@@ -1,9 +1,9 @@
 #pragma once
 
 #include <Hudson.h>
+#include "Player.h"
 #include <string.h>
 #include <random>
-
 
 using namespace glm;
 using namespace std;
@@ -23,8 +23,6 @@ public:
 	~AiAgent();
 	void TakeDamage(int damageAmount);
 	Hudson::Render::SpriteComponent* _aiSprite;
-	double _aiAnimSpeed;
-	double _aiAnimTimer;
 	float _maxHealth;
 	float _currentHealth;
 	float _meleeDamage;
@@ -35,6 +33,8 @@ protected:
 	virtual void AiAttack();
 	virtual void AiDead();
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
+	Hudson::World::Scene* _currentscene;
+	Player* _player;
 	AiState _currentState;
 	vec2 _target;
 	vec2 _moveForce;
@@ -44,6 +44,10 @@ protected:
 	float _currentSpeed;
 	float _maxSpeed;
 	float _mass;
+	float _maxRange;
+	float _minRange;
+	double _aiAnimSpeed;
+	double _aiAnimTimer;
 	bool _alive;
 	bool _arrive;
 
@@ -54,6 +58,7 @@ private:
 	void DrawPropertyUI() override;
 	void RandomTargetSelector();
 	void Move(float deltatime);
+	void GetPlayerPos();
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
 };
