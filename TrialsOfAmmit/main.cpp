@@ -146,7 +146,7 @@ void GameSetup()
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
     player->AddComponent(playerPhysics);
-    //player->AddComponent(playerCollider);
+    player->AddComponent(playerCollider);
     player->SetName("Player");
     startScene->AddObject(player);
 
