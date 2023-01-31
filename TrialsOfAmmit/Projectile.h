@@ -14,6 +14,17 @@ public:
 	Hudson::Render::SpriteComponent* _projectileSprite;
 	facingDirections _projectileDirection;
 
+	glm::vec2 _spawnPos;
+
+	float _animTimer;
+	float _animSpeed;
+
+	float _deleteTimer;
+	float _deleteTime;
+
+	int _gridX;
+	int _gridY;
+
 
 
 

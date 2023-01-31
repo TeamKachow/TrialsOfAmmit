@@ -21,10 +21,9 @@ void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
 
-	std::cout<< _playersWeapon->_weaponName << "\n";
-	_playersWeapon = &_khopesh;
-	std::cout << _playersWeapon->_weaponName << "\n";
-	Fire();
+	_playersWeapon = &_axe;
+	
+	
 
 }
 
@@ -63,8 +62,8 @@ void Player::OnTick(const double& dt)
 
 void Player::Fire()
 {
-	_projectile = new Hudson::Entity::GameObject();
-	_projectile->AddComponent(new Projectile(_playerDirection, _parent->GetTransform().pos, _currentScene, _projectile));
+	_playersWeapon->Attack(_playerDirection, _parent->GetTransform().pos, _currentScene);
+
 }
 
 void Player::MoveUp()
@@ -119,6 +118,7 @@ void Player::AnimMove()
 		}
 
 	}
+	//_currentScene->RemoveObject(_parent);
 }
 
 
