@@ -28,6 +28,17 @@ void AiAgent::OnCreate()
 	_velocity = _aiPhysics->GetVelocity();
 	_mass = _aiPhysics->GetMass();
 	_acceleration = _aiPhysics->GetAcceleration();
+
+	Hudson::World::Scene* _currentscene = _parent->GetScene();
+	auto _sceneObjects = _currentscene->GetObjects();
+	for(Hudson::Entity::GameObject* other: _sceneObjects)
+	{
+		if (other->GetName() == "Player")
+		{
+			_player = other->GetComponent<Player>();
+			break;
+		}
+	}
 }
 
 AiAgent::~AiAgent()
@@ -53,7 +64,7 @@ void AiAgent::OnTick(const double& dt)
 	switch (_currentState)
 	{
 	case SEEK:
-
+		GetPlayerPos();
 		_moveForce = Seek(_target);
 		Move(deltatime);
 		break;
@@ -224,7 +235,7 @@ void AiAgent::RandomTargetSelector()
 void AiAgent::GetPlayerPos()
 {
 	//TODO
-	
+	_target = _player->GetParent()->GetTransform().pos;
 }
 
 void AiAgent::Move(float deltatime)

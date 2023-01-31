@@ -116,6 +116,17 @@ void GameSetup()
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);
 
+    Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
+    player->SetName("Player");
+    player->AddComponent(playerSprite);
+    player->AddComponent(new Player(playerSprite));
+    player->AddComponent(playerPhysics);
+    player->AddComponent(playerCollider);
+    startScene->AddObject(player);
+
+    player->GetTransform().pos.x = 500.0f;
+    player->GetTransform().pos.y = 500.0f;
+
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->SetName("Ai1");
     blah->AddComponent(Sprite1);
@@ -134,18 +145,6 @@ void GameSetup()
     startScene->AddObject(blah2);
     blah2->GetTransform().pos.x = 1400.0f;
     blah2->GetTransform().pos.y = 100.0f;
-
-
-    Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->SetName("Player");
-    player->AddComponent(playerSprite);
-    player->AddComponent(new Player(playerSprite));
-    player->AddComponent(playerPhysics);
-    player->AddComponent(playerCollider);
-    startScene->AddObject(player);
-
-    player->GetTransform().pos.x = 500.0f;
-    player->GetTransform().pos.y = 500.0f;
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
