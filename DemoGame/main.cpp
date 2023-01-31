@@ -90,7 +90,7 @@ void GameSetup()
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
 
-    Text1 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
+    Text1 = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
     Text1->SetText("the quick brown fox jumps over the lazy dog");
     Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
 
