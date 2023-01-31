@@ -67,7 +67,7 @@ void DemoBehaviour::OnTick(const double& dt)
 		for (auto other : collidingWith)
 		{
 			// first collider is hitting another object - handle this collision
-			std::cout << this << " is colliding with " << other << "\n";
+			std::cout << this << " detected " << collider << " colllided with " << other << "\n";
 		}
 	}
 
