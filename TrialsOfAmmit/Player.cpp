@@ -9,7 +9,6 @@ Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) 
 	_testTimer = 0;
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
-
 }
 
 Player::~Player()
@@ -20,11 +19,7 @@ Player::~Player()
 void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
-
 	_playersWeapon = &_bow;
-	
-	
-
 }
 
 void Player::TakeDamage(float _damageTaken)

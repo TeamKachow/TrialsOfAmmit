@@ -137,6 +137,8 @@ void GameSetup()
     blah2->AddComponent(Sprite2);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
+    blah2->AddComponent(new AiAgent(Sprite1, 0.8));
+    blah2->SetName("AI2");
     startScene->AddObject(blah2);
 
     blah2->GetTransform().pos.x = 1400.0f;
@@ -146,7 +148,7 @@ void GameSetup()
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
     player->AddComponent(playerPhysics);
-    //player->AddComponent(playerCollider);
+    player->AddComponent(playerCollider);
     player->SetName("Player");
     startScene->AddObject(player);
 

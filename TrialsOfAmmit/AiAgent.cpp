@@ -11,7 +11,7 @@ void AiAgent::OnCreate()
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
-	_maxSpeed = 30;
+	_maxSpeed = 15;
 	_maxRange = 250;
 	_minRange = -250;
 	_currentHealth = _maxHealth;
@@ -31,10 +31,8 @@ void AiAgent::OnCreate()
 
 	_currentscene = _parent->GetScene();
 	auto _sceneObjects = _currentscene->GetObjects();
-
 	for(Hudson::Entity::GameObject* other: _sceneObjects)
 	{
-		
 		if (other->GetName() == "Player")
 		{
 			_player = other->GetComponent<Player>();
@@ -91,6 +89,11 @@ void AiAgent::OnTick(const double& dt)
 
 		break;
 	}
+
+	if (_distanceFromTarget < 50)
+	{
+		_currentState = SEEK;
+	}
 }
 
 void AiAgent::CollisionCheck()
@@ -132,6 +135,39 @@ void AiAgent::CollisionCheck()
 			RandomTargetSelector();
 		}
 	}
+
+	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	//if (!colliders.empty())
+	//{
+	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+	//	auto collidingWith = collider->GetCurrentCollisions();
+	//	for (auto other : collidingWith)
+	//	{
+	//		cout << "Hit" << other << "\n";
+	//		//cout<<other->GetParent()->GetName() << "\n";
+	//		if (other->GetParent()->GetComponent<AiAgent>() != nullptr)
+	//		{
+	//			cout << other->GetParent()->GetComponent<AiAgent>()->GetParent()->GetName() << "\n";
+	//			AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
+	//			if (_aiAgent != nullptr)
+	//			{
+	//				_currentScene->RemoveObject(_projectile);
+	//				_aiAgent->AiDead();
+	//				_aiAgent = nullptr;
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				cout << "Agent Not Found" << other << "\n";
+	//				break;
+	//			}
+
+	//			//_player = other->GetComponent<Player>();
+	//			break;
+	//		}
+	//	}
+
+	//}
 }
 
 void AiAgent::Animate(float deltaTime)
@@ -250,14 +286,11 @@ void AiAgent::GetPlayerPos()
 				break;
 			}
 		}
-
 	}
-	//TODO
 	if(_player != nullptr)
 	{
 		_target = _player->GetParent()->GetTransform().pos;
 	}
-	
 }
 
 void AiAgent::Move(float deltatime)
