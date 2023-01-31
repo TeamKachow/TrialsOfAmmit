@@ -33,6 +33,7 @@ protected:
 	virtual void AiAttack();
 	virtual void AiDead();
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
+	Hudson::World::Scene* _currentscene;
 	Player* _player;
 	AiState _currentState;
 	vec2 _target;

@@ -29,7 +29,7 @@ void AiAgent::OnCreate()
 	_mass = _aiPhysics->GetMass();
 	_acceleration = _aiPhysics->GetAcceleration();
 
-	Hudson::World::Scene* _currentscene = _parent->GetScene();
+	_currentscene = _parent->GetScene();
 	auto _sceneObjects = _currentscene->GetObjects();
 	for(Hudson::Entity::GameObject* other: _sceneObjects)
 	{
@@ -203,8 +203,8 @@ void AiAgent::AiAttack()
 void AiAgent::AiDead()
 {
 	//needs to be able to remove the object from the scene 
-	_parent->~GameObject();
 	_alive = false;
+	_currentscene->RemoveObject(_parent);
 }
 
 void AiAgent::TakeDamage(int damageAmount)
