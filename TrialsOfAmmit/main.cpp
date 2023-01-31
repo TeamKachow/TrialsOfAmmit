@@ -3,6 +3,7 @@
 #include <Hudson.h>
 
 //#include "DemoBehaviour.h"
+#include "AiAgent.h"
 #include "Player.h"
 
 Hudson::Common::Engine* engine;
@@ -33,9 +34,6 @@ Hudson::Physics::ColliderComponent* Collider2;
 Hudson::Render::SpriteComponent* playerSprite;
 Hudson::Physics::PhysicsComponent* playerPhysics;
 Hudson::Physics::ColliderComponent* playerCollider;
-
-
-
 
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
@@ -70,11 +68,13 @@ void GameSetup()
     resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
 
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+    resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
+    resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
 
-    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
+    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
     playerSprite->SetGridSize(glm::vec2(3, 4));
-    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 0.0f));
+    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
     playerPhysics = new Hudson::Physics::PhysicsComponent();
     playerPhysics->SetMass(1.0f);
@@ -96,8 +96,8 @@ void GameSetup()
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
     Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(100, 0), true);
-    Physics1->SetVelocity(glm::vec2(100, 0));
+    Physics1->SetAcceleration(glm::vec2(10, 0), true);
+    Physics1->SetVelocity(glm::vec2(0, 0));
 
     Physics2 = new Hudson::Physics::PhysicsComponent();
     Physics2->SetMass(1.0f);
@@ -118,16 +118,14 @@ void GameSetup()
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite1);
-    //blah->AddComponent(new DemoBehaviour(Sprite1));
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
+    blah->AddComponent(new AiAgent(Sprite1));
     startScene->AddObject(blah);
-
     blah->GetTransform().pos.x = 200.0f;
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite2);
-    //blah2->AddComponent(new DemoBehaviour(Sprite2));
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
     startScene->AddObject(blah2);

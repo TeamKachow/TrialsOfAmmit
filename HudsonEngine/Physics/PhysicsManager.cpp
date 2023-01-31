@@ -59,34 +59,40 @@ void Hudson::Physics::PhysicsManager::UpdateMovement(double deltaTime)
 void Hudson::Physics::PhysicsManager::UpdateCollider()
 {
 	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
+
+	std::vector<ColliderComponent*> sceneColliders;
+
 	for (auto scene : scenes)
 	{
 		// Don't update collisions on inactive scenes
 		if (!scene->IsActive())
 			continue;
 
-		std::vector<ColliderComponent*> vecColliders;
-
 		for (auto gameObject : scene->GetObjects())
 		{
 			// Update Collisions
 			for (auto collider : gameObject->GetComponents<ColliderComponent>())
 			{
-				vecColliders.push_back(collider);
+				sceneColliders.push_back(collider);
 				collider->ClearColliding();
 			}
 		}
-		for (int i = 0; i < vecColliders.size() - 1; i++)
+		if (sceneColliders.empty()) 
+			continue;
+
+		for (int i = 0; i < sceneColliders.size() - 1; i++)
 		{
-			for (int j = i + 1; j < vecColliders.size(); j++)
+			for (int j = i + 1; j < sceneColliders.size(); j++)
 			{
-				if (vecColliders[i]->AABBCollision(vecColliders[j]))
+				if (sceneColliders[i]->AABBCollision(sceneColliders[j]))
 				{
-					vecColliders[i]->SetColliding(vecColliders[j]);
-					vecColliders[j]->SetColliding(vecColliders[i]);
+					sceneColliders[i]->SetColliding(sceneColliders[j]);
+					sceneColliders[j]->SetColliding(sceneColliders[i]);
 				}
 			}
 		}
+
+		sceneColliders.clear();
 	}
 }
 
