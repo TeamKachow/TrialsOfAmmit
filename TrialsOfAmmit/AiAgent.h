@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Hudson.h>
-#include<string.h>
+#include <string.h>
+#include <random>
+
 
 using namespace glm;
 using namespace std;
@@ -17,14 +19,19 @@ enum AiState
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
-	AiAgent();
+	AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed = 0.8);
 	~AiAgent();
+	void TakeDamage(int damageAmount);
+	Hudson::Render::SpriteComponent* _aiSprite;
+	double _aiAnimSpeed;
+	double _aiAnimTimer;
 	float _maxHealth;
 	float _currentHealth;
 	float _meleeDamage;
 
 protected:
-	bool CollisionCheck();
+	void CollisionCheck();
+	void Animate(float deltaTime);
 	virtual void AiAttack();
 	virtual void AiDead();
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;

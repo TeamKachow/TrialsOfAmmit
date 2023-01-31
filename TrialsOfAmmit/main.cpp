@@ -122,7 +122,6 @@ void GameSetup()
     //blah->AddComponent(new DemoBehaviour(Sprite1));
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
-    blah->AddComponent(new AiAgent());
     startScene->AddObject(blah);
 
     blah->GetTransform().pos.x = 200.0f;

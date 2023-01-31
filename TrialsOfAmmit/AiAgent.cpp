@@ -1,8 +1,9 @@
 #include "AiAgent.h"
 
-AiAgent::AiAgent():Behaviour("AiBehavior")
+AiAgent::AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed) : Behaviour("AiBehavior")
 {
-
+	_aiSprite = aiSprite;
+	_aiAnimSpeed = 0.6;
 }
 
 void AiAgent::OnCreate()
@@ -12,7 +13,7 @@ void AiAgent::OnCreate()
 	_currentHealth = _maxHealth;
 	_meleeDamage = 10.0f;
 	_alive = true;
-	_maxSpeed = 30;
+	_maxSpeed = 15;
 	_arrive = true;
 	//need to add _position
 	_target = vec2(0,0);
@@ -39,10 +40,17 @@ void AiAgent::OnDestroy()
 void AiAgent::OnTick(const double& dt)
 {
 	float deltatime = dt;
+	Animate(deltatime);
+	if (_distanceFromTarget < 200)
+	{
+		_arrive = true;
+	}
+
 	switch (_currentState)
 	{
 	case SEEK:
-		
+		_moveForce = Seek(_target);
+		Move(deltatime);
 		break;
 	case WANDER:
 		if (_parent->GetTransform().pos != _target)
@@ -65,27 +73,132 @@ void AiAgent::OnTick(const double& dt)
 
 		break;
 	}
-	if (_distanceFromTarget < 30)
+}
+
+void AiAgent::CollisionCheck()
+{
+	//return false unless colliding
+	if (_parent->GetTransform().pos.x >= 1550.0f)
 	{
-		_arrive = true;
-		cout << "Arrived" << endl;
+		if (!_aiPhysicsComponent.empty())
+		{
+			auto _aiPhysics = _aiPhysicsComponent.front();
+			_aiPhysics->SetVelocity(vec2(-100, 0));
+			RandomTargetSelector();
+		}
 	}
-	if (_parent->GetTransform().pos.x > 1600 || _parent->GetTransform().pos.y > 900 || _parent->GetTransform().pos.x < 0 || _parent->GetTransform().pos.y < 0)
+
+	if (_parent->GetTransform().pos.y >= 830.0f)
 	{
-		_target = vec2(500, 500);
+		if (!_aiPhysicsComponent.empty())
+		{
+			auto _aiPhysics = _aiPhysicsComponent.front();
+			_aiPhysics->SetVelocity(vec2(0,-100));
+			RandomTargetSelector();
+		}
+	}
+
+	if (_parent->GetTransform().pos.x <= 0.0f)
+	{
+		if (!_aiPhysicsComponent.empty())
+		{
+			auto _aiPhysics = _aiPhysicsComponent.front();
+			_aiPhysics->SetVelocity(vec2(100, 0));
+			RandomTargetSelector();
+		};
+	}
+
+	if (_parent->GetTransform().pos.y <= 0.0f)
+	{
+		if (!_aiPhysicsComponent.empty())
+		{
+			auto _aiPhysics = _aiPhysicsComponent.front();
+			_aiPhysics->SetVelocity(vec2(0, 100));
+			RandomTargetSelector();
+		}
 	}
 }
 
-bool AiAgent::CollisionCheck()
+void AiAgent::Animate(float deltaTime)
 {
-	//return false unless colliding
-	return false;
+	_aiAnimTimer += deltaTime;
+	if (_aiAnimTimer >= _aiAnimSpeed)
+	{
+		_aiAnimTimer -= _aiAnimSpeed;
+		int _gridX = _aiSprite->GetGridPos().x;
+		int _gridY = _aiSprite->GetGridPos().y;
+
+		vec2 spriteGridSize = _aiSprite->GetGridSize();
+		//Animation walking right
+		if (_velocity.x > 1)
+		{
+			_gridY = 2;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+		}
+		//Animation walking left
+		if (_velocity.x < 1)
+		{
+			_gridY = 1;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+		}
+		//Animation walking down
+		if (_velocity.y > 1)
+		{
+			_gridY = 0;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+		}
+		//Animation walking up
+		if (_velocity.y < 1)
+		{
+			_gridY = 3;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+		}
+		//FIX THIS
+		/*if (_arrive == true)
+		{
+			_gridY = 0;
+			_gridX = 0;
+		}*/
+		_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+	}
 }
 
 vec2 AiAgent::Seek(vec2 Target)
 {
-	//returns a velocity 
-	return vec2(0, 0);
+	vec2 target = _target;
+	vec2 _moveForce = (target - _parent->GetTransform().pos);
+	_distanceFromTarget = length(_moveForce);
+	normalize(_moveForce);
+	_moveForce = _moveForce * _maxSpeed;
+	return (_moveForce - _velocity);
 }
 
 vec2 AiAgent::Wander(vec2 Target)
@@ -108,23 +221,27 @@ void AiAgent::AiDead()
 	_alive = false;
 }
 
+void AiAgent::TakeDamage(int damageAmount)
+{
+	_currentHealth = _currentHealth - damageAmount;
+
+	if (_currentHealth <= 0)
+	{
+		AiDead();
+	}
+}
+
 void AiAgent::RandomTargetSelector()
 {
-	srand(time(0));
-	int max_distance = 250;
+	random_device rand;
+	uniform_int_distribution<int> dist(-250, 250);
 	int posX = _parent->GetTransform().pos.x;
 	int posY = _parent->GetTransform().pos.y;
-	int delta_x = rand() % (2 * max_distance + 1) - max_distance;
-	int delta_y = rand() % (2 * max_distance + 1) - max_distance;
-	if (_target.x > 1600 && _target.y > 900 || _target.x < 0 && _target.y < 0)
-	{
-		RandomTargetSelector();
-	}
-	else
-	{
-		_target = { posX + delta_x, posY + delta_y };
-		_arrive = false;
-	}
+	int randX = dist(rand);
+	int randY = dist(rand);
+	_target = { posX + randX, posY + randY };
+	_arrive = false;
+	
 }
 
 void AiAgent::Move(float deltatime)
@@ -139,10 +256,19 @@ void AiAgent::Move(float deltatime)
 		//cout << _velocity.x << "" << _velocity.y << endl;
 		_aiPhysics->SetAcceleration(_acceleration, true);
 		_aiPhysics->SetVelocity(_velocity);
+		CollisionCheck();
 	}
 }
 
 void AiAgent::DrawPropertyUI()
 {
+	ImGui::DragScalar("Anim spd", ImGuiDataType_Double, &_aiAnimSpeed, 0.05);
 
+	if (ImGui::Button("Wander")) {
+		_currentState = WANDER;
+	}
+
+	if (ImGui::Button("Seek")) {
+		_currentState = SEEK;
+	}
 }
