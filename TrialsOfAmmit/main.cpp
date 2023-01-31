@@ -70,6 +70,7 @@ void GameSetup()
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
+    resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
@@ -122,6 +123,7 @@ void GameSetup()
     player->AddComponent(new Player(playerSprite));
     player->AddComponent(playerPhysics);
     player->AddComponent(playerCollider);
+    player->SetName("Player");
     startScene->AddObject(player);
 
     player->GetTransform().pos.x = 500.0f;

@@ -39,6 +39,12 @@
     <ClCompile Include="AiAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bow.cpp">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -60,6 +66,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AiAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bow.h">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeAttack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
