@@ -187,8 +187,9 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 	ImGui::DragFloat3("Color RGB", &color.x, 0.1f, 0.0f, 1.0f);
 	ImGui::DragFloat("Line Spacing: ", &newLineOffset, 0.5);
 
-
-	ImGui::Text("Font");
+	ImGui::Text("Current Font:");
+	ImGui::SameLine();
+	ImGui::TextDisabled("Place Font Here");
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* pl = ImGui::AcceptDragDropPayload("ContentItem"))

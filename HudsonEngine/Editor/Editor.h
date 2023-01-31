@@ -48,7 +48,5 @@ namespace Hudson::Editor
 		GLuint fileIcon = 0;
 
 		std::filesystem::path currentPath;
-
-        
 	};
 }

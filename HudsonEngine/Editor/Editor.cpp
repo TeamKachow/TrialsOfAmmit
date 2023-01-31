@@ -308,8 +308,8 @@ void Hudson::Editor::Editor::ContentBrowser()
 	{
 		ImGui::PushID(i++);
 
-		const auto& path = entry.path();
-		auto relativePath = std::filesystem::relative(entry.path(), filePath);
+		const std::filesystem::path& path = entry.path();
+		std::filesystem::path relativePath; relativePath = std::filesystem::relative(entry.path(), filePath);
 		std::string filenameString = relativePath.filename().string();
 
 		auto icon = entry.is_directory() ? directoryIcon : fileIcon;
