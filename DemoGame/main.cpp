@@ -90,9 +90,9 @@ void GameSetup()
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
 
-    Text1 = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
-    Text1->SetText("the");
-    Text1->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+    Text1 = new Hudson::Render::TextComponent("Fonts/arial.ttf", _defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
+    Text1->SetText("the quick brown fox jumps over the lazy dog");
+    Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
 
     Text2 = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(), glm::vec2(20.0f, 20.0f));
     Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
@@ -134,7 +134,7 @@ void GameSetup()
     hud2->AddComponent(Text2);
     transform = { glm::vec2(-10,200), glm::vec2(1,1), 0 };
     hud2->SetTransform(transform);
-    //startScene->AddObject(hud2);
+    startScene->AddObject(hud2);
 
 
     std::cout << "DemoGame: engine has been set up!\n";

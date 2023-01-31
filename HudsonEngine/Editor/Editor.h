@@ -17,6 +17,7 @@ namespace Hudson::Editor
 
 		Entity::GameObject* _selected = nullptr;
 		bool _showIds = false;
+		bool _showHelp = false;
 
 	public:
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
@@ -34,6 +35,7 @@ namespace Hudson::Editor
 		void Tools();
 		void ObjectProperties();
 		void Debug();
+		void Help();
 
 		void Draw();
 

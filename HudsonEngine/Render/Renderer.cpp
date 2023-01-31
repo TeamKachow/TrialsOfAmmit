@@ -1,7 +1,6 @@
 #include "../Render/Renderer.h"
 
 #include "../Hudson.h"
-#include "../Hudson.h"
 #include "../Render/Window.h"
 #include "../Common/Engine.h"
 #include "../Common/ResourceManager.h"

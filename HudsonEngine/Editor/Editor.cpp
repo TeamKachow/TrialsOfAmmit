@@ -121,11 +121,25 @@ void Hudson::Editor::Editor::MenuBar()
 			ImGui::EndMenu();
 		}
 
+		ImGui::Separator();
+
+		if (ImGui::BeginMenu("Scenes"))
+		{
+			if (ImGui::MenuItem("New Empty Scene"))
+			{
+				_engine->GetSceneManager()->AddScene(new World::Scene());
+			}
+			ImGui::MenuItem("Load Scene...", 0, false, false);
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Debug"))
 		{
 			ImGui::MenuItem("Show IDs", "", &_showIds);
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::MenuItem("Help", 0, &_showHelp));
 
 		ImGui::EndMainMenuBar();
 	}
@@ -172,8 +186,48 @@ void Hudson::Editor::Editor::Hierarchy()
 
 		if (ImGui::TreeNode((void*)(intptr_t)i, "Scene %d - %s", i, scene->GetName().c_str()))
 		{
-			for (auto object : scene->GetObjects())
+
+			if (ImGui::BeginPopupContextItem())
 			{
+				ImGui::PushID(&scene);
+				ImGui::InputText("", &scene->_name);
+				ImGui::PopID();
+				ImGui::Separator();
+				if (ImGui::MenuItem("Active?", 0, scene->IsActive()))
+				{
+					scene->SetActive(!scene->IsActive());
+				}
+				if (ImGui::MenuItem("Rendering?", 0, scene->IsRendering()))
+				{
+					scene->SetRendering(!scene->IsRendering());
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Create Empty Object"))
+				{
+					scene->AddObject(new Entity::GameObject());
+				}
+				if (ImGui::MenuItem("Paste Object", 0, false, false))
+				{
+					// TODO: object/component clipboard
+				}
+				ImGui::Separator();
+				if (ImGui::MenuItem("Save Scene...", 0, false, false))
+				{
+					// TODO: save
+				}
+				if (ImGui::MenuItem("Duplicate Scene", 0, false, false))
+				{
+					// TODO: duplicate
+				}
+				if (ImGui::MenuItem("Delete Scene (!)"))
+				{
+					_selected = nullptr;
+					_engine->GetSceneManager()->RemoveScene(scene);
+				}
+				ImGui::EndPopup();
+			}
+		    for (auto object : scene->GetObjects())
+            {
 				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
 				if (_selected == object)
 				{
@@ -187,13 +241,22 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				if (ImGui::BeginPopupContextItem())
 				{
-					ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x);
-					if (ImGui::Selectable("Delete"))
+					if (ImGui::MenuItem("Save Object...", 0, false, false))
+					{
+						// TODO: save
+					}
+					if (ImGui::MenuItem("Copy Object", 0, false, false))
+					{
+						// TODO: copy
+					}
+					if (ImGui::MenuItem("Delete Object"))
 					{
 						ImGui::CloseCurrentPopup();
-						// TODO: this crashes because iterators don't like you deleting things
+						if (_selected == object)
+						{
+							_selected = nullptr;
+						}
 						scene->RemoveObject(object);
-						delete object;
 					}
 					ImGui::EndPopup();
 				}
@@ -302,17 +365,16 @@ void Hudson::Editor::Editor::ComponentList()
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select a component below to add.");
 
-			for (auto element : _registry->GetKnownComponents())
+			for (auto& element : _registry->GetKnownComponents())
 			{
 				ImGui::Text(element.name.c_str());
 				ImGui::SameLine();
-				ImGui::PushID((void*)(&element.constructor));
+				ImGui::PushID((void*)(&element));
 				if (ImGui::SmallButton("+"))
 				{
 					// Add the component
 					auto component = element.constructor();
 					_selected->AddComponent(component);
-					std::cout << "Would add a " << element.name << " right now\n";
 				}
 				ImGui::PopID();
 			}
@@ -405,7 +467,20 @@ void Hudson::Editor::Editor::ObjectProperties()
 				headerFlags |= ImGuiTreeNodeFlags_Leaf;
 
 			ImGui::PushID((void*)component);
-			if (ImGui::CollapsingHeader(component->GetTypeName(), headerFlags))
+			bool compOpen = ImGui::CollapsingHeader(component->GetTypeName(), headerFlags);
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Copy Component...", 0, false, false))
+				{
+					// TODO
+				}
+				if (ImGui::MenuItem("Delete Component"))
+				{
+					component->GetParent()->RemoveComponent(component);
+				}
+				ImGui::EndPopup();
+			}
+			if (compOpen)
 			{
 				if (_showIds)
 				{
@@ -454,6 +529,20 @@ void Hudson::Editor::Editor::Debug()
 	ImGui::End();
 }
 
+void Hudson::Editor::Editor::Help()
+{
+	if (ImGui::BeginPopupModal("'How to Hudson', a memoir by best-selling author Doc Hudson", &_showHelp))
+	{
+		ImGui::Text("Just try right-clicking things to see what menus exist");
+		ImGui::Text("The end");
+
+		ImGui::EndPopup();
+	}
+
+	if (_showHelp)
+		ImGui::OpenPopup("'How to Hudson', a memoir by best-selling author Doc Hudson");
+}
+
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
@@ -464,5 +553,6 @@ void Hudson::Editor::Editor::Draw()
 	ObjectProperties();
 	Tools();
 	Debug();
+	Help();
 }
 
