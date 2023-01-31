@@ -190,6 +190,7 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				if (ImGui::MenuItem("Delete Scene (!)"))
 				{
+					_selected = nullptr;
 					_engine->GetSceneManager()->RemoveScene(scene);
 				}
 				ImGui::EndPopup();
@@ -220,6 +221,10 @@ void Hudson::Editor::Editor::Hierarchy()
 					if (ImGui::MenuItem("Delete Object"))
 					{
 						ImGui::CloseCurrentPopup();
+						if (_selected == object)
+						{
+							_selected = nullptr;
+						}
 						scene->RemoveObject(object);
 					}
 					ImGui::EndPopup();
