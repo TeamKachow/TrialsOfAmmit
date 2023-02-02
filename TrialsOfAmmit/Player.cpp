@@ -9,7 +9,7 @@ Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) 
 	_testTimer = 0;
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
-	_movementSpeed = 45.0;
+	_playerMovementSpeed = 45.0;
 
 }
 
@@ -77,7 +77,7 @@ void Player::MoveUp()
 	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 3;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(0, -_movementSpeed));
+	_playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
 }
 
 void Player::MoveDown()
@@ -85,7 +85,7 @@ void Player::MoveDown()
 	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 0;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(0, _movementSpeed));
+	_playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
 }
 
 void Player::MoveRight()
@@ -93,7 +93,7 @@ void Player::MoveRight()
 	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 2;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(_movementSpeed, 0));
+	_playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
 }
 
 void Player::MoveLeft()
@@ -101,7 +101,7 @@ void Player::MoveLeft()
 	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 1;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(-_movementSpeed, 0));
+	_playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
 }
 
 void Player::StopMove()
