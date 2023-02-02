@@ -5,6 +5,7 @@
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
@@ -66,9 +67,15 @@ void Init()
 
 void GameSetup()
 {
+    engine->GetRenderer()->SetCamera(_defaultCamera);
+
+
+    //resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
     resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+
     // Shader needs to be Use() to pass values over
-    resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
+ //   resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
 
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
@@ -87,9 +94,9 @@ void GameSetup()
     playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
     playerPhysics->SetVelocity(glm::vec2(0, 0));
 
-    Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
-    Text->SetText("Top Text");
-    Text->SetColor(glm::vec3(0, 400, 0));
+    //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
+    //Text->SetText("Top Text");
+    //Text->SetColor(glm::vec3(0, 400, 0));
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
@@ -155,9 +162,9 @@ void GameSetup()
     player->GetTransform().pos.x = 500.0f;
     player->GetTransform().pos.y = 500.0f;
 
-    Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
-    text->AddComponent(Text);
-    startScene->AddObject(text);
+    //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
+    //text->AddComponent(Text);
+    //startScene->AddObject(text);
 
     std::cout << "DemoGame: engine has been set up!\n";
 }

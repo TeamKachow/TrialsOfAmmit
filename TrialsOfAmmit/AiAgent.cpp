@@ -34,7 +34,6 @@ void AiAgent::OnCreate()
 
 	for(Hudson::Entity::GameObject* other: _sceneObjects)
 	{
-		
 		if (other->GetName() == "Player")
 		{
 			_player = other->GetComponent<Player>();

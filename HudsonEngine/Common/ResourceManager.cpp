@@ -25,7 +25,13 @@ Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 
 Render::Texture* Common::ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
 {
-	_textures[name] = LoadTextureFromFile(file, alpha);
+	_textures[name] = LoadTextureFromFile(file);
+	return &_textures[name];
+}
+
+Render::Texture* Common::ResourceManager::LoadTexture(std::filesystem::path file, bool alpha, std::string name)
+{
+	_textures[name] = LoadTextureFromFile(file);
 	return &_textures[name];
 }
 
@@ -81,22 +87,59 @@ Render::Shader Common::ResourceManager::LoadShaderFromFile(const char* vertShade
 	return shader;
 };
 
-Render::Texture Common::ResourceManager::LoadTextureFromFile(const char* file, bool alpha)
+Render::Texture Common::ResourceManager::LoadTextureFromFile(const char* file)
 {
 	// create texture object
 	Render::Texture texture;
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // RGB compatible
 
-	if (alpha) // Alpha should be true for PNG images and false for JPG
+	// load image
+	int width, height, nrChannels;
+	unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+
+	if (nrChannels == 4) // Alpha should be true for PNG images and false for JPG
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // RGBA compatible
 		texture._internalFormat = GL_RGBA;
 		texture._imageFormat = GL_RGBA;
 	}
+	else
+	{
+		// assume RGB
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // RGB compatible
+		texture._internalFormat = GL_RGB;
+		texture._imageFormat = GL_RGB;
+	}
+
+	// now generate texture
+	texture.Generate(width, height, data);
+	// free image data
+	stbi_image_free(data);
+	return texture;
+}
+
+Render::Texture Common::ResourceManager::LoadTextureFromFile(std::filesystem::path file)
+{
+	// create texture object
+	Render::Texture texture;
 
 	// load image
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load(file, &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(file.string().c_str(), &width, &height, &nrChannels, 0);
+
+	if (nrChannels == 4) // Alpha should be true for PNG images and false for JPG
+	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 4); // RGBA compatible
+		texture._internalFormat = GL_RGBA;
+		texture._imageFormat = GL_RGBA;
+	}
+	else
+	{
+		// assume RGB
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // RGB compatible
+		texture._internalFormat = GL_RGB;
+		texture._imageFormat = GL_RGB;
+	}
+
 	// now generate texture
 	texture.Generate(width, height, data);
 	// free image data

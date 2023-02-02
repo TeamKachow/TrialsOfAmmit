@@ -10,6 +10,7 @@ class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditabl
 {
 private:
 	Hudson::Render::SpriteComponent* _playerSprite;
+	
 	double _playerAnimSpeed = 0.2;
 	double _playerAnimTimer = 0;
 	double _testTimer = 0;
@@ -21,6 +22,8 @@ private:
 	int _gridY = 0;
 	facingDirections _playerDirection = Down;
 	Hudson::Entity::GameObject* _projectile;
+
+	Hudson::Input::InputManager _inputManager;
 
 	Axe _axe;
 	Khopesh _khopesh;
@@ -38,6 +41,7 @@ private:
 
 	
 public:
+	float _playerMovementSpeed = 45.0;
 	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
 	~Player() override;
 	void TakeDamage(float _damageTaken);
