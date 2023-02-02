@@ -29,6 +29,8 @@ void DemoBehaviour::OnCreate()
 
 void DemoBehaviour::OnTick(const double& dt)
 {
+	Audio::AudioManager* audio = GetAudioManager();
+
 	// TODO: remove this when OnCreate is implemented
 	if (_sprite == nullptr)
 	{
@@ -79,6 +81,14 @@ void DemoBehaviour::OnTick(const double& dt)
 
 	if (transform.pos.x > 1600)
 		transform.pos.x = 1;
+
+	// TODO to help devs
+	// EXAMPLE: Audio loads/plays when two objects collide, unloads/stops sounds when no longer in use
+
+
+
+    
+
 }
 
 void DemoBehaviour::OnDestroy()
