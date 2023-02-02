@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="AiAgent.cpp" />
     <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="BaseAbilityClass.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Khopesh.cpp" />
@@ -32,6 +33,7 @@
   <ItemGroup>
     <ClInclude Include="AiAgent.h" />
     <ClInclude Include="Axe.h" />
+    <ClInclude Include="BaseAbilityClass.h" />
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="facingDirection.h" />
