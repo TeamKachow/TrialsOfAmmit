@@ -8,7 +8,7 @@
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
 
-extern const std::filesystem::path filePath = "../DemoGame";
+extern const std::filesystem::path filePath = std::filesystem::current_path();
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry), currentPath(filePath)
 {
@@ -280,13 +280,16 @@ void Hudson::Editor::Editor::ContentBrowser()
 
 	ImGui::Begin("Content Browser");
 
-	if (currentPath != std::filesystem::path(filePath))
+	if (!std::filesystem::equivalent(filePath, currentPath))
 	{
 		if (ImGui::Button("<--"))
 		{
 			currentPath = currentPath.parent_path();
 		}
 	}
+
+	ImGui::SameLine();
+	ImGui::Text(currentPath.string().c_str());
 
 	float padding = 16.0f;
 	float thumbnailSize = 64.0f;
