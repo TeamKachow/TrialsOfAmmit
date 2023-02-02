@@ -44,3 +44,12 @@ AABB Hudson::Physics::ColliderComponent::GetAABB()
 
 	return box;
 }
+
+void Hudson::Physics::ColliderComponent::DrawPropertyUI()
+{
+	ImGui::Text("Colliding with %d objects", _colliderList.size());
+    for (auto collider : _colliderList)
+    {
+		ImGui::BulletText("Col %p\nObj %p", collider, collider->_parent);
+    }
+}

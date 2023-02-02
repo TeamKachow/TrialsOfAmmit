@@ -2,6 +2,22 @@
 #include "../World/Scene.h"
 #include "../Util/Timestep.h"
 
+Hudson::World::SceneManager::SceneManager()
+{
+    _time = new Hudson::Util::Timestep([&](const double dt)
+        {
+            for (auto& scene : _scenes.Get())
+            {
+                scene->Tick(dt);
+            }
+        });
+}
+
+Hudson::World::SceneManager::~SceneManager()
+{
+
+}
+
 void Hudson::World::SceneManager::HandlePostTick()
 {
     // Do queued updates to loaded scenes
@@ -56,20 +72,14 @@ bool Hudson::World::SceneManager::IsSceneLoaded(Scene* scene)
 
 void Hudson::World::SceneManager::Tick()
 {
-    // TODO: use staffs's Time class for fixed timestep
-   const double dt = 1.0 / 60.0;
-
-    // We should never EVER call this method recursively
+	// We should never EVER call this method recursively
     assert(!_isTicking);
 
     // Set ticking flag
     _isTicking = true;
 
     // Tick active scenes
-    for (auto& scene : _scenes.Get())
-    {
-        scene->Tick(dt);
-    }
+    _time->CalculateTimestep();
 
     // Clear ticking flag
     _isTicking = false;
