@@ -29,7 +29,7 @@ void DemoBehaviour::OnCreate()
 
 void DemoBehaviour::OnTick(const double& dt)
 {
-	Audio::AudioManager* audio = GetAudioManager();
+	
 
 	// TODO: remove this when OnCreate is implemented
 	if (_sprite == nullptr)
@@ -59,20 +59,6 @@ void DemoBehaviour::OnTick(const double& dt)
     }
 
 
-	// EXAMPLE: physics collision checks
-
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-	if (!colliders.empty())
-	{
-		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-		auto collidingWith = collider->GetCurrentCollisions();
-		for (auto other : collidingWith)
-		{
-			// first collider is hitting another object - handle this collision
-			std::cout << this << " is colliding with " << other << "\n";
-		}
-	}
-
 	// EXAMPLE: screen wrapping
 
 	auto& transform = _parent->GetTransform();
@@ -85,10 +71,42 @@ void DemoBehaviour::OnTick(const double& dt)
 	// TODO to help devs
 	// EXAMPLE: Audio loads/plays when two objects collide, unloads/stops sounds when no longer in use
 
+	Audio::AudioManager* audio = GetAudioManager();
+	bool soundPlayed = false;
+	
+	// Check for collision
 
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	if (!colliders.empty())
+	{
 
-    
+		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			// first collider is hitting another object - handle this collision
+			std::cout << this << " is colliding with " << other << "\n";
 
+			if (!soundPlayed)
+			{
+
+				// Load and play sound
+				audio->loadSoundFile("../audio/EnemyGrowl.wav");
+				audio->playSound("../audio/EnemyGrowl.wav", true, 0.0f, 0.0f);
+				soundPlayed = true;
+
+			}
+		}
+	}
+	else
+	{
+		// No collisions, stop and unload sound
+		audio->stopSound("../audio/EnemyGrowl.wav", true, 0.0f, 0.0f);
+		audio->unloadSoundFile("../audio/EnemyGrowl.wav");
+		soundPlayed = false;
+
+	};
+	
 }
 
 void DemoBehaviour::OnDestroy()

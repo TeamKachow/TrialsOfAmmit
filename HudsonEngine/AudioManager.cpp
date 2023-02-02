@@ -51,7 +51,7 @@ irrklang::ISound* Audio::AudioManager::playSound(const std::string& filePath, bo
     try
     {
         // Play a sound file
-        irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, pitch, pan);
+        irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped);
         if (sound)
         {
 
@@ -68,6 +68,7 @@ irrklang::ISound* Audio::AudioManager::playSound(const std::string& filePath, bo
 }
 
 
+
 // optional button instead of two separate button for pausing and resuming a sound. This toggle is determined
 //by the issoundplaying function
 bool Audio::AudioManager::toggleSound(const std::string& filePath)
@@ -78,11 +79,11 @@ bool Audio::AudioManager::toggleSound(const std::string& filePath)
         bool isPlaying = isSoundPlaying(filePath.c_str());
         if (isPlaying)
         {
-            pauseSound(filePath.c_str());
+            pauseSound(filePath.c_str(), false, 0.0f, 0.0f);
         }
         else
         {
-            resumeSound(filePath.c_str());
+            resumeSound(filePath.c_str(), true, 1.0f, 0.0f);
         }
         return !isPlaying;
     }
@@ -91,7 +92,7 @@ bool Audio::AudioManager::toggleSound(const std::string& filePath)
 }
 
 // function only stops a source source, not all sounds like the stopAllSounds function.
-void Audio::AudioManager::stopSound(const std::string& filePath)
+void Audio::AudioManager::stopSound(const std::string& filePathbool, bool playLooped, float pitch, float pan)
 {
     // Stop a sound file
     for (auto& sound : sounds[filePath.c_str()])
@@ -104,6 +105,8 @@ void Audio::AudioManager::stopSound(const std::string& filePath)
     }
     
 }
+
+
 
 // engine removes all sound sources - meaning all sound files. The elements are part of the std::map which finds
 //the file path and number of sound files currently there and clears them.
@@ -127,19 +130,46 @@ void Audio::AudioManager::stopAllSounds()
 
 // This function tells the engine to load the sound file into the engine runtime from the sound file folder
 
+//void Audio::AudioManager::loadSoundFile(const std::string& filePath)
+//{
+//    //// Load the sound file into the engine
+//    engine->addSoundSourceFromFile(filePath.c_str(), ESM_AUTO_DETECT);
+//
+//}
+
 void Audio::AudioManager::loadSoundFile(const std::string& filePath)
 {
-    // Load the sound file into the engine
-    engine->addSoundSourceFromFile(filePath.c_str());
+    // Check if the sound file has already been loaded
+    if (sounds.count(filePath) == 0)
+    {
+        try
+        {
+            // Load the sound file
+            engine->addSoundSourceFromFile(filePath.c_str());
+            sounds[filePath] = std::vector<irrklang::ISound*>();
+        }
+        catch (std::exception& e)
+        {
+            std::cout << "Exception: Sound file could not be loaded! " << e.what() << std::endl;
+        }
+    }
 }
 
-// engine unloads file when no longer used
+
+// engine unloads file when no longer used  
 
 void Audio::AudioManager::unloadSoundFile(const std::string& filePath)
 {
    // Unloads the sound file fromn the engine
     engine->removeSoundSource(filePath.c_str());
+   
     
+}
+
+bool Audio::AudioManager::isSoundFileLoaded(const std::string& filePath) const
+{
+    auto it = sounds.find(filePath.c_str());
+    return it != sounds.end();
 }
 
 // Set the position of the sound file
@@ -248,7 +278,7 @@ void Audio::AudioManager::setSoundEffect(const std::string &filePath, SoundEffec
 }
 
 // Pauses sound files currently playing - looping through them to check if the files are playing.
-bool Audio::AudioManager::pauseSound(const std::string& filePath)
+bool Audio::AudioManager::pauseSound(const std::string& filePathbool, bool playLooped, float pitch, float pan)
 {
     for (auto& s : sounds[filePath.c_str()])
     {
@@ -259,7 +289,7 @@ bool Audio::AudioManager::pauseSound(const std::string& filePath)
 }
 
 // You can unpause the sound file with this function, goes through a loop of sound files and sets any paused files to resume.
-bool Audio::AudioManager::resumeSound(const std::string& filePath)
+bool Audio::AudioManager::resumeSound(const std::string& filePathbool, bool playLooped, float pitch, float pan)
 {
     for (auto& s : sounds[filePath.c_str()])
     {
@@ -286,14 +316,14 @@ void Audio::AudioManager::soundButtonUI(const std::string& filePath)
     if (ImGui::Button("Pause"))
     {
         std::cout << "||\n";
-        toggleSound(filePath.c_str());
+        pauseSound(filePath.c_str(), false, 0.0f, 0.0f);
     }
 
     // Resume sound button
     if (ImGui::Button("Resume"))
     {
         std::cout << ">>\n";
-        resumeSound(filePath.c_str());
+        resumeSound(filePath.c_str(), true, 1.5f, -0.5f);
         
     }
     
@@ -301,7 +331,7 @@ void Audio::AudioManager::soundButtonUI(const std::string& filePath)
     if (ImGui::Button("Stop"))
     {
         std::cout << "stop\n";
-        stopSound(filePath.c_str());
+        stopSound(filePath.c_str(), false, false, false);
         setSoundEffect(filePath.c_str(), SOUND_EFFECT_TYPE_DISABLE, true);
         unloadSoundFile(filePath.c_str());
 

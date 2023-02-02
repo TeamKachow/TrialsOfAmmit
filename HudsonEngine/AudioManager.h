@@ -24,13 +24,14 @@ namespace Audio
         AudioManager();
         ~AudioManager();
 
-     
+        bool isSoundFileLoaded(const std::string& filePath) const;
 
         irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
         bool toggleSound(const std::string& filePath);
-        bool pauseSound(const std::string& filePath);
-        bool resumeSound(const std::string& filePath);
-        void stopSound(const std::string& filePath);
+        bool pauseSound(const std::string& filePathb, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
+        bool resumeSound(const std::string& filePathbool, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
+      
+        void stopSound(const std::string& filePathbool, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
         void stopAllSounds();
         void setListenerPosition(float x, float y);
 
@@ -53,6 +54,7 @@ namespace Audio
         irrklang::ISoundEngine* engine;
 
         std::map<std::string, std::vector<irrklang::ISound*>> sounds;
+     
 
         std::vector<irrklang::ISoundEffectControl*> fx;
 
