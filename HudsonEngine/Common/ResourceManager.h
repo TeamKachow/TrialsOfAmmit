@@ -17,6 +17,7 @@ namespace Hudson::Common {
 			// _textures
 			Render::Texture* GetTexture(std::string name);
 			Render::Texture* LoadTexture(const char* file, bool alpha, std::string name);
+			Render::Texture* LoadTexture(std::filesystem::path file, bool alpha, std::string name);
 
 			// Memory Management
 			static ResourceManager* GetInstance() { return INSTANCE; };
@@ -32,6 +33,7 @@ namespace Hudson::Common {
 			Render::Shader LoadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile);
 
 			// loads a single texture from file
-			Render::Texture LoadTextureFromFile(const char* file, bool alpha);
+			Render::Texture LoadTextureFromFile(const char* file);
+			Render::Texture LoadTextureFromFile(std::filesystem::path file);
 	};
 }

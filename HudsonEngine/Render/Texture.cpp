@@ -32,6 +32,23 @@ void Texture::Generate(unsigned int width, unsigned int height, unsigned char* d
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Texture::Generate(unsigned int width, unsigned int height, std::filesystem::path data)
+{
+    this->_width = width;
+    this->_height = height;
+    // create Texture
+
+    glBindTexture(GL_TEXTURE_2D, this->ID);
+    glTexImage2D(GL_TEXTURE_2D, 0, this->_internalFormat, width, height, 0, this->_imageFormat, GL_UNSIGNED_BYTE, data.string().c_str());
+    // set Texture wrap and filter modes
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->_wrapS);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->_wrapT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, this->_filterMin);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, this->_filterMax);
+    // unbind texture
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Texture::Bind() const
 {
     glBindTexture(GL_TEXTURE_2D, this->ID);
