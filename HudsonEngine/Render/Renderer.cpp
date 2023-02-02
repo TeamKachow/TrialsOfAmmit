@@ -18,6 +18,8 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
+	_engine->GetInputManager()->BindCallbacks(_window->GetWindow());
+
 #ifdef _DEBUG
 	io.IniFilename = "editor.ini";
 #endif
