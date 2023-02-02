@@ -1,11 +1,21 @@
 #include "../Render/Renderer.h"
 
-#include "../Hudson.h"
 #include "../Render/Window.h"
 #include "../Common/Engine.h"
 #include "../Common/ResourceManager.h"
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
+#include "../Render/TextComponent.h"
+#include "../Render/SpriteComponent.h"
+
+void Hudson::Render::Renderer::UpdateSetShaders()
+{
+	auto resManager = Hudson::Common::ResourceManager::GetInstance();
+	if (!screenShader)
+	{
+		screenShader = resManager->GetShader("screenShader");
+	}
+}
 
 Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	_engine(engine),
@@ -40,20 +50,7 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	// I may make it so that when creating components we pass in the resource manager so the constructor adds things to it
 	// Resource manager is per scene so this needs to be taken into account might be best for the devs to control which resource manager holds data when creating scenes
 	// Bit of explicitness never harmed anyone
-
-	// VERY VERY TEMPORARY, DO NOT KEEP THIS HERE
-
-	// TODO move this into Demo Project as all loading should be handled by the creation of a scene
-	auto resManager = Hudson::Common::ResourceManager::GetInstance();
-
-	resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-	screenShader = resManager->GetShader("screenShader");
-
-	//resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
-	//resManager->GetShader("spriteShader")->Use();
-	//resManager->GetShader("spriteShader")->SetMatrix4("projection", _defaultCamera.GetProjectionMatrix());
-	//screenShader->Compile("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl");
-
+	
 }
 
 Hudson::Render::Renderer::~Renderer()
@@ -104,7 +101,6 @@ void Hudson::Render::Renderer::InitRenderToTexture()
 	glBindVertexArray(this->screenVertexArrayObject);
 
 	CreateFramebuffers(_window.get()->GetWindowExtent().x, _window.get()->GetWindowExtent().y);
-
 }
 
 void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight)
@@ -135,10 +131,6 @@ void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsi
 
 void Hudson::Render::Renderer::Draw()
 {
-
-	// TODO replace with per-scene
-	//auto resManager = Hudson::Common::ResourceManager::GetInstance();
-
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 	// Clear back buffer
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
@@ -160,12 +152,22 @@ void Hudson::Render::Renderer::Draw()
 			// Render sprites
 			for (auto sprite : gameObject->GetComponents<SpriteComponent>())
 			{
-				sprite->DrawSprite(gameObject->GetTransform().pos);
+				Shader* shader = sprite->GetShader();
+				if (shader && _camera)
+				{
+					shader->Use().SetMatrix4("projection", _camera->GetProjectionMatrix());
+					sprite->DrawSprite(gameObject->GetTransform().pos);
+				}
 			}
 
 			for (auto text : gameObject->GetComponents<TextComponent>())
 			{
-				text->Draw(gameObject->GetTransform().pos);
+				Shader* shader = text->GetShader();
+				if (shader && _camera)
+				{
+					shader->Use().SetMatrix4("projection", _camera->GetProjectionMatrix());
+					text->Draw(gameObject->GetTransform().pos);
+				}
 			}
 		}
 	}
