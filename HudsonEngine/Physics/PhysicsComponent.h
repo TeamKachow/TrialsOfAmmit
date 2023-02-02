@@ -51,7 +51,6 @@ namespace Hudson::Physics
 
         void DrawPropertyUI() override;
 
-
     private:
 		void CalculateVelocity(float deltaTime);
 		void CalculateAcceleration(float deltaTime);

@@ -3,6 +3,12 @@
 #include "../Editor/ComponentRegistry.h"
 #include "../Render/Texture.h"
 
+struct Action
+{
+	std::string actionName;
+	bool isSelected;
+};
+
 namespace Hudson::Common
 {
 	class Engine;
@@ -14,6 +20,9 @@ namespace Hudson::Editor
 	{
 		Common::Engine* _engine;
 		ComponentRegistry* _registry;
+		bool openInput;
+		char selected;
+		char keyAction[255]{};
 
 		Entity::GameObject* _selected = nullptr;
 		bool _showIds = false;
@@ -36,6 +45,7 @@ namespace Hudson::Editor
 		void ObjectProperties();
 		void Debug();
 		void Help();
+		void Input();
 
 		void Draw();
 
