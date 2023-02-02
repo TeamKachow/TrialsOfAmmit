@@ -19,11 +19,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AiAgent.cpp" />
+    <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="BaseWeaponClass.cpp" />
+    <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="Khopesh.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MeleeAttack.cpp" />
+    <ClCompile Include="MeleeCollider.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AiAgent.h" />
+    <ClInclude Include="Axe.h" />
+    <ClInclude Include="BaseWeaponClass.h" />
+    <ClInclude Include="Bow.h" />
+    <ClInclude Include="facingDirection.h" />
+    <ClInclude Include="Khopesh.h" />
+    <ClInclude Include="MeleeAttack.h" />
+    <ClInclude Include="MeleeCollider.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HudsonEngine\HudsonEngine.vcxproj">

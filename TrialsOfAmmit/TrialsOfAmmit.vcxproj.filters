@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\PlayerWeapons">
+      <UniqueIdentifier>{e0cb243b-3c95-4a40-ac36-1aab3adbef88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,9 +24,60 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Axe.cpp">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseWeaponClass.cpp">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Khopesh.cpp">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AiAgent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bow.cpp">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Axe.h">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWeaponClass.h">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Khopesh.h">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="facingDirection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AiAgent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bow.h">
+      <Filter>Source Files\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

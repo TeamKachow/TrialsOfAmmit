@@ -3,6 +3,14 @@
 #include "./Common.h"
 #include "../Common/DeferredObjectSet.h"
 
+namespace Hudson
+{
+	namespace Util
+	{
+		class Timestep;
+	}
+}
+
 namespace Hudson::World
 {
     class SceneManager
@@ -10,14 +18,18 @@ namespace Hudson::World
     private:
         Common::DeferredObjectSet<Scene*> _scenes;
 
-        bool _isTicking = false;
+        Hudson::Util::Timestep* _time;
 
+        bool _isTicking = false;
         /**
          * \brief Handles pending scene removals then additions after each tick.
          */
         void HandlePostTick();
 
     public:
+        SceneManager();
+        ~SceneManager();
+
         /**
          * \brief Loads a scene from a given file.
          * \param path The file to construct the scene from.

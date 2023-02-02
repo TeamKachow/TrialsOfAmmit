@@ -2,7 +2,7 @@
 
 #include "EngineAccessors.h"
 #include "../World/SceneManager.h"
-
+#include "../Input/InputManager.h"
 #include "../Physics/PhysicsManager.h"
 
 class InputManager;
@@ -28,7 +28,7 @@ namespace Hudson::Common
         std::unique_ptr<Render::Renderer> _renderer;
         std::unique_ptr<Physics::PhysicsManager> _physics;
         // TODO: std::unique_ptr<AudioManager> _audio; 
-        std::unique_ptr<InputManager> _input;
+        std::unique_ptr<Input::InputManager> _input;
 
         bool _shutdownFlag = false;
 
@@ -42,7 +42,6 @@ namespace Hudson::Common
     public:
         Engine();
         ~Engine();
-
         /**
          * \brief Set up game engine resources and run setup function if provided
          */
@@ -66,7 +65,8 @@ namespace Hudson::Common
         void Cleanup();
 
         /**
-         * \brief Run the engine loop. This will return when the game/editor exits.
+         * \brief Get the engine's renderer.
+         * \return The scene manager
          */
         [[nodiscard]] Render::Renderer* GetRenderer() override;
 
@@ -92,7 +92,7 @@ namespace Hudson::Common
           * \brief Get the engine's input manager.
           * \return The input manager
           */
-        [[nodiscard]] InputManager* GetInputManager() override;
+        [[nodiscard]] Input::InputManager* GetInputManager() override;
 
         Engine* GetEngine() override;
 

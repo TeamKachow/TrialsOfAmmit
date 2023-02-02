@@ -1,74 +1,126 @@
 #include "Player.h"
 
-void Player::Fire()
-{
-}
-
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
 {
 	_playerSprite = playerSprite;
-	_playerAnimSpeed = 0.1;
-	playerDirection = Down;
+	_playerAnimSpeed = 0.5;
+	_playerDirection = Right;
 	_playerFireRate = 0.8;
 	_testTimer = 0;
+	_gridX = _playerSprite->GetGridPos().x;
+	_gridY = _playerSprite->GetGridPos().y;
+
 }
 
 Player::~Player()
 {
+	
 }
 
 void Player::OnCreate()
 {
+	_currentScene = _parent->GetScene();
+
+	_playersWeapon = &_axe;
+	
+	
+
 }
+
+void Player::TakeDamage(float _damageTaken)
+{
+	_playerHealth = _playerHealth - _damageTaken;
+}
+
 
 void Player::OnTick(const double& dt)
 {
-	_testTimer += dt;
-	_playerAnimTimer += dt;
-	if (_testTimer >= _playerFireRate)
+	switch(_playerDirection)
 	{
-		std::vector<Hudson::Physics::PhysicsComponent*> _playerPhysics = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-		if (!_playerPhysics.empty())
-		{
-			auto _playerPhysic =  _playerPhysics.front();
-		}
-		_testTimer -= _playerFireRate;
+	case Down:
+		MoveDown();
+		break;
+	case Left:
+		MoveLeft();
+		break;
+	case Right:
+		MoveRight();
+		break;
+	case Up:
+		MoveUp();
+		break;
+	case Stopped:
+		StopMove();
+		break;
+	default: ;
 	}
 
+	_playerAnimTimer += dt;
+	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 
-		//Todo Check way the player is walking
-	
+}
+
+void Player::Fire()
+{
+	_playersWeapon->Attack(_playerDirection, _parent->GetTransform().pos, _currentScene);
+
+}
+
+void Player::MoveUp()
+{
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
+	_gridY = 3;
+	AnimMove();
+	_playerPhysics->SetVelocity(glm::vec2(0, -45));
+}
+
+void Player::MoveDown()
+{
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
+	_gridY = 0;
+	AnimMove();
+	_playerPhysics->SetVelocity(glm::vec2(0, 45));
+}
+
+void Player::MoveRight()
+{
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
+	_gridY = 2;
+	AnimMove();
+	_playerPhysics->SetVelocity(glm::vec2(45, 0));
+}
+
+void Player::MoveLeft()
+{
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
+	_gridY = 1;
+	AnimMove();
+	_playerPhysics->SetVelocity(glm::vec2(-45, 0));
+}
+
+void Player::StopMove()
+{
+}
+
+void Player::AnimMove()
+{
 	if (_playerAnimTimer >= _playerAnimSpeed)
 	{
 		_playerAnimTimer -= _playerAnimSpeed;
-		int _gridX = _playerSprite->GetGridPos().x;
-		int _gridY = _playerSprite->GetGridPos().y;
 
-		//std::cout << playerDirection << "\n";
 		glm::vec2 spriteGridSize = _playerSprite->GetGridSize();
-		if (_gridX < spriteGridSize.x - 1)
-		{
-			_gridX ++;
-		}
-		else
+
+		_gridX++;
+
+		if (_gridX > spriteGridSize.x - 1)
 		{
 			_gridX = 0;
-			_gridY++;
 		}
-		if (_gridY > spriteGridSize.y - 1)
-		{
-			_gridY = 0;
-		}
-		_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+
 	}
-	
-	
-
-
-
-
-	
+	//_currentScene->RemoveObject(_parent);
 }
+
 
 void Player::OnDestroy()
 {
@@ -76,4 +128,24 @@ void Player::OnDestroy()
 
 void Player::DrawPropertyUI()
 {
+	if(ImGui::Button("Right"))
+	{
+		_playerDirection = Right;
+	}
+	if (ImGui::Button("Left"))
+	{
+		_playerDirection = Left;
+	}
+	if (ImGui::Button("Down"))
+	{
+		_playerDirection = Down;
+	}
+	if (ImGui::Button("Up"))
+	{
+		_playerDirection = Up;
+	}
+	if (ImGui::Button("Fire"))
+	{
+		Fire();
+	}
 }

@@ -25,8 +25,9 @@ namespace Hudson::Render {
         glm::vec2 GetGridPos() { return this->_gridPos; };
 
         void SetSize(glm::vec2 size) { this->_size = size; };
-
         void SetColor(glm::vec3 color) { this->_color = color; };
+
+        Shader* GetShader() { return _shader; }
 
         void DrawPropertyUI() override;
 

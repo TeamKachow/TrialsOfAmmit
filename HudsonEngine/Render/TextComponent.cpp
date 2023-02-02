@@ -2,29 +2,23 @@
 #include "../Common/ResourceManager.h"
 #include "../Entity/GameObject.h"
 
+extern const std::filesystem::path filePath;
 
-Hudson::Render::TextComponent::TextComponent() : Component("Text")
+Hudson::Render::TextComponent::TextComponent() : TextComponent({ 0, 0 })
 {
-
 }
 
 
-Hudson::Render::TextComponent::TextComponent(const char* fontPathName, glm::mat4 projection, glm::vec2 position) : Component("Text")
+Hudson::Render::TextComponent::TextComponent(glm::vec2 position) : Component("Text")
 {
-
 	auto resManager = Hudson::Common::ResourceManager::GetInstance();
-
-	resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
 	shader = resManager->GetShader("textShader");
+
 	// Use before sending things over to the shader
 
 	glm::mat4 model = glm::mat4(1);
-
-	shader->Use();
 	model = glm::translate(model, glm::vec3(position, 0.0f));
-
-	shader->SetMatrix4("projection", projection);
-
+	shader->Use();
 	shader->SetMatrix4("model", model);
 
 	glGenVertexArrays(1, &VAO);
@@ -38,9 +32,9 @@ Hudson::Render::TextComponent::TextComponent(const char* fontPathName, glm::mat4
 	glBindVertexArray(0);
 
 	// Loads TTF file in
-	StartFreeType(fontPathName);
+	StartFreeType(std::filesystem::path(filePath));
 	// Generates and Stores textures for each character
-	StoreCharacters(fontPathName);
+	StoreCharacters(std::filesystem::path(filePath));
 }
 
 Hudson::Render::TextComponent::~TextComponent()
@@ -48,15 +42,14 @@ Hudson::Render::TextComponent::~TextComponent()
 
 }
 
-
-void Hudson::Render::TextComponent::StartFreeType(const char* filePathName)
+void Hudson::Render::TextComponent::StartFreeType(const std::filesystem::path& path)
 {
 	if (FT_Init_FreeType(&_ft))
 	{
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 	}
 
-	int ret = FT_New_Face(_ft, filePathName, 0, &_face);
+	int ret = FT_New_Face(_ft, path.string().c_str(), 0, &_face);
 
 	if (ret)
 	{
@@ -65,11 +58,11 @@ void Hudson::Render::TextComponent::StartFreeType(const char* filePathName)
 
 }
 
-void Hudson::Render::TextComponent::StoreCharacters(const char* filePathName)
+void Hudson::Render::TextComponent::StoreCharacters(const std::filesystem::path& path)
 {
 	// This function goes through every character and stores them as textures.
 
-	if (FT_New_Face(_ft, filePathName, 0, &_face))
+	if (FT_New_Face(_ft, path.string().c_str(), 0, &_face))
 	{
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 	}
@@ -137,7 +130,7 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		if(*c != 0x0A) // Enter Key in Hex
+		if (*c != 0x0A) // Enter Key in Hex
 		{
 			Character ch = Characters[*c];
 
@@ -183,13 +176,29 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 
 void Hudson::Render::TextComponent::DrawPropertyUI()
 {
-	ImGui::InputTextMultiline("Text: ", &text);
+	ImGui::InputTextMultiline("Content", &text);
 
+	ImGui::DragFloat3("Color RGB", &color.x, 0.1f, 0.0f, 1.0f);
+	ImGui::DragFloat("Line Spacing", &newLineOffset, 0.5);
+	ImGui::DragFloat("Text Scale", &scale, 0.5);
 
-	ImGui::DragFloat("Scale", &scale, 0.5);
-	ImGui::DragFloat("Color R", &color.x, 0.5);
-	ImGui::DragFloat("Color G", &color.y, 0.5);
-	ImGui::DragFloat("Color B", &color.z, 0.5);
-	ImGui::DragFloat("Line Spacing: ", &newLineOffset, 0.5);
+	ImGui::Text("Current Font:");
+	ImGui::SameLine();
+	ImGui::TextDisabled("Place Font Here");
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* pl = ImGui::AcceptDragDropPayload("ContentItem"))
+		{
+			const wchar_t* path = (const wchar_t*)pl->Data;
+
+			std::wcout << path << std::endl;
+
+			Characters.clear();
+
+			StartFreeType(std::filesystem::path(filePath) / path);
+			StoreCharacters(std::filesystem::path(filePath) / path);
+		}
+		ImGui::EndDragDropTarget();
+	}
 
 }
