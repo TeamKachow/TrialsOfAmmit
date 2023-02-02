@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+using namespace Hudson::Render;
+
 Camera::Camera(float left, float right, float bottom, float top) 
 {
 	_projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);

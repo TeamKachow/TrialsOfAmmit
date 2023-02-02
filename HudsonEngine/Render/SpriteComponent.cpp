@@ -1,6 +1,14 @@
-#include "SpriteComponent.h"
+#include "../Render/SpriteComponent.h"
 
 #include "../Entity/GameObject.h"
+
+#include "../Common/ResourceManager.h"
+
+extern const std::filesystem::path filePath;
+
+Hudson::Render::SpriteComponent::SpriteComponent() : Component("Sprite")
+{
+}
 
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture) : Component("Sprite")
 {
@@ -11,7 +19,8 @@ Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* textur
 
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _texture(texture), _gridSize(gridSize), _gridPos(gridPosition)
 {
-    this->InitRenderData(); // Initializes quadVAO
+    this->InitRenderData(); // Initializes quad
+
 }
 
 Hudson::Render::SpriteComponent::~SpriteComponent()
@@ -21,7 +30,11 @@ Hudson::Render::SpriteComponent::~SpriteComponent()
 
 void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 {
-    this->_shader->Use();
+    // If these aren't set, don't draw
+    if (!_texture || !_shader || _quadVAO >= UINT_MAX)
+        return;
+
+    _shader->Use();
     glm::mat4 model = glm::mat4(1);
 
     _size = _parent->GetTransform().scale;
@@ -29,15 +42,17 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     model = glm::translate(model, glm::vec3(position, 0.0f));
     // TODO: make sprite's _size a multiplier of transform's _size
     model = glm::translate(model, glm::vec3(0.5f * _size.x, 0.5f * _size.y, 0.0f));
+    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::translate(model, glm::vec3(-0.5f * _size.x, -0.5f * _size.y, 0.0f));
     model = glm::scale(model, glm::vec3(_size, 1.0f));
 
-    this->_shader->SetMatrix4("model", model);
+    _shader->SetMatrix4("model", model);
 
     // render textured quad
-    this->_shader->SetVector3("spriteColor", _color);
+    _shader->SetVector3("spriteColor", _color);
 
-    this->_shader->SetVector2("_gridPos", _gridPos);
-    this->_shader->SetVector2("_gridSize", _gridSize);
+    _shader->SetVector2("gridPos", _gridPos);
+    _shader->SetVector2("gridSize", _gridSize);
 
     // GL_TEXTURE0 is the index of how many Textures are bound to one Texture ID
     // We should only ever expect to start at 0 index so GL_TEXTURE0 is fine
@@ -46,8 +61,41 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     _texture->Bind();
 
     glBindVertexArray(this->_quadVAO);
+
     glDrawArrays(GL_TRIANGLES, 0, 6);
+
     glBindVertexArray(0);
+}
+
+void Hudson::Render::SpriteComponent::DrawPropertyUI()
+{
+    ImGui::InputFloat2("Grid Size", &_gridSize.r);
+    ImGui::InputFloat2("Grid Position", &_gridPos.r);
+    ImGui::ColorEdit3("Colour Tint", &_color.r);
+    ImGui::InputFloat2("Size", &_size.r); 
+
+    ImGui::Text("Texture: ");
+    ImGui::SameLine();
+    ImGui::TextDisabled("Place Here");
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* pl = ImGui::AcceptDragDropPayload("ContentItem"))
+        {
+            const wchar_t* path = (const wchar_t*)pl->Data;
+
+            std::wcout << path << std::endl;
+
+            _texture = nullptr;
+
+            static Hudson::Common::ResourceManager* resMan = Hudson::Common::ResourceManager::GetInstance();
+
+            std::filesystem::path fullPath = filePath / path;
+            resMan->LoadTexture(fullPath, true, fullPath.string());
+            _texture = resMan->GetTexture(fullPath.string());
+        }
+        ImGui::EndDragDropTarget();
+    }
 }
 
 void Hudson::Render::SpriteComponent::InitRenderData()

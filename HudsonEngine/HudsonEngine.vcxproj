@@ -92,11 +92,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Common\Engine.cpp" />
+    <ClCompile Include="Common\DeferredObjectSet.cpp" />
+    <ClCompile Include="Common\EngineAccessors.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
     <ClCompile Include="Editor\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
     <ClCompile Include="Entity\Behaviour.cpp" />
-    <ClCompile Include="Entity\Camera.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
     <ClCompile Include="Entity\GameObject.cpp" />
     <ClCompile Include="Entity\System.cpp" />
@@ -112,24 +113,28 @@
     <ClCompile Include="Physics\ColliderComponent.cpp" />
     <ClCompile Include="Physics\PhysicsComponent.cpp" />
     <ClCompile Include="Physics\PhysicsManager.cpp" />
+    <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Renderer.cpp" />
     <ClCompile Include="Render\SpriteComponent.cpp" />
+    <ClCompile Include="Render\TextComponent.cpp" />
     <ClCompile Include="Render\Texture.cpp" />
     <ClCompile Include="Render\Window.cpp" />
     <ClCompile Include="Util\Debug.cpp" />
     <ClCompile Include="Util\stdafx.cpp" />
+    <ClCompile Include="Util\Timestep.cpp" />
     <ClCompile Include="World\Scene.cpp" />
     <ClCompile Include="World\SceneManager.cpp" />
     <ClCompile Include="Util\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\Engine.h" />
+    <ClInclude Include="Common\EngineAccessors.h" />
     <ClInclude Include="Common\IEditable.h" />
+    <ClInclude Include="Common\DeferredObjectSet.h" />
     <ClInclude Include="Common\ResourceManager.h" />
     <ClInclude Include="Editor\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />
     <ClInclude Include="Entity\Behaviour.h" />
-    <ClInclude Include="Entity\Camera.h" />
     <ClInclude Include="Entity\Common.h" />
     <ClInclude Include="Entity\Component.h" />
     <ClInclude Include="Entity\GameObject.h" />
@@ -149,29 +154,35 @@
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="Input\InputManager.h" />
+    <ClInclude Include="Input\json.hpp" />
     <ClInclude Include="Physics\ColliderComponent.h" />
     <ClInclude Include="Physics\PhysicsComponent.h" />
     <ClInclude Include="Physics\PhysicsManager.h" />
+    <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Renderer.h" />
     <ClInclude Include="Render\Shader.h" />
     <ClInclude Include="Render\SpriteComponent.h" />
+    <ClInclude Include="Render\TextComponent.h" />
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="Util\Debug.h" />
     <ClInclude Include="Util\stdafx.h" />
+    <ClInclude Include="Util\Timestep.h" />
     <ClInclude Include="World\Common.h" />
     <ClInclude Include="World\Scene.h" />
     <ClInclude Include="World\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Render\shaders\renderTextureFrag.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
     <None Include="Render\shaders\renderTextureVert.glsl">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
+    <None Include="Render\shaders\textFrag.glsl" />
+    <None Include="Render\shaders\textVert.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

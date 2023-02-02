@@ -70,6 +70,15 @@ void DemoBehaviour::OnTick(const double& dt)
 			std::cout << this << " is colliding with " << other << "\n";
 		}
 	}
+
+	// EXAMPLE: screen wrapping
+
+	auto& transform = _parent->GetTransform();
+	if (transform.pos.x < 0)
+		transform.pos.x = 1599;
+
+	if (transform.pos.x > 1600)
+		transform.pos.x = 1;
 }
 
 void DemoBehaviour::OnDestroy()

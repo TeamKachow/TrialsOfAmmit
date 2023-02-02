@@ -15,7 +15,6 @@
 
 #include "Entity/Common.h"
 #include "Entity/Behaviour.h"
-#include "Entity/Camera.h"
 #include "Entity/Component.h"
 #include "Entity/GameObject.h"
 #include "Entity/System.h"
@@ -27,12 +26,15 @@
 #include "Physics/PhysicsManager.h"
 
 #include "Render/Renderer.h"
-#include "Render/shader.h"
+#include "Render/Camera.h"
+#include "Render/Shader.h"
 #include "Render/SpriteComponent.h"
 #include "Render/Texture.h"
 #include "Render/Window.h"
+#include "Render/TextComponent.h"
 
 #include "Util/Debug.h"
+#include  "Util/Timestep.h"
 
 #include "World/Common.h"
 #include "World/Scene.h"

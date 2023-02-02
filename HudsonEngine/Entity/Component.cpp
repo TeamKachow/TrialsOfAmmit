@@ -1,6 +1,11 @@
-﻿#include "Component.h"
+﻿#include "../Entity/Component.h"
 
 Hudson::Entity::Component::Component(const char* name) : _typeName(name)
+{
+    _id = rand();
+}
+
+Hudson::Entity::Component::Component(const Component& other) : _typeName(other._typeName)
 {
     _id = rand();
 }

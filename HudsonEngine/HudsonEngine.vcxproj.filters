@@ -76,9 +76,6 @@
     <ClCompile Include="Entity\Behaviour.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="Entity\Camera.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Entity\Component.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
@@ -136,6 +133,31 @@
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Util\Timestep.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\DeferredObjectSet.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\EngineAccessors.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\TextComponent.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_stdlib.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Timestep.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -178,9 +200,6 @@
       <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Behaviour.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Camera.h">
       <Filter>Entity</Filter>
     </ClInclude>
     <ClInclude Include="Entity\Component.h">
@@ -247,12 +266,36 @@
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="Util\Timestep.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\DeferredObjectSet.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\EngineAccessors.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\TextComponent.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\json.hpp">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Render\shaders\renderTextureFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="Render\shaders\renderTextureVert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Render\shaders\textVert.glsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Render\shaders\textFrag.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
 #include "../Entity/Common.h"
+#include "../Entity/Component.h"
 
 namespace Hudson::Editor
 {

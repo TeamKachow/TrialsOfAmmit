@@ -22,6 +22,7 @@ namespace Hudson::Render {
         Texture();
         // generates texture from image data
         void Generate(unsigned int width, unsigned int height, unsigned char* data);
+        void Generate(unsigned int width, unsigned int height, std::filesystem::path data);
         // binds the texture as the current active GL_TEXTURE_2D texture object
         void Bind() const;
     };

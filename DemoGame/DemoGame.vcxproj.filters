@@ -27,12 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="shaders\basicFragShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="shaders\basicVertShader.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
     <None Include="shaders\SpriteFragShader.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>

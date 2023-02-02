@@ -1,20 +1,28 @@
-﻿#include "Engine.h"
+﻿#include "../Common/Engine.h"
 
+#include "../AudioManager.h"
 #include "../Input/InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
-#include "../AudioManager.h"
+#include "../Render/Window.h"
+
+static Hudson::Common::Engine* INSTANCE;
 
 Hudson::Common::Engine::Engine()
 {
+    assert(INSTANCE == nullptr);
+    INSTANCE = this;
 }
 
 Hudson::Common::Engine::~Engine()
 {
+    INSTANCE = nullptr;
 }
 
 void Hudson::Common::Engine::Setup()
 {
+
+
     // create scene manager
     _sceneManager = std::make_unique<World::SceneManager>();
 
@@ -26,18 +34,24 @@ void Hudson::Common::Engine::Setup()
 
     // create audio system
     // TODO
-    _audio = std::make_unique<AudioManager>();
+    _audio = std::make_unique<Audio::AudioManager>();
 
     // create input system
-    _input = std::make_unique<InputManager>();
-
+    _input = std::make_unique<Hudson::Input::InputManager>();
 }
 
 void Hudson::Common::Engine::Run()
 {
     bool shouldExit = false;
+    //_input->BindCallbacks(_renderer.get()->GetWindow()->GetWindow());
     while (!shouldExit)
     {
+        // Call pre-frame hooks
+        for (std::function<void(Engine*)> hook : _preFrameHooks)
+        {
+            hook(this);
+        }
+
         // ImGui
         _renderer->StartImGui();
 
@@ -48,8 +62,8 @@ void Hudson::Common::Engine::Run()
 
         _physics->UpdatePhysics();
 
-        // Call frame hooks
-        for (std::function<void(Engine*)> hook : _frameHooks)
+        // Call mid-frame hooks
+        for (std::function<void(Engine*)> hook : _midFrameHooks)
         {
             hook(this);
         }
@@ -89,32 +103,57 @@ void Hudson::Common::Engine::Cleanup()
     }
 }
 
-Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager() const
+Hudson::Render::Renderer* Hudson::Common::Engine::GetRenderer()
+{
+    return _renderer.get();
+}
+
+Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager()
 {
     return _sceneManager.get();
 }
 
-Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager() const
+Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager()
 {
     return _physics.get();
 }
 
-AudioManager* Hudson::Common::Engine::GetAudioManager() const
+Audio::AudioManager* Hudson::Common::Engine::GetAudioManager()
 {
     return _audio.get();
 }
 
-InputManager* Hudson::Common::Engine::GetInputManager() const
+Hudson::Input::InputManager* Hudson::Common::Engine::GetInputManager()
 {
     return _input.get();
 }
 
-void Hudson::Common::Engine::RegisterFrameHook(std::function<void(Engine*)> frameHook)
+Hudson::Common::Engine* Hudson::Common::Engine::GetEngine()
 {
-    _frameHooks.push_back(frameHook);
+    return this;
 }
 
-void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> shutdownHook)
+Hudson::Common::Engine* Hudson::Common::Engine::GetInstance()
 {
-    _shutdownHooks.push_back(shutdownHook);
+    return INSTANCE;
+}
+
+Hudson::Common::EngineAccessors* Hudson::Common::Engine::GetEngineAccessorDelegate()
+{
+    return nullptr;
+}
+
+void Hudson::Common::Engine::RegisterPreFrameHook(std::function<void(Engine*)> hook)
+{
+    _preFrameHooks.push_back(hook);
+}
+
+void Hudson::Common::Engine::RegisterMidFrameHook(std::function<void(Engine*)> hook)
+{
+    _midFrameHooks.push_back(hook);
+}
+
+void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> hook)
+{
+    _shutdownHooks.push_back(hook);
 }
