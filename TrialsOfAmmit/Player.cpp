@@ -36,6 +36,11 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	if(_inputManager.getActionState("Up"))
+	{
+		
+	}
+
 	switch(_playerDirection)
 	{
 	case Down:
