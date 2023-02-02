@@ -74,6 +74,7 @@ void GameSetup()
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
+    resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));

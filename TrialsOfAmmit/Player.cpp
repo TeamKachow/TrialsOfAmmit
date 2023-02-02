@@ -21,7 +21,7 @@ void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
 
-	_playersWeapon = &_bow;
+	_playersWeapon = &_axe;
 	
 	
 
