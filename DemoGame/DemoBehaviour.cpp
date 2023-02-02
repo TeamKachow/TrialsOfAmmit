@@ -68,6 +68,16 @@ void DemoBehaviour::OnTick(const double& dt)
 		{
 			// first collider is hitting another object - handle this collision
 			std::cout << this << " is colliding with " << other << "\n";
+			if(other->GetParent()->GetComponent<Behaviour>() != nullptr)
+			{
+				auto saved = other->GetParent()->GetComponent<Behaviour>();
+				if (saved)
+				{
+
+					std::cout << "Has Worked";
+				}
+			}
+			
 		}
 	}
 

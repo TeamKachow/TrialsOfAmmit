@@ -1,12 +1,12 @@
 #include "Projectile.h"
-
+#include "AiAgent.h"
 
 Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef) : Behaviour("ProjectileBehaviour")
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
 	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
-	Hudson::Physics::ColliderComponent* _projectileCollider = new Hudson::Physics::ColliderComponent();
+	_projectileCollider = new Hudson::Physics::ColliderComponent();
 
 	
 	_projectileSprite->SetGridSize(glm::vec2(3, 4));
@@ -24,7 +24,7 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 	_animTimer = 0;
 	_animSpeed = 0.2;
 
-	_deleteTime = 1;
+	_deleteTime = 5;
 	_deleteTimer = 0;
 
 	_spawnPos = spawnPos;
@@ -71,6 +71,14 @@ void Projectile::OnCreate()
 		break;
 	default: ;
 	}
+
+	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _projectile->GetComponent<Hudson::Physics::ColliderComponent>();
+	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+
+	
+
+
+
 	_projectileSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 }
 
@@ -88,6 +96,38 @@ void Projectile::OnTick(const double& dt)
 	{
 		_currentScene->RemoveObject(_projectile);
 	}
+
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	if (!colliders.empty())
+	{
+		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			if (other->GetParent()->GetComponent<AiAgent>() != nullptr)
+			{
+				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
+				if(_aiAgent != nullptr)
+				{
+					_currentScene->RemoveObject(_projectile);
+					_aiAgent->AiDead();
+					_aiAgent = nullptr;
+					break;
+				}
+				else
+				{
+					break;
+				}
+				break;
+			}
+
+
+		}
+
+	}
+
+	
+	
 
 
 

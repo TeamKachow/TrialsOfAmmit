@@ -45,7 +45,11 @@
     <ClCompile Include="MeleeAttack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="BaseAbilityClass.cpp">
+=======
+    <ClCompile Include="MeleeCollider.cpp">
+>>>>>>> release
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +81,11 @@
     <ClInclude Include="MeleeAttack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="BaseAbilityClass.h">
+=======
+    <ClInclude Include="MeleeCollider.h">
+>>>>>>> release
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

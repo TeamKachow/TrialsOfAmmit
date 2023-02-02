@@ -12,6 +12,14 @@ namespace Hudson
     }
 }
 
+namespace Hudson
+{
+    namespace Editor
+    {
+        class Editor;
+    }
+}
+
 // forward declare
 namespace Hudson::World
 {

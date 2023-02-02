@@ -4,7 +4,6 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_slashSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Slash"));
-	Hudson::Physics::ColliderComponent* _projectileCollider = new Hudson::Physics::ColliderComponent();
 
 	_slashSprite->SetGridSize(glm::vec2(3, 4));
 	_slashSprite->SetGridPos(glm::vec2(0, 0));
@@ -13,13 +12,16 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 	_slash = _slashRef;
 
 	_slash->AddComponent(_slashSprite);
-	_slash->AddComponent(_projectileCollider);
+	
 	_slash->SetName("SlashAttack");
 
 	_slashDirection = slashDirection;
 
 	_animTimer = 0;
 	_animSpeed = 0.2;
+
+	_gridX = 0;
+	_gridY = 0;
 
 	_deleteTime = 0.5;
 	_deleteTimer = 0;
