@@ -43,7 +43,7 @@ namespace Audio
         bool isSoundPlaying(const std::string& filePath);
 
         bool addAudioStreamLoader(irrklang::IAudioStreamLoader* loader, int numLoaders = 0);
-        void setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable);
+        irrklang::ISoundEffectControl* setSoundEffect(const std::string& filePath, SoundEffectType effectType, bool enable);
 
         void soundButtonUI(const std::string& filePath);
 

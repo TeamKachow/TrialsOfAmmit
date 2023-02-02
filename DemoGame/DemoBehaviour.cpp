@@ -92,7 +92,7 @@ void DemoBehaviour::OnTick(const double& dt)
 
 				// Load and play sound
 				audio->loadSoundFile("../audio/EnemyGrowl.wav");
-				audio->playSound("../audio/EnemyGrowl.wav", true, 0.0f, 0.0f);
+				audio->playSound("../audio/EnemyGrowl.wav", false, 9.0f, -5.0f);
 				soundPlayed = true;
 
 			}
@@ -101,7 +101,8 @@ void DemoBehaviour::OnTick(const double& dt)
 	else
 	{
 		// No collisions, stop and unload sound
-		audio->stopSound("../audio/EnemyGrowl.wav", true, 0.0f, 0.0f);
+		audio->stopSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
+		/*audio->setSoundEffect("../audio/EnemyGrowl.wav", SOUND_EFFECT_TYPE_DISABLE, true);*/
 		audio->unloadSoundFile("../audio/EnemyGrowl.wav");
 		soundPlayed = false;
 

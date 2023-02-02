@@ -238,7 +238,7 @@ bool Audio::AudioManager::addAudioStreamLoader(irrklang::IAudioStreamLoader* loa
 //applied to a sound file which can be set inside of the UI button function. For example, a sound filepath, the effect
 //you specifically want, then toggle true or false to apply that effect.
 
-void Audio::AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
+irrklang::ISoundEffectControl* Audio::AudioManager::setSoundEffect(const std::string &filePath, SoundEffectType effectType, bool enable)
 {
     for (auto& sound : sounds[filePath.c_str()])
     {
@@ -274,7 +274,7 @@ void Audio::AudioManager::setSoundEffect(const std::string &filePath, SoundEffec
 
         }
     }
-    
+    return NULL;
 }
 
 // Pauses sound files currently playing - looping through them to check if the files are playing.
