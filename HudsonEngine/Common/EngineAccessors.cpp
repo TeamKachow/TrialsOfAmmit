@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 
-InputManager* Hudson::Common::EngineAccessors::GetInputManager()
+Hudson::Input::InputManager* Hudson::Common::EngineAccessors::GetInputManager()
 {
     return GetEngine()->GetInputManager();
 }

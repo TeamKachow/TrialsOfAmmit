@@ -73,7 +73,6 @@ void Hudson::Render::Renderer::StartImGui()
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	}
-
 }
 
 void Hudson::Render::Renderer::InitRenderToTexture()

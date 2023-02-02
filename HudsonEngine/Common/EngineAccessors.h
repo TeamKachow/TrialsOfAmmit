@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-class InputManager;
-
 namespace Hudson
 {
     namespace World
@@ -16,6 +14,10 @@ namespace Hudson
     {
         class Renderer;
     }
+    namespace Input
+    {
+        class InputManager;
+    }
 }
 
 namespace Hudson::Common
@@ -28,7 +30,7 @@ namespace Hudson::Common
         virtual Hudson::Common::EngineAccessors* GetEngineAccessorDelegate() = 0;
 
     public:
-        virtual InputManager* GetInputManager();
+        virtual Input::InputManager* GetInputManager();
         //Audio::AudioManager* GetAudioManager();
         virtual Hudson::Render::Renderer* GetRenderer();
         virtual Hudson::Physics::PhysicsManager* GetPhysicsManager();

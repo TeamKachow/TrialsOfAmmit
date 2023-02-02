@@ -142,6 +142,16 @@
     <ClCompile Include="Render\TextComponent.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_stdlib.cpp">
+      <Filter>Resource Files\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Util\Timestep.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -258,6 +268,9 @@
     </ClInclude>
     <ClInclude Include="Render\TextComponent.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\json.hpp">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
