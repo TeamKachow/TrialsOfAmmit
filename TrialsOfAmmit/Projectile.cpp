@@ -27,6 +27,8 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 	_deleteTime = 5;
 	_deleteTimer = 0;
 
+
+
 	_spawnPos = spawnPos;
 
 	
@@ -84,6 +86,7 @@ void Projectile::OnCreate()
 
 void Projectile::OnTick(const double& dt)
 {
+
 	_animTimer += dt;
 	_deleteTimer += dt;
 	if(_animTimer >= _animSpeed )

@@ -10,6 +10,7 @@ class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditabl
 {
 private:
 	Hudson::Render::SpriteComponent* _playerSprite;
+	float _movementSpeed = 45.0;
 	double _playerAnimSpeed = 0.2;
 	double _playerAnimTimer = 0;
 	double _testTimer = 0;
