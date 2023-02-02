@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="DemoBehaviour.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
