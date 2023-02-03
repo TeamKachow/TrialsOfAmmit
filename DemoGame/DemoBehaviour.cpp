@@ -92,18 +92,12 @@ void DemoBehaviour::OnTick(const double& dt)
 	bool soundPlayed = false;
 	
 	// Check for collision
-
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 	if (!colliders.empty())
 	{
-
 		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
 		auto collidingWith = collider->GetCurrentCollisions();
 		for (auto other : collidingWith)
 		{
-			// first collider is hitting another object - handle this collision
-			std::cout << this << " is colliding with " << other << "\n";
-
 			if (!soundPlayed)
 			{
 
