@@ -64,17 +64,17 @@ void DemoBehaviour::OnTick(const double& dt)
 
 	// EXAMPLE: physics collision checks
 
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-	if (!colliders.empty())
-	{
-		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-		auto collidingWith = collider->GetCurrentCollisions();
-		for (auto other : collidingWith)
-		{
-			// first collider is hitting another object - handle this collision
-			std::cout << this << " detected " << collider << " colllided with " << other << "\n";
-		}
-	}
+	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	//if (!colliders.empty())
+	//{
+	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+	//	auto collidingWith = collider->GetCurrentCollisions();
+	//	for (auto other : collidingWith)
+	//	{
+	//		// first collider is hitting another object - handle this collision
+	//		std::cout << this << " detected " << collider << " colllided with " << other << "\n";
+	//	}
+	//}
 
 	// EXAMPLE: screen wrapping
 
@@ -108,8 +108,9 @@ void DemoBehaviour::OnTick(const double& dt)
 			{
 
 				// Load and play sound
+				audio->setSoundVolume("../audio/EnemyGrowl.wav", 0.0f);
+				audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
 				
-				audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f, 7.6f);
 				
 				std::cout << "Audio file has been played." << std::endl;
 				soundPlayed = true;

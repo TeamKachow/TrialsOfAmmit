@@ -26,7 +26,7 @@ namespace Hudson::Audio
 
         bool isSoundFileLoaded(const std::string& filePath) const;
 
-        irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f, float sVolume = 0.0f);
+        irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
         bool toggleSound(const std::string& filePath);
         bool pauseSound(const std::string& filePathb, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
         bool resumeSound(const std::string& filePathbool, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
