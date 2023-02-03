@@ -79,7 +79,7 @@ void MeleeCollider::OnTick(const double& dt)
 				if (_aiAgent != nullptr)
 				{
 					_aiAgent->TakeDamage(_meleeDamage);
-					std::cout << _meleeDamage << "\n";
+					std::cout << "Melee Damage : " << _meleeDamage << "\n";
 					collider->ClearColliding();
 					_currentScene->RemoveObject(_slash);
 

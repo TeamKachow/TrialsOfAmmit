@@ -79,6 +79,7 @@ void GameSetup()
 
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
+    resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");

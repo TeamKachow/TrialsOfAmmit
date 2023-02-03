@@ -122,5 +122,8 @@
     <ClInclude Include="RangedBaseWeaponClass.h">
       <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClInclude>
+    <ClInclude Include="WeaponUpgrade.h">
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

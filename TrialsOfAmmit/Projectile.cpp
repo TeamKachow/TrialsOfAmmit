@@ -11,7 +11,15 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 {
 	std::cout << "Firing Through new Build Class" << "\n";
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile")); //TODO CHANGE DEPENDING ON THE WEAPON FIRING
+	if (_weaponFiring == WT_Bow)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
+	}
+	if (_weaponFiring == WT_SlingShot)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Rock"));
+	}
+	//TODO CHANGE DEPENDING ON THE WEAPON FIRING
 	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
 	_projectileCollider = new Hudson::Physics::ColliderComponent();
 

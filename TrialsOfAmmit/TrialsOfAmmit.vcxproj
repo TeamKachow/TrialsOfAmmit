@@ -50,6 +50,7 @@
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="WeaponType.h" />
+    <ClInclude Include="WeaponUpgrade.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HudsonEngine\HudsonEngine.vcxproj">

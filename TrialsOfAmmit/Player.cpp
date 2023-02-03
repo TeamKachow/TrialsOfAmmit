@@ -144,6 +144,7 @@ void Player::StopMove()
 	{
 		_gridX = 2;
 	}
+	_playerAnimTimer = 0;
 	
 }
 
