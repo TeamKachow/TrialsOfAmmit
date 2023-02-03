@@ -8,7 +8,6 @@ Bow::Bow()
 	_weaponAttackSpeed = 2;
 	_projectileMovementSpeed = 500.0;
 	_projectileRange = 3.0;
-	_weaponName = "Bow";
 }
 
 Bow::~Bow()

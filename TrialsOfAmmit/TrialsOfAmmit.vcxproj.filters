@@ -70,7 +70,10 @@
       <Filter>Source Files\Player</Filter>
     </ClCompile>
     <ClCompile Include="SlingShot.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Player\PlayerWeapons\RangeWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="RangedBaseWeaponClass.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,11 +113,14 @@
     <ClInclude Include="Player.h">
       <Filter>Source Files\Player</Filter>
     </ClInclude>
-    <ClInclude Include="SlingShot.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WeaponType.h">
       <Filter>Source Files\Player\PlayerWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="SlingShot.h">
+      <Filter>Source Files\Player\PlayerWeapons\RangeWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="RangedBaseWeaponClass.h">
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

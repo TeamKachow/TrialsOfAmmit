@@ -3,11 +3,9 @@
 SlingShot::SlingShot()
 {
 	_weaponAttackDamage = 10.0;
-	_weaponType = WT_SlingShot;
 	_projectileMovementSpeed = 250;
 	_projectileRange = 2.0;
 	_weaponAttackSpeed = 0.75;
-	_weaponName = "Slingshot";
 }
 
 SlingShot::~SlingShot()
