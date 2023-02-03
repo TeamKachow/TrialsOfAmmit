@@ -36,6 +36,9 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	//kenny added this to check sumn
+	//std::cout << "Player movement speed is : " << _playerMovementSpeed << "\n";
+
 	if(_inputManager.getActionState("Up"))
 	{
 		

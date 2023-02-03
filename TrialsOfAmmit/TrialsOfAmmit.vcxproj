@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbilityHolder.cpp" />
     <ClCompile Include="AiAgent.cpp" />
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="BaseAbilityClass.cpp" />

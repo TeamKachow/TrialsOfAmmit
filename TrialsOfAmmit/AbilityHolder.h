@@ -5,74 +5,32 @@
 /// 
 #include <Hudson.h>
 #include "BaseAbilityClass.h"
-
+#include "Roll.h"
+enum AbilityState
+{
+	ready,
+	active,
+	cooldown
+};
 class AbilityHolder : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	BaseAbilityClass* _ability;
+	AbilityHolder();
+	~AbilityHolder();
+	//BaseAbilityClass* _ability;
+	
 	float _cooldownTime;
 	float _activeTime;
-
-	enum AbilityState
-	{
-		ready,
-		active,
-		cooldown
-	};
-
-	//default state is ready
 	AbilityState state = ready;
-
-	char input; // ideally input function
-
-	void OnCreate()
-	{
-
-	}
+	Hudson::Input::InputManager* _input;
+	void OnCreate() override;
+	void OnTick(const double& dt) override;
+	void OnDestroy() override;
+	void DrawPropertyUI() override;
 	
-	void OnTick(const double& dt)
-	{
-		switch (state)
-		{
-		case AbilityHolder::ready:
-			if (input == 'a') // if key is pressed.
-			{
-				_ability->UseAbility();
-				state = active;
-				_activeTime = _ability->_activeTime;
-			}
-			break;
-		case AbilityHolder::active:
-			if (_activeTime > 0)
-			{
-				_activeTime -= dt;
-			}
-			else
-			{
-				state = cooldown;
-				_cooldownTime = _ability->_cooldownTime;
-			}
-			break;
-		case AbilityHolder::cooldown:
-			if (_cooldownTime > 0)
-			{
-				_cooldownTime -= dt;
-			}
-			else
-			{
-				state = ready;
-			}
-			break;
-		}
-	}
-	
-	void OnDestroy()
-	{
+	// List of Abilities here
+	Roll* _roll;
 
-	}
-	
-	void DrawPropertyUI()
-	{
 
-	}
+private:
 };

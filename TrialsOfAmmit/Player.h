@@ -22,6 +22,7 @@ private:
 	facingDirections _playerDirection = Down;
 	Hudson::Entity::GameObject* _projectile;
 
+
 	Hudson::Input::InputManager _inputManager;
 
 	Axe _axe;

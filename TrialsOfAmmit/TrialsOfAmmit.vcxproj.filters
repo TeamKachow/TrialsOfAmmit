@@ -13,6 +13,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Roll.cpp" />
+    <ClCompile Include="AbilityHolder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiAgent.h" />

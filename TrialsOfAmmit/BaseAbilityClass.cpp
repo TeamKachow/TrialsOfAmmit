@@ -19,6 +19,10 @@ BaseAbilityClass::~BaseAbilityClass()
 {
 }
 
+void BaseAbilityClass::UseAbility(Hudson::World::Scene* _CurrentPassScene, float deltaTime)
+{
+}
+
 void BaseAbilityClass::OnCreate() //Make sure to set things up in order
 {
 }

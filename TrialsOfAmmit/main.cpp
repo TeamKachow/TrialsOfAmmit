@@ -5,6 +5,7 @@
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include "AbilityHolder.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -153,6 +154,7 @@ void GameSetup()
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
+    player->AddComponent(new AbilityHolder);
     player->AddComponent(playerPhysics);
     player->AddComponent(playerCollider);
     player->SetName("Player");
