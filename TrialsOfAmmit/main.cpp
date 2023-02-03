@@ -5,6 +5,7 @@
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include "PickupWeapon.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -38,6 +39,9 @@ Hudson::Render::TextComponent* Text;
 Hudson::Render::SpriteComponent* playerSprite;
 Hudson::Physics::PhysicsComponent* playerPhysics;
 Hudson::Physics::ColliderComponent* playerCollider;
+
+Hudson::Render::SpriteComponent* weaponPickupSprite;
+Hudson::Physics::ColliderComponent* weaponPickupCollider;
 
 // TODO: this *needs* to move to Hudson ASAP
 Hudson::Common::ResourceManager* resManager;
@@ -96,6 +100,15 @@ void GameSetup()
     playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
     playerPhysics->SetVelocity(glm::vec2(0, 0));
 
+    playerCollider = new Hudson::Physics::ColliderComponent();
+
+    weaponPickupSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
+    weaponPickupSprite->SetSize(glm::vec2(64.0f, 64.0f));
+    weaponPickupSprite->SetGridSize(glm::vec2(5, 1));
+    weaponPickupSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+    weaponPickupCollider = new Hudson::Physics::ColliderComponent();
+
+
     //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
     //Text->SetText("Top Text");
     //Text->SetColor(glm::vec3(0, 400, 0));
@@ -126,7 +139,7 @@ void GameSetup()
 
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
-    playerCollider = new Hudson::Physics::ColliderComponent();
+
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
@@ -152,7 +165,9 @@ void GameSetup()
     startScene->AddObject(blah2);
 
     blah2->GetTransform().pos.x = 1400.0f;*/
-
+    //auto WeaponPickups = new Hudson::Entity::GameObject();
+   // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
+    //startScene->AddObject(WeaponPickups);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(playerSprite);
@@ -165,6 +180,17 @@ void GameSetup()
 
     player->GetTransform().pos.x = 500.0f;
     player->GetTransform().pos.y = 500.0f;
+
+    Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
+    WeaponPickup->AddComponent(weaponPickupSprite);
+    WeaponPickup->AddComponent(new PickupWeapon());
+    WeaponPickup->AddComponent(weaponPickupCollider);
+    WeaponPickup->SetName("WeaponPickup");
+    startScene->AddObject(WeaponPickup);
+
+
+    WeaponPickup->GetTransform().pos.x = 600.0f;
+    WeaponPickup->GetTransform().pos.y = 600.0f;
 
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
     //text->AddComponent(Text);

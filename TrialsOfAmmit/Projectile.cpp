@@ -9,7 +9,6 @@ Projectile::~Projectile()
 
 Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
 {
-	std::cout << "Firing Through new Build Class" << "\n";
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	if (_weaponFiring == WT_Bow)
 	{

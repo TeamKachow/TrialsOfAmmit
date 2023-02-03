@@ -29,6 +29,7 @@
     <ClCompile Include="MeleeAttack.cpp" />
     <ClCompile Include="MeleeBaseWeaponClass.cpp" />
     <ClCompile Include="MeleeCollider.cpp" />
+    <ClCompile Include="PickupWeapon.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
@@ -46,6 +47,7 @@
     <ClInclude Include="MeleeAttack.h" />
     <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />
+    <ClInclude Include="PickupWeapon.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />

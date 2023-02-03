@@ -78,6 +78,9 @@
     <ClCompile Include="AiMelee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PickupWeapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -129,6 +132,9 @@
       <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClInclude>
     <ClInclude Include="AiMelee.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupWeapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
