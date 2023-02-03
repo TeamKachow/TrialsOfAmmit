@@ -75,6 +75,9 @@
     <ClCompile Include="RangedBaseWeaponClass.cpp">
       <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClCompile>
+    <ClCompile Include="AiMelee.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="WeaponUpgrade.h">
       <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="AiMelee.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

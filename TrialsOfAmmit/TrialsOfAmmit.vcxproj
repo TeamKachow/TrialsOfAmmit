@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AiAgent.cpp" />
+    <ClCompile Include="AiMelee.cpp" />
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
@@ -36,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiAgent.h" />
+    <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />

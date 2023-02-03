@@ -49,6 +49,7 @@ protected:
 	vec2 _acceleration;
 	float _distanceFromTarget;
 	float _distanceFromPlayer;
+
 	float _currentSpeed;
 	float _maxSpeed;
 	float _mass;

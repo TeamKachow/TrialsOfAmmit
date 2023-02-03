@@ -97,6 +97,7 @@ void AiAgent::OnTick(const double& dt)
 	{
 		_currentState = SEEK;
 	}
+	_aiSprite->SetColor(vec3(1, 1, 1));
 }
 
 void AiAgent::CollisionCheck()
@@ -197,6 +198,7 @@ void AiAgent::Animate(float deltaTime)
 				_gridX = 0;
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			
 		}
 		//left
 		if (_velocity.x < 0 && _velocity.y == 0)
@@ -415,6 +417,8 @@ void AiAgent::TakeDamage(int damageAmount)
 {
 	//removes damage passed to it and calls dead once health is 0
 	_currentHealth = _currentHealth - damageAmount;
+
+	_aiSprite->SetColor(vec3(1, 0, 0));
 	if (_currentHealth <= 0)
 	{
 		AiDead();
