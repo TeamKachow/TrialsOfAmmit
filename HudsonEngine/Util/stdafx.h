@@ -49,6 +49,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+// JSON
+#include <json.hpp>
 
 // STB
 #include <stb-master/stb_image.h>

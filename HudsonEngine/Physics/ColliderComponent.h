@@ -17,7 +17,7 @@ struct AABB
 
 namespace Hudson::Physics
 {
-	class ColliderComponent : public Entity::Component
+	class ColliderComponent : public Entity::Component, public Common::IEditable
 	{
 	public:
 		ColliderComponent();
@@ -29,7 +29,9 @@ namespace Hudson::Physics
 		void ClearColliding();
 		AABB GetAABB();
 
-		std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
+        void DrawPropertyUI() override;
+
+        std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
 	private:
 		std::set<ColliderComponent*> _colliderList;
 	};

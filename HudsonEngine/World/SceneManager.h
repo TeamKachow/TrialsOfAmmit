@@ -18,6 +18,8 @@ namespace Hudson::World
     private:
         Common::DeferredObjectSet<Scene*> _scenes;
 
+        Hudson::Util::Timestep* _time;
+
         bool _isTicking = false;
         /**
          * \brief Handles pending scene removals then additions after each tick.
@@ -25,6 +27,9 @@ namespace Hudson::World
         void HandlePostTick();
 
     public:
+        SceneManager();
+        ~SceneManager();
+
         /**
          * \brief Loads a scene from a given file.
          * \param path The file to construct the scene from.
