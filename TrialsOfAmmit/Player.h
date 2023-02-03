@@ -7,6 +7,7 @@
 #include "Bow.h"
 #include "Spear.h"
 #include "Projectile.h"
+#include "SlingShot.h"
 class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 private:
@@ -30,6 +31,7 @@ private:
 	facingDirections _playerFacingDirection = Down;
 
 	//Weapons (Baseclass holding the players Weapons - Rest are Set up)
+	SlingShot _slingshot;
 	Axe _axe;
 	Khopesh _khopesh;
 	Spear _spear;

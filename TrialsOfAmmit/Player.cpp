@@ -188,5 +188,9 @@ void Player::DrawPropertyUI()
 	{
 		_playersWeapon = &_bow;
 	}
+	if (ImGui::Button("SlingShot"))
+	{
+		_playersWeapon = &_slingshot;
+	}
 
 }
