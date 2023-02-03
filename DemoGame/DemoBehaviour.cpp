@@ -24,6 +24,9 @@ void DemoBehaviour::OnCreate()
 			_sprite = sprites[0];
 	}
 
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
+	audio->loadSoundFile("../audio/EnemyGrowl.wav");
+
     std::cout << "Demo behaviour added to an object!\n";
 }
 
@@ -71,7 +74,7 @@ void DemoBehaviour::OnTick(const double& dt)
 	// TODO to help devs
 	// EXAMPLE: Audio loads/plays when two objects collide, unloads/stops sounds when no longer in use
 
-	Audio::AudioManager* audio = GetAudioManager();
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
 	bool soundPlayed = false;
 	
 	// Check for collision
@@ -91,10 +94,16 @@ void DemoBehaviour::OnTick(const double& dt)
 			{
 
 				// Load and play sound
-				audio->loadSoundFile("../audio/EnemyGrowl.wav");
-				audio->playSound("../audio/EnemyGrowl.wav", false, 9.0f, -5.0f);
+				
+				audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f, 7.6f);
+				
+				std::cout << "Audio file has been played." << std::endl;
 				soundPlayed = true;
 
+			}
+			else
+			{
+				std::cout << "Audio file could not be played." << std::endl;
 			}
 		}
 	}
@@ -102,8 +111,6 @@ void DemoBehaviour::OnTick(const double& dt)
 	{
 		// No collisions, stop and unload sound
 		audio->stopSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
-		/*audio->setSoundEffect("../audio/EnemyGrowl.wav", SOUND_EFFECT_TYPE_DISABLE, true);*/
-		audio->unloadSoundFile("../audio/EnemyGrowl.wav");
 		soundPlayed = false;
 
 	};
@@ -112,7 +119,10 @@ void DemoBehaviour::OnTick(const double& dt)
 
 void DemoBehaviour::OnDestroy()
 {
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
     std::cout << "Demo behaviour removed from an object!\n";
+	audio->unloadSoundFile("../audio/EnemyGrowl.wav");
+	
 }
 
 void DemoBehaviour::DrawPropertyUI()

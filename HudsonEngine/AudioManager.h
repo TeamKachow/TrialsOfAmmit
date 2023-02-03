@@ -1,7 +1,7 @@
 #pragma once
 #include "./Util/stdafx.h"
 
-namespace Audio
+namespace Hudson::Audio
 {
     using namespace irrklang;
 
@@ -26,7 +26,7 @@ namespace Audio
 
         bool isSoundFileLoaded(const std::string& filePath) const;
 
-        irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
+        irrklang::ISound* playSound(const std::string& filePath, bool playLooped, float pitch = 1.0f, float pan = 0.0f, float sVolume = 0.0f);
         bool toggleSound(const std::string& filePath);
         bool pauseSound(const std::string& filePathb, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
         bool resumeSound(const std::string& filePathbool, bool playLooped, float pitch = 1.0f, float pan = 0.0f);
@@ -50,7 +50,7 @@ namespace Audio
     private:
 
         std::string filePath;
-
+        irrklang::ISound* sound;
         irrklang::ISoundEngine* engine;
 
         std::map<std::string, std::vector<irrklang::ISound*>> sounds;

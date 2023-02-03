@@ -118,7 +118,7 @@ Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager()
     return _physics.get();
 }
 
-Audio::AudioManager* Hudson::Common::Engine::GetAudioManager()
+Hudson::Audio::AudioManager* Hudson::Common::Engine::GetAudioManager()
 {
     return _audio.get();
 }

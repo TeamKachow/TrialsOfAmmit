@@ -2,7 +2,7 @@
 
 #include "Engine.h"
 
-Audio::AudioManager* Hudson::Common::EngineAccessors::GetAudioManager()
+Hudson::Audio::AudioManager* Hudson::Common::EngineAccessors::GetAudioManager()
 {
     return GetEngine()->GetAudioManager();
 }

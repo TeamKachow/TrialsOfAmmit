@@ -18,11 +18,12 @@ namespace Hudson
     {
         class InputManager;
     }
+    namespace Audio
+    {
+        class AudioManager;
+    }
 }
-namespace Audio
-{
-    class AudioManager;
-}
+
 
 namespace Hudson::Common
 {
