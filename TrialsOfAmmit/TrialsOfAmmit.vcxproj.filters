@@ -13,84 +13,99 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\PlayerWeapons">
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{226f2284-5164-4bb6-8db3-95ac1538dc7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\PlayerWeapons">
       <UniqueIdentifier>{e0cb243b-3c95-4a40-ac36-1aab3adbef88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\PlayerWeapons\MeleeWeapons">
+      <UniqueIdentifier>{29a35154-c2c5-4b25-a509-2e124d7c987c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\PlayerWeapons\Class">
+      <UniqueIdentifier>{a77b1f39-1a9e-4650-b1f6-8f4827ab2d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\PlayerWeapons\RangeWeapons">
+      <UniqueIdentifier>{df00da08-0537-4f5c-b5ff-734991bfdd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player\PlayerWeapons\Projectile / Slash">
+      <UniqueIdentifier>{f6fe97c9-ee52-44d4-bb2f-bf4998b34728}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Axe.cpp">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseWeaponClass.cpp">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClCompile>
-    <ClCompile Include="Khopesh.cpp">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AiAgent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bow.cpp">
-      <Filter>Source Files\PlayerWeapons</Filter>
+    <ClCompile Include="Axe.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
     </ClCompile>
-    <ClCompile Include="MeleeAttack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MeleeCollider.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Khopesh.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
     </ClCompile>
     <ClCompile Include="Spear.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseWeaponClass.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClCompile>
     <ClCompile Include="MeleeBaseWeaponClass.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
+    </ClCompile>
+    <ClCompile Include="Bow.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\RangeWeapons</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeAttack.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="MeleeCollider.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Axe.h">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseWeaponClass.h">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClInclude>
-    <ClInclude Include="Khopesh.h">
-      <Filter>Source Files\PlayerWeapons</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="facingDirection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AiAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bow.h">
-      <Filter>Source Files\PlayerWeapons</Filter>
+    <ClInclude Include="Axe.h">
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
     </ClInclude>
-    <ClInclude Include="MeleeAttack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MeleeCollider.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Khopesh.h">
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
     </ClInclude>
     <ClInclude Include="Spear.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Player\PlayerWeapons\MeleeWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseWeaponClass.h">
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
     </ClInclude>
     <ClInclude Include="MeleeBaseWeaponClass.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Player\PlayerWeapons\Class</Filter>
+    </ClInclude>
+    <ClInclude Include="Bow.h">
+      <Filter>Source Files\Player\PlayerWeapons\RangeWeapons</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeAttack.h">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeCollider.h">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Source Files\Player\PlayerWeapons\Projectile / Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Source Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

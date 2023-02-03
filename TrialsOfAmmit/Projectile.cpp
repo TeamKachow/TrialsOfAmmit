@@ -78,13 +78,6 @@ void Projectile::OnCreate()
 	default: ;
 	}
 
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _projectile->GetComponent<Hudson::Physics::ColliderComponent>();
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-
-	
-
-
-
 	_projectileSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 }
 
@@ -104,7 +97,7 @@ void Projectile::OnTick(const double& dt)
 		_currentScene->RemoveObject(_projectile);
 	}
 
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
 	if (!colliders.empty())
 	{
 		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
@@ -116,16 +109,15 @@ void Projectile::OnTick(const double& dt)
 				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
 				if(_aiAgent != nullptr)
 				{
-					_aiAgent->TakeDamage(100);
+					_aiAgent->TakeDamage(10);
 					collider->ClearColliding();
 					
 					break;
 				}
-				else
-				{
-					break;
-				}
-				break;
+			}
+			else
+			{
+				collider->ClearColliding();
 			}
 
 
