@@ -30,6 +30,7 @@ void AbilityHolder::OnTick(const double& dt)
 	switch (state)
 	{
 	case ready:
+		 
 		//std::cout << "ability ready" << "\n";
 		if (_input->getActionState("Ability"))
 		{
@@ -43,30 +44,28 @@ void AbilityHolder::OnTick(const double& dt)
 		}
 		break;
 	case active:
-		std::cout << "ability active" << "\n";
-		/*
-		*/
+
 		if (_activeTime > 0)
 		{
+			std::cout << "ability active" << "\n";
 			_activeTime -= dt;
 		}
 		else
 		{
-			std::cout << "ability finished" << "\n";
+			std::cout << "ability inactive" << "\n";
 
 			state = cooldown;
 			
 			_cooldownTime = _roll->_cooldownTime;
-			std::cout << "ability active for : " << _cooldownTime << " seconds" << "\n";
+			std::cout << "ability on cooldown for : " << _cooldownTime << " seconds" << "\n";
 		}
 		
 		break;
 	case cooldown:
-		std::cout << "ability on cooldown" << "\n";
-		/*
-		*/
+		
 		if (_cooldownTime > 0)
 		{
+			std::cout << "ability on cooldown" << "\n";
 			_cooldownTime -= dt;
 		}
 		else
