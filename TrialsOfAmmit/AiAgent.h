@@ -2,6 +2,8 @@
 
 #include <Hudson.h>
 #include "Player.h"
+#include "AiMelee.h"
+#include "BaseWeaponClass.h"
 #include <random>
 
 using namespace glm;
@@ -15,13 +17,13 @@ enum AiState
 	DEAD
 };
 
-enum Direction
-{
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT
-};
+//enum facingDirections
+//{
+//	UP,
+//	DOWN,
+//	LEFT,
+//	RIGHT
+//};
 
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
@@ -39,8 +41,10 @@ protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
 	virtual void AiAttack();
+	AiMelee _melee;
+	BaseWeaponClass* _aiWeapon = &_melee;
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
-	Hudson::World::Scene* _currentscene;
+	Hudson::World::Scene* _currentScene;
 	Player* _player;
 	AiState _currentState;
 	vec2 _target;
@@ -49,12 +53,13 @@ protected:
 	vec2 _acceleration;
 	float _distanceFromTarget;
 	float _distanceFromPlayer;
-
+	facingDirections _facingDirection;
 	float _currentSpeed;
 	float _maxSpeed;
 	float _mass;
 	float _maxRange;
 	float _minRange;
+	float _attackTimer;
 	double _aiAnimSpeed;
 	double _aiAnimTimer;
 	bool _alive;
