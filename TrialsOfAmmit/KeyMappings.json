@@ -1,0 +1,264 @@
+[
+    {
+        "Actions": [
+            "Attack"
+        ],
+        "KeyDown": false,
+        "KeyID": 32,
+        "Name": "Spacebar"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 48,
+        "Name": "0"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 49,
+        "Name": "1"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 50,
+        "Name": "2"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 51,
+        "Name": "3"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 52,
+        "Name": "4"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 53,
+        "Name": "5"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 54,
+        "Name": "6"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 55,
+        "Name": "7"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 56,
+        "Name": "8"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 57,
+        "Name": "9"
+    },
+    {
+        "Actions": [
+            "Left"
+        ],
+        "KeyDown": false,
+        "KeyID": 65,
+        "Name": "A"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 66,
+        "Name": "B"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 67,
+        "Name": "C"
+    },
+    {
+        "Actions": [
+            "Right"
+        ],
+        "KeyDown": false,
+        "KeyID": 68,
+        "Name": "D"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 69,
+        "Name": "E"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 70,
+        "Name": "F"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 71,
+        "Name": "G"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 72,
+        "Name": "H"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 73,
+        "Name": "I"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 74,
+        "Name": "J"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 75,
+        "Name": "K"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 76,
+        "Name": "L"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 77,
+        "Name": "M"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 78,
+        "Name": "N"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 79,
+        "Name": "O"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 80,
+        "Name": "P"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 81,
+        "Name": "Q"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 82,
+        "Name": "R"
+    },
+    {
+        "Actions": [
+            "Down"
+        ],
+        "KeyDown": false,
+        "KeyID": 83,
+        "Name": "S"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 84,
+        "Name": "T"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 85,
+        "Name": "U"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 86,
+        "Name": "V"
+    },
+    {
+        "Actions": [
+            "Up"
+        ],
+        "KeyDown": false,
+        "KeyID": 87,
+        "Name": "W"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 88,
+        "Name": "X"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 89,
+        "Name": "Y"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 90,
+        "Name": "Z"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 256,
+        "Name": "Escape"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 262,
+        "Name": "Right"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 263,
+        "Name": "Left"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 264,
+        "Name": "Down"
+    },
+    {
+        "Actions": [],
+        "KeyDown": false,
+        "KeyID": 265,
+        "Name": "Up"
+    }
+]

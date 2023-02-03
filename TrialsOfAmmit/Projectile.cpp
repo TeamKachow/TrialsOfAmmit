@@ -70,6 +70,10 @@ void Projectile::OnCreate()
 		_gridY = 0;
 		break;
 	case Stopped: 
+		_projectilePhysics->SetVelocity(glm::vec2(0, 250));
+		_projectile->GetTransform().pos.y = _spawnPos.y + 50;
+		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_gridY = 3;
 		break;
 	default: ;
 	}
@@ -112,9 +116,9 @@ void Projectile::OnTick(const double& dt)
 				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
 				if(_aiAgent != nullptr)
 				{
-					_currentScene->RemoveObject(_projectile);
-					_aiAgent->AiDead();
-					_aiAgent = nullptr;
+					_aiAgent->TakeDamage(100);
+					collider->ClearColliding();
+					
 					break;
 				}
 				else

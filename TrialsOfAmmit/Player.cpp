@@ -3,13 +3,13 @@
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
 {
 	_playerSprite = playerSprite;
-	_playerAnimSpeed = 0.5;
-	_playerDirection = Right;
-	_playerFireRate = 0.8;
-	_testTimer = 0;
+	_playerAnimSpeed = 0.2;
+	_playerDirection = Stopped;
+	_playerFacingDirection = Stopped;
+	_attackTimer = 0;
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
-	_playerMovementSpeed = 45.0;
+	_playerMovementSpeed = 100.0;
 
 }
 
@@ -21,14 +21,10 @@ Player::~Player()
 void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
-
 	_playersWeapon = &_axe;
-	
-	
-
 }
 
-void Player::TakeDamage(float _damageTaken)
+void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
 {
 	_playerHealth = _playerHealth - _damageTaken;
 }
@@ -36,8 +32,40 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
-	if(_inputManager.getActionState("Up"))
+	if(_inputManager.getActionState("Up")) //Key Checks
 	{
+		_playerDirection = Up;
+		_playerFacingDirection = Up;
+	}
+	else if (_inputManager.getActionState("Down"))
+	{
+		_playerDirection = Down;
+		_playerFacingDirection = Down;
+	}
+	else if (_inputManager.getActionState("Right"))
+	{
+		_playerDirection = Right;
+		_playerFacingDirection = Right;
+	}
+	else if (_inputManager.getActionState("Left"))
+	{
+		_playerDirection = Left;
+		_playerFacingDirection = Left;
+	}
+	else
+	{
+		_playerDirection = Stopped;
+	}
+
+
+	_attackTimer += dt;
+	if (_inputManager.getActionState("Attack"))
+	{
+		if (_attackTimer > _playersWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
+		{
+			Fire();
+			_attackTimer = 0;
+		}
 		
 	}
 
@@ -66,13 +94,13 @@ void Player::OnTick(const double& dt)
 
 }
 
-void Player::Fire()
+void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
 {
-	_playersWeapon->Attack(_playerDirection, _parent->GetTransform().pos, _currentScene);
+	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene);
 
 }
 
-void Player::MoveUp()
+void Player::MoveUp() //Movement depending on _playerDirection
 {
 	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 3;
@@ -106,9 +134,20 @@ void Player::MoveLeft()
 
 void Player::StopMove()
 {
+	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>(); //Stops the player Moving
+	_playerPhysics->SetVelocity(glm::vec2(0, 0));
+	if (_playerFacingDirection == Right || _playerFacingDirection == Down) //When Stop player the player stadning still frame
+	{
+		_gridX = 0;
+	}
+	else
+	{
+		_gridX = 2;
+	}
+	
 }
 
-void Player::AnimMove()
+void Player::AnimMove()//General move through sprite sheet function
 {
 	if (_playerAnimTimer >= _playerAnimSpeed)
 	{
@@ -124,7 +163,6 @@ void Player::AnimMove()
 		}
 
 	}
-	//_currentScene->RemoveObject(_parent);
 }
 
 
@@ -134,24 +172,21 @@ void Player::OnDestroy()
 
 void Player::DrawPropertyUI()
 {
-	if(ImGui::Button("Right"))
+	if(ImGui::Button("Axe"))
 	{
-		_playerDirection = Right;
+		_playersWeapon = &_axe;
 	}
-	if (ImGui::Button("Left"))
+	if (ImGui::Button("Kopesh"))
 	{
-		_playerDirection = Left;
+		_playersWeapon = &_khopesh;
 	}
-	if (ImGui::Button("Down"))
+	if (ImGui::Button("Spear"))
 	{
-		_playerDirection = Down;
+		_playersWeapon = &_spear;
 	}
-	if (ImGui::Button("Up"))
+	if (ImGui::Button("Bow"))
 	{
-		_playerDirection = Up;
+		_playersWeapon = &_bow;
 	}
-	if (ImGui::Button("Fire"))
-	{
-		Fire();
-	}
+
 }

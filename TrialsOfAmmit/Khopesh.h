@@ -1,7 +1,7 @@
 #pragma once
-#include "BaseWeaponClass.h"
+#include "MeleeBaseWeaponClass.h"
 
-class Khopesh : public BaseWeaponClass
+class Khopesh : public MeleeBaseWeaponClass
 {
 public:
 	Khopesh();

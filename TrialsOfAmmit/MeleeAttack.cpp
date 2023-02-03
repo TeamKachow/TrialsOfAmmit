@@ -60,6 +60,8 @@ void MeleeAttack::OnCreate()
 			_gridY = 0;
 			break;
 		case Stopped: 
+			_slash->GetTransform().pos.y = _playerPos.y + 50;
+			_slash->GetTransform().pos.x = _playerPos.x;
 			break;
 		default: ;
 	}

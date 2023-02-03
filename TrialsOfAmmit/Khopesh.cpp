@@ -2,8 +2,8 @@
 
 Khopesh::Khopesh()
 {
-	_weaponAttackDamage = 10.0;
-	_weaponAttackSpeed = 0.2;
+	_weaponAttackDamage = 5.0;
+	_weaponAttackSpeed = 0.5;
 	_weaponName = "Khopesh";
 }
 

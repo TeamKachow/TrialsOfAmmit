@@ -5,50 +5,63 @@
 #include "Khopesh.h"
 #include "facingDirection.h"
 #include "Bow.h"
+#include "Spear.h"
 #include "Projectile.h"
 class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 private:
+	//Set up Components
 	Hudson::Render::SpriteComponent* _playerSprite;
-	double _playerAnimSpeed = 0.2;
-	double _playerAnimTimer = 0;
-	double _testTimer = 0;
-	double _playerFireRate = 0.9;
-	float _playerHealth = 100.0f;
+	Hudson::Input::InputManager _inputManager;
 	Hudson::Physics::PhysicsComponent* _playerPhysics;
 	Hudson::World::Scene* _currentScene;
+
+	//Anim Variables
+	double _playerAnimSpeed = 0.2;
+	double _playerAnimTimer = 0;
 	int _gridX = 0;
 	int _gridY = 0;
-	facingDirections _playerDirection = Down;
-	Hudson::Entity::GameObject* _projectile;
 
-	Hudson::Input::InputManager _inputManager;
+	//Attack Timer
+	double _attackTimer = 0;
 
+	//Movement and Facing Directions
+	facingDirections _playerDirection = Stopped;
+	facingDirections _playerFacingDirection = Down;
+
+	//Weapons (Baseclass holding the players Weapons - Rest are Set up)
 	Axe _axe;
 	Khopesh _khopesh;
+	Spear _spear;
 	Bow _bow;
-
 	BaseWeaponClass* _playersWeapon = &_axe;
 
+	//Actions
 	void Fire();
 	void MoveUp();
 	void MoveDown();
 	void MoveRight();
 	void MoveLeft();
 	void StopMove();
+
+	//Anim Functions
 	void AnimMove();
 
 	
 public:
+	//Accessable player Stats
 	float _playerMovementSpeed = 45.0;
-	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
-	~Player() override;
+	float _playerHealth = 100.0f;
+
 	void TakeDamage(float _damageTaken);
 
+	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
+	~Player() override;
+	
+	//Base Needed Functions
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
-
 	void DrawPropertyUI() override;
 
 
