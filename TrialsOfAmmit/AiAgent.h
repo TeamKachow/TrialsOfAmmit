@@ -15,6 +15,14 @@ enum AiState
 	DEAD
 };
 
+enum Direction
+{
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+};
+
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
@@ -26,11 +34,11 @@ public:
 	float _currentHealth;
 	float _meleeDamage;
 	virtual void AiDead();
+
 protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
 	virtual void AiAttack();
-	
 	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
 	Hudson::World::Scene* _currentscene;
 	Player* _player;
@@ -40,6 +48,7 @@ protected:
 	vec2 _velocity;
 	vec2 _acceleration;
 	float _distanceFromTarget;
+	float _distanceFromPlayer;
 	float _currentSpeed;
 	float _maxSpeed;
 	float _mass;
@@ -58,6 +67,7 @@ private:
 	void RandomTargetSelector();
 	void Move(float deltatime);
 	void GetPlayerPos();
+	void SetPlayerPos();
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
 };

@@ -3,7 +3,7 @@
 AiAgent::AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed) : Behaviour("AiBehavior")
 {
 	_aiSprite = aiSprite;
-	_aiAnimSpeed = 0.6;
+	_aiAnimSpeed = 0.4;
 }
 
 void AiAgent::OnCreate()
@@ -14,12 +14,13 @@ void AiAgent::OnCreate()
 	_maxSpeed = 30;
 	_maxRange = 250;
 	_minRange = -250;
+	_distanceFromPlayer = 10000;
 	_currentHealth = _maxHealth;
 	_alive = true;
 	//sets to true to chose a new point
 	_arrive = true;
 	//need to add _position
-	_target = vec2(0,0);
+	_target = vec2(0, 0);
 	//Starting state
 	_currentState = WANDER;
 	//sets from parent phyics componants 
@@ -31,8 +32,7 @@ void AiAgent::OnCreate()
 
 	_currentscene = _parent->GetScene();
 	auto _sceneObjects = _currentscene->GetObjects();
-
-	for(Hudson::Entity::GameObject* other: _sceneObjects)
+	for (Hudson::Entity::GameObject* other : _sceneObjects)
 	{
 		if (other->GetName() == "Player")
 		{
@@ -44,7 +44,7 @@ void AiAgent::OnCreate()
 
 AiAgent::~AiAgent()
 {
-	
+
 }
 
 void AiAgent::OnDestroy()
@@ -61,11 +61,13 @@ void AiAgent::OnTick(const double& dt)
 	{
 		_arrive = true;
 	}
+	GetPlayerPos();
+
 	//finite state machine 
 	switch (_currentState)
 	{
 	case SEEK:
-		GetPlayerPos();
+		SetPlayerPos();
 		_moveForce = Seek(_target);
 		Move(deltatime);
 		break;
@@ -77,7 +79,7 @@ void AiAgent::OnTick(const double& dt)
 				RandomTargetSelector();
 			}
 			_moveForce = Wander(_target);
-			Move(deltatime);	
+			Move(deltatime);
 		}
 		break;
 	case ATTACK:
@@ -89,6 +91,11 @@ void AiAgent::OnTick(const double& dt)
 	default:
 
 		break;
+	}
+
+	if (_distanceFromPlayer < 300.0f)
+	{
+		_currentState = SEEK;
 	}
 }
 
@@ -109,7 +116,7 @@ void AiAgent::CollisionCheck()
 		if (!_aiPhysicsComponent.empty())
 		{
 			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(0,-100));
+			_aiPhysics->SetVelocity(vec2(0, -100));
 			RandomTargetSelector();
 		}
 	}
@@ -131,6 +138,39 @@ void AiAgent::CollisionCheck()
 			RandomTargetSelector();
 		}
 	}
+
+	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	//if (!colliders.empty())
+	//{
+	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+	//	auto collidingWith = collider->GetCurrentCollisions();
+	//	for (auto other : collidingWith)
+	//	{
+	//		cout << "Hit" << other << "\n";
+	//		//cout<<other->GetParent()->GetName() << "\n";
+	//		if (other->GetParent()->GetComponent<AiAgent>() != nullptr)
+	//		{
+	//			cout << other->GetParent()->GetComponent<AiAgent>()->GetParent()->GetName() << "\n";
+	//			AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
+	//			if (_aiAgent != nullptr)
+	//			{
+	//				_currentScene->RemoveObject(_projectile);
+	//				_aiAgent->AiDead();
+	//				_aiAgent = nullptr;
+	//				break;
+	//			}
+	//			else
+	//			{
+	//				cout << "Agent Not Found" << other << "\n";
+	//				break;
+	//			}
+
+	//			//_player = other->GetComponent<Player>();
+	//			break;
+	//		}
+	//	}
+
+	//}
 }
 
 void AiAgent::Animate(float deltaTime)
@@ -143,8 +183,51 @@ void AiAgent::Animate(float deltaTime)
 		int _gridX = _aiSprite->GetGridPos().x;
 		int _gridY = _aiSprite->GetGridPos().y;
 		vec2 spriteGridSize = _aiSprite->GetGridSize();
-		//Animation walking down
-		if (_velocity.y >= 1)
+
+		//right
+		if (_velocity.x > 0 && _velocity.y == 0)
+		{
+			_gridY = 2;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+		}
+		//left
+		if (_velocity.x < 0 && _velocity.y == 0)
+		{
+			_gridY = 1;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+		}
+		//up
+		if (_velocity.x == 0 && _velocity.y < 0)
+		{
+			_gridY = 3;
+			if (_gridX < spriteGridSize.x - 1)
+			{
+				_gridX++;
+			}
+			else
+			{
+				_gridX = 0;
+			}
+			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+		}
+		//down
+		if (_velocity.x == 0 && _velocity.y > 0)
 		{
 			_gridY = 0;
 			if (_gridX < spriteGridSize.x - 1)
@@ -157,19 +240,138 @@ void AiAgent::Animate(float deltaTime)
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
 		}
-		//Animation walking up
-		if (_velocity.y <= 1)
+
+		if (_velocity.x < 0 && _velocity.y > 0)
 		{
-			_gridY = 3;
-			if (_gridX < spriteGridSize.x - 1)
+			float differance;
+			differance = 0 - _velocity.x;
+			if (differance > _velocity.y)
 			{
-				_gridX++;
+				//left
+				_gridY = 1;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
 			}
-			else
+			else if (differance < _velocity.y)
 			{
-				_gridX = 0;
+				//down
+				_gridY = 0;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
 			}
-			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+		}
+
+		if (_velocity.y < 0 && _velocity.x > 0)
+		{
+			float differance;
+			differance = 0 - _velocity.y;
+			if (differance > _velocity.x)
+			{
+				//up
+				_gridY = 3;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
+			else if (differance < _velocity.x)
+			{
+				//right
+				_gridY = 2;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
+		}
+
+		if (_velocity.y > 0 && _velocity.x > 0)
+		{
+			if (_velocity.x > _velocity.y)
+			{
+				//right
+				_gridY = 2;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
+			else if (_velocity.x < _velocity.y)
+			{
+				//down
+				_gridY = 0;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
+		}
+
+		if (_velocity.x < 0 && _velocity.y < 0)
+		{
+
+			if (_velocity.x < _velocity.y)
+			{
+				//left
+				_gridY = 1;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
+			else if (_velocity.x > _velocity.y)
+			{
+				//up
+				_gridY = 3;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					_gridX = 0;
+				}
+				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			}
 		}
 	}
 }
@@ -249,14 +451,36 @@ void AiAgent::GetPlayerPos()
 				break;
 			}
 		}
-
 	}
-	//TODO
-	if(_player != nullptr)
+
+	if (_player != nullptr)
+	{
+		vec2 target = _player->GetParent()->GetTransform().pos;
+		vec2 _moveForce = (target - _parent->GetTransform().pos);
+		_distanceFromPlayer = length(_moveForce);
+	}
+}
+
+void AiAgent::SetPlayerPos()
+{
+	if (_player == nullptr)
+	{
+		auto _sceneObjects = _currentscene->GetObjects();
+
+		for (Hudson::Entity::GameObject* other : _sceneObjects)
+		{
+
+			if (other->GetName() == "Player")
+			{
+				_player = other->GetComponent<Player>();
+				break;
+			}
+		}
+	}
+	if (_player != nullptr)
 	{
 		_target = _player->GetParent()->GetTransform().pos;
 	}
-	
 }
 
 void AiAgent::Move(float deltatime)

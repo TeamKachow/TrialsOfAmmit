@@ -134,21 +134,23 @@ void GameSetup()
     engine->GetSceneManager()->AddScene(startScene);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
-    blah->AddComponent(Sprite1);
+    blah->AddComponent(Sprite2);
 	blah->AddComponent(Physics1);
     blah->AddComponent(Collider1);
-    blah->AddComponent(new AiAgent(Sprite1, 0.8));
+    blah->AddComponent(new AiAgent(Sprite2, 0.8));
     blah->SetName("AI1");
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
-    Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
-    blah2->AddComponent(Sprite2);
+ /*   Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
+    blah2->AddComponent(Sprite1);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
+    blah2->AddComponent(new AiAgent(Sprite1, 0.8));
+    blah2->SetName("AI2");
     startScene->AddObject(blah2);
 
-    blah2->GetTransform().pos.x = 1400.0f;
+    blah2->GetTransform().pos.x = 1400.0f;*/
 
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
