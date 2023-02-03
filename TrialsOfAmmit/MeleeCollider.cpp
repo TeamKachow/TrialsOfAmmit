@@ -1,7 +1,7 @@
 #include "MeleeCollider.h"
 #include "AiAgent.h"
 
-MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef) : Behaviour("MeleeCollision")
+MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef, float _damage) : Behaviour("MeleeCollision")
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_slashSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Invis"));
@@ -19,6 +19,7 @@ MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPo
 	_slash->SetName("SlashCollider");
 
 	_slashDirection = slashDirection;
+	_meleeDamage = _damage;
 
 	_animTimer = 0;
 	_animSpeed = 0.2;
@@ -77,9 +78,11 @@ void MeleeCollider::OnTick(const double& dt)
 				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
 				if (_aiAgent != nullptr)
 				{
+					_aiAgent->TakeDamage(_meleeDamage);
+					std::cout << _meleeDamage << "\n";
+					collider->ClearColliding();
 					_currentScene->RemoveObject(_slash);
-					_aiAgent->AiDead();
-					_aiAgent = nullptr;
+
 					break;
 				}
 				else

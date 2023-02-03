@@ -2,7 +2,7 @@
 
 Khopesh::Khopesh()
 {
-	_weaponAttackDamage = 5.0;
+	_weaponAttackDamage = 35;
 	_weaponAttackSpeed = 0.5;
 }
 

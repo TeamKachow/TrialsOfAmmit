@@ -2,7 +2,7 @@
 
 Axe::Axe()
 {
-	_weaponAttackDamage = 10;
+	_weaponAttackDamage = 50;
 	_weaponAttackSpeed = 1;
 }
 

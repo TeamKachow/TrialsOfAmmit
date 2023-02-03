@@ -2,7 +2,7 @@
 
 Spear::Spear()
 {
-	_weaponAttackDamage = 7.5;
+	_weaponAttackDamage = 45;
 	_weaponAttackSpeed = 0.75;
 }
 

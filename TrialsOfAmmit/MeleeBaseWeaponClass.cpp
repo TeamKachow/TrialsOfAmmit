@@ -10,5 +10,5 @@ void MeleeBaseWeaponClass::Attack(facingDirections slashDirection, glm::vec2 pla
 	_slashAttack->AddComponent(new MeleeAttack(slashDirection, playerPos, currentScene, _slashAttack));
 
 	_slashCollider = new Hudson::Entity::GameObject();
-	_slashCollider->AddComponent(new MeleeCollider(slashDirection, playerPos, currentScene, _slashCollider));
+	_slashCollider->AddComponent(new MeleeCollider(slashDirection, playerPos, currentScene, _slashCollider, _weaponAttackDamage));
 }
