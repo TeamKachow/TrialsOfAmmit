@@ -24,11 +24,16 @@ void DemoBehaviour::OnCreate()
 			_sprite = sprites[0];
 	}
 
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
+	audio->loadSoundFile("../audio/EnemyGrowl.wav");
+
     std::cout << "Demo behaviour added to an object!\n";
 }
 
 void DemoBehaviour::OnTick(const double& dt)
 {
+	
+
 	// TODO: remove this when OnCreate is implemented
 	if (_sprite == nullptr)
 	{
@@ -79,11 +84,59 @@ void DemoBehaviour::OnTick(const double& dt)
 
 	if (transform.pos.x > 1600)
 		transform.pos.x = 1;
+
+	// TODO to help devs
+	// EXAMPLE: Audio loads/plays when two objects collide, unloads/stops sounds when no longer in use
+
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
+	bool soundPlayed = false;
+	
+	// Check for collision
+
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	if (!colliders.empty())
+	{
+
+		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			// first collider is hitting another object - handle this collision
+			std::cout << this << " is colliding with " << other << "\n";
+
+			if (!soundPlayed)
+			{
+
+				// Load and play sound
+				
+				audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f, 7.6f);
+				
+				std::cout << "Audio file has been played." << std::endl;
+				soundPlayed = true;
+
+			}
+			else
+			{
+				std::cout << "Audio file could not be played." << std::endl;
+			}
+		}
+	}
+	else
+	{
+		// No collisions, stop and unload sound
+		audio->stopSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
+		soundPlayed = false;
+
+	};
+	
 }
 
 void DemoBehaviour::OnDestroy()
 {
+	Hudson::Audio::AudioManager* audio = GetAudioManager();
     std::cout << "Demo behaviour removed from an object!\n";
+	audio->unloadSoundFile("../audio/EnemyGrowl.wav");
+	
 }
 
 void DemoBehaviour::DrawPropertyUI()

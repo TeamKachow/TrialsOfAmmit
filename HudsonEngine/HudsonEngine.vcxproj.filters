@@ -118,6 +118,12 @@
     <ClCompile Include="World\Scene.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
     <ClCompile Include="Util\stdafx.cpp">
       <Filter>Util</Filter>
     </ClCompile>
@@ -243,6 +249,12 @@
     </ClInclude>
     <ClInclude Include="Render\Texture.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Audio</Filter>
     </ClInclude>
     <ClInclude Include="Util\stdafx.h">
       <Filter>Util</Filter>

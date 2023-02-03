@@ -6,6 +6,10 @@ namespace Hudson
     {
         class SpriteComponent;
     }
+    namespace Audio
+    {
+        class AudioManager;
+    }
 }
 
 class DemoBehaviour : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
