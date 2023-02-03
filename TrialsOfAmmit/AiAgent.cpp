@@ -11,7 +11,7 @@ void AiAgent::OnCreate()
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
-	_maxSpeed = 30;
+	_maxSpeed = 35;
 	_maxRange = 250;
 	_minRange = -250;
 	_distanceFromPlayer = 10000;
@@ -23,6 +23,7 @@ void AiAgent::OnCreate()
 	_target = vec2(0, 0);
 	//Starting state
 	_currentState = WANDER;
+	_attackTimer = 0;
 	//sets from parent phyics componants 
 	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
 	auto _aiPhysics = _aiPhysicsComponent.front();
@@ -30,8 +31,8 @@ void AiAgent::OnCreate()
 	_mass = _aiPhysics->GetMass();
 	_acceleration = _aiPhysics->GetAcceleration();
 
-	_currentscene = _parent->GetScene();
-	auto _sceneObjects = _currentscene->GetObjects();
+	_currentScene = _parent->GetScene();
+	auto _sceneObjects = _currentScene->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
 	{
 		if (other->GetName() == "Player")
@@ -83,7 +84,7 @@ void AiAgent::OnTick(const double& dt)
 		}
 		break;
 	case ATTACK:
-		AiAttack();
+		
 		break;
 	case DEAD:
 		AiDead();
@@ -93,9 +94,28 @@ void AiAgent::OnTick(const double& dt)
 		break;
 	}
 
-	if (_distanceFromPlayer < 300.0f)
+	if (_distanceFromPlayer < 300.0f && _distanceFromPlayer > 100.0f)
 	{
 		_currentState = SEEK;
+	}
+	else if (_distanceFromPlayer < 100.0f)
+	{
+		_attackTimer += dt;
+		if (_attackTimer > _aiWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
+		{
+			auto _aiPhysics = _aiPhysicsComponent.front();
+			_velocity = vec2(0, 0);
+			_acceleration = vec2(0, 0);
+			_aiPhysics->SetAcceleration(_acceleration, false);
+			_aiPhysics->SetVelocity(_velocity);
+			_currentState = ATTACK;
+			AiAttack();
+			_attackTimer = 0;
+		}
+	}
+	else if (_distanceFromPlayer > 300.0f)
+	{
+		_currentState = WANDER;
 	}
 	_aiSprite->SetColor(vec3(1, 1, 1));
 }
@@ -139,39 +159,6 @@ void AiAgent::CollisionCheck()
 			RandomTargetSelector();
 		}
 	}
-
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-	//if (!colliders.empty())
-	//{
-	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-	//	auto collidingWith = collider->GetCurrentCollisions();
-	//	for (auto other : collidingWith)
-	//	{
-	//		cout << "Hit" << other << "\n";
-	//		//cout<<other->GetParent()->GetName() << "\n";
-	//		if (other->GetParent()->GetComponent<AiAgent>() != nullptr)
-	//		{
-	//			cout << other->GetParent()->GetComponent<AiAgent>()->GetParent()->GetName() << "\n";
-	//			AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
-	//			if (_aiAgent != nullptr)
-	//			{
-	//				_currentScene->RemoveObject(_projectile);
-	//				_aiAgent->AiDead();
-	//				_aiAgent = nullptr;
-	//				break;
-	//			}
-	//			else
-	//			{
-	//				cout << "Agent Not Found" << other << "\n";
-	//				break;
-	//			}
-
-	//			//_player = other->GetComponent<Player>();
-	//			break;
-	//		}
-	//	}
-
-	//}
 }
 
 void AiAgent::Animate(float deltaTime)
@@ -198,7 +185,7 @@ void AiAgent::Animate(float deltaTime)
 				_gridX = 0;
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
-			
+			_facingDirection = Right;
 		}
 		//left
 		if (_velocity.x < 0 && _velocity.y == 0)
@@ -213,6 +200,7 @@ void AiAgent::Animate(float deltaTime)
 				_gridX = 0;
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			_facingDirection = Left;
 		}
 		//up
 		if (_velocity.x == 0 && _velocity.y < 0)
@@ -227,6 +215,7 @@ void AiAgent::Animate(float deltaTime)
 				_gridX = 0;
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			_facingDirection = Up;
 		}
 		//down
 		if (_velocity.x == 0 && _velocity.y > 0)
@@ -241,6 +230,7 @@ void AiAgent::Animate(float deltaTime)
 				_gridX = 0;
 			}
 			_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+			_facingDirection = Down;
 		}
 
 		if (_velocity.x < 0 && _velocity.y > 0)
@@ -260,6 +250,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Left;
 			}
 			else if (differance < _velocity.y)
 			{
@@ -274,6 +265,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Down;
 			}
 		}
 
@@ -294,6 +286,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Up;
 			}
 			else if (differance < _velocity.x)
 			{
@@ -308,6 +301,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Right;
 			}
 		}
 
@@ -326,6 +320,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Right;
 			}
 			else if (_velocity.x < _velocity.y)
 			{
@@ -340,6 +335,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Down;
 			}
 		}
 
@@ -359,6 +355,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Left;
 			}
 			else if (_velocity.x > _velocity.y)
 			{
@@ -373,6 +370,7 @@ void AiAgent::Animate(float deltaTime)
 					_gridX = 0;
 				}
 				_aiSprite->SetGridPos(vec2(_gridX, _gridY));
+				_facingDirection = Up;
 			}
 		}
 	}
@@ -403,6 +401,9 @@ vec2 AiAgent::Wander(vec2 Target)
 void AiAgent::AiAttack()
 {
 	//TODO 
+	_currentScene = _parent->GetScene();
+	_aiWeapon->AiAttack(_facingDirection, _parent->GetTransform().pos, _currentScene);
+	//_currentState = SEEK;
 }
 
 void AiAgent::AiDead()
@@ -410,7 +411,7 @@ void AiAgent::AiDead()
 	//needs to be able to remove the object from the scene 
 	_alive = false;
 	cout << "ISDEAD" << "\n";
-	_currentscene->RemoveObject(_parent);
+	_currentScene->RemoveObject(_parent);
 }
 
 void AiAgent::TakeDamage(int damageAmount)
@@ -444,7 +445,7 @@ void AiAgent::GetPlayerPos()
 {
 	if (_player == nullptr)
 	{
-		auto _sceneObjects = _currentscene->GetObjects();
+		auto _sceneObjects = _currentScene->GetObjects();
 
 		for (Hudson::Entity::GameObject* other : _sceneObjects)
 		{
@@ -469,7 +470,7 @@ void AiAgent::SetPlayerPos()
 {
 	if (_player == nullptr)
 	{
-		auto _sceneObjects = _currentscene->GetObjects();
+		auto _sceneObjects = _currentScene->GetObjects();
 
 		for (Hudson::Entity::GameObject* other : _sceneObjects)
 		{
@@ -516,6 +517,9 @@ void AiAgent::DrawPropertyUI()
 	}
 	if (ImGui::Button("Seek")) {
 		_currentState = SEEK;
+	}
+	if (ImGui::Button("Attack")) {
+		_currentState = ATTACK;
 	}
 	if (ImGui::Button("DEAD")) {
 		_currentState = DEAD;
