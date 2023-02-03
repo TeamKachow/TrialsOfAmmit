@@ -25,6 +25,10 @@ namespace Hudson::Input
 		void delKeyEvent(std::string action, std::string keyName);
 
 		bool getActionState(std::string action);
+		bool getM1Click() { return m1Click; }
+		bool getM2Click() { return m2Click; }
+		glm::vec2 getMPos() { return glm::vec2(mouseXpos, mouseYpos); }
+
 
 		void setDownTemp(std::string keyName);
 
