@@ -18,12 +18,12 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 	_slashDirection = slashDirection;
 
 	_animTimer = 0;
-	_animSpeed = 0.2;
+	_animSpeed = 0.1;
 
 	_gridX = 0;
 	_gridY = 0;
 
-	_deleteTime = 0.5;
+	_deleteTime = 0.3;
 	_deleteTimer = 0;
 
 	_playerPos = playerPos;

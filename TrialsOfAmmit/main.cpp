@@ -82,6 +82,7 @@ void GameSetup()
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
+    resManager->LoadTexture("textures/WeaponSheet.png", true, "Weapon");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));

@@ -320,7 +320,6 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 	{
 		keyInput->setKeyDown(key, action != GLFW_RELEASE);
 	}
-	std::cout << key << std::endl;
 }
 
 void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
