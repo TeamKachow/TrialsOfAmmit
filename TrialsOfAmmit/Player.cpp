@@ -27,6 +27,11 @@ void Player::OnCreate()
 void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
 {
 	_playerHealth = _playerHealth - _damageTaken;
+	_playerSprite->SetColor(glm::vec3(1, 0, 0));
+	if (_playerHealth <= 0)
+	{
+		OnDeath();
+	}
 }
 
 
@@ -91,6 +96,7 @@ void Player::OnTick(const double& dt)
 
 	_playerAnimTimer += dt;
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	_playerSprite->SetColor(glm::vec3(1, 1, 1));
 
 }
 
@@ -164,6 +170,11 @@ void Player::AnimMove()//General move through sprite sheet function
 		}
 
 	}
+}
+
+void Player::OnDeath()
+{
+	std::cout << "PLayer Dead" << "\n";
 }
 
 

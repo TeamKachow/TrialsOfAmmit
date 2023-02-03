@@ -48,6 +48,7 @@ private:
 
 	//Anim Functions
 	void AnimMove();
+	void OnDeath();
 
 	
 public:

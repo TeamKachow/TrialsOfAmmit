@@ -71,10 +71,12 @@ void PickupWeapon::RandomiseItem()
 
 void PickupWeapon::OnCreate()
 {
+	
 }
 
 void PickupWeapon::OnTick(const double& dt)
 {
+	_parent->GetTransform().scale = glm::vec2(100, 100);
 }
 
 void PickupWeapon::OnDestroy()

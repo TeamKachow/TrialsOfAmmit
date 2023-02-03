@@ -103,7 +103,7 @@ void GameSetup()
     playerCollider = new Hudson::Physics::ColliderComponent();
 
     weaponPickupSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-    weaponPickupSprite->SetSize(glm::vec2(64.0f, 64.0f));
+    weaponPickupSprite->SetSize(glm::vec2(16.0f, 16.0f));
     weaponPickupSprite->SetGridSize(glm::vec2(5, 1));
     weaponPickupSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
     weaponPickupCollider = new Hudson::Physics::ColliderComponent();
@@ -146,6 +146,9 @@ void GameSetup()
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);
+
+    
+    
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite2);
@@ -198,6 +201,7 @@ void GameSetup()
 
     std::cout << "DemoGame: engine has been set up!\n";
 }
+
 
 
 int main() {

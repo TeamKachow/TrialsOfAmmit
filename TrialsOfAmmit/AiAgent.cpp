@@ -464,6 +464,10 @@ void AiAgent::GetPlayerPos()
 		vec2 _moveForce = (target - _parent->GetTransform().pos);
 		_distanceFromPlayer = length(_moveForce);
 	}
+	else
+	{
+		return;
+	}
 }
 
 void AiAgent::SetPlayerPos()
