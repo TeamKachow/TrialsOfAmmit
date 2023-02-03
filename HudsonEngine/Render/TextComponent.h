@@ -20,7 +20,7 @@ namespace Hudson::Render
 	{
 	public:
 		TextComponent();
-		TextComponent(glm::mat4 projection, glm::vec2 position);
+		TextComponent(glm::vec2 position);
 		~TextComponent();
 
         void StartFreeType(const std::filesystem::path& path);
@@ -33,6 +33,7 @@ namespace Hudson::Render
 		void SetText(std::string txt) { text = txt; }
 		void SetColor(glm::vec3 col) { color = col; }
 
+		Shader* GetShader() { return shader; }
 
 		void DrawPropertyUI() override;
 

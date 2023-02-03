@@ -22,6 +22,8 @@ private:
 	facingDirections _playerDirection = Down;
 	Hudson::Entity::GameObject* _projectile;
 
+	Hudson::Input::InputManager _inputManager;
+
 	Axe _axe;
 	Khopesh _khopesh;
 	Bow _bow;
@@ -38,6 +40,7 @@ private:
 
 	
 public:
+	float _playerMovementSpeed = 45.0;
 	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
 	~Player() override;
 	void TakeDamage(float _damageTaken);

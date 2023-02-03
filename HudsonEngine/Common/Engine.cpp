@@ -3,6 +3,7 @@
 #include "../Input/InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
+#include "../Render/Window.h"
 
 static Hudson::Common::Engine* INSTANCE;
 
@@ -19,6 +20,8 @@ Hudson::Common::Engine::~Engine()
 
 void Hudson::Common::Engine::Setup()
 {
+
+
     // create scene manager
     _sceneManager = std::make_unique<World::SceneManager>();
 
@@ -32,13 +35,13 @@ void Hudson::Common::Engine::Setup()
     // TODO
 
     // create input system
-    _input = std::make_unique<InputManager>();
-
+    _input = std::make_unique<Hudson::Input::InputManager>();
 }
 
 void Hudson::Common::Engine::Run()
 {
     bool shouldExit = false;
+    //_input->BindCallbacks(_renderer.get()->GetWindow()->GetWindow());
     while (!shouldExit)
     {
         // Call pre-frame hooks
@@ -113,7 +116,7 @@ Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager()
     return _physics.get();
 }
 
-InputManager* Hudson::Common::Engine::GetInputManager()
+Hudson::Input::InputManager* Hudson::Common::Engine::GetInputManager()
 {
     return _input.get();
 }

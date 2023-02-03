@@ -2,6 +2,10 @@
 
 #include "../Entity/GameObject.h"
 
+#include "../Common/ResourceManager.h"
+
+extern const std::filesystem::path filePath;
+
 Hudson::Render::SpriteComponent::SpriteComponent() : Component("Sprite")
 {
 }
@@ -69,6 +73,29 @@ void Hudson::Render::SpriteComponent::DrawPropertyUI()
     ImGui::InputFloat2("Grid Position", &_gridPos.r);
     ImGui::ColorEdit3("Colour Tint", &_color.r);
     ImGui::InputFloat2("Size", &_size.r); 
+
+    ImGui::Text("Texture: ");
+    ImGui::SameLine();
+    ImGui::TextDisabled("Place Here");
+
+    if (ImGui::BeginDragDropTarget())
+    {
+        if (const ImGuiPayload* pl = ImGui::AcceptDragDropPayload("ContentItem"))
+        {
+            const wchar_t* path = (const wchar_t*)pl->Data;
+
+            std::wcout << path << std::endl;
+
+            _texture = nullptr;
+
+            static Hudson::Common::ResourceManager* resMan = Hudson::Common::ResourceManager::GetInstance();
+
+            std::filesystem::path fullPath = filePath / path;
+            resMan->LoadTexture(fullPath, true, fullPath.string());
+            _texture = resMan->GetTexture(fullPath.string());
+        }
+        ImGui::EndDragDropTarget();
+    }
 }
 
 void Hudson::Render::SpriteComponent::InitRenderData()

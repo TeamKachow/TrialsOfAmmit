@@ -27,6 +27,8 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 	_deleteTime = 5;
 	_deleteTimer = 0;
 
+
+
 	_spawnPos = spawnPos;
 
 	
@@ -84,6 +86,7 @@ void Projectile::OnCreate()
 
 void Projectile::OnTick(const double& dt)
 {
+
 	_animTimer += dt;
 	_deleteTimer += dt;
 	if(_animTimer >= _animSpeed )
@@ -104,11 +107,8 @@ void Projectile::OnTick(const double& dt)
 		auto collidingWith = collider->GetCurrentCollisions();
 		for (auto other : collidingWith)
 		{
-			cout << "Hit" << other << "\n";
-			//cout<<other->GetParent()->GetName() << "\n";
 			if (other->GetParent()->GetComponent<AiAgent>() != nullptr)
 			{
-				cout << other->GetParent()->GetComponent<AiAgent>()->GetParent()->GetName() << "\n";
 				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
 				if(_aiAgent != nullptr)
 				{
@@ -119,11 +119,8 @@ void Projectile::OnTick(const double& dt)
 				}
 				else
 				{
-					cout << "Agent Not Found" << other << "\n";
 					break;
 				}
-				
-				//_player = other->GetComponent<Player>();
 				break;
 			}
 

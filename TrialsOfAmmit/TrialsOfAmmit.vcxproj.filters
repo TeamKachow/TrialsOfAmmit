@@ -45,6 +45,9 @@
     <ClCompile Include="MeleeAttack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MeleeCollider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -72,6 +75,9 @@
       <Filter>Source Files\PlayerWeapons</Filter>
     </ClInclude>
     <ClInclude Include="MeleeAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeleeCollider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
