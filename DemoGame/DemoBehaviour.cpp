@@ -64,7 +64,7 @@ void DemoBehaviour::OnTick(const double& dt)
 
 	// EXAMPLE: physics collision checks
 
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 	//if (!colliders.empty())
 	//{
 	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
