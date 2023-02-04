@@ -6,7 +6,7 @@ namespace Hudson::Render {
 	class Camera
 	{
 	public:
-		Camera(float left, float right, float bottom, float top);
+		Camera(float left, float right, float bottom, float top, float zNear, float zFar);
 
 		void ViewMatrixCalculation();
 

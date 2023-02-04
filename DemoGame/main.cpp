@@ -19,7 +19,7 @@ Hudson::Editor::ComponentRegistry* registry;
 Hudson::Editor::Editor* editor;
 #endif
 
-Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f);
+Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
 
 Hudson::Render::TextComponent* Text1;
 Hudson::Render::TextComponent* Text2;
@@ -66,6 +66,7 @@ void GameSetup()
 
     // Load shaders
     resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
+    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
     resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
     // Load textures
@@ -73,14 +74,18 @@ void GameSetup()
 
     // Create scene
     {
+
         Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
         Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite1->SetGridSize(glm::vec2(3, 4));
+        Sprite1->SetDepthOrder(1);
         //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
         Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite2->SetGridSize(glm::vec2(3, 4));
+        Sprite2->SetDepthOrder(2);
+
         //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Physics1 = new Hudson::Physics::PhysicsComponent();
@@ -123,7 +128,7 @@ void GameSetup()
 
         Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
         blah2->AddComponent(Sprite2);
-        blah2->AddComponent(new DemoBehaviour(Sprite2));
+        //blah2->AddComponent(new DemoBehaviour(Sprite2));
         blah2->AddComponent(Physics2);
         blah2->AddComponent(Collider2);
         startScene->AddObject(blah2);
@@ -143,6 +148,10 @@ void GameSetup()
         transform = { glm::vec2(-10,200), glm::vec2(1,1), 0 };
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
+
+        Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+        room->AddComponent(new Room("rooms/jsonROOM.room"));
+        startScene->AddObject(room);
     }
 
     std::cout << "DemoGame: engine has been set up!\n";

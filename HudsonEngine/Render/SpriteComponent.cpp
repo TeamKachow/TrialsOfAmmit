@@ -2,10 +2,6 @@
 
 #include "../Entity/GameObject.h"
 
-#include "../Common/ResourceManager.h"
-
-extern const std::filesystem::path filePath;
-
 Hudson::Render::SpriteComponent::SpriteComponent() : Component("Sprite")
 {
 }
@@ -39,6 +35,13 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 
     _size = _parent->GetTransform().scale;
 
+    // postion + offset
+    // position +- off
+    //position += glm::vec2(xOffset * _size, yOffset * _size);
+
+    position.x += xOffset * _size.x;
+    position.y += yOffset * _size.y;
+
     model = glm::translate(model, glm::vec3(position, 0.0f));
     // TODO: make sprite's _size a multiplier of transform's _size
     model = glm::translate(model, glm::vec3(0.5f * _size.x, 0.5f * _size.y, 0.0f));
@@ -47,7 +50,7 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     model = glm::scale(model, glm::vec3(_size, 1.0f));
 
     _shader->SetMatrix4("model", model);
-
+    _shader->SetFloat("depth", zOrder);
     // render textured quad
     _shader->SetVector3("spriteColor", _color);
 
@@ -73,29 +76,6 @@ void Hudson::Render::SpriteComponent::DrawPropertyUI()
     ImGui::InputFloat2("Grid Position", &_gridPos.r);
     ImGui::ColorEdit3("Colour Tint", &_color.r);
     ImGui::InputFloat2("Size", &_size.r); 
-
-    ImGui::Text("Texture: ");
-    ImGui::SameLine();
-    ImGui::TextDisabled("Place Here");
-
-    if (ImGui::BeginDragDropTarget())
-    {
-        if (const ImGuiPayload* pl = ImGui::AcceptDragDropPayload("ContentItem"))
-        {
-            const wchar_t* path = (const wchar_t*)pl->Data;
-
-            std::wcout << path << std::endl;
-
-            _texture = nullptr;
-
-            static Hudson::Common::ResourceManager* resMan = Hudson::Common::ResourceManager::GetInstance();
-
-            std::filesystem::path fullPath = filePath / path;
-            resMan->LoadTexture(fullPath, true, fullPath.string());
-            _texture = resMan->GetTexture(fullPath.string());
-        }
-        ImGui::EndDragDropTarget();
-    }
 }
 
 void Hudson::Render::SpriteComponent::InitRenderData()
