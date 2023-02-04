@@ -170,7 +170,7 @@ void GameSetup()
 }
 
 
-int main() {
+int main(int argc, char** argv) {
     Init();
 
     // Set up game scene/resources

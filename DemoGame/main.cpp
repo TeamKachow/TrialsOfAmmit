@@ -2,6 +2,8 @@
 
 #include <Hudson.h>
 
+#include "Menus.h"
+
 #include "DemoBehaviour.h"
 
 Hudson::Common::Engine* engine;
@@ -152,6 +154,9 @@ int main() {
 
     // Set up game scene/resources
     GameSetup();
+
+    // Create main menu.
+   
 
     // Run engine loop until it is shut down
     engine->Run();
