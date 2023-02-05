@@ -127,7 +127,7 @@ void GameSetup()
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite3 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
-    Sprite3->SetSize(glm::vec2(64.0f, 64.0f));
+    //Sprite3->SetSize(glm::vec2(128.0f, 64.0f));
     Sprite3->SetGridSize(glm::vec2(1, 1));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -206,6 +206,8 @@ void GameSetup()
     Button->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene));
     Button->SetName("Button");
     TestScene->AddObject(Button);
+    Button->GetTransform().scale.x = 128.0f;
+    Button->GetTransform().scale.y = 64.0f;
     Button->GetTransform().pos.x = 700.0f;
     Button->GetTransform().pos.y = 500.0f;
 
