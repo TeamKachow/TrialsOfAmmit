@@ -25,6 +25,7 @@ void PickupBehaviour::CheckCollision()
 				if (_pickUp != nullptr)
 				{
 					_currentPlayer->_playersWeapon = _pickUp->_weaponPickup;
+					_currentPlayer->_playersWeapon->UpgradeWeapon(_pickUp->_weaponLevel);
 					std::cout << "Colliding With Pickup" << "\n";
 					collider->ClearColliding();
 					_currentScene->RemoveObject(other->GetParent());

@@ -46,6 +46,8 @@ private:
 	void MoveLeft();
 	void StopMove();
 
+	void CreateWeaponUI();
+
 	//Anim Functions
 	void AnimMove();
 	void OnDeath();

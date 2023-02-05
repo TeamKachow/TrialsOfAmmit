@@ -87,7 +87,9 @@ void GameSetup()
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
-    resManager->LoadTexture("textures/WeaponSheet.png", true, "Weapon");
+    resManager->LoadTexture("textures/WeaponSpriteSheet.png", true, "Weapon");
+    resManager->LoadTexture("textures/UIFrame.png", true, "UIFrame");
+
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
 
@@ -188,6 +190,10 @@ void GameSetup()
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
     WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f), WeaponPickup));
     startScene->AddObject(WeaponPickup);
+
+    Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
+    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f), WeaponPickup1));
+    startScene->AddObject(WeaponPickup1);
 
 
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();

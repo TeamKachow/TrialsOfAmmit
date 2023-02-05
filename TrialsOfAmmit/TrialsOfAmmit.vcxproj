@@ -36,6 +36,7 @@
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
+    <ClCompile Include="WeaponDisplayUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiAgent.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="RangedBaseWeaponClass.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
+    <ClInclude Include="WeaponDisplayUI.h" />
     <ClInclude Include="WeaponType.h" />
     <ClInclude Include="WeaponUpgrade.h" />
   </ItemGroup>

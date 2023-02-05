@@ -22,6 +22,7 @@ void BaseWeaponClass::AiAttack(facingDirections projectileDirection, glm::vec2 s
 
 void BaseWeaponClass::UpgradeWeapon(WeaponUpgradeTypes Level)
 {
+	std::cout<<"Level Run Base" << "\n";
 }
 
 

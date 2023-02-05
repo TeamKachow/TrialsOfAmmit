@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "WeaponDisplayUI.h"
 
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
 {
@@ -22,6 +23,7 @@ void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
+	CreateWeaponUI();
 }
 
 void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
@@ -153,6 +155,13 @@ void Player::StopMove()
 	}
 	_playerAnimTimer = 0;
 	
+}
+
+void Player::CreateWeaponUI()
+{
+	Hudson::Entity::GameObject* WeaponUIPickup = new Hudson::Entity::GameObject();
+	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), WeaponUIPickup, _currentScene, _parent->GetComponent<Player>()));
+	_currentScene->AddObject(WeaponUIPickup);
 }
 
 void Player::AnimMove()//General move through sprite sheet function

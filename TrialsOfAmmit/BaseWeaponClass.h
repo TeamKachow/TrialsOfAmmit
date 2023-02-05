@@ -4,6 +4,7 @@
 #include "Hudson.h"
 #include "facingDirection.h"
 #include "WeaponUpgrade.h"
+#include "WeaponType.h"
 
 class BaseWeaponClass
 {
@@ -19,6 +20,7 @@ public:
 	virtual void UpgradeWeapon(WeaponUpgradeTypes Level);
 	float _weaponAttackSpeed;
 	float _weaponAttackDamage;
+	WeaponTypes _weaponType;
 	WeaponUpgradeTypes _weaponLevel;
 
 

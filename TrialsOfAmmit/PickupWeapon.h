@@ -23,7 +23,6 @@ public:
 	Hudson::Physics::ColliderComponent* _weaponCollider;
 
 
-
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
@@ -32,6 +31,9 @@ public:
 private:
 	int _randomWeaponInt;
 	int _randomRarityInt;
+
+	int _gridX;
+	int _gridY;
 	
 
 
