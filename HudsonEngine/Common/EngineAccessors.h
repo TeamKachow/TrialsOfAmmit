@@ -18,7 +18,12 @@ namespace Hudson
     {
         class InputManager;
     }
+    namespace Audio
+    {
+        class AudioManager;
+    }
 }
+
 
 namespace Hudson::Common
 {
@@ -31,7 +36,7 @@ namespace Hudson::Common
 
     public:
         virtual Input::InputManager* GetInputManager();
-        //Audio::AudioManager* GetAudioManager();
+        virtual Audio::AudioManager* GetAudioManager();
         virtual Hudson::Render::Renderer* GetRenderer();
         virtual Hudson::Physics::PhysicsManager* GetPhysicsManager();
         virtual Hudson::World::SceneManager* GetSceneManager();

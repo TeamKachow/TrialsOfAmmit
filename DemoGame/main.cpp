@@ -46,6 +46,8 @@ void InitRegistry()
 
 void Init() 
 {
+    Hudson::Util::Debug::RegisterAbortHandler();
+
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
