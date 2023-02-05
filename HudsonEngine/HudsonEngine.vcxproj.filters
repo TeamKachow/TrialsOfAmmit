@@ -136,9 +136,6 @@
     <ClCompile Include="Common\DeferredObjectSet.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Camera.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
     <ClCompile Include="Common\EngineAccessors.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Entity\Room.cpp">
       <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

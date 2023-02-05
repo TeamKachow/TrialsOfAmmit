@@ -232,6 +232,25 @@ bool Hudson::Input::InputManager::getActionState(std::string action)
 	return false;
 }
 
+glm::vec2 InputManager::getWorldMPos(glm::mat4 inverseProjMat)
+{
+	//glm::vec3 win(mouseYpos, mouseYpos, 0);
+	//glm::vec4 viewport(0, 0, 1280, 720);
+
+	//glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
+
+
+	//float x = 2.0f * (mouseXpos / 1280) - 1.0f;
+	//float y = 2.0f * ((mouseYpos - 1280 + 1) / 1280)  - 1.0f;
+
+	return glm::vec2(mouseXpos, mouseYpos);
+	//glm::vec4 mouseVector = { mouseXpos, mouseYpos, 0.0f, 1.0f };
+
+	//glm::vec4 newVector = mouseVector * inverseProjMat;
+
+	//return glm::vec2(newVector.x, newVector.y);
+}
+
 void Hudson::Input::InputManager::setDownTemp(std::string keyName)
 {
 	for (Key& tempKey : keys)
@@ -325,10 +344,13 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 
 void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
+#ifdef _RELEASE
 	for (InputManager* cursorPos : instances)
 	{
+		std::cout << xpos << " " << ypos << std::endl;
 		cursorPos->setCursorPos(xpos, ypos);
 	}
+#endif
 }
 
 void InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)

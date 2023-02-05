@@ -27,7 +27,8 @@ namespace Hudson::Input
 		bool getActionState(std::string action);
 		bool getM1Click() { return m1Click; }
 		bool getM2Click() { return m2Click; }
-		glm::vec2 getMPos() { return glm::vec2(mouseXpos, mouseYpos); }
+		glm::vec2 getWorldMPos(glm::mat4 inverseProjMat);
+		glm::vec2 getScreenMPos() { return glm::vec2(mouseXpos, mouseYpos); }
 
 
 		void setDownTemp(std::string keyName);
