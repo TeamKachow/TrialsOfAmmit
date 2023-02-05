@@ -25,7 +25,7 @@ void MenuButton::OnCreate()
 	_currentScene = _parent->GetScene();
 	_currentScene->AddObject(MenuText);
 	cout << _parent->GetTransform().pos.x << _parent->GetTransform().pos.y << endl;
-	_clicked = true;
+	_clicked = false;
 	_nextScene->SetActive(false);
 }
 
@@ -42,8 +42,8 @@ void MenuButton::OnTick(const double& dt)
 		cout << _inputManager.getMPos().y << endl;
 	}
 	
-	if (_inputManager.getMPos().x >= _parent->GetTransform().pos.x)
-	{
+	//if (_inputManager.getMPos().x >= _parent->GetTransform().pos.x)
+	//{
 		//cout << "hit" << endl;
 		if (_inputManager.getM1Click() && _clicked == false)
 		{
@@ -53,7 +53,7 @@ void MenuButton::OnTick(const double& dt)
 			}
 			return;
 		}
-	}
+	//}
 }
 
 void MenuButton::DrawPropertyUI()
