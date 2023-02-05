@@ -5,6 +5,7 @@
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
 #include "../Render/Window.h"
+
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
 

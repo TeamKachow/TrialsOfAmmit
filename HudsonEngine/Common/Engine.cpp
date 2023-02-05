@@ -1,5 +1,6 @@
 ﻿#include "../Common/Engine.h"
 
+#include "../AudioManager.h"
 #include "../Input/InputManager.h"
 #include "../Entity/GameObject.h"
 #include "../Render/Renderer.h"
@@ -33,6 +34,7 @@ void Hudson::Common::Engine::Setup()
 
     // create audio system
     // TODO
+    _audio = std::make_unique<Audio::AudioManager>();
 
     // create input system
     _input = std::make_unique<Hudson::Input::InputManager>();
@@ -114,6 +116,11 @@ Hudson::World::SceneManager* Hudson::Common::Engine::GetSceneManager()
 Hudson::Physics::PhysicsManager* Hudson::Common::Engine::GetPhysicsManager()
 {
     return _physics.get();
+}
+
+Hudson::Audio::AudioManager* Hudson::Common::Engine::GetAudioManager()
+{
+    return _audio.get();
 }
 
 Hudson::Input::InputManager* Hudson::Common::Engine::GetInputManager()

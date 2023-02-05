@@ -1,5 +1,17 @@
 #pragma once
 
+namespace Hudson
+{
+    namespace Render
+    {
+        class SpriteComponent;
+    }
+    namespace Audio
+    {
+        class AudioManager;
+    }
+}
+
 class DemoBehaviour : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 private:
@@ -10,7 +22,7 @@ public:
     DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double animSpeed = 0.8);
     ~DemoBehaviour() override;
 
-    // Editor components need a no-args constructor
+    // Editor components need a no-args constructor and a copy constructor
     DemoBehaviour();
     DemoBehaviour(const DemoBehaviour& other) = default;
 
