@@ -99,6 +99,9 @@
     <ClCompile Include="BaseAbilityClass.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
+    <ClCompile Include="Stun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="AbilityStates.h">
       <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Stun.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

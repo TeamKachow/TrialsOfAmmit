@@ -13,6 +13,7 @@ public:
 	BaseAbilityClass();
 	~BaseAbilityClass();
 	virtual void UseAbility(Hudson::World::Scene* _CurrentPassScene);
+	virtual void DeactiveAbility(Hudson::World::Scene* _CurrentPassScene);
 	float _abilityActiveTime;
 	float _abilityCoolDownTime;
 	AbilityState _abilityState;

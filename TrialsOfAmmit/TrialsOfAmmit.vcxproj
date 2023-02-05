@@ -39,6 +39,7 @@
     <ClCompile Include="Roll.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
+    <ClCompile Include="Stun.cpp" />
     <ClCompile Include="WeaponDisplayUI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +65,7 @@
     <ClInclude Include="Roll.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
+    <ClInclude Include="Stun.h" />
     <ClInclude Include="WeaponDisplayUI.h" />
     <ClInclude Include="WeaponType.h" />
     <ClInclude Include="WeaponUpgrade.h" />

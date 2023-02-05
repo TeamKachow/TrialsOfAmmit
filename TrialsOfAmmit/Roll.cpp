@@ -6,7 +6,7 @@ Roll::Roll()
 	_abilityCoolDownTime = 5;
 	_rollSpeed = 500;
 	_defaultSpeed = 100;
-	AbilityState _abilityState;
+	_abilityState = ready;
 	
 }
 

@@ -147,7 +147,7 @@ void GameSetup()
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
- /*   Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
+    Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite1);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
@@ -155,7 +155,7 @@ void GameSetup()
     blah2->SetName("AI2");
     startScene->AddObject(blah2);
 
-    blah2->GetTransform().pos.x = 1400.0f;*/
+    blah2->GetTransform().pos.x = 1400.0f;
     //auto WeaponPickups = new Hudson::Entity::GameObject();
    // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
     //startScene->AddObject(WeaponPickups);

@@ -6,6 +6,8 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_input = new Hudson::Input::InputManager;
 	_timer = 0;
 	_roll = new Roll;
+	_stun = new Stun;
+	_currentAbility = _stun;
 }
 
 AbilityHolder::~AbilityHolder()
@@ -27,32 +29,32 @@ void AbilityHolder::DrawPropertyUI()
 
 void AbilityHolder::OnTick(const double& dt)
 {
-	if (_roll->_abilityState == ready)
+	if (_currentAbility->_abilityState == ready)
 	{
 		if (_input->getActionState("Ability")) //Key Checks
 		{
 
-			_roll->UseAbility(_parent->GetScene());
+			_currentAbility->UseAbility(_parent->GetScene());
 
 		}
 	}
-	if (_roll->_abilityState == active)
+	if (_currentAbility->_abilityState == active)
 	{
 		_timer += dt;
-		if (_timer >= _roll->_abilityActiveTime)
+		if (_timer >= _currentAbility->_abilityActiveTime)
 		{
-			_roll->DeactiveAbility(_parent->GetScene());
+			_currentAbility->DeactiveAbility(_parent->GetScene());
 			_timer = 0;
 	
 			
 		}
 	}
-	if (_roll->_abilityState == cooldown)
+	if (_currentAbility->_abilityState == cooldown)
 	{
 		_timer += dt;
-		if (_timer >= _roll->_abilityCoolDownTime)
+		if (_timer >= _currentAbility->_abilityCoolDownTime)
 		{
-			_roll->_abilityState = ready;
+			_currentAbility->_abilityState = ready;
 			_timer = 0;
 
 

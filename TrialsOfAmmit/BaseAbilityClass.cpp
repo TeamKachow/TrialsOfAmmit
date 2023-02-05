@@ -14,4 +14,8 @@ void BaseAbilityClass::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 }
 
+void BaseAbilityClass::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
+{
+}
+
 
