@@ -32,7 +32,7 @@ void AbilityHolder::OnTick(const double& dt)
 		if (_input->getActionState("Ability")) //Key Checks
 		{
 
-			_roll->UseAbility(_parent->GetScene(), dt);
+			_roll->UseAbility(_parent->GetScene());
 
 		}
 	}
@@ -41,7 +41,7 @@ void AbilityHolder::OnTick(const double& dt)
 		_timer += dt;
 		if (_timer >= _roll->_abilityActiveTime)
 		{
-			_roll->DeactiveAbility(_parent->GetScene(), dt);
+			_roll->DeactiveAbility(_parent->GetScene());
 			_timer = 0;
 	
 			
