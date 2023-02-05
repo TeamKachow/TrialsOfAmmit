@@ -2,6 +2,11 @@
 
 #include "Engine.h"
 
+Hudson::Audio::AudioManager* Hudson::Common::EngineAccessors::GetAudioManager()
+{
+    return GetEngine()->GetAudioManager();
+}
+
 Hudson::Input::InputManager* Hudson::Common::EngineAccessors::GetInputManager()
 {
     return GetEngine()->GetInputManager();
