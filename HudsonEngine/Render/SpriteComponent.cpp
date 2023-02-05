@@ -37,7 +37,7 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
 
     // postion + offset
     // position +- off
-    //position += glm::vec2(xOffset * _size, yOffset * _size);
+    // position += glm::vec2(xOffset * _size, yOffset * _size);
 
     position.x += xOffset * _size.x;
     position.y += yOffset * _size.y;

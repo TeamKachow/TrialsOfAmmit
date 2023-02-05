@@ -7,6 +7,7 @@
 #include "../Common/ResourceManager.h"
 #include "../Common/IEditable.h"
 #include "../Render/SpriteComponent.h"
+#include "../Physics/ColliderComponent.h"
 #include "../Util/stdafx.h"
 
 class Room : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
@@ -30,4 +31,5 @@ private:
 	std::map<int, Hudson::Render::SpriteComponent*> texture_reference_;
 
 	std::vector<Hudson::Render::SpriteComponent*> spriteComponents;
+	std::vector<Hudson::Physics::ColliderComponent*> colliderComponents;
 };

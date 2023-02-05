@@ -85,7 +85,6 @@ void GameSetup()
         Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite2->SetGridSize(glm::vec2(3, 4));
         Sprite2->SetDepthOrder(2);
-
         //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Physics1 = new Hudson::Physics::PhysicsComponent();
@@ -125,6 +124,7 @@ void GameSetup()
         startScene->AddObject(blah);
 
         blah->GetTransform().pos.x = 200.0f;
+        blah->GetTransform().pos.y = 160.0f;
 
         Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
         blah2->AddComponent(Sprite2);
@@ -134,6 +134,7 @@ void GameSetup()
         startScene->AddObject(blah2);
 
         blah2->GetTransform().pos.x = 1400.0f;
+        blah2->GetTransform().pos.y = 160.0f;
 
         Hudson::Entity::GameObject* hud = new Hudson::Entity::GameObject();
         hud->SetName("Text");

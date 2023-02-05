@@ -7,6 +7,13 @@
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 
+//
+//void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+//{
+//	Hudson::Render::Renderer::CreateFramebuffers(width, height);
+//	glViewport(0, 0, width, height);
+//}
+
 void Hudson::Render::Renderer::UpdateSetShaders()
 {
 	auto resManager = Hudson::Common::ResourceManager::GetInstance();
@@ -43,6 +50,9 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	glGenRenderbuffers(1, &depthBuffer);
 
 	InitRenderToTexture();
+
+	// Bind callback for glfw
+	//glfwSetFramebufferSizeCallback(_window->GetWindow(), CreateFramebuffers);
 
 	// TODO Have the resource manager load shaders and textures in dynamically - Brandon B
 	// I may make it so that when creating components we pass in the resource manager so the constructor adds things to it
@@ -156,8 +166,8 @@ void Hudson::Render::Renderer::Draw()
 	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
 	glEnable(GL_DEPTH_TEST);
 	// Clear back buffer
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glClear(GL_COLOR_BUFFER_BIT);

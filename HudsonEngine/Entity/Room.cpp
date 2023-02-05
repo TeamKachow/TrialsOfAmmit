@@ -13,14 +13,16 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	nlohmann::json roomData;
 	std::ofstream writeFile(roomFile);
 	roomData["roomX"] = 20;
-	roomData["roomY"] = 10;
+	roomData["roomY"] = 12;
 	roomData["navGrid"] = {
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
@@ -31,14 +33,20 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 	};
 	roomData["objGrid"] = {
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -91,7 +99,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j) // 20
 		{
-			nav_grid_[j * y + i] = charArray[j * y + i];
+			nav_grid_[i * x + j] = charArray[i * x + j];
 			//*(nav_grid_ + j * y + i) = *(charArray + j * y + i);
 
 			// start mem address + (currentX * maxY) + currentY
@@ -110,7 +118,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			texture_grid_[j * y + i] = charArray[j * y + i];
+			texture_grid_[i * x + j] = charArray[i * x + j];
 			// start mem address + (currentX * maxY) + currentY
 		}
 	}
@@ -136,8 +144,25 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		for (int j = 0; j < x; ++j)
 		{
 			// relavent texID
+			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
+			if(value == 0)
+			{
+				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent();
+				colliderComponents.push_back(newCollider);
+
+			}
+
+		}
+	}
+
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			// relavent texID
 			//std::cout << texture_grid_[j * y + i];
-			int value = char(texture_grid_[j * y + i]) - 48;
+			int value = char(texture_grid_[i * x + j]) - 48;
 			//std::cout << value;
 
 			if (texture_reference_.find(value) != texture_reference_.end()) {
@@ -224,7 +249,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			std::cout << texture_grid_[j * y + i] << " ";
+			std::cout << texture_grid_[i * x + j] << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -257,6 +282,14 @@ void Room::OnTick(const double& dt)
 	for (Hudson::Render::SpriteComponent* sprite : spriteComponents) {
 		_parent->AddComponent(sprite);
 	}
+	for (Hudson::Physics::ColliderComponent* collider : colliderComponents) {
+		_parent->AddComponent(collider);
+	}
+
+
+
+
+
 }
 
 void Room::OnDestroy()
