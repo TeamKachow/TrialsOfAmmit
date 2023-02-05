@@ -12,49 +12,49 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 
 	nlohmann::json roomData;
 	std::ofstream writeFile(roomFile);
-	roomData["roomX"] = 20;
+	roomData["roomX"] = 10;
 	roomData["roomY"] = 12;
 	roomData["navGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		0,0,0,0,0,0,0,0,0,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,0,0,0,0,0,0,0,0,0
 	};
 	roomData["texGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		0,0,0,0,0,0,0,0,0,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,1,1,1,1,1,1,1,1,0,
+		0,0,0,0,0,0,0,0,0,0
 	};
 	roomData["objGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,0,0,0,0,0,0,0
 	};
 
 
@@ -71,22 +71,9 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	x = j["roomX"];
 	y = j["roomY"];
 
-	//_parent->GetTransform().
-
 	nav_grid_ = new char[x * y];
 	texture_grid_ = new char[x * y];
-
-	//auto navGrid = j["navGrid"];
-	//nav_grid_ = j["navGrid"].get<int>();
-
-	//for (const auto& val : j["navGrid"].items())
-	//{
-	//	nav_grid_.push_back(val.value());
-	//}
-
-	//for (nlohmann::json::iterator it = j["navGrid"].begin(); it != j["navGrid"].end(); ++it) {
-	//	nav_grid_.push_back(*it);
-	//}
+	object_grid = new char[x * y];
 
 	std::string standardArray = j["navGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
@@ -95,14 +82,11 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
-	for(int i = 0; i < y; ++i) // 5
+	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j) // 20
+		for (int j = 0; j < x; ++j)
 		{
 			nav_grid_[i * x + j] = charArray[i * x + j];
-			//*(nav_grid_ + j * y + i) = *(charArray + j * y + i);
-
-			// start mem address + (currentX * maxY) + currentY
 		}
 	}
 	delete[] charArray;
@@ -119,7 +103,22 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		for (int j = 0; j < x; ++j)
 		{
 			texture_grid_[i * x + j] = charArray[i * x + j];
-			// start mem address + (currentX * maxY) + currentY
+		}
+	}
+	delete[] charArray;
+
+	standardArray = j["objGrid"].dump();
+	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
+	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
+	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
+	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
+	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			object_grid[i * x + j] = charArray[i * x + j];
 		}
 	}
 	delete[] charArray;
@@ -130,26 +129,24 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	nlohmann::json texRef = j["texReference"];
 	for (const auto &object : texRef)
 	{
-		//std::cout << object["textureRoot"];
 		// TODO determine alpha channel in storage of tex
 		resManager->LoadTexture(object["textureRoot"], true, "Dummy");
 		
 		Hudson::Render::SpriteComponent* newSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Dummy"), glm::vec2(object["gridSizeX"], object["gridSizeY"]), glm::vec2(object["gridPosX"], object["gridPosY"]));
 		texture_reference_.insert({ object["textureID"], newSprite});
-		//
 	}
 
 	for (int i = 0; i < y; ++i)
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			// relavent texID
+			// relevant texID
 			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
 			if(value == 0)
 			{
-				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent();
+				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent(j, i);
+				
 				colliderComponents.push_back(newCollider);
-
 			}
 
 		}
@@ -160,10 +157,8 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			// relavent texID
-			//std::cout << texture_grid_[j * y + i];
+			// relevant texID
 			int value = char(texture_grid_[i * x + j]) - 48;
-			//std::cout << value;
 
 			if (texture_reference_.find(value) != texture_reference_.end()) {
 				// Do something related to texture
@@ -177,71 +172,24 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 
 		}
 	}
-	
-	//standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-	//standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	//standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
-	// copying the contents of the
-	// string to char array
-	//strcpy(charArray, standardArray.c_str());
 
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			// relevant texID
+			int value = char(object_grid[i * x + j]) - 48;
 
-	//std::cout << standardArray;
-	
+			if (texture_reference_.find(value) != texture_reference_.end()) {
+				//Hudson::Render::SpriteComponent* newSprite = new Hudson::Render::SpriteComponent(*texture_reference_.find(value)->second);
+				//newSprite->SetXOffset(j);
+				//newSprite->SetYOffset(i);
+				//newSprite->SetDepthOrder(0);
+				//spriteComponents.push_back(newSprite);
+			}
 
-
-	//std::cout << j["navGrid"];
-	//std::cout << j["texReference"]["gridPosX"];
-	//j
-
-	//std::ifstream readFile(roomFile);
-	//roomData = nlohmann::json::parse(readFile);
-
-
-	//std::string myText;
-	//int roomY = 0;
-	//bool gridValid = true, textureValid = false;
-
-	//while (std::getline(readFile, myText))
-	//{
-	//	if(myText != "-t") // First stage
-	//	{
-	//		gridValid = false;
-	//		textureValid = true;
-	//		x = myText.size();
-	//		++roomY;
-
-	//		std::cout << myText << std::endl;
-	//		std::cout << roomY << std::endl;
-	//	}
-	//	else
-	//	{
-	//		break;
-	//	}
-
-	//	if(gridValid)
-	//	{
-	//		
-	//	}
-	//	
-	//}
-	//y = roomY;
-
-	//nav_grid_ = new char[x * y];
-	//std::ifstream outputFile(roomFile);
-	//std::string outputText;
-	//int currentRoomY = 0;
-
-	//while (std::getline(outputFile, outputText))
-	//{
-	//	for(int i = 0; i < x; ++i)
-	//	{
-	//		*(nav_grid_ + i * y + currentRoomY) = outputText.at(i);
-	//	}
-	//	++currentRoomY;
-	//}
-
-
+		}
+	}
 
 	// Debug
 	// print the 2D array
@@ -253,14 +201,6 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		}
 		std::cout << std::endl;
 	}
-
-	//for (int i = 0; i < x; i++)
-	//{
-	//	for (int j = 0; j < y; j++) {
-	//		std::cout << *(texture_grid_ + i * y + j) << " ";
-	//	}
-	//	std::cout << std::endl;
-	//}
 
 }
 

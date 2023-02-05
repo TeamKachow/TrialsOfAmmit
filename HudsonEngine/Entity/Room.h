@@ -28,7 +28,10 @@ private:
 	
 	char* nav_grid_; // dynamic array 
 	char* texture_grid_; // dynamic array 
+	char* object_grid; // dynamic array
+
 	std::map<int, Hudson::Render::SpriteComponent*> texture_reference_;
+	std::map<int, Hudson::Entity::GameObject*> obj_reference_;
 
 	std::vector<Hudson::Render::SpriteComponent*> spriteComponents;
 	std::vector<Hudson::Physics::ColliderComponent*> colliderComponents;

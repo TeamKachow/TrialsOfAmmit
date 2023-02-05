@@ -123,8 +123,8 @@ void GameSetup()
         blah->AddComponent(Collider1);
         startScene->AddObject(blah);
 
-        blah->GetTransform().pos.x = 200.0f;
-        blah->GetTransform().pos.y = 160.0f;
+        blah->GetTransform().pos.x = 64.0f;
+        blah->GetTransform().pos.y = 0.0f;
 
         Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
         blah2->AddComponent(Sprite2);
@@ -133,8 +133,8 @@ void GameSetup()
         blah2->AddComponent(Collider2);
         startScene->AddObject(blah2);
 
-        blah2->GetTransform().pos.x = 1400.0f;
-        blah2->GetTransform().pos.y = 160.0f;
+        blah2->GetTransform().pos.x = 1280.0f;
+        blah2->GetTransform().pos.y = 128.0f;
 
         Hudson::Entity::GameObject* hud = new Hudson::Entity::GameObject();
         hud->SetName("Text");
@@ -151,7 +151,10 @@ void GameSetup()
         startScene->AddObject(hud2);
 
         Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+        room->SetName("Room");
         room->AddComponent(new Room("rooms/jsonROOM.room"));
+
+        //room->GetTransform().scale = glm::vec2(32.0f, 32.0f);
         startScene->AddObject(room);
     }
 

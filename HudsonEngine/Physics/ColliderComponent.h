@@ -22,6 +22,9 @@ namespace Hudson::Physics
 	public:
 		ColliderComponent();
 		ColliderComponent(const ColliderComponent& other) = default;
+
+		ColliderComponent(float newXOffset, float newYOffset);
+
 		~ColliderComponent();
 
 		bool AABBCollision(ColliderComponent* collider);
@@ -34,6 +37,9 @@ namespace Hudson::Physics
         std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
 	private:
 		std::set<ColliderComponent*> _colliderList;
+		float xOffset = 0;
+		float yOffset = 0;
+
 	};
 
 }
