@@ -36,7 +36,7 @@ private:
 	Khopesh _khopesh;
 	Spear _spear;
 	Bow _bow;
-	BaseWeaponClass* _playersWeapon = &_axe;
+	
 
 	//Actions
 	void Fire();
@@ -53,6 +53,7 @@ private:
 	
 public:
 	//Accessable player Stats
+	BaseWeaponClass* _playersWeapon = &_axe;
 	float _playerMovementSpeed = 45.0;
 	float _playerHealth = 100.0f;
 

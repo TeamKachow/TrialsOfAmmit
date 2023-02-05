@@ -102,7 +102,9 @@
         "Name": "E"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Interact"
+        ],
         "KeyDown": false,
         "KeyID": 70,
         "Name": "F"

@@ -37,6 +37,7 @@ void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHIN
 
 void Player::OnTick(const double& dt)
 {
+
 	if(_inputManager.getActionState("Up")) //Key Checks
 	{
 		_playerDirection = Up;

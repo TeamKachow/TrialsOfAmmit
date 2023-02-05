@@ -3,8 +3,24 @@
 
 using namespace std;
 
-PickupWeapon::PickupWeapon() : Behaviour("WeaponPickUp")
+
+
+PickupWeapon::PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject) : Behaviour("WeaponPickUp")
 {
+	_weaponObject = _refObject;
+	_weaponCollider = new Hudson::Physics::ColliderComponent();
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
+	_weaponSprite->SetSize(glm::vec2(16.0f, 16.0f));
+	_weaponSprite->SetGridSize(glm::vec2(5, 1));
+	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	_weaponObject->AddComponent(_weaponSprite);
+	_weaponObject->AddComponent(_weaponCollider);
+	_weaponObject->SetName("WeaponPickup");
+
+	_weaponObject->GetTransform().pos = spawnPos;
+
 	_randomRarityInt = 0;
 	_randomRarityInt = 0;
 	RandomiseItem();
@@ -22,24 +38,22 @@ void PickupWeapon::RandomiseItem()
 	if (_randomWeaponInt == 0)
 	{
 		_weaponPickup = new Axe;
-		//Axe
 	}
 	else if (_randomWeaponInt == 1)
 	{
-
-		//Khopesh
+		_weaponPickup = new Khopesh;
 	}
 	else if (_randomWeaponInt == 2)
 	{
-		//Spear
+		_weaponPickup = new Spear;
 	}
 	else if (_randomWeaponInt == 3)
 	{
-		//Bow
+		_weaponPickup = new Bow;
 	}
 	else if (_randomWeaponInt == 4)
 	{
-		//Slingshot
+		_weaponPickup = new SlingShot;
 	}
 
 	_randomRarityInt = dist(rand);

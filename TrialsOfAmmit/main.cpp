@@ -6,6 +6,7 @@
 #include "AiAgent.h"
 #include "Player.h"
 #include "PickupWeapon.h"
+#include "PickupBehaviour.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -89,24 +90,8 @@ void GameSetup()
     resManager->LoadTexture("textures/WeaponSheet.png", true, "Weapon");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
-    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
-    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
-    playerSprite->SetGridSize(glm::vec2(3, 4));
-    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
-    playerPhysics = new Hudson::Physics::PhysicsComponent();
-    playerPhysics->SetMass(1.0f);
-    playerPhysics->SetForce(glm::vec2(0.0, 0));
-    playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
-    playerPhysics->SetVelocity(glm::vec2(0, 0));
 
-    playerCollider = new Hudson::Physics::ColliderComponent();
-
-    weaponPickupSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-    weaponPickupSprite->SetSize(glm::vec2(16.0f, 16.0f));
-    weaponPickupSprite->SetGridSize(glm::vec2(5, 1));
-    weaponPickupSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-    weaponPickupCollider = new Hudson::Physics::ColliderComponent();
 
 
     //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
@@ -172,9 +157,24 @@ void GameSetup()
    // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
     //startScene->AddObject(WeaponPickups);
 
+    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
+    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
+    playerSprite->SetGridSize(glm::vec2(3, 4));
+    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+    playerPhysics = new Hudson::Physics::PhysicsComponent();
+    playerPhysics->SetMass(1.0f);
+    playerPhysics->SetForce(glm::vec2(0.0, 0));
+    playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
+    playerPhysics->SetVelocity(glm::vec2(0, 0));
+
+    playerCollider = new Hudson::Physics::ColliderComponent();
+
+
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
+    player->AddComponent(new PickupBehaviour());
     player->AddComponent(playerPhysics);
     player->AddComponent(playerCollider);
     player->SetName("Player");
@@ -184,16 +184,11 @@ void GameSetup()
     player->GetTransform().pos.x = 500.0f;
     player->GetTransform().pos.y = 500.0f;
 
+
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
-    WeaponPickup->AddComponent(weaponPickupSprite);
-    WeaponPickup->AddComponent(new PickupWeapon());
-    WeaponPickup->AddComponent(weaponPickupCollider);
-    WeaponPickup->SetName("WeaponPickup");
+    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f), WeaponPickup));
     startScene->AddObject(WeaponPickup);
 
-
-    WeaponPickup->GetTransform().pos.x = 600.0f;
-    WeaponPickup->GetTransform().pos.y = 600.0f;
 
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
     //text->AddComponent(Text);
