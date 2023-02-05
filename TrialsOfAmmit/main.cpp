@@ -5,6 +5,8 @@
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include "Menus.h"
+#include "SceneManager.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -170,11 +172,32 @@ void GameSetup()
 }
 
 
+
 int main(int argc, char** argv) {
+    Hudson::Render::SpriteComponent* menuSprite = new Hudson::Render::SpriteComponent();
     Init();
+    
+    SceneManager sceneManager;
+    while (true)
+    {
+        sceneManager.update();
+    }
+    return 0;
 
     // Set up game scene/resources
     GameSetup();
+
+    //Main Menu
+    Menus menus(menuSprite);
+    menus.OnCreate();
+    // ...
+    menus.OnTick(3);
+    // ...
+    menus.OnDestroy();
+    // ...
+    menus.DrawPropertyUI();;
+
+  
 
     // Run engine loop until it is shut down
     engine->Run();
