@@ -66,9 +66,9 @@ protected:
 	bool _arrive;
 
 private: 
-	void OnTick(const double& dt) override;
 	void OnCreate() override;
 	void OnDestroy() override;
+	void OnTick(const double& dt) override;
 	void DrawPropertyUI() override;
 	void RandomTargetSelector();
 	void Move(float deltatime);

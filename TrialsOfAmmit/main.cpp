@@ -4,6 +4,7 @@
 
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
+#include "MenuButton.h"
 #include "Player.h"
 #include "PickupWeapon.h"
 #include <Render/Renderer.h>
@@ -28,6 +29,7 @@ Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0
 
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
+Hudson::Render::SpriteComponent* Sprite3;
 Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
@@ -88,6 +90,7 @@ void GameSetup()
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
     resManager->LoadTexture("textures/WeaponSheet.png", true, "Weapon");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
+    resManager->LoadTexture("textures/Test.png", true, "Test");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
@@ -108,10 +111,8 @@ void GameSetup()
     weaponPickupSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
     weaponPickupCollider = new Hudson::Physics::ColliderComponent();
 
+    Text = new Hudson::Render::TextComponent(glm::vec2(20,20));
 
-    //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
-    //Text->SetText("Top Text");
-    //Text->SetColor(glm::vec3(0, 400, 0));
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
@@ -122,6 +123,11 @@ void GameSetup()
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
+    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+
+    Sprite3 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    Sprite3->SetSize(glm::vec2(64.0f, 64.0f));
+    Sprite3->SetGridSize(glm::vec2(1, 1));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
@@ -136,19 +142,14 @@ void GameSetup()
     Physics2->SetAcceleration(glm::vec2(-100, 0), true);
     Physics2->SetVelocity(glm::vec2(-100, 0));
 
-
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
-
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);
-
-    
-    
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite2);
@@ -194,6 +195,15 @@ void GameSetup()
 
     WeaponPickup->GetTransform().pos.x = 600.0f;
     WeaponPickup->GetTransform().pos.y = 600.0f;
+
+    Hudson::Entity::GameObject* Button = new Hudson::Entity::GameObject();
+    Button->AddComponent(Sprite3);
+    Button->AddComponent(weaponPickupCollider);
+    Button->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", PLAY, engine));
+    Button->SetName("Button");
+    startScene->AddObject(Button);
+    Button->GetTransform().pos.x = 700.0f;
+    Button->GetTransform().pos.y = 500.0f;
 
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
     //text->AddComponent(Text);

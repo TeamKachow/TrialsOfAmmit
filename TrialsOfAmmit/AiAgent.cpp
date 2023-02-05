@@ -420,6 +420,7 @@ void AiAgent::TakeDamage(int damageAmount)
 	_currentHealth = _currentHealth - damageAmount;
 
 	_aiSprite->SetColor(vec3(1, 0, 0));
+	_currentState = SEEK;
 	if (_currentHealth <= 0)
 	{
 		AiDead();

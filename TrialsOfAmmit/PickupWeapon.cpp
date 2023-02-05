@@ -76,7 +76,7 @@ void PickupWeapon::OnCreate()
 
 void PickupWeapon::OnTick(const double& dt)
 {
-	_parent->GetTransform().scale = glm::vec2(100, 100);
+	_parent->GetTransform().scale = glm::vec2(50, 50);
 }
 
 void PickupWeapon::OnDestroy()
