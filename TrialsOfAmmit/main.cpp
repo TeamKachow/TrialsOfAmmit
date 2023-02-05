@@ -148,8 +148,11 @@ void GameSetup()
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
+    Hudson::World::Scene* TestScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(TestScene);
+
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
-    engine->GetSceneManager()->AddScene(startScene);
+    //engine->GetSceneManager()->AddScene(startScene);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite2);
@@ -199,9 +202,9 @@ void GameSetup()
     Hudson::Entity::GameObject* Button = new Hudson::Entity::GameObject();
     Button->AddComponent(Sprite3);
     Button->AddComponent(weaponPickupCollider);
-    Button->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", PLAY, engine));
+    Button->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene));
     Button->SetName("Button");
-    startScene->AddObject(Button);
+    TestScene->AddObject(Button);
     Button->GetTransform().pos.x = 700.0f;
     Button->GetTransform().pos.y = 500.0f;
 

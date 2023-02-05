@@ -1,12 +1,11 @@
 #include "MenuButton.h"
 
-MenuButton::MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, ButtonAction Action, Hudson::Common::Engine* Engine) : Behaviour("ButtonBehaviour")
+MenuButton::MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, Hudson::World::Scene* NextScene) : Behaviour("ButtonBehaviour")
 {
 	_buttonSprite - ButtonSprite;
 	_buttonScale = Scale;
 	_buttonText = Text;
-	_currentButtonAction = Action;
-	_engine = Engine;
+	_nextScene = NextScene;
 }
 
 MenuButton::~MenuButton()
@@ -26,7 +25,8 @@ void MenuButton::OnCreate()
 	_currentScene = _parent->GetScene();
 	_currentScene->AddObject(MenuText);
 	cout << _parent->GetTransform().pos.x << _parent->GetTransform().pos.y << endl;
-	_clicked = false;
+	_clicked = true;
+	_nextScene->SetActive(false);
 }
 
 void MenuButton::OnDestroy()
@@ -38,31 +38,21 @@ void MenuButton::OnTick(const double& dt)
 {
 	if (_inputManager.getM1Click())
 	{
-		cout << _parent->GetTransform().pos.x - 70 << endl;
-		cout << _parent->GetTransform().pos.y - 235 << endl;
+		cout << _inputManager.getMPos().x << endl;
+		cout << _inputManager.getMPos().y << endl;
 	}
-	//cout << _inputManager.getMPos().y << endl;
-	switch (_currentButtonAction)
+	
+	if (_inputManager.getMPos().x >= _parent->GetTransform().pos.x)
 	{
-	case PLAY:
-		//if(_inputManager.getMPos().x >= 630 && _inputManager.getMPos().x <= 730 && _inputManager.getMPos().y >= 265 && _inputManager.getMPos().y <= 310)
-		if (_inputManager.getMPos().x >= _parent->GetTransform().pos.x - 70 && _inputManager.getMPos().x <= _parent->GetTransform().pos.x - 70 + 100 && _inputManager.getMPos().y >= _parent->GetTransform().pos.y - 235 && _inputManager.getMPos().y <= _parent->GetTransform().pos.y - 235 + 45)
-		{ 
-			if (_inputManager.getM1Click() && _clicked == false)
+		//cout << "hit" << endl;
+		if (_inputManager.getM1Click() && _clicked == false)
+		{
+			if (_nextScene->IsActive() == false)
 			{
-				OnClickPlay();
+				OnClick();
 			}
+			return;
 		}
-		break;
-	case BACK:
-		break;
-	case SETTINGS:
-		break;
-	case QUIT:
-		//figure it out
-		break;
-	default:
-		break;
 	}
 }
 
@@ -71,25 +61,10 @@ void MenuButton::DrawPropertyUI()
 	_buttonTextObject->DrawPropertyUI();
 }
 
-void MenuButton::OnClickPlay()
+void MenuButton::OnClick()
 {
 	cout << "Play CLicked" << endl;
-	Hudson::World::Scene* TestScene = new Hudson::World::Scene();
-	_engine->GetSceneManager()->AddScene(TestScene);
-	_clicked = true;
-}
-
-void MenuButton::OnClickBack()
-{
-
-}
-
-void MenuButton::OnClickSettings()
-{
-
-}
-
-void MenuButton::OnClickQuit()
-{
-
+	_nextScene->SetActive(true);
+	GetSceneManager()->AddScene(_nextScene);
+	GetSceneManager()->RemoveScene(_currentScene);
 }
