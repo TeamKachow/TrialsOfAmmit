@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "PickupWeapon.h"
 #include "PickupBehaviour.h"
+#include "AbilityHolder.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -177,6 +178,7 @@ void GameSetup()
     player->AddComponent(playerSprite);
     player->AddComponent(new Player(playerSprite));
     player->AddComponent(new PickupBehaviour());
+    player->AddComponent(new AbilityHolder());
     player->AddComponent(playerPhysics);
     player->AddComponent(playerCollider);
     player->SetName("Player");

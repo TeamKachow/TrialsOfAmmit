@@ -58,6 +58,7 @@ public:
 	BaseWeaponClass* _playersWeapon = &_axe;
 	float _playerMovementSpeed = 45.0;
 	float _playerHealth = 100.0f;
+	bool _godMode;
 
 	void TakeDamage(float _damageTaken);
 

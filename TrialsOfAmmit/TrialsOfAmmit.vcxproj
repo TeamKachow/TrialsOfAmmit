@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbilityHolder.cpp" />
     <ClCompile Include="AiAgent.cpp" />
     <ClCompile Include="AiMelee.cpp" />
     <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="BaseAbilityClass.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Khopesh.cpp" />
@@ -34,14 +36,19 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
+    <ClCompile Include="Roll.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="WeaponDisplayUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbilityHolder.h" />
+    <ClInclude Include="AbilityStates.h" />
+    <ClInclude Include="abilityTargets.h" />
     <ClInclude Include="AiAgent.h" />
     <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />
+    <ClInclude Include="BaseAbilityClass.h" />
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="facingDirection.h" />
@@ -54,6 +61,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />
+    <ClInclude Include="Roll.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="WeaponDisplayUI.h" />

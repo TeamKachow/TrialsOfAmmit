@@ -36,6 +36,7 @@ void WeaponDisplayUI::OnCreate()
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	
 	WeaponUISprite->GetTransform().pos = _currentPos;
 	WeaponUISprite->GetTransform().scale = (glm::vec2(128, 128));
 	WeaponUISprite->AddComponent(_weaponSprite);

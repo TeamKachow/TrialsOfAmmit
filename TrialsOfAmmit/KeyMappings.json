@@ -96,7 +96,9 @@
         "Name": "D"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Ability"
+        ],
         "KeyDown": false,
         "KeyID": 69,
         "Name": "E"

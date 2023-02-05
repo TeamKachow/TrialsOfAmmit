@@ -11,6 +11,7 @@ Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) 
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
 	_playerMovementSpeed = 100.0;
+	_godMode = false;
 
 }
 
@@ -28,11 +29,14 @@ void Player::OnCreate()
 
 void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
 {
-	_playerHealth = _playerHealth - _damageTaken;
-	_playerSprite->SetColor(glm::vec3(1, 0, 0));
-	if (_playerHealth <= 0)
+	if (_godMode == false)
 	{
-		OnDeath();
+		_playerHealth = _playerHealth - _damageTaken;
+		_playerSprite->SetColor(glm::vec3(1, 0, 0));
+		if (_playerHealth <= 0)
+		{
+			OnDeath();
+		}
 	}
 }
 

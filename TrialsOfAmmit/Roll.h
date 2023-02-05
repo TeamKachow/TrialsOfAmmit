@@ -1,7 +1,5 @@
 #pragma once
-
 #include "BaseAbilityClass.h"
-
 
 class Roll : public BaseAbilityClass
 {
@@ -9,13 +7,10 @@ public:
 	Roll();
 	~Roll();
 
+	void UseAbility(Hudson::World::Scene* _CurrentPassScene) override;
+	void DeactiveAbility(Hudson::World::Scene* _CurrentPassScene);
 	Player* _player;
 	float _rollSpeed;
-	void UseAbility(Hudson::World::Scene* _CurrentPassScene, float deltaTime) override;
-	//void UseAbility(Hudson::Entity::GameObject*) override;
-	void OnCreate() override;
-	void OnTick(const double& dt) override;
-private:
-	
+	float _defaultSpeed;
 };
 

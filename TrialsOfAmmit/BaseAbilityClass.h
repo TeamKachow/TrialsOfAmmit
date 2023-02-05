@@ -4,35 +4,24 @@
 #include <glm/vec2.hpp>
 #include <Hudson.h>
 #include "abilityTargets.h"
+#include "AbilityStates.h"
 #include "Player.h"
 
-class BaseAbilityClass : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
+class BaseAbilityClass
 {
 public:
-	//BaseAbilityClass(Hudson::Render::SpriteComponent* _spriteComponent, int cooldown, int active_time /*Target target */);
-	//BaseAbilityClass(int cooldown, int active_time);
 	BaseAbilityClass();
 	~BaseAbilityClass();
-	//Hudson::World::Scene* _currentScene;
-	//Hudson::Entity::GameObject* _parentGO;
-	Hudson::Physics::PhysicsComponent* _parentPhysics;
-	Hudson::Render::SpriteComponent* _parentSprite;
-	Hudson::Physics::ColliderComponent* _parentCollider;
-	Hudson::World::Scene* _currentscene;
-	abilityTargets _abilityTarget;
-	std::string _name;
-	int _cooldownTime;
-	int _activeTime;
-	virtual void UseAbility(Hudson::World::Scene* _CurrentPassScene, float deltaTime);
+	virtual void UseAbility(Hudson::World::Scene* _CurrentPassScene);
+	float _abilityActiveTime;
+	float _abilityCoolDownTime;
+	AbilityState _abilityState;
 
 protected:
 
 
 private:
-	void OnCreate() override;
-	void OnTick(const double& dt) override;
-	void OnDestroy() override;
-	void DrawPropertyUI() override;
+	
 };
 
 

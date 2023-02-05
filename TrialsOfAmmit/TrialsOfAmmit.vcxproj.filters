@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Player\PlayerWeapons\Projectile / Slash">
       <UniqueIdentifier>{f6fe97c9-ee52-44d4-bb2f-bf4998b34728}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AbilityStuff">
+      <UniqueIdentifier>{6785153c-5142-4f4d-9aaa-7251dc339020}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="WeaponDisplayUI.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Roll.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="AbilityHolder.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAbilityClass.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +160,21 @@
     </ClInclude>
     <ClInclude Include="WeaponDisplayUI.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityHolder.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Roll.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="abilityTargets.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAbilityClass.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityStates.h">
+      <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

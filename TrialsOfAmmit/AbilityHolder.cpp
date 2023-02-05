@@ -4,6 +4,8 @@
 AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 {
 	_input = new Hudson::Input::InputManager;
+	_timer = 0;
+	_roll = new Roll;
 }
 
 AbilityHolder::~AbilityHolder()
@@ -12,8 +14,6 @@ AbilityHolder::~AbilityHolder()
 
 void AbilityHolder::OnCreate()
 {
-	//_ability = _roll;
-	_roll = new Roll;
 }
 
 void AbilityHolder::OnDestroy()
@@ -27,60 +27,35 @@ void AbilityHolder::DrawPropertyUI()
 
 void AbilityHolder::OnTick(const double& dt)
 {
-	switch (state)
+	if (_roll->_abilityState == ready)
 	{
-	case ready:
-		 
-		//std::cout << "ability ready" << "\n";
-		if (_input->getActionState("Ability"))
+		if (_input->getActionState("Ability")) //Key Checks
 		{
-			Hudson::World::Scene* _scene = _parent->GetScene();
-			_roll->UseAbility(_scene, dt);
-			 
-			state = active;
 
-			_activeTime = _roll->_activeTime;
-			std::cout << "ability active for : " << _activeTime << " seconds" << "\n";
+			_roll->UseAbility(_parent->GetScene(), dt);
+
 		}
-		break;
-	case active:
-
-		if (_activeTime > 0)
+	}
+	if (_roll->_abilityState == active)
+	{
+		_timer += dt;
+		if (_timer >= _roll->_abilityActiveTime)
 		{
-			std::cout << "ability active" << "\n";
-			_activeTime -= dt;
-		}
-		else
-		{
-			std::cout << "ability inactive" << "\n";
-
-			state = cooldown;
+			_roll->DeactiveAbility(_parent->GetScene(), dt);
+			_timer = 0;
+	
 			
-			_cooldownTime = _roll->_cooldownTime;
-			std::cout << "ability on cooldown for : " << _cooldownTime << " seconds" << "\n";
 		}
-		
-		break;
-	case cooldown:
-		
-		if (_cooldownTime > 0)
+	}
+	if (_roll->_abilityState == cooldown)
+	{
+		_timer += dt;
+		if (_timer >= _roll->_abilityCoolDownTime)
 		{
-			std::cout << "ability on cooldown" << "\n";
-			_cooldownTime -= dt;
-		}
-		else
-		{
-			std::cout << "ability ready" << "\n";
-			state = ready;
+			_roll->_abilityState = ready;
+			_timer = 0;
+
+
 		}
 	}
 }
-
-//void AbilityHolder::OnDestroy()
-//{
-//
-//}
-
-//void AbilityHolder::DrawPropertyUI()
-//{
-//}
