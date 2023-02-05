@@ -59,6 +59,7 @@ void MenuButton::OnTick(const double& dt)
 	case SETTINGS:
 		break;
 	case QUIT:
+		//figure it out
 		break;
 	default:
 		break;
