@@ -36,6 +36,7 @@ public:
 	float _currentHealth;
 	float _meleeDamage;
 	virtual void AiDead();
+	float _maxSpeed;
 
 protected:
 	void CollisionCheck();
@@ -55,7 +56,7 @@ protected:
 	float _distanceFromPlayer;
 	facingDirections _facingDirection;
 	float _currentSpeed;
-	float _maxSpeed;
+	
 	float _mass;
 	float _maxRange;
 	float _minRange;
@@ -66,6 +67,8 @@ protected:
 	bool _arrive;
 
 private: 
+
+	void OnTick(const double& dt) override;
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;

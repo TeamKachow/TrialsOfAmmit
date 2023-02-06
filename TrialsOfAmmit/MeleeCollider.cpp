@@ -30,6 +30,7 @@ MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPo
 
 	_playerPos = playerPos;
 
+
 	_currentScene = currentScene;
 	_currentScene->AddObject(_slash);
 

@@ -3,11 +3,29 @@
 
 using namespace std;
 
-PickupWeapon::PickupWeapon() : Behaviour("WeaponPickUp")
+
+
+PickupWeapon::PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject) : Behaviour("WeaponPickUp")
 {
+	_weaponObject = _refObject;
+	_weaponCollider = new Hudson::Physics::ColliderComponent();
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
+	_weaponSprite->SetGridSize(glm::vec2(5, 5));
+	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	_weaponObject->AddComponent(_weaponSprite);
+	_weaponObject->AddComponent(_weaponCollider);
+	_weaponObject->SetName("WeaponPickup");
+
+	_weaponObject->GetTransform().pos = spawnPos;
+
+	_gridX = 0;
+	_gridY = 0;
+
 	_randomRarityInt = 0;
 	_randomRarityInt = 0;
-	RandomiseItem();
+
 }
 
 PickupWeapon::~PickupWeapon()
@@ -22,61 +40,69 @@ void PickupWeapon::RandomiseItem()
 	if (_randomWeaponInt == 0)
 	{
 		_weaponPickup = new Axe;
-		//Axe
+		_gridX = _randomWeaponInt;
 	}
 	else if (_randomWeaponInt == 1)
 	{
-
-		//Khopesh
+		_weaponPickup = new Khopesh;
+		_gridX = _randomWeaponInt;
 	}
 	else if (_randomWeaponInt == 2)
 	{
-		//Spear
+		_weaponPickup = new Spear;
+		_gridX = _randomWeaponInt;
 	}
 	else if (_randomWeaponInt == 3)
 	{
-		//Bow
+		_weaponPickup = new Bow;
+		_gridX = _randomWeaponInt;
 	}
 	else if (_randomWeaponInt == 4)
 	{
-		//Slingshot
+		_weaponPickup = new SlingShot;
+		_gridX = _randomWeaponInt;
 	}
 
 	_randomRarityInt = dist(rand);
-	if (_randomWeaponInt == 0)
+	if (_randomRarityInt == 0)
 	{
+		_gridY = _randomRarityInt;
 		_weaponLevel = Wood;
 	}
-	else if (_randomWeaponInt == 1)
+	else if (_randomRarityInt == 1)
 	{
+		_gridY = _randomRarityInt;
 		_weaponLevel = Stone;
 	}
-	else if (_randomWeaponInt == 2)
+	else if (_randomRarityInt == 2)
 	{
+		_gridY = _randomRarityInt;
 		_weaponLevel = Bronze;
 	}
-	else if (_randomWeaponInt == 3)
+	else if (_randomRarityInt == 3)
 	{
+		_gridY = _randomRarityInt;
 		_weaponLevel = Iron;
 	}
-	else if (_randomWeaponInt == 4)
+	else if (_randomRarityInt == 4)
 	{
+		_gridY = _randomRarityInt;
 		_weaponLevel = Gold;
 	}
-	std::cout << _weaponLevel << "\n";
-	std::cout << _randomWeaponInt << "\n";
-
+	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	_weaponPickup->UpgradeWeapon(_weaponLevel);
 
 }
 
 void PickupWeapon::OnCreate()
 {
-	
+	RandomiseItem();
+	_parent->GetTransform().scale = glm::vec2(48, 48);
 }
 
 void PickupWeapon::OnTick(const double& dt)
 {
-	_parent->GetTransform().scale = glm::vec2(50, 50);
+	
 }
 
 void PickupWeapon::OnDestroy()
@@ -85,4 +111,8 @@ void PickupWeapon::OnDestroy()
 
 void PickupWeapon::DrawPropertyUI()
 {
+	if (ImGui::Button("Reshuffle"))
+	{
+		RandomiseItem();
+	}
 }

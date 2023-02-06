@@ -1,13 +1,14 @@
 #include <iostream>
-
 #include <Hudson.h>
-
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "MenuButton.h"
 #include "Player.h"
 #include "PickupWeapon.h"
-#include <Render/Renderer.h>
+
+#include "AbilityHolder.h"
+#include "PickupAbilitys.h"
+
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
@@ -52,8 +53,7 @@ void InitRegistry()
 {
     registry = new Hudson::Editor::ComponentRegistry();
     registry->RegisterEngineComponents();
-
-    //registry->Register<DemoBehaviour>("Demo Behaviour");
+    registry->Register<Player>("PlayerTest");
 }
 
 void Init() 
@@ -62,6 +62,8 @@ void Init()
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
     engine = new Hudson::Common::Engine();
+
+    
 
 #ifdef ENABLE_EDITOR
     InitRegistry();
@@ -91,40 +93,25 @@ void GameSetup()
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
-    resManager->LoadTexture("textures/WeaponSheet.png", true, "Weapon");
+    resManager->LoadTexture("textures/WeaponSpriteSheet.png", true, "Weapon");
+    resManager->LoadTexture("textures/UIFrame.png", true, "UIFrame");
+    resManager->LoadTexture("textures/HealthBar.png", true, "HealthBar");
+    resManager->LoadTexture("textures/Abilitys.png", true, "Abilitys");
+    resManager->LoadTexture("textures/Blood.png", true, "Blood");
+    resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
     resManager->LoadTexture("textures/Test.png", true, "Test");
 
-    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
-    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
-    playerSprite->SetGridSize(glm::vec2(3, 4));
-    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-    playerPhysics = new Hudson::Physics::PhysicsComponent();
-    playerPhysics->SetMass(1.0f);
-    playerPhysics->SetForce(glm::vec2(0.0, 0));
-    playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
-    playerPhysics->SetVelocity(glm::vec2(0, 0));
-
-    playerCollider = new Hudson::Physics::ColliderComponent();
-
-    weaponPickupSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-    weaponPickupSprite->SetSize(glm::vec2(16.0f, 16.0f));
-    weaponPickupSprite->SetGridSize(glm::vec2(5, 1));
-    weaponPickupSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-    weaponPickupCollider = new Hudson::Physics::ColliderComponent();
-
-    Text = new Hudson::Render::TextComponent(glm::vec2(20,20));
-
+    //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
+    //Text->SetText("Top Text");
+    //Text->SetColor(glm::vec3(0, 400, 0));
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite1->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -166,7 +153,7 @@ void GameSetup()
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
- /*   Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
+    Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite1);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
@@ -174,33 +161,31 @@ void GameSetup()
     blah2->SetName("AI2");
     startScene->AddObject(blah2);
 
-    blah2->GetTransform().pos.x = 1400.0f;*/
+    blah2->GetTransform().pos.x = 1400.0f;
     //auto WeaponPickups = new Hudson::Entity::GameObject();
    // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
     //startScene->AddObject(WeaponPickups);
 
+
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(playerSprite);
-    player->AddComponent(new Player(playerSprite));
-    player->AddComponent(playerPhysics);
-    player->AddComponent(playerCollider);
+    player->AddComponent(new Player(glm::vec2(500, 500)));
+
     player->SetName("Player");
     startScene->AddObject(player);
-
-
-    player->GetTransform().pos.x = 500.0f;
-    player->GetTransform().pos.y = 500.0f;
+    
 
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
-    WeaponPickup->AddComponent(weaponPickupSprite);
-    WeaponPickup->AddComponent(new PickupWeapon());
-    WeaponPickup->AddComponent(weaponPickupCollider);
-    WeaponPickup->SetName("WeaponPickup");
+    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f), WeaponPickup));
     startScene->AddObject(WeaponPickup);
 
+    Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
+    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f), WeaponPickup1));
+    startScene->AddObject(WeaponPickup1);
 
-    WeaponPickup->GetTransform().pos.x = 600.0f;
-    WeaponPickup->GetTransform().pos.y = 600.0f;
+    Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f), AbilityPickup));
+    startScene->AddObject(AbilityPickup);
+
 
     Hudson::Entity::GameObject* Button = new Hudson::Entity::GameObject();
     Button->AddComponent(Sprite3);

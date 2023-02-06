@@ -31,6 +31,15 @@
     <Filter Include="Source Files\Player\PlayerWeapons\Projectile / Slash">
       <UniqueIdentifier>{f6fe97c9-ee52-44d4-bb2f-bf4998b34728}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AbilityStuff">
+      <UniqueIdentifier>{6785153c-5142-4f4d-9aaa-7251dc339020}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Pickups">
+      <UniqueIdentifier>{594a1012-3397-4f8b-b9ab-2d0d0cfa044a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{5bff2961-da13-4ede-a120-ff2a1b5ae2e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -78,8 +87,35 @@
     <ClCompile Include="AiMelee.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Roll.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="AbilityHolder.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseAbilityClass.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Stun.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="PickupAbilitys.cpp">
+      <Filter>Source Files\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="PickupBehaviour.cpp">
+      <Filter>Source Files\Pickups</Filter>
+    </ClCompile>
     <ClCompile Include="PickupWeapon.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerHealthUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponDisplayUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="AbilityDisplayUI.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="MenuButton.cpp">
       <Filter>Source Files</Filter>
@@ -137,8 +173,44 @@
     <ClInclude Include="AiMelee.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AbilityHolder.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Roll.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="abilityTargets.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseAbilityClass.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityStates.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Stun.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupAbilitys.h">
+      <Filter>Source Files\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupBehaviour.h">
+      <Filter>Source Files\Pickups</Filter>
+    </ClInclude>
     <ClInclude Include="PickupWeapon.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponDisplayUI.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthUI.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityDisplayUI.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityType.h">
+      <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
     <ClInclude Include="MenuButton.h">
       <Filter>Header Files</Filter>

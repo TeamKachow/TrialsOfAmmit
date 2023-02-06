@@ -18,6 +18,7 @@ public:
 	Hudson::Entity::GameObject* _slash;
 	facingDirections _slashDirection;
 	glm::vec2 _playerPos;
+
 	Hudson::World::Scene* _currentScene;
 
 	float _meleeDamage;
