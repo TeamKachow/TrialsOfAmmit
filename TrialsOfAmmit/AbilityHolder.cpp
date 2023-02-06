@@ -31,11 +31,9 @@ void AbilityHolder::OnTick(const double& dt)
 {
 	if (_currentAbility->_abilityState == ready)
 	{
-		if (_input->getActionState("Ability")) //Key Checks
+		if (_input->getActionState("Ability")) //Key Checks --- Currently been made to E in game
 		{
-
 			_currentAbility->UseAbility(_parent->GetScene());
-
 		}
 	}
 	if (_currentAbility->_abilityState == active)
@@ -44,9 +42,7 @@ void AbilityHolder::OnTick(const double& dt)
 		if (_timer >= _currentAbility->_abilityActiveTime)
 		{
 			_currentAbility->DeactiveAbility(_parent->GetScene());
-			_timer = 0;
-	
-			
+			_timer = 0;			
 		}
 	}
 	if (_currentAbility->_abilityState == cooldown)
@@ -56,8 +52,7 @@ void AbilityHolder::OnTick(const double& dt)
 		{
 			_currentAbility->_abilityState = ready;
 			_timer = 0;
-
-
 		}
 	}
+	// * polish --- Switch Statement??? i mean.... its works so this is something AFTER.
 }
