@@ -114,6 +114,9 @@
     <ClCompile Include="WeaponDisplayUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="AbilityDisplayUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -198,6 +201,9 @@
       <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="PlayerHealthUI.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityDisplayUI.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "WeaponDisplayUI.h"
+#include "AbilityDisplayUI.h"
 #include "PlayerHealthUI.h"
 
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
@@ -25,7 +26,7 @@ void Player::OnCreate()
 {
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
-	CreateWeaponUI();
+	CreateUI();
 	HealthBarUI();
 }
 
@@ -163,11 +164,16 @@ void Player::StopMove()
 	
 }
 
-void Player::CreateWeaponUI()
+void Player::CreateUI()
 {
 	Hudson::Entity::GameObject* WeaponUIPickup = new Hudson::Entity::GameObject();
 	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), WeaponUIPickup, _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(WeaponUIPickup);
+
+	Hudson::Entity::GameObject* AbilityUI= new Hudson::Entity::GameObject();
+	AbilityUI->AddComponent(new AbilityDisplayUI(glm::vec2(1350.0f, 25.0f), AbilityUI, _currentScene, _parent->GetComponent<Player>()));
+	_currentScene->AddObject(AbilityUI);
+
 }
 
 void Player::HealthBarUI()
