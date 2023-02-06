@@ -14,7 +14,8 @@ namespace Hudson::Render
 
     class Renderer
     {
-    private:
+        
+
         Common::Engine* _engine;
         std::unique_ptr<Window> _window;
         Render::Camera* _camera;
@@ -28,11 +29,12 @@ namespace Hudson::Render
         //double updates++;
 
         // Render to Texture
-        Shader* screenShader = nullptr;
+        Shader* screenShader;
 
         unsigned int screenVertexArrayObject;
         unsigned int frameBufferObject;
         unsigned int textureColorBuffer;
+        unsigned int depthBuffer;
 
         bool _imguiDockspace;
 
@@ -54,11 +56,11 @@ namespace Hudson::Render
         Window* GetWindow() { return _window.get(); }
         unsigned int GetRenderedSceneTexture() { return textureColorBuffer; }
 
-        Render::Camera* GetCamera() const  {return _camera;}
-        void SetCamera(Render::Camera* const camera) { _camera = camera;}
-
         void Draw();
         void WaitForRender();
+
+        Render::Camera* GetCamera() const { return _camera; }
+        void SetCamera(Render::Camera* const camera) { _camera = camera; }
 
         void SetImguiDockspace(bool enabled);
     };

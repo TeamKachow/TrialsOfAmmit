@@ -24,8 +24,21 @@ namespace Hudson::Render {
         void SetGridPos(glm::vec2 gridPos) { this->_gridPos = gridPos; };
         glm::vec2 GetGridPos() { return this->_gridPos; };
 
+        void SetDepthOrder(float newZ) { this->zOrder = newZ; };
+        float GetDepthOrder() { return this->zOrder; };
+
+        // Offset relative to game object transform scale
+        void SetXOffset(float xOff) { this->xOffset = xOff; };
+        float GetXOffset() { return this->xOffset; };
+        // Offset relative to game object transform scale
+        void SetYOffset(float yOff) { this->yOffset = yOff; };
+        float GetYOffset() { return this->yOffset; };
+
         void SetSize(glm::vec2 size) { this->_size = size; };
+        glm::vec2 GetSize() { return this->_size; };
+
         void SetColor(glm::vec3 color) { this->_color = color; };
+        glm::vec3 GetColor() { return this->_color; };
 
         Shader* GetShader() { return _shader; }
 
@@ -37,6 +50,10 @@ namespace Hudson::Render {
         unsigned int  _quadVAO = UINT_MAX;
         
         // Sprite Variables
+        float zOrder = 0;
+        float xOffset = 0;
+        float yOffset = 0;
+
         glm::vec2 _gridSize = glm::vec2(1);
         glm::vec2 _gridPos = glm::vec2(0);
         glm::vec3 _color = glm::vec3(1);
