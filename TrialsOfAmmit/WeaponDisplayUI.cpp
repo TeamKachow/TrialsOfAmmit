@@ -67,7 +67,6 @@ void WeaponDisplayUI::OnTick(const double& dt)
 		_gridX = 4;
 		break;
 	}
-	//std::cout << _currentWeapon->_weaponLevel << "\n";
 	switch (_currentWeapon->_weaponLevel)
 	{
 	case Wood:

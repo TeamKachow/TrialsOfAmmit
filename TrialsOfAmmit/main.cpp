@@ -8,6 +8,7 @@
 #include "PickupWeapon.h"
 #include "PickupBehaviour.h"
 #include "AbilityHolder.h"
+#include "PickupAbilitys.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -91,6 +92,7 @@ void GameSetup()
     resManager->LoadTexture("textures/WeaponSpriteSheet.png", true, "Weapon");
     resManager->LoadTexture("textures/UIFrame.png", true, "UIFrame");
     resManager->LoadTexture("textures/HealthBar.png", true, "HealthBar");
+    resManager->LoadTexture("textures/DashAbility.png", true, "Abilitys");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
 
@@ -196,6 +198,10 @@ void GameSetup()
     Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
     WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f), WeaponPickup1));
     startScene->AddObject(WeaponPickup1);
+
+    Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f), AbilityPickup));
+    startScene->AddObject(AbilityPickup);
 
 
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();

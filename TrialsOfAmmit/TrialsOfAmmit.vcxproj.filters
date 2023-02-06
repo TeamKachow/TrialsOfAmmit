@@ -99,10 +99,13 @@
     <ClCompile Include="BaseAbilityClass.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
-    <ClCompile Include="Stun.cpp">
+    <ClCompile Include="PlayerHealthUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerHealthUI.cpp">
+    <ClCompile Include="Stun.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="PickupAbilitys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,10 +185,13 @@
     <ClInclude Include="AbilityStates.h">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
-    <ClInclude Include="Stun.h">
+    <ClInclude Include="PlayerHealthUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerHealthUI.h">
+    <ClInclude Include="Stun.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PickupAbilitys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

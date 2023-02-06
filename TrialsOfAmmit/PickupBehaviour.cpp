@@ -38,6 +38,19 @@ void PickupBehaviour::CheckCollision()
 				}
 				break;
 			}
+			if (other->GetParent()->GetComponent<PickupAbilitys>() != nullptr)
+			{
+				PickupAbilitys* _pickupAbility= other->GetParent()->GetComponent<PickupAbilitys>();
+				if (_pickupAbility != nullptr)
+				{
+					_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility = _pickupAbility->_abilityPickup;
+					collider->ClearColliding();
+					_currentScene->RemoveObject(other->GetParent());
+
+					break;
+				}
+
+			}
 
 		}
 	}

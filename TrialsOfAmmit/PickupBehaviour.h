@@ -1,6 +1,7 @@
 #pragma once
 #include <Hudson.h>
 #include "PickupWeapon.h"
+#include "PickupAbilitys.h"
 #include "Player.h"
 
 class PickupBehaviour : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
