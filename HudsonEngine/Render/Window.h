@@ -1,9 +1,6 @@
 #pragma once
 #include "../Util/stdafx.h"
 
-
-class InputManager;
-
 namespace Hudson::Render {
 
 	class Window {

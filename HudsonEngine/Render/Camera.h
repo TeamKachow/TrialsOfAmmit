@@ -14,9 +14,9 @@ namespace Hudson::Render {
 		void SetPosition(const glm::vec3& position) { _position = position; ViewMatrixCalculation(); }
 
 		const glm::mat4& GetProjectionMatrix() const { return _projection; }
-		glm::mat4 GetInverseProjectionMatrix() { return glm::inverse(_viewProjection); }
 		const glm::mat4& GetViewMatrix() const { return _view; }
 		const glm::mat4& GetViewProjectionMatrix() const { return _viewProjection; }
+		const glm::mat4& GetInverseViewProjectionMatrix() { return glm::inverse(_viewProjection); }
 	private:
 		glm::vec3 _position = { 0.0f, 0.0f, 0.0f };
 

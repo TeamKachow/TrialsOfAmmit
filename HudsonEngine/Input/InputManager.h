@@ -1,5 +1,6 @@
 #pragma once
 #include "../Util/stdafx.h"
+#include "../Render/Renderer.h"
 #include <iostream>
 #include <cstring>
 #include "json.hpp"
@@ -27,9 +28,10 @@ namespace Hudson::Input
 		bool getActionState(std::string action);
 		bool getM1Click() { return m1Click; }
 		bool getM2Click() { return m2Click; }
-		glm::vec2 getWorldMPos(glm::mat4 inverseProjMat);
-		glm::vec2 getScreenMPos() { return glm::vec2(mouseXpos, mouseYpos); }
+		glm::vec2 getWorldMPos() { return glm::vec2(worldMouseXpos, worldMouseYpos); };
+		glm::vec2 getScreenMPos() { return glm::vec2(screenMouseXpos, screenMouseYpos); }
 
+		void Setup(Hudson::Render::Renderer* renderer);
 
 		void setDownTemp(std::string keyName);
 
@@ -46,13 +48,20 @@ namespace Hudson::Input
 		std::vector<Key> keys;
 		bool m1Click;
 		bool m2Click;
-		double mouseXpos;
-		double mouseYpos;
+		double screenMouseXpos;
+		double screenMouseYpos;
+
+		double worldMouseXpos;
+		double worldMouseYpos;
+
 		static std::vector<InputManager*> instances;
+		Hudson::Render::Camera* cameraReference;
+
 
 		void initialiseKeys();
 		void setKeyDown(int key, bool isDown);
-		void setCursorPos(double xPos, double yPos);
+		void setScreenCursorPos(double xPos, double yPos);
+		void setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMat);
 		void setM1Click(bool isDown);
 		void setM2Click(bool isDown);
 	};
