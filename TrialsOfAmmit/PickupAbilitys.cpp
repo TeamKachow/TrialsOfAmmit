@@ -7,7 +7,6 @@ PickupAbilitys::PickupAbilitys(glm::vec2 spawnPos, Hudson::Entity::GameObject* _
 	_abilityCollider = new Hudson::Physics::ColliderComponent();
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
-	_abilitySprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_abilitySprite->SetGridSize(glm::vec2(2, 1));
 	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 

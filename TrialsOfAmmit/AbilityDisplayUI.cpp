@@ -6,7 +6,6 @@ AbilityDisplayUI::AbilityDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObjec
 	_currentScene = _Scene;
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_abilityFrameUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("UIFrame"));
-	_abilityFrameUISprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_abilityFrameUISprite->SetGridSize(glm::vec2(1, 1));
 	_abilityFrameUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 

@@ -1,7 +1,5 @@
 #include <iostream>
-
 #include <Hudson.h>
-
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
@@ -9,7 +7,7 @@
 #include "PickupBehaviour.h"
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
-#include <Render/Renderer.h>
+
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
@@ -53,8 +51,7 @@ void InitRegistry()
 {
     registry = new Hudson::Editor::ComponentRegistry();
     registry->RegisterEngineComponents();
-
-    //registry->Register<DemoBehaviour>("Demo Behaviour");
+    registry->Register<Player>("PlayerTest");
 }
 
 void Init() 
@@ -63,6 +60,8 @@ void Init()
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
     engine = new Hudson::Common::Engine();
+
+    
 
 #ifdef ENABLE_EDITOR
     InitRegistry();
@@ -96,11 +95,9 @@ void GameSetup()
     resManager->LoadTexture("textures/UIFrame.png", true, "UIFrame");
     resManager->LoadTexture("textures/HealthBar.png", true, "HealthBar");
     resManager->LoadTexture("textures/Abilitys.png", true, "Abilitys");
+    resManager->LoadTexture("textures/Blood.png", true, "Blood");
+    resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
-
-
-
-
 
     //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
     //Text->SetText("Top Text");
@@ -108,12 +105,10 @@ void GameSetup()
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite1->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
@@ -128,7 +123,6 @@ void GameSetup()
     Physics2->SetForce(glm::vec2(-10.0, 0));
     Physics2->SetAcceleration(glm::vec2(-100, 0), true);
     Physics2->SetVelocity(glm::vec2(-100, 0));
-
 
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
@@ -165,34 +159,14 @@ void GameSetup()
    // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
     //startScene->AddObject(WeaponPickups);
 
-    playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
-    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
-    playerSprite->SetGridSize(glm::vec2(3, 4));
-    playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-    playerPhysics = new Hudson::Physics::PhysicsComponent();
-    playerPhysics->SetMass(1.0f);
-    playerPhysics->SetForce(glm::vec2(0.0, 0));
-    playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
-    playerPhysics->SetVelocity(glm::vec2(0, 0));
-
-    playerCollider = new Hudson::Physics::ColliderComponent();
-
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(playerSprite);
-    player->AddComponent(new Player(playerSprite));
+    player->AddComponent(new Player(glm::vec2(500, 500)));
     player->AddComponent(new PickupBehaviour());
     player->AddComponent(new AbilityHolder());
-    player->AddComponent(playerPhysics);
-    player->AddComponent(playerCollider);
     player->SetName("Player");
     startScene->AddObject(player);
-
-
-    player->GetTransform().pos.x = 500.0f;
-    player->GetTransform().pos.y = 500.0f;
-
+    
 
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
     WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f), WeaponPickup));

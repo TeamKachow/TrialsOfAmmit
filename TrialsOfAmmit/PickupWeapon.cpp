@@ -11,7 +11,6 @@ PickupWeapon::PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refO
 	_weaponCollider = new Hudson::Physics::ColliderComponent();
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-	_weaponSprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -26,7 +25,7 @@ PickupWeapon::PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refO
 
 	_randomRarityInt = 0;
 	_randomRarityInt = 0;
-	RandomiseItem();
+
 }
 
 PickupWeapon::~PickupWeapon()
@@ -92,14 +91,12 @@ void PickupWeapon::RandomiseItem()
 	}
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 	_weaponPickup->UpgradeWeapon(_weaponLevel);
-	std::cout << _weaponLevel << "\n";
-	std::cout << _randomWeaponInt << "\n";
-
 
 }
 
 void PickupWeapon::OnCreate()
 {
+	RandomiseItem();
 	_parent->GetTransform().scale = glm::vec2(48, 48);
 }
 
@@ -114,4 +111,8 @@ void PickupWeapon::OnDestroy()
 
 void PickupWeapon::DrawPropertyUI()
 {
+	if (ImGui::Button("Reshuffle"))
+	{
+		RandomiseItem();
+	}
 }

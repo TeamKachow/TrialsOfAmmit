@@ -7,7 +7,6 @@ WeaponDisplayUI::WeaponDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObject*
 	_currentScene = _Scene;
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_weaponUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("UIFrame"));
-	_weaponUISprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_weaponUISprite->SetGridSize(glm::vec2(1, 1));
 	_weaponUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_weaponUISprite->SetDepthOrder(1);
@@ -32,7 +31,6 @@ void WeaponDisplayUI::OnCreate()
 	Hudson::Entity::GameObject* WeaponUISprite = new Hudson::Entity::GameObject();
 
 	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-	_weaponSprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));

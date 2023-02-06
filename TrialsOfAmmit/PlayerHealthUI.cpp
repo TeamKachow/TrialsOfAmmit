@@ -6,7 +6,6 @@ PlayerHealthUI::PlayerHealthUI(glm::vec2 spawnPos, Hudson::Entity::GameObject* _
 	_currentScene = _scene;
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_healthUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("HealthBar"));
-	_healthUISprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_healthUISprite->SetGridSize(glm::vec2(1, 1));
 	_healthUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 

@@ -3,17 +3,18 @@
 #include "AbilityDisplayUI.h"
 #include "PlayerHealthUI.h"
 
-Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
+Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
-	_playerSprite = playerSprite;
+	deathTimer = 0;
+	deathAnim = 0.4;
+	_deathGridX;
 	_playerAnimSpeed = 0.2;
 	_playerDirection = Stopped;
 	_playerFacingDirection = Stopped;
 	_attackTimer = 0;
-	_gridX = _playerSprite->GetGridPos().x;
-	_gridY = _playerSprite->GetGridPos().y;
 	_playerMovementSpeed = 100.0;
 	_godMode = false;
+	_isDead = false;
 
 }
 
@@ -24,6 +25,26 @@ Player::~Player()
 
 void Player::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
+	_playerSprite->SetGridSize(glm::vec2(3, 4));
+	_playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	playerCollider = new Hudson::Physics::ColliderComponent();
+	playerPhysics = new Hudson::Physics::PhysicsComponent();
+	playerPhysics->SetMass(1.0f);
+	playerPhysics->SetForce(glm::vec2(0, 0));
+	playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
+	playerPhysics->SetVelocity(glm::vec2(0, 0));
+
+	_parent->AddComponent(_playerSprite);
+	_parent->AddComponent(playerPhysics);
+	_parent->AddComponent(playerCollider);
+
+	_gridX = _playerSprite->GetGridPos().x;
+	_gridY = _playerSprite->GetGridPos().y;
+
+	_parent->GetTransform().pos = (glm::vec2(0, 0));
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
 	CreateUI();
@@ -39,6 +60,7 @@ void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHIN
 		if (_playerHealth <= 0)
 		{
 			OnDeath();
+			_isDead = true;
 		}
 	}
 }
@@ -46,6 +68,21 @@ void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHIN
 
 void Player::OnTick(const double& dt)
 {
+	if (_isDead)
+	{
+		deathTimer += dt;
+		if (deathTimer >= deathAnim)
+		{
+			GraveSprite->SetGridPos(glm::vec2(_deathGridX, 0));
+			deathTimer = 0;
+			_deathGridX += 1;
+			if (_deathGridX >= 3)
+			{
+				_isDead = false;
+				_deathGridX = 0;
+			}
+		}
+	}
 
 	if(_inputManager.getActionState("Up")) //Key Checks
 	{
@@ -118,40 +155,36 @@ void Player::Fire() //Attack Uses facing Direction not the way the player is mov
 
 void Player::MoveUp() //Movement depending on _playerDirection
 {
-	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 3;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+	playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
 }
 
 void Player::MoveDown()
 {
-	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
+
 	_gridY = 0;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
+	playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
 }
 
 void Player::MoveRight()
 {
-	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 2;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
+	playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
 }
 
 void Player::MoveLeft()
 {
-	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>();
 	_gridY = 1;
 	AnimMove();
-	_playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
+	playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
 }
 
 void Player::StopMove()
 {
-	_playerPhysics = _parent->GetComponent<Hudson::Physics::PhysicsComponent>(); //Stops the player Moving
-	_playerPhysics->SetVelocity(glm::vec2(0, 0));
+	playerPhysics->SetVelocity(glm::vec2(0, 0));
 	if (_playerFacingDirection == Right || _playerFacingDirection == Down) //When Stop player the player stadning still frame
 	{
 		_gridX = 0;
@@ -183,6 +216,13 @@ void Player::HealthBarUI()
 	_currentScene->AddObject(HealthBar);
 }
 
+void Player::Respawn()
+{
+	_parent->GetTransform().pos = glm::vec2(500, 500);
+	_playerHealth = 100;
+	_playersWeapon = new Axe;
+}
+
 void Player::AnimMove()//General move through sprite sheet function
 {
 	if (_playerAnimTimer >= _playerAnimSpeed)
@@ -203,7 +243,19 @@ void Player::AnimMove()//General move through sprite sheet function
 
 void Player::OnDeath()
 {
-	std::cout << "PLayer Dead" << "\n";
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	Hudson::Entity::GameObject* Grave = new Hudson::Entity::GameObject;
+	GraveSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Grave"));
+	GraveSprite->SetGridSize(glm::vec2(3, 1));
+	GraveSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	GraveSprite->SetGridPos(glm::vec2(1, 1));
+	GraveSprite->SetDepthOrder(2);
+
+	Grave->AddComponent(GraveSprite);
+	_currentScene->AddObject(Grave);
+	Grave->GetTransform().pos = _parent->GetTransform().pos;
+	_parent->GetTransform().pos = glm::vec2(1000, 2000);
+	Grave->SetName("Blood");
 }
 
 
@@ -213,6 +265,10 @@ void Player::OnDestroy()
 
 void Player::DrawPropertyUI()
 {
+	if (ImGui::Button("Respawn"))
+	{
+		Respawn();
+	}
 	if(ImGui::Button("Axe"))
 	{
 		_playersWeapon = &_axe;
