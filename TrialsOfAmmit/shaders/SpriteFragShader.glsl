@@ -7,6 +7,10 @@ uniform sampler2D sampler;
 uniform vec3 spriteColor;
 
 void main()
-{    
-    color = vec4(spriteColor, 1.0) * texture(sampler, TexCoords);
+{   
+    vec4 tempColor = vec4(spriteColor, 1.0) * texture(sampler, TexCoords);
+    if(tempColor.a < 0.1)
+        discard;
+
+    color = tempColor;
 } 
