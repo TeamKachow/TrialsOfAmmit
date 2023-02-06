@@ -23,7 +23,7 @@ Hudson::Editor::ComponentRegistry* registry;
 Hudson::Editor::Editor* editor;
 #endif
 
-Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f);
+Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
 
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
@@ -69,9 +69,12 @@ void GameSetup()
 {
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
-
-    //resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    
+    // TODO put these 2 files in line so doesnt need to be called in main.cpp - sorry Brandon B
     resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
+    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
+
+    // This one stays
     resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
     // Shader needs to be Use() to pass values over
