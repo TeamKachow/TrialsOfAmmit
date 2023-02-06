@@ -170,3 +170,39 @@ uint32_t Hudson::Entity::GameObject::GetSerialID()
 {
     return _serialId;
 }
+
+void Hudson::Entity::to_json(nlohmann::json& j, const GameObject& gameObject)
+{
+    // TODO: all of this
+}
+
+void Hudson::Entity::from_json(const nlohmann::json& j, GameObject& gameObject)
+{
+    gameObject._name = j.at("name");
+    gameObject._serialId = j.at("id");
+    gameObject._transform = j.at("transform");
+
+    for (auto && componentJson : j.at("components"))
+    {
+        // TODO: resolve converter from component registry using type name
+
+        // TODO: construct from component registry
+
+        // TODO: from_json each object
+    }
+}
+
+void Hudson::Entity::to_json(nlohmann::json& j, const GameObject*& gameObject)
+{
+    j = *gameObject;
+}
+
+void Hudson::Entity::to_json(nlohmann::json& j, GameObject*& gameObject)
+{
+    j = *gameObject;
+}
+
+void Hudson::Entity::from_json(const nlohmann::json& j, GameObject*& gameObject)
+{
+    gameObject = new GameObject(j);
+}

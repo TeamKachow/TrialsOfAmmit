@@ -127,6 +127,8 @@ namespace Hudson::World
 
         uint32_t GetSerialID() override;
 
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, _name, _active, _rendering, _objects)
+        friend void to_json(nlohmann::json& j, const Scene& scene);
+
+        friend void from_json(const nlohmann::json& j, Scene& scene);
     };
 }

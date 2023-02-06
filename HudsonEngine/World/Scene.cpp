@@ -131,3 +131,19 @@ void Hudson::World::Scene::SetRendering(bool rendering)
 {
     _rendering = rendering;
 }
+
+void Hudson::World::to_json(nlohmann::json& j, const Scene& scene)
+{
+    j["name"] = scene._name;
+    j["active"] = scene._active;
+    j["rendering"] = scene._rendering;
+    j["objects"] = scene._objects;
+}
+
+void Hudson::World::from_json(const nlohmann::json& j, Scene& scene)
+{
+    scene._name = j.at("name");
+    scene._active = j.at("active");
+    scene._rendering = j.at("rendering");
+    scene._objects = j.at("objects");
+}

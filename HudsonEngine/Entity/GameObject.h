@@ -152,7 +152,14 @@ namespace Hudson::Entity
         
         uint32_t GetSerialID() override;
 
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE(GameObject, _name, _id, _transform, _components)
+        friend void to_json(nlohmann::json& j, const GameObject& gameObject);
+
+        friend void from_json(const nlohmann::json& j, GameObject& gameObject);
+
+        friend void to_json(nlohmann::json& j, const GameObject*& gameObject);
+        friend void to_json(nlohmann::json& j, GameObject*& gameObject);
+
+        friend void from_json(const nlohmann::json& j, GameObject*& gameObject);
     };
 
     template <is_component T>
