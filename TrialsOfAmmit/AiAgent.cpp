@@ -416,11 +416,11 @@ void AiAgent::AiDead()
 {
 	//TODO: make a random chance of dropping an item 
 	Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-	WeaponPickup1->AddComponent(new PickupWeapon(_parent->GetTransform().pos, WeaponPickup1));
+	WeaponPickup1->AddComponent(new PickupWeapon(_parent->GetTransform().pos));
 	_currentScene->AddObject(WeaponPickup1);
 
 	Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-	AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos, AbilityPickup));
+	AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
 	_currentScene->AddObject(AbilityPickup);
 	//TODO: Add death animation
 
