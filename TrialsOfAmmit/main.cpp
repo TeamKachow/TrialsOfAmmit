@@ -79,6 +79,7 @@ void GameSetup()
 
     //resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
     resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
+    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureVert.glsl", std::string("screenShader"));
     resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
     // Shader needs to be Use() to pass values over
