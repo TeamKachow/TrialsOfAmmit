@@ -4,12 +4,12 @@
 
 extern const std::filesystem::path filePath;
 
-Hudson::Render::TextComponent::TextComponent() : TextComponent({ 0, 0 })
+Hudson::Render::TextComponent::TextComponent() : TextComponent("../DemoGame/Fonts/arial.ttf", {0, 0})
 {
 }
 
 
-Hudson::Render::TextComponent::TextComponent(glm::vec2 position) : Component("Text")
+Hudson::Render::TextComponent::TextComponent(const char* path, glm::vec2 position) : Component("Text")
 {
 	auto resManager = Hudson::Common::ResourceManager::GetInstance();
 	shader = resManager->GetShader("textShader");
@@ -32,9 +32,9 @@ Hudson::Render::TextComponent::TextComponent(glm::vec2 position) : Component("Te
 	glBindVertexArray(0);
 
 	// Loads TTF file in
-	StartFreeType(std::filesystem::path(filePath));
+	StartFreeType(std::filesystem::path(filePath) / path);
 	// Generates and Stores textures for each character
-	StoreCharacters(std::filesystem::path(filePath));
+	StoreCharacters(std::filesystem::path(filePath) / path);
 }
 
 Hudson::Render::TextComponent::~TextComponent()
