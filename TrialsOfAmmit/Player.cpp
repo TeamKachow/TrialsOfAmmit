@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "WeaponDisplayUI.h"
+#include "PlayerHealthUI.h"
 
 Player::Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed) : Behaviour("PlayerTest")
 {
@@ -25,6 +26,7 @@ void Player::OnCreate()
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
 	CreateWeaponUI();
+	HealthBarUI();
 }
 
 void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
@@ -166,6 +168,13 @@ void Player::CreateWeaponUI()
 	Hudson::Entity::GameObject* WeaponUIPickup = new Hudson::Entity::GameObject();
 	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), WeaponUIPickup, _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(WeaponUIPickup);
+}
+
+void Player::HealthBarUI()
+{
+	Hudson::Entity::GameObject* HealthBar = new Hudson::Entity::GameObject();
+	HealthBar->AddComponent(new PlayerHealthUI(glm::vec2(25.0f, 25.0f), HealthBar, _currentScene, _parent->GetComponent<Player>()));
+	_currentScene->AddObject(HealthBar);
 }
 
 void Player::AnimMove()//General move through sprite sheet function

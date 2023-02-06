@@ -90,7 +90,7 @@ void GameSetup()
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
     resManager->LoadTexture("textures/WeaponSpriteSheet.png", true, "Weapon");
     resManager->LoadTexture("textures/UIFrame.png", true, "UIFrame");
-
+    resManager->LoadTexture("textures/HealthBar.png", true, "HealthBar");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
 

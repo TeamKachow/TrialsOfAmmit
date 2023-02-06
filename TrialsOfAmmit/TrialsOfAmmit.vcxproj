@@ -34,6 +34,7 @@
     <ClCompile Include="PickupBehaviour.cpp" />
     <ClCompile Include="PickupWeapon.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerHealthUI.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
     <ClCompile Include="Roll.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="PickupBehaviour.h" />
     <ClInclude Include="PickupWeapon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerHealthUI.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />
     <ClInclude Include="Roll.h" />

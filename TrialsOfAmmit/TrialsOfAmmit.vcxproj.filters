@@ -102,6 +102,9 @@
     <ClCompile Include="Stun.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerHealthUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -180,6 +183,9 @@
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
     <ClInclude Include="Stun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerHealthUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

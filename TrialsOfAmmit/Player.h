@@ -47,6 +47,7 @@ private:
 	void StopMove();
 
 	void CreateWeaponUI();
+	void HealthBarUI();
 
 	//Anim Functions
 	void AnimMove();
