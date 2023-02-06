@@ -25,7 +25,7 @@ namespace Hudson::Editor
 	private:
 		struct SceneMeta
 		{
-			bool pendingChanges = false;
+			bool pendingChanges = true;
 			std::string filePath;
 			std::string backup;
 		};

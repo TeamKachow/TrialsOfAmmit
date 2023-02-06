@@ -223,7 +223,6 @@ void Hudson::Editor::Editor::Hierarchy()
 
 		if (ImGui::TreeNode((void*)(intptr_t)i, "Scene %d - %s", i, scene->GetName().c_str()))
 		{
-
 			if (ImGui::BeginPopupContextItem())
 			{
 				ImGui::PushID(&scene);
@@ -271,9 +270,26 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				ImGui::EndPopup();
 			}
+
+			SceneMeta& meta = GetSceneMeta(scene);
+			std::stringstream txt;
+			if (meta.filePath.empty())
+			{
+				txt << "(not saved)";
+			}
+			else
+			{
+				txt << meta.filePath;
+				if (meta.pendingChanges)
+				{
+					txt << " (edited)";
+				}
+			}
+			ImGui::TextColored(IM_COLOR_GRAY, txt.str().c_str());
+
 		    for (auto object : scene->GetObjects())
             {
-				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
+				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet;
 				if (_selectedObj == object)
 				{
 					objNodeFlags |= ImGuiTreeNodeFlags_Selected;
@@ -703,6 +719,7 @@ void Hudson::Editor::Editor::SaveDialogs()
 
 	if (_sceneToSave)
 	{
+		_engine->GetSceneManager()->SetPaused(true);
 		ImGui::OpenPopup(MODAL_SCENE_SAVE);
 	}
 }

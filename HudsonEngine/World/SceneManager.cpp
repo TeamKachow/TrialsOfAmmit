@@ -34,8 +34,13 @@ void Hudson::World::SceneManager::HandlePostTick()
 Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& path)
 {
     std::ifstream file(path);
-    nlohmann::json jsonIn = nlohmann::json::parse(file);
 
+    if (!file.is_open())
+    {
+        return nullptr;
+    }
+
+    nlohmann::json jsonIn = nlohmann::json::parse(file);
     Scene* scene = new Scene(jsonIn.get<Scene>());
 
     return scene;
@@ -43,6 +48,8 @@ Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& 
 
 void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scene)
 {
+    std::filesystem::create_directories(std::filesystem::path(path).parent_path());
+
     std::ofstream file(path);
     nlohmann::json jsonOut = *scene;
     file << jsonOut.dump(2);
