@@ -42,6 +42,7 @@ void Hudson::Input::InputManager::Setup(Hudson::Render::Renderer* renderer)
 {
 	renderRef = renderer;
 	BindCallbacks(renderer->GetWindow()->GetWindow());
+	ImGui_ImplGlfw_InstallCallbacks(renderer->GetWindow()->GetWindow());
 
 }
 
