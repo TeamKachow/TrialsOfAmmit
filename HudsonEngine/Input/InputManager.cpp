@@ -363,7 +363,7 @@ void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypo
 			if (instance->renderRef->GetCamera() != nullptr)
 				instance->setWorldCursorPos(window, instance->renderRef->GetCamera()->GetInverseViewProjectionMatrix());
 
-		std::cout << instance->getWorldMPos().x << " " << instance->getWorldMPos().y << std::endl;
+		//std::cout << instance->getWorldMPos().x << " " << instance->getWorldMPos().y << std::endl;
 	}
 	
 }

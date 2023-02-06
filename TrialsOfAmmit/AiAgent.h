@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "AiMelee.h"
 #include "BaseWeaponClass.h"
+#include "PickupWeapon.h"
 #include <random>
 
 using namespace glm;
@@ -67,10 +68,9 @@ protected:
 	bool _arrive;
 
 private: 
-
-	void OnTick(const double& dt) override;
 	void OnCreate() override;
 	void OnDestroy() override;
+	void OnTick(const double& dt) override;
 	void DrawPropertyUI() override;
 	void RandomTargetSelector();
 	void Move(float deltatime);

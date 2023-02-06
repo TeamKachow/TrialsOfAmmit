@@ -2,6 +2,7 @@
 #include <Hudson.h>
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
+#include "MenuButton.h"
 #include "Player.h"
 #include "PickupWeapon.h"
 
@@ -29,6 +30,9 @@ Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0
 
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
+Hudson::Render::SpriteComponent* Sprite3;
+Hudson::Render::SpriteComponent* Sprite4;
+Hudson::Render::SpriteComponent* Sprite5;
 Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
@@ -61,8 +65,6 @@ void Init()
 
     engine = new Hudson::Common::Engine();
 
-    
-
 #ifdef ENABLE_EDITOR
     InitRegistry();
     editor = new Hudson::Editor::Editor(engine, registry);
@@ -76,17 +78,6 @@ void GameSetup()
 {
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
-    
-    // TODO put these 2 files in line so doesnt need to be called in main.cpp - sorry Brandon B
-    resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
-    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-
-    // This one stays
-    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
-
-    // Shader needs to be Use() to pass values over
- //   resManager->GetShader("spriteShader")->Use().SetMatrix4("projection", _defaultCamera->GetProjectionMatrix());
-
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -99,6 +90,8 @@ void GameSetup()
     resManager->LoadTexture("textures/Blood.png", true, "Blood");
     resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
+    resManager->LoadTexture("textures/Test.png", true, "Test");
+    resManager->LoadTexture("textures/TempBackground.png", true, "Background");
 
     //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
     //Text->SetText("Top Text");
@@ -107,11 +100,19 @@ void GameSetup()
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite1->SetGridSize(glm::vec2(3, 4));
-    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite2->SetGridSize(glm::vec2(3, 4));
-    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+
+    Sprite3 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    Sprite3->SetGridSize(glm::vec2(1, 1));
+
+    Sprite5 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    Sprite5->SetGridSize(glm::vec2(1, 1));
+
+    Sprite4 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Background"));
+    Sprite4->SetDepthOrder(-1);
+    Sprite4->SetGridSize(glm::vec2(1, 1));
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
@@ -128,15 +129,16 @@ void GameSetup()
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
 
-
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
-    Hudson::World::Scene* startScene = new Hudson::World::Scene();
-    engine->GetSceneManager()->AddScene(startScene);
+    Hudson::World::Scene* TestScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(TestScene);
 
-    
-    
+    Hudson::World::Scene* startScene = new Hudson::World::Scene();
+
+    Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
+    //engine->GetSceneManager()->AddScene(startScene);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
     blah->AddComponent(Sprite2);
@@ -156,10 +158,6 @@ void GameSetup()
     startScene->AddObject(blah2);
 
     blah2->GetTransform().pos.x = 1400.0f;
-    //auto WeaponPickups = new Hudson::Entity::GameObject();
-   // WeaponPickups->AddComponent(new PickupWeapon(WeaponPickups));
-    //startScene->AddObject(WeaponPickups);
-
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(new Player(glm::vec2(500, 500)));
@@ -167,7 +165,6 @@ void GameSetup()
     player->SetName("Player");
     startScene->AddObject(player);
     
-
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
     WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f)));
     startScene->AddObject(WeaponPickup);
@@ -180,12 +177,29 @@ void GameSetup()
     AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));
     startScene->AddObject(AbilityPickup);
 
+    Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
+    PlayButton->AddComponent(Sprite3);
+    PlayButton->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene, engine->GetInputManager(), vec2(70,60)));
+    PlayButton->SetName("PlayButton");
+    TestScene->AddObject(PlayButton);
+    PlayButton->GetTransform().pos.x = 100.0f;
+    PlayButton->GetTransform().pos.y = 100.0f;
 
-    //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
-    //text->AddComponent(Text);
-    //startScene->AddObject(text);
+    Hudson::Entity::GameObject* SettingsButton = new Hudson::Entity::GameObject();
+    SettingsButton->AddComponent(Sprite5);
+    SettingsButton->AddComponent(new MenuButton(Sprite5, glm::vec2(200, 100), "Settings", SettingsScene, engine->GetInputManager(), vec2(45,60)));
+    SettingsButton->SetName("SettingsButton");
+    TestScene->AddObject(SettingsButton);
+    SettingsButton->GetTransform().pos.x = 100.0f;
+    SettingsButton->GetTransform().pos.y = 300.0f;
 
-    std::cout << "DemoGame: engine has been set up!\n";
+    Hudson::Entity::GameObject* Background = new Hudson::Entity::GameObject();
+    Background->AddComponent(Sprite4);
+    TestScene->AddObject(Background);
+    Background->GetTransform().scale.x = 1600.0f;
+    Background->GetTransform().scale.y = 900.0f;
+
+    std::cout << "Game: engine has been set up!\n";
 }
 
 
