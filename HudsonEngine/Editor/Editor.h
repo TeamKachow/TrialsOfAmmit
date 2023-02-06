@@ -1,7 +1,6 @@
 #pragma once
 #include "../Util/stdafx.h"
 #include "../Editor/ComponentRegistry.h"
-#include "../Render/Texture.h"
 
 struct Action
 {
@@ -14,10 +13,23 @@ namespace Hudson::Common
 	class Engine;
 }
 
+namespace Hudson::World
+{
+	class Scene;
+}
+
 namespace Hudson::Editor
 {
 	class Editor
 	{
+	private:
+		struct SceneMeta
+		{
+			bool pendingChanges = false;
+			std::string filePath;
+			std::string backup;
+		};
+
 		Common::Engine* _engine;
 		ComponentRegistry* _registry;
 		bool openInput;
@@ -28,11 +40,16 @@ namespace Hudson::Editor
 		bool _showIds = false;
 		bool _showHelp = false;
 
+		std::map<World::Scene*, SceneMeta> _sceneMeta;
+		World::Scene* _sceneToSave;
+
 	public:
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();
 
 	private:
+        SceneMeta& GetSceneMeta(World::Scene* scene);
+        void ShowSceneSaveAs(World::Scene* scene);
 
 		static bool LoadImGuiImage(const char* filename, unsigned int* out_texture, int* out_width, int* out_height);
 		void InfiniteButton();
@@ -46,6 +63,7 @@ namespace Hudson::Editor
 		void Debug();
 		void Help();
 		void Input();
+		void SaveDialogs();
 
 		void Draw();
 

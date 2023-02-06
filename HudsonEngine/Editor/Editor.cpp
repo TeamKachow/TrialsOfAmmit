@@ -4,10 +4,14 @@
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
-#include "../Render/Window.h"
+#include "../Render/Texture.h"
+ #include "../Render/Window.h"
 
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
+
+const char* MODAL_HELP = "'How to Hudson', a memoir by best-selling author Doc Hudson";
+const char* MODAL_SCENE_SAVE = "Save Scene";
 
 extern const std::filesystem::path filePath = std::filesystem::current_path();
 
@@ -131,6 +135,10 @@ void Hudson::Editor::Editor::MenuBar()
 				_engine->GetSceneManager()->AddScene(new World::Scene());
 			}
 			ImGui::MenuItem("Load Scene...", 0, false, false);
+			if (ImGui::MenuItem("Save All..."))
+			{
+			    // TODO: save all scenes
+			}
 			ImGui::EndMenu();
 		}
 
@@ -188,6 +196,21 @@ void Hudson::Editor::Editor::Scene()
 	ImGui::PopStyleVar();
 }
 
+Hudson::Editor::Editor::SceneMeta& Hudson::Editor::Editor::GetSceneMeta(World::Scene* scene)
+{
+	if (!_sceneMeta.contains(scene))
+	{
+		_sceneMeta.insert_or_assign(scene, SceneMeta());
+	}
+
+	return _sceneMeta[scene];
+}
+
+void Hudson::Editor::Editor::ShowSceneSaveAs(World::Scene* scene)
+{
+	_sceneToSave = scene;
+}
+
 void Hudson::Editor::Editor::Hierarchy()
 {
 	ImGui::Begin("Hierarchy");
@@ -225,14 +248,21 @@ void Hudson::Editor::Editor::Hierarchy()
 					// TODO: object/component clipboard
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Save Scene..."))
+				if (ImGui::MenuItem("Save Scene", 0, false, !GetSceneMeta(scene).filePath.empty()))
 				{
 					// TODO: modal
+					if (GetSceneMeta(scene).filePath.empty())
+					{
+						ShowSceneSaveAs(scene);
+					}
 					World::SceneManager::SaveScene(scene->GetName() + ".scene.json", scene);
+				}
+				if (ImGui::MenuItem("Save Scene As..."))
+				{
+					ShowSceneSaveAs(scene);
 				}
 				if (ImGui::MenuItem("Duplicate Scene", 0, false, false))
 				{
-					// TODO: duplicate
 				}
 				if (ImGui::MenuItem("Delete Scene (!)"))
 				{
@@ -549,7 +579,7 @@ void Hudson::Editor::Editor::Debug()
 
 void Hudson::Editor::Editor::Help()
 {
-	if (ImGui::BeginPopupModal("'How to Hudson', a memoir by best-selling author Doc Hudson", &_showHelp))
+	if (ImGui::BeginPopupModal(MODAL_HELP, &_showHelp))
 	{
 		ImGui::Text("Just try right-clicking things to see what menus exist");
 		ImGui::Text("The end");
@@ -559,7 +589,7 @@ void Hudson::Editor::Editor::Help()
 
 	if (_showHelp)
 	{
-		ImGui::OpenPopup("'How to Hudson', a memoir by best-selling author Doc Hudson");
+		ImGui::OpenPopup(MODAL_HELP);
 	}
 }
 
@@ -636,6 +666,47 @@ void Hudson::Editor::Editor::Input()
 	}
 }
 
+void Hudson::Editor::Editor::SaveDialogs()
+{
+	if (ImGui::BeginPopupModal(MODAL_SCENE_SAVE))
+	{
+		if (!_sceneToSave)
+		{
+			_sceneToSave = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+		else
+		{
+			ImGui::Text("Save scene '%s' as:", _sceneToSave->GetName().c_str());
+			SceneMeta& meta = GetSceneMeta(_sceneToSave);
+			if (meta.filePath.empty())
+			{
+				meta.filePath = std::format("Scenes/{}.scene.json", _sceneToSave->GetName());
+			}
+			ImGui::InputText("File name", &meta.filePath);
+			if (ImGui::Button("Cancel"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Save"))
+			{
+				World::SceneManager::SaveScene(meta.filePath, _sceneToSave);
+				meta.pendingChanges = false;
+				_sceneToSave = nullptr;
+				ImGui::CloseCurrentPopup();
+			}
+		}
+
+		ImGui::EndPopup();
+	}
+
+	if (_sceneToSave)
+	{
+		ImGui::OpenPopup(MODAL_SCENE_SAVE);
+	}
+}
+
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
@@ -647,6 +718,7 @@ void Hudson::Editor::Editor::Draw()
 	Tools();
 	Debug();
 	Help();
+	SaveDialogs();
 	if (openInput)
 	{
 		Input();
