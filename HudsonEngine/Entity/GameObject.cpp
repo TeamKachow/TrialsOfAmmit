@@ -173,16 +173,21 @@ uint32_t Hudson::Entity::GameObject::GetSerialID()
 
 void Hudson::Entity::to_json(nlohmann::json& j, const GameObject& gameObject)
 {
-    // TODO: all of this
+    gameObject.ToJson(j);
 }
 
 void Hudson::Entity::from_json(const nlohmann::json& j, GameObject& gameObject)
 {
-    gameObject._name = j.at("name");
-    gameObject._serialId = j.at("id");
-    gameObject._transform = j.at("transform");
+    gameObject.FromJson(j);
+}
 
-    for (auto && componentJson : j.at("components"))
+void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
+{
+    _name = j.at("name");
+    _serialId = j.at("id");
+    _transform = j.at("transform");
+
+    for (auto&& componentJson : j.at("components"))
     {
         // TODO: resolve converter from component registry using type name
 
@@ -192,17 +197,19 @@ void Hudson::Entity::from_json(const nlohmann::json& j, GameObject& gameObject)
     }
 }
 
-void Hudson::Entity::to_json(nlohmann::json& j, const GameObject*& gameObject)
+void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 {
-    j = *gameObject;
-}
+    // TODO: all of this
+    j["name"] = _name;
+    j["serialId"] = _serialId;
+    j["transform"] = _transform;
+    j["components"] = nlohmann::json::array();
 
-void Hudson::Entity::to_json(nlohmann::json& j, GameObject*& gameObject)
-{
-    j = *gameObject;
-}
-
-void Hudson::Entity::from_json(const nlohmann::json& j, GameObject*& gameObject)
-{
-    gameObject = new GameObject(j);
+    for (auto&& component: _components.Get())
+    {
+        nlohmann::json compJson;
+        compJson["type"] = component->GetTypeName();
+        component->ToJson(compJson["data"]);
+        j["components"].push_back(compJson); 
+    }
 }

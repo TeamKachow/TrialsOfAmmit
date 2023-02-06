@@ -44,5 +44,8 @@ namespace Hudson::Render {
 
         void InitRenderData();
 
+    public:
+        void FromJson(const nlohmann::json& j) override;
+        void ToJson(nlohmann::json& j) override;
     };
 }

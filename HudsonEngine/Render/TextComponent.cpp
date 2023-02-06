@@ -39,7 +39,8 @@ Hudson::Render::TextComponent::TextComponent(glm::vec2 position) : Component("Te
 
 Hudson::Render::TextComponent::~TextComponent()
 {
-
+	FT_Done_Face(_face);
+	FT_Done_FreeType(_ft);
 }
 
 void Hudson::Render::TextComponent::StartFreeType(const std::filesystem::path& path)
@@ -176,6 +177,8 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 
 void Hudson::Render::TextComponent::DrawPropertyUI()
 {
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
 	ImGui::InputTextMultiline("Content", &text);
 
 	ImGui::DragFloat3("Color RGB", &color.x, 0.1f, 0.0f, 1.0f);
@@ -193,6 +196,8 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 
 			std::wcout << path << std::endl;
 
+			_fontPath = converter.to_bytes(std::filesystem::relative(std::filesystem::path(filePath) / path));
+
 			Characters.clear();
 
 			StartFreeType(std::filesystem::path(filePath) / path);
@@ -200,5 +205,35 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 		}
 		ImGui::EndDragDropTarget();
 	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip("Font path: %s", _fontPath.c_str());
+	}
+}
 
+void Hudson::Render::TextComponent::FromJson(const nlohmann::json& j)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+	std::string fontPath = j.at("fontPath");
+	if (!fontPath.empty())
+	{
+		_fontPath = fontPath;
+		StartFreeType(_fontPath);
+		StoreCharacters(_fontPath);
+	}
+
+	text = j.at("text");
+	scale = j.at("scale");
+	color = j.at("color");
+	newLineOffset = j.at("newLineOffset");
+}
+
+void Hudson::Render::TextComponent::ToJson(nlohmann::json& j)
+{
+	j["text"] = text;
+	j["scale"] = scale;
+	j["color"] = color;
+	j["newLineOffset"] = newLineOffset;
+	j["fontPath"] = _fontPath;
 }

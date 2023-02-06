@@ -28,6 +28,8 @@ namespace Hudson::Common
         DeferredObjectSet(std::function<void(Action&)> callback = {}) : _callback(callback)
         {}
 
+        void SetImmediate(std::set<T>& newContents, bool clearPending = false);
+
         /**
          * \brief Get a view of the object currently held at this point in time.
          * \return A view of currently-held objects.
@@ -90,18 +92,6 @@ namespace Hudson::Common
         void SetCallback(std::function<void(Action&)> callback)
         {
             _callback = callback;
-        }
-
-        friend void to_json(nlohmann::json& j, const DeferredObjectSet<T>& set)
-        {
-            // TODO: manually do this
-            j = set._current;
-        }
-
-        friend void from_json(const nlohmann::json& j, DeferredObjectSet<T>& set)
-        {
-            // TODO: manually do this (?)
-            set._current = j;
         }
     };
 }

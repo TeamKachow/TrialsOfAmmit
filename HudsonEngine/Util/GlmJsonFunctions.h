@@ -9,7 +9,12 @@ namespace nlohmann
     struct adl_serializer<glm::vec<L, T>>
     {
         static void to_json(json& j, const glm::vec<L, T>& vector) {
-            j = vector;
+            j["size"] = L;
+            j["values"] = nlohmann::json::array();
+            for (int i = 0; i < L; ++i)
+            {
+                j["values"].push_back(vector[i]);
+            }
         }
 
         static void from_json(const json& j, glm::vec<L, T>& vector) {
@@ -19,7 +24,10 @@ namespace nlohmann
             }
             else
             {
-                vector = j;
+                for (int i = 0; i < L; ++i)
+                {
+                    vector[i] = j["values"][i];
+                }
             }
         }
     };
@@ -28,7 +36,16 @@ namespace nlohmann
     struct adl_serializer<glm::mat<C, R, T>>
     {
         static void to_json(json& j, const glm::mat<C, R, T>& matrix) {
-            j = matrix;
+            j["rows"] = R;
+            j["cols"] = C;
+            j["values"] = nlohmann::json::array();
+            for (int c = 0; c < C; ++c)
+            {
+                for (int r = 0; r < R; ++r)
+                {
+                    j["values"].push_back(matrix[c][r]);
+                }
+            }
         }
 
         static void from_json(const json& j, glm::mat<C, R, T>& matrix) {
@@ -38,7 +55,17 @@ namespace nlohmann
             }
             else
             {
-                matrix = j;
+                if (j["rows"] != R || j["cols"] != C)
+                {
+                    // TODO: log
+                }
+                for (int c = 0; c < C; ++c)
+                {
+                    for (int r = 0; r < R; ++r)
+                    {
+                        matrix[c][r] = j["values"][c][r];                        
+                    }
+                }
             }
         }
     };

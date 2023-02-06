@@ -124,3 +124,25 @@ void Hudson::Render::SpriteComponent::InitRenderData()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
+
+void Hudson::Render::SpriteComponent::FromJson(const nlohmann::json& j)
+{
+    // TODO: _shader = resourceManager->GetShaderName(j.at("shader"));
+    // TODO: _texture = resourceManager->GetTextureName(j.at("texture"));
+
+    _gridSize = j.at("gridSize");
+    _gridPos = j.at("gridPos");
+    _color = j.at("color");
+    _size = j.at("size");
+}
+
+void Hudson::Render::SpriteComponent::ToJson(nlohmann::json& j)
+{
+    // TODO: j["shader"] = resourceManager->GetShaderName(_shader);
+    // TODO: j["texture"] = resourceManager->GetTextureName(_texture);
+
+    j["gridSize"] = _gridSize;
+    j["gridPos"] = _gridPos;
+    j["color"] = _color;
+    j["size"] = _size;
+}

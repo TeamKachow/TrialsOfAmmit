@@ -212,9 +212,10 @@ void Hudson::Editor::Editor::Hierarchy()
 					// TODO: object/component clipboard
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Save Scene...", 0, false, false))
+				if (ImGui::MenuItem("Save Scene..."))
 				{
-					// TODO: save
+					// TODO: modal
+					World::SceneManager::SaveScene(scene->GetName() + ".scene.json", scene);
 				}
 				if (ImGui::MenuItem("Duplicate Scene", 0, false, false))
 				{

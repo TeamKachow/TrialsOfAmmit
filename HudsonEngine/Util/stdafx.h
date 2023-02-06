@@ -5,6 +5,8 @@
 // IMPORTANT: Put all your "library" includes here, and then include them from here.
 // This includes C/C++ standard libraries, and any dependencies we're including
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
+
 // C
 #include <assert.h>
 #include <stdio.h>
@@ -14,10 +16,12 @@
 
 // C++
 #include <chrono>
+#include <codecvt>
 #include <concepts>
 #include <fstream>
 #include <functional>
 #include <iostream>
+#include <locale>
 #include <map>
 #include <memory>
 #include <set>

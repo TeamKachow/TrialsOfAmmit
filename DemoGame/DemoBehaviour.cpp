@@ -93,7 +93,6 @@ void DemoBehaviour::OnTick(const double& dt)
 	
 	// Check for collision
 
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 	if (!colliders.empty())
 	{
 
@@ -143,4 +142,14 @@ void DemoBehaviour::DrawPropertyUI()
 {
 	ImGui::DragScalar("Anim spd", ImGuiDataType_Double, &_animSpeed, 0.05);
 	ImGui::Text("Acc: %lf", _animAcc);
+}
+
+void DemoBehaviour::FromJson(const nlohmann::json& j)
+{
+	_animSpeed = j.at("animSpeed");
+}
+
+void DemoBehaviour::ToJson(nlohmann::json& j)
+{
+	j["animSpeed"] = _animSpeed;
 }
