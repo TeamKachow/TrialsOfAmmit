@@ -69,6 +69,7 @@ void Init()
 #endif
 
     engine->Setup();
+    engine->GetRenderer()->SetupDefaultShaders();
 }
 
 void GameSetup()
