@@ -52,6 +52,7 @@
 
 // JSON
 #include <json.hpp>
+#include "GlmJsonFunctions.h"
 
 // STB
 #include <stb-master/stb_image.h>

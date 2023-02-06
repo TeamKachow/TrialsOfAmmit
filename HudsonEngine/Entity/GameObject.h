@@ -39,10 +39,11 @@ namespace Hudson::Entity
     public:
         struct Transform
         {
-            // TODO: replace with vec2f
             glm::vec2 pos = { 0,0 };
             glm::vec2 scale = { 64, 64 };
             float rotateZ = 0;
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Transform, pos, scale, rotateZ)
         };
 
     private:
@@ -146,6 +147,8 @@ namespace Hudson::Entity
          * \return The scene this object currently is in, or null if none.
          */
         [[nodiscard]] World::Scene* GetScene() const;
+
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(GameObject, _name, _id, _transform, _components)
     };
 
     template <is_component T>

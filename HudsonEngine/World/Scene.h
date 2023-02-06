@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
 #include "../Common/DeferredObjectSet.h"
+#include "../Entity/GameObject.h"
 #include "./Common.h"
 
 // forward declare
@@ -120,5 +121,7 @@ namespace Hudson::World
          * \param object The object to remove from the scene
          */
         Entity::GameObject* RemoveObject(Entity::GameObject* object);
+
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(Scene, _name, _active, _rendering, _objects)
     };
 }

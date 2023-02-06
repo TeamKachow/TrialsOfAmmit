@@ -118,9 +118,6 @@
     <ClCompile Include="World\Scene.cpp">
       <Filter>World</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
     <ClInclude Include="Render\Texture.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="AudioManager.h">
       <Filter>Audio</Filter>
     </ClInclude>
@@ -280,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="Render\TextComponent.h">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Util\GlmJsonFunctions.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

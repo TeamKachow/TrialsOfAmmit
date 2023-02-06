@@ -88,5 +88,6 @@ namespace Hudson::Common
             _callback = callback;
         }
 
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE(DeferredObjectSet<T>, _current)
     };
 }

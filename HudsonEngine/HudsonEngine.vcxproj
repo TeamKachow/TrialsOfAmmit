@@ -165,6 +165,7 @@
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="Util\Debug.h" />
+    <ClInclude Include="Util\GlmJsonFunctions.h" />
     <ClInclude Include="Util\stdafx.h" />
     <ClInclude Include="Util\Timestep.h" />
     <ClInclude Include="World\Common.h" />
