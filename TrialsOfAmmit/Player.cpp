@@ -2,6 +2,7 @@
 #include "WeaponDisplayUI.h"
 #include "AbilityDisplayUI.h"
 #include "PlayerHealthUI.h"
+#include "PickupBehaviour.h"
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
@@ -47,6 +48,8 @@ void Player::OnCreate()
 	_parent->GetTransform().pos = (glm::vec2(0, 0));
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
+	_parent->AddComponent(new PickupBehaviour());
+	_parent->AddComponent(new AbilityHolder());
 	CreateUI();
 	HealthBarUI();
 }

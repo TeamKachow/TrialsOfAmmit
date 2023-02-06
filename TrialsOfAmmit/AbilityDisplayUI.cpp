@@ -42,14 +42,14 @@ void AbilityDisplayUI::OnCreate()
 
 void AbilityDisplayUI::OnTick(const double& dt)
 {
-	if (_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityType == AT_ROLL)
+	/*if (_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityType == AT_ROLL)
 	{
 		_abilitySprite->SetGridPos(glm::vec2(0, 1));
 	}
 	if (_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityType == AT_STUN)
 	{
 		_abilitySprite->SetGridPos(glm::vec2(1, 1));
-	}
+	}*/
 }
 
 void AbilityDisplayUI::OnDestroy()

@@ -4,7 +4,7 @@
 #include "AiAgent.h"
 #include "Player.h"
 #include "PickupWeapon.h"
-#include "PickupBehaviour.h"
+
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
 
@@ -162,8 +162,7 @@ void GameSetup()
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(new Player(glm::vec2(500, 500)));
-    player->AddComponent(new PickupBehaviour());
-    player->AddComponent(new AbilityHolder());
+
     player->SetName("Player");
     startScene->AddObject(player);
     
