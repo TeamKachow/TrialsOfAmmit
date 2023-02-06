@@ -5,6 +5,7 @@
 //#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include "Rooms/Room.h"
 #include <Render/Renderer.h>
 
 Hudson::Common::Engine* engine;
@@ -138,16 +139,16 @@ void GameSetup()
     blah->AddComponent(Collider1);
     blah->AddComponent(new AiAgent(Sprite1, 0.8));
     blah->SetName("AI1");
-    startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
+    //startScene->AddObject(blah);
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite2);
     blah2->AddComponent(Physics2);
     blah2->AddComponent(Collider2);
-    startScene->AddObject(blah2);
-
     blah2->GetTransform().pos.x = 1400.0f;
+    //startScene->AddObject(blah2);
+
 
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
@@ -165,6 +166,10 @@ void GameSetup()
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
     //text->AddComponent(Text);
     //startScene->AddObject(text);
+
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->AddComponent(new Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
 
     std::cout << "DemoGame: engine has been set up!\n";
 }

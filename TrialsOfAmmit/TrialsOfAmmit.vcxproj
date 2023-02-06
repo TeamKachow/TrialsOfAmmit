@@ -29,6 +29,7 @@
     <ClCompile Include="MeleeCollider.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Rooms\Room.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiAgent.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="MeleeCollider.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Rooms\Room.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HudsonEngine\HudsonEngine.vcxproj">

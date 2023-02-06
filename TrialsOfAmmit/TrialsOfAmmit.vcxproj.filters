@@ -16,6 +16,9 @@
     <Filter Include="Source Files\PlayerWeapons">
       <UniqueIdentifier>{e0cb243b-3c95-4a40-ac36-1aab3adbef88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Rooms">
+      <UniqueIdentifier>{45435345-2dfe-4417-a496-ce81fa1caea9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -48,6 +51,9 @@
     <ClCompile Include="MeleeCollider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rooms\Room.cpp">
+      <Filter>Rooms</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Player.h">
@@ -79,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="MeleeCollider.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rooms\Room.h">
+      <Filter>Rooms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
