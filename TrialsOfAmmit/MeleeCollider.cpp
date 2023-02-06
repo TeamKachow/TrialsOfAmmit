@@ -2,7 +2,25 @@
 #include "AiAgent.h"
 #include "Player.h"
 
-MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef, float _damage, bool isAi) : Behaviour("MeleeCollision")
+MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi) : Behaviour("MeleeCollision")
+{
+	_slashDirection = slashDirection;
+	_meleeDamage = _damage;
+	_animTimer = 0;
+	_animSpeed = 0.2;
+	_deleteTime = 0.4;
+	_deleteTimer = 0;
+	_playerPos = playerPos;
+	_currentScene = currentScene;
+	_isAI = isAi;
+
+}
+
+MeleeCollider::~MeleeCollider()
+{
+}
+
+void MeleeCollider::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_slashSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Invis"));
@@ -12,57 +30,32 @@ MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPo
 	_slashSprite->SetGridPos(glm::vec2(0, 0));
 	_slashSprite->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 
-	_slash = _slashRef;
-
-	_slash->AddComponent(_slashSprite);
-	_slash->AddComponent(_slashCollider);
-
-	_slash->SetName("SlashCollider");
-
-	_slashDirection = slashDirection;
-	_meleeDamage = _damage;
-
-	_animTimer = 0;
-	_animSpeed = 0.2;
-
-	_deleteTime = 0.4;
-	_deleteTimer = 0;
-
-	_playerPos = playerPos;
+	_parent->AddComponent(_slashSprite);
+	_parent->AddComponent(_slashCollider);
+	_parent->SetName("SlashCollider");
 
 
-	_currentScene = currentScene;
-	_currentScene->AddObject(_slash);
 
-	_isAI = isAi;
-}
-
-MeleeCollider::~MeleeCollider()
-{
-}
-
-void MeleeCollider::OnCreate()
-{
 	switch (_slashDirection) {
 	case Down:
-		_slash->GetTransform().pos.y = _playerPos.y + 50;
-		_slash->GetTransform().pos.x = _playerPos.x;
+		_parent->GetTransform().pos.y = _playerPos.y + 50;
+		_parent->GetTransform().pos.x = _playerPos.x;
 		break;
 	case Left:
-		_slash->GetTransform().pos.y = _playerPos.y;
-		_slash->GetTransform().pos.x = _playerPos.x - 50;
+		_parent->GetTransform().pos.y = _playerPos.y;
+		_parent->GetTransform().pos.x = _playerPos.x - 50;
 		break;
 	case Right:
-		_slash->GetTransform().pos.y = _playerPos.y;
-		_slash->GetTransform().pos.x = _playerPos.x + 50;
+		_parent->GetTransform().pos.y = _playerPos.y;
+		_parent->GetTransform().pos.x = _playerPos.x + 50;
 		break;
 	case Up:
-		_slash->GetTransform().pos.y = _playerPos.y - 50;
-		_slash->GetTransform().pos.x = _playerPos.x;
+		_parent->GetTransform().pos.y = _playerPos.y - 50;
+		_parent->GetTransform().pos.x = _playerPos.x;
 		break;
 	case Stopped:
-		_slash->GetTransform().pos.y = _playerPos.y + 50;
-		_slash->GetTransform().pos.x = _playerPos.x;
+		_parent->GetTransform().pos.y = _playerPos.y + 50;
+		_parent->GetTransform().pos.x = _playerPos.x;
 		break;
 	default:;
 	}
@@ -87,7 +80,7 @@ void MeleeCollider::OnTick(const double& dt)
 						_aiAgent->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
 						collider->ClearColliding();
-						_currentScene->RemoveObject(_slash);
+						_currentScene->RemoveObject(_parent);
 
 						break;
 					}
@@ -103,7 +96,7 @@ void MeleeCollider::OnTick(const double& dt)
 		_deleteTimer += dt;
 		if (_deleteTimer > _deleteTime)
 		{
-			_currentScene->RemoveObject(_slash);
+			_currentScene->RemoveObject(_parent);
 		}
 	}
 	else if (_isAI)
@@ -123,7 +116,7 @@ void MeleeCollider::OnTick(const double& dt)
 						_player->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
 						collider->ClearColliding();
-						_currentScene->RemoveObject(_slash);
+						_currentScene->RemoveObject(_parent);
 
 						break;
 					}
@@ -140,7 +133,7 @@ void MeleeCollider::OnTick(const double& dt)
 		_deleteTimer += dt;
 		if (_deleteTimer > _deleteTime)
 		{
-			_currentScene->RemoveObject(_slash);
+			_currentScene->RemoveObject(_parent);
 		}
 	}
 }

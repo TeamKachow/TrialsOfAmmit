@@ -6,11 +6,10 @@ class Projectile : public Hudson::Entity::Behaviour, public Hudson::Common::IEdi
 {
 public:
 
-	Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef, WeaponTypes _weaponFiring, float _damage, float _projectileSpeed, float _range);
+	Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _projectileSpeed, float _range);
 	~Projectile()override;
 
 	Hudson::World::Scene* _currentScene;
-	Hudson::Entity::GameObject* _projectile;
 	Hudson::Physics::PhysicsComponent* _projectilePhysics;
 	Hudson::Render::SpriteComponent* _projectileSprite;
 	Hudson::Physics::ColliderComponent* _projectileCollider;

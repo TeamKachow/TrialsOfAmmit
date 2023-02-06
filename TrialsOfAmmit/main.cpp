@@ -168,15 +168,15 @@ void GameSetup()
     
 
     Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
-    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f), WeaponPickup));
+    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f)));
     startScene->AddObject(WeaponPickup);
 
     Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f), WeaponPickup1));
+    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f)));
     startScene->AddObject(WeaponPickup1);
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f), AbilityPickup));
+    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));
     startScene->AddObject(AbilityPickup);
 
 

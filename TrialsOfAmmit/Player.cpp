@@ -203,11 +203,11 @@ void Player::StopMove()
 void Player::CreateUI()
 {
 	Hudson::Entity::GameObject* WeaponUIPickup = new Hudson::Entity::GameObject();
-	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), WeaponUIPickup, _currentScene, _parent->GetComponent<Player>()));
+	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(WeaponUIPickup);
 
 	Hudson::Entity::GameObject* AbilityUI= new Hudson::Entity::GameObject();
-	AbilityUI->AddComponent(new AbilityDisplayUI(glm::vec2(1350.0f, 25.0f), AbilityUI, _currentScene, _parent->GetComponent<Player>()));
+	AbilityUI->AddComponent(new AbilityDisplayUI(glm::vec2(1350.0f, 25.0f), _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(AbilityUI);
 
 }
@@ -215,7 +215,7 @@ void Player::CreateUI()
 void Player::HealthBarUI()
 {
 	Hudson::Entity::GameObject* HealthBar = new Hudson::Entity::GameObject();
-	HealthBar->AddComponent(new PlayerHealthUI(glm::vec2(25.0f, 25.0f), HealthBar, _currentScene, _parent->GetComponent<Player>()));
+	HealthBar->AddComponent(new PlayerHealthUI(glm::vec2(25.0f, 25.0f), _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(HealthBar);
 }
 

@@ -5,7 +5,7 @@
 class MeleeAttack : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef);
+	MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene);
 	~MeleeAttack();
 
 	void OnCreate() override;
@@ -13,7 +13,6 @@ public:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 	Hudson::Render::SpriteComponent* _slashSprite;
-	Hudson::Entity::GameObject* _slash;
 	facingDirections _slashDirection;
 	glm::vec2 _playerPos;
 	Hudson::World::Scene* _currentScene;

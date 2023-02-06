@@ -10,7 +10,7 @@
 class WeaponDisplayUI : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	WeaponDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject, Hudson::World::Scene* _scene, Player* _player);
+	WeaponDisplayUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene, Player* _player);
 	~WeaponDisplayUI();
 
 	Hudson::Entity::GameObject* _weaponUI;
