@@ -13,6 +13,7 @@ namespace Hudson::Common {
 			// Shader
 			Render::Shader* GetShader(std::string name);
 			Render::Shader* LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name);
+			Render::Shader* LoadShaderLiteral(const char* vertShaderCode, const char* fragShaderCode, std::string name);
 
 			// _textures
 			Render::Texture* GetTexture(std::string name);
@@ -31,6 +32,7 @@ namespace Hudson::Common {
 
 			// loads and generates a _shader from file
 			Render::Shader LoadShaderFromFile(const char* vertShaderFile, const char* fragShaderFile);
+			Render::Shader LoadShaderFromLiteral(const char* vertCode, const char* fragCode);
 
 			// loads a single texture from file
 			Render::Texture LoadTextureFromFile(const char* file);

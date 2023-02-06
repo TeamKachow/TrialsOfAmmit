@@ -8,9 +8,6 @@
     <Filter Include="Resource Files\ImGui">
       <UniqueIdentifier>{36b4a40d-c0f5-4b29-bb23-9f364cbb50d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{765ba375-0b3a-4ca8-b4bc-6d8ccd7b9cf6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{a7871133-ad17-458b-a8d8-df8e833fe1a7}</UniqueIdentifier>
     </Filter>
@@ -278,19 +275,5 @@
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Render\shaders\renderTextureFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\renderTextureVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\textVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\textFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>
