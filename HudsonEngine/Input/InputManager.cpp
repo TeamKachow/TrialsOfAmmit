@@ -27,10 +27,10 @@ using namespace Hudson::Input;
 std::vector<InputManager*> InputManager::instances;
 
 
-InputManager::InputManager() 
+InputManager::InputManager()
 {
 	initialiseKeys();
-	//InputManager::instances.push_back(this);
+	InputManager::instances.push_back(this);
 }
 
 InputManager::~InputManager()
@@ -40,7 +40,7 @@ InputManager::~InputManager()
 
 void Hudson::Input::InputManager::Setup(Hudson::Render::Renderer* renderer)
 {
-	cameraReference = renderer->GetCamera();
+	renderRef = renderer;
 	BindCallbacks(renderer->GetWindow()->GetWindow());
 
 }
@@ -198,7 +198,7 @@ void InputManager::initialiseKeys()
 			addKey.keyID = key;
 			addKey.keyDown = false;
 			keys.push_back(addKey);
-	}
+		}
 
 	}
 
@@ -247,11 +247,14 @@ void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMa
 	glfwGetWindowSize(window, &width, &height);
 
 	glm::vec3 win(screenMouseXpos, screenMouseYpos, 0);
-	glm::vec4 viewport(0, 0, height, width);
+	glm::vec4 viewport(0, 0, width, height);
 
 	glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
 	glm::vec4 positionClip = glm::vec4(screenPos.x, -screenPos.y, -1.0f, 1.0f);
 	glm::vec4 worldPos = inverseProjMat * positionClip;
+
+	//worldPos = glm::normalize(worldPos);
+
 
 	worldMouseXpos = worldPos.x;
 	worldMouseYpos = worldPos.y;
@@ -351,13 +354,17 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 
 void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	for (InputManager* instance  : instances)
+	for (InputManager* instance : instances)
 	{
 		instance->setScreenCursorPos(xpos, ypos);
 		// Make Sure Setup has been called for this to work
-		if(instance->cameraReference != nullptr)
-			instance->setWorldCursorPos(window, instance->cameraReference->GetInverseViewProjectionMatrix());
+		if (instance->renderRef != nullptr)
+			if (instance->renderRef->GetCamera() != nullptr)
+				instance->setWorldCursorPos(window, instance->renderRef->GetCamera()->GetInverseViewProjectionMatrix());
+
+		std::cout << instance->getWorldMPos().x << " " << instance->getWorldMPos().y << std::endl;
 	}
+	
 }
 
 void InputManager::cursorClickCallback(GLFWwindow* window, int button, int action, int mods)

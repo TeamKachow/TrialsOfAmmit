@@ -51,12 +51,11 @@ namespace Hudson::Input
 		double screenMouseXpos;
 		double screenMouseYpos;
 
-		double worldMouseXpos;
-		double worldMouseYpos;
+		float worldMouseXpos;
+		float worldMouseYpos;
 
 		static std::vector<InputManager*> instances;
-		Hudson::Render::Camera* cameraReference;
-
+		Hudson::Render::Renderer* renderRef;
 
 		void initialiseKeys();
 		void setKeyDown(int key, bool isDown);
