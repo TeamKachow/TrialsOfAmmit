@@ -2,9 +2,9 @@
 
 using namespace Hudson::Render;
 
-Camera::Camera(float left, float right, float bottom, float top) 
+Camera::Camera(float left, float right, float bottom, float top, float zNear, float zFar) 
 {
-	_projection = glm::ortho(left, right, bottom, top, -1.0f, 1.0f);
+	_projection = glm::ortho(left, right, bottom, top, zNear, zFar);
 	_view = glm::mat4(1.0f);
 	_viewProjection = _projection * _view;
 }

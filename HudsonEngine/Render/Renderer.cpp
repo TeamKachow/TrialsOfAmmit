@@ -1,12 +1,18 @@
 #include "../Render/Renderer.h"
 
+#include "../Hudson.h"
 #include "../Render/Window.h"
 #include "../Common/Engine.h"
 #include "../Common/ResourceManager.h"
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
-#include "../Render/TextComponent.h"
-#include "../Render/SpriteComponent.h"
+
+//
+//void framebufferSizeCallback(GLFWwindow* window, int width, int height)
+//{
+//	Hudson::Render::Renderer::CreateFramebuffers(width, height);
+//	glViewport(0, 0, width, height);
+//}
 
 void Hudson::Render::Renderer::UpdateSetShaders()
 {
@@ -28,6 +34,7 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
+	// Bind Input Manager
 	_engine->GetInputManager()->BindCallbacks(_window->GetWindow());
 
 #ifdef _DEBUG
@@ -38,21 +45,18 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
-	screenShader = new Shader();
-
 	// Depth is enabled by default but needs to be disabled for RTT to work
 	// Due to it being 2D rendering we can disable this from the start
-	glDisable(GL_DEPTH_TEST);
+
 	glGenFramebuffers(1, &frameBufferObject);
 	glGenTextures(1, &textureColorBuffer);
+	glGenRenderbuffers(1, &depthBuffer);
 
 	InitRenderToTexture();
 
-	// TODO Have the resource manager load shaders and textures in dynamically - Brandon B
-	// I may make it so that when creating components we pass in the resource manager so the constructor adds things to it
-	// Resource manager is per scene so this needs to be taken into account might be best for the devs to control which resource manager holds data when creating scenes
-	// Bit of explicitness never harmed anyone
-	
+	// Bind callback for glfw
+	//glfwSetFramebufferSizeCallback(_window->GetWindow(), CreateFramebuffers);
+
 }
 
 Hudson::Render::Renderer::~Renderer()
@@ -72,6 +76,7 @@ void Hudson::Render::Renderer::StartImGui()
 	{
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	}
+
 }
 
 void Hudson::Render::Renderer::InitRenderToTexture()
@@ -102,6 +107,7 @@ void Hudson::Render::Renderer::InitRenderToTexture()
 	glBindVertexArray(this->screenVertexArrayObject);
 
 	CreateFramebuffers(_window.get()->GetWindowExtent().x, _window.get()->GetWindowExtent().y);
+
 }
 
 void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight)
@@ -120,6 +126,12 @@ void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsi
 	// Attach it to currently bound framebuffer object
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0);
 
+	glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, extentWidth, extentHeight);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		std::cout << "ERROR::FRAMEBUFFER::Framebuffer is not complete!" << std::endl;
@@ -132,12 +144,17 @@ void Hudson::Render::Renderer::CreateFramebuffers(unsigned int extentWidth, unsi
 
 void Hudson::Render::Renderer::Draw()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
-	// Clear back buffer
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black
+	// TODO replace with per-scene
+	//auto resManager = Hudson::Common::ResourceManager::GetInstance();
+	UpdateSetShaders();
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, frameBufferObject);
+	glEnable(GL_DEPTH_TEST);
+	// Clear back buffer
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // Black
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // White
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//glClear(GL_COLOR_BUFFER_BIT);
 
 	// Render objects in all scenes
@@ -174,11 +191,12 @@ void Hudson::Render::Renderer::Draw()
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glDisable(GL_DEPTH_TEST);
+	//glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	//screenShader->Use();
+	screenShader->Use();
 	glBindVertexArray(screenVertexArrayObject);
 	glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -193,7 +211,6 @@ void Hudson::Render::Renderer::Draw()
 	}
 
 	glfwSwapBuffers(_window->GetWindow());
-	//glfwPollEvents();
 }
 
 void Hudson::Render::Renderer::WaitForRender()

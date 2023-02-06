@@ -5,6 +5,9 @@ out vec2 TexCoords;
 
 uniform mat4 model;
 uniform mat4 projection;
+
+uniform float depth;
+
 uniform vec2 gridPos;
 uniform vec2 gridSize;
 
@@ -24,5 +27,5 @@ void main()
 
     TexCoords = texCoords;
 
-    gl_Position = projection * model * vec4(position, 0.0, 1.0);
+    gl_Position = projection * model * vec4(position, depth, 1.0);
 }
