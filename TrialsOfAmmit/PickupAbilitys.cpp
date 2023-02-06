@@ -28,7 +28,7 @@ PickupAbilitys::~PickupAbilitys()
 void PickupAbilitys::OnCreate()
 {
 	random_device rand;
-	uniform_int_distribution<int> dist(0, 1);
+	uniform_int_distribution<int> dist(0, 2);
 	_randomAbilityInt = dist(rand);
 	if (_randomAbilityInt == 0)
 	{
@@ -37,6 +37,10 @@ void PickupAbilitys::OnCreate()
 	if (_randomAbilityInt == 1)
 	{
 		_abilityPickup = new Stun;
+	}
+	if (_randomAbilityInt == 2)
+	{
+		_abilityPickup = new Rage;
 	}
 
 }

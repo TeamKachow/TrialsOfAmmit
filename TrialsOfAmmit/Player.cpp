@@ -112,7 +112,6 @@ void Player::OnTick(const double& dt)
 void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
 {
 	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene);
-
 }
 
 void Player::MoveUp() //Movement depending on _playerDirection

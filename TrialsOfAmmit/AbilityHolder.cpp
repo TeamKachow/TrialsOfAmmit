@@ -7,7 +7,8 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_timer = 0;
 	_roll = new Roll;
 	_stun = new Stun;
-	_currentAbility = _stun;
+	_rage = new Rage;
+	_currentAbility = _rage;
 }
 
 AbilityHolder::~AbilityHolder()

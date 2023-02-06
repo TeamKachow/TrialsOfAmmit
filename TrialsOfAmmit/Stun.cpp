@@ -24,6 +24,7 @@ void Stun::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_agent = other->GetComponent<AiAgent>();
 			_agent->_maxSpeed = 0;
+			// need to make it so that ai can't attack  or player is godmode
 		}
 	};
 	_abilityState = active;
@@ -41,6 +42,7 @@ void Stun::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_agent = other->GetComponent<AiAgent>();
 			_agent->_maxSpeed = 35;
+			// need to make it so that ai can attack again or player isn't godmode
 		}
 	};
 	_abilityState = cooldown;

@@ -4,6 +4,7 @@
 #include "BaseAbilityClass.h"
 #include "Stun.h"
 #include "Roll.h"
+#include "Rage.h"
 
 class PickupAbilitys : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {

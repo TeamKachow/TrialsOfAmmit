@@ -3,6 +3,7 @@
 #include "BaseAbilityClass.h"
 #include "Roll.h"
 #include "Stun.h"
+#include "Rage.h"
 
 class AbilityHolder : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
@@ -10,6 +11,7 @@ public:
 	BaseAbilityClass* _currentAbility;
 	Roll* _roll;
 	Stun* _stun;
+	Rage* _rage;
 
 	AbilityHolder();
 	~AbilityHolder();
