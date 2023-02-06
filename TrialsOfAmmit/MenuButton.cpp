@@ -1,11 +1,13 @@
 #include "MenuButton.h"
 
-MenuButton::MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, Hudson::World::Scene* NextScene) : Behaviour("ButtonBehaviour")
+MenuButton::MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset) : Behaviour("ButtonBehaviour")
 {
 	_buttonSprite - ButtonSprite;
 	_buttonScale = Scale;
 	_buttonText = Text;
 	_nextScene = NextScene;
+	_inputManager = InputRef;
+	_textOffset = textOffset;
 }
 
 MenuButton::~MenuButton()
@@ -15,16 +17,17 @@ MenuButton::~MenuButton()
 
 void MenuButton::OnCreate()
 {
-	//_parent->GetTransform().scale = (_buttonScale);
-	_buttonTextObject = new Hudson::Render::TextComponent(glm::vec2(_parent->GetTransform().pos.x + 70, _parent->GetTransform().pos.y + 60 ));
+	_parent->GetTransform().scale = (_buttonScale);
+	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf",glm::vec2(0, 0));
 	_buttonTextObject->SetText(_buttonText);
 	_buttonTextObject->SetColor(vec3(1, 1, 1));
+	_buttonTextObject->SetDepthOrder(1);
 	Hudson::Entity::GameObject* MenuText = new Hudson::Entity::GameObject();
 	MenuText->AddComponent(_buttonTextObject);
 	MenuText->GetTransform().scale = vec2(1, 1);
 	_currentScene = _parent->GetScene();
 	_currentScene->AddObject(MenuText);
-	cout << _parent->GetTransform().pos.x << _parent->GetTransform().pos.y << endl;
+	MenuText->GetTransform().pos = vec2(_parent->GetTransform().pos.x + +_textOffset.x, _parent->GetTransform().pos.y + _textOffset.y);
 	_clicked = false;
 	_nextScene->SetActive(false);
 }
@@ -36,23 +39,18 @@ void MenuButton::OnDestroy()
 
 void MenuButton::OnTick(const double& dt)
 {
-	if (_inputManager.getM1Click())
-	{
-		cout << _inputManager.getMPos().x << endl;
-		cout << _inputManager.getMPos().y << endl;
-	}
 	
-	if (_inputManager.getMPos().x >= _parent->GetTransform().pos.x)
+	if (_inputManager->getWorldMPos().x >= _parent->GetTransform().pos.x && _inputManager->getWorldMPos().x <= _parent->GetTransform().pos.x + 200 && _inputManager->getWorldMPos().y >= _parent->GetTransform().pos.y && _inputManager->getWorldMPos().y <= _parent->GetTransform().pos.y + 100)
 	{
-		/*cout << "hit" << endl;
-		if (_inputManager.getM1Click() && _clicked == false)
+		cout << "hit" << endl;
+		if (_inputManager->getM1Click() && _clicked == false)
 		{
 			if (_nextScene->IsActive() == false)
 			{
 				OnClick();
 			}
 			return;
-		}*/
+		}
 	}
 }
 

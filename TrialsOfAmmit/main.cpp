@@ -31,6 +31,8 @@ Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0
 Hudson::Render::SpriteComponent* Sprite1;
 Hudson::Render::SpriteComponent* Sprite2;
 Hudson::Render::SpriteComponent* Sprite3;
+Hudson::Render::SpriteComponent* Sprite4;
+Hudson::Render::SpriteComponent* Sprite5;
 Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
@@ -101,6 +103,7 @@ void GameSetup()
     resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
     resManager->LoadTexture("textures/Test.png", true, "Test");
+    resManager->LoadTexture("textures/TempBackground.png", true, "Background");
 
     //Text = new Hudson::Render::TextComponent(_defaultCamera->GetProjectionMatrix(),glm::vec2(20,20));
     //Text->SetText("Top Text");
@@ -109,16 +112,19 @@ void GameSetup()
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite1->SetGridSize(glm::vec2(3, 4));
-    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite2->SetGridSize(glm::vec2(3, 4));
-    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite3 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
-    //Sprite3->SetSize(glm::vec2(128.0f, 64.0f));
     Sprite3->SetGridSize(glm::vec2(1, 1));
-    //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+
+    Sprite5 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    Sprite5->SetGridSize(glm::vec2(1, 1));
+
+    Sprite4 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Background"));
+    Sprite4->SetDepthOrder(-1);
+    Sprite4->SetGridSize(glm::vec2(1, 1));
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
@@ -142,6 +148,8 @@ void GameSetup()
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
+
+    Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
     //engine->GetSceneManager()->AddScene(startScene);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
@@ -187,17 +195,32 @@ void GameSetup()
     startScene->AddObject(AbilityPickup);
 
 
-    Hudson::Entity::GameObject* Button = new Hudson::Entity::GameObject();
-    Button->AddComponent(Sprite3);
-    Button->AddComponent(weaponPickupCollider);
-    Button->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene));
-    Button->SetName("Button");
-    TestScene->AddObject(Button);
-    Button->GetTransform().scale.x = 128.0f;
-    Button->GetTransform().scale.y = 64.0f;
-    Button->GetTransform().pos.x = 700.0f;
-    Button->GetTransform().pos.y = 500.0f;
+    Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
+    PlayButton->AddComponent(Sprite3);
+    PlayButton->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene, engine->GetInputManager(), vec2(70,60)));
+    PlayButton->SetName("PlayButton");
+    TestScene->AddObject(PlayButton);
+    //PlayButton->GetTransform().scale.x = 128.0f;
+   // PlayButton->GetTransform().scale.y = 64.0f;
+    PlayButton->GetTransform().pos.x = 100.0f;
+    PlayButton->GetTransform().pos.y = 100.0f;
 
+    Hudson::Entity::GameObject* SettingsButton = new Hudson::Entity::GameObject();
+    SettingsButton->AddComponent(Sprite5);
+    SettingsButton->AddComponent(new MenuButton(Sprite5, glm::vec2(200, 100), "Settings", SettingsScene, engine->GetInputManager(), vec2(45,60)));
+    SettingsButton->SetName("SettingsButton");
+    TestScene->AddObject(SettingsButton);
+   // SettingsButton->GetTransform().scale.x = 128.0f;
+   // SettingsButton->GetTransform().scale.y = 64.0f;
+    SettingsButton->GetTransform().pos.x = 100.0f;
+    SettingsButton->GetTransform().pos.y = 300.0f;
+
+
+    Hudson::Entity::GameObject* Background = new Hudson::Entity::GameObject();
+    Background->AddComponent(Sprite4);
+    TestScene->AddObject(Background);
+    Background->GetTransform().scale.x = 1600.0f;
+    Background->GetTransform().scale.y = 900.0f;
     //Hudson::Entity::GameObject* text = new Hudson::Entity::GameObject();
     //text->AddComponent(Text);
     //startScene->AddObject(text);

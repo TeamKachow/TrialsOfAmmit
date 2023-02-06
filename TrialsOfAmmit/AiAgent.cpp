@@ -1,4 +1,5 @@
 #include "AiAgent.h"
+#include "PickupAbilitys.h"
 
 AiAgent::AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed) : Behaviour("AiBehavior")
 {
@@ -84,7 +85,11 @@ void AiAgent::OnTick(const double& dt)
 		}
 		break;
 	case ATTACK:
-		
+		_attackTimer += dt;
+		if (_attackTimer > _aiWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
+		{
+			AiAttack();
+		}
 		break;
 	case DEAD:
 		AiDead();
@@ -109,7 +114,6 @@ void AiAgent::OnTick(const double& dt)
 			_aiPhysics->SetAcceleration(_acceleration, false);
 			_aiPhysics->SetVelocity(_velocity);
 			_currentState = ATTACK;
-			AiAttack();
 			_attackTimer = 0;
 		}
 	}
@@ -122,6 +126,8 @@ void AiAgent::OnTick(const double& dt)
 
 void AiAgent::CollisionCheck()
 {
+	//TODO: Remove code and change to check for collision with the wall 
+	
 	// pushes Ai back and choses a new destination when trying to leave the map bounds 
 	if (_parent->GetTransform().pos.x >= 1550.0f)
 	{
@@ -408,7 +414,17 @@ void AiAgent::AiAttack()
 
 void AiAgent::AiDead()
 {
-	//needs to be able to remove the object from the scene 
+	//TODO: make a random chance of dropping an item 
+	Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
+	WeaponPickup1->AddComponent(new PickupWeapon(_parent->GetTransform().pos, WeaponPickup1));
+	_currentScene->AddObject(WeaponPickup1);
+
+	Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+	AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos, AbilityPickup));
+	_currentScene->AddObject(AbilityPickup);
+	//TODO: Add death animation
+
+	//TODO: Remove the AI from the scene after the animaion 
 	_alive = false;
 	cout << "ISDEAD" << "\n";
 	_currentScene->RemoveObject(_parent);
@@ -423,7 +439,7 @@ void AiAgent::TakeDamage(int damageAmount)
 	_currentState = SEEK;
 	if (_currentHealth <= 0)
 	{
-		AiDead();
+		_currentState = DEAD;
 	}
 }
 
