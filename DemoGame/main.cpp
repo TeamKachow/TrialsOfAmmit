@@ -48,7 +48,6 @@ void Init()
 
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
-
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
@@ -63,6 +62,7 @@ void GameSetup()
 {
     // Set up default camera
     engine->GetRenderer()->SetCamera(_defaultCamera);
+    engine->GetInputManager()->Setup(engine->GetRenderer());
 
     // Load shaders
     resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
@@ -76,16 +76,12 @@ void GameSetup()
     {
 
         Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite1->SetGridSize(glm::vec2(3, 4));
         Sprite1->SetDepthOrder(1);
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite2->SetGridSize(glm::vec2(3, 4));
         Sprite2->SetDepthOrder(2);
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Physics1 = new Hudson::Physics::PhysicsComponent();
         Physics1->SetMass(1.0f);
@@ -150,12 +146,7 @@ void GameSetup()
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
 
-        Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
-        room->SetName("Room");
-        room->AddComponent(new Room("rooms/jsonROOM.room"));
-
-        //room->GetTransform().scale = glm::vec2(32.0f, 32.0f);
-        startScene->AddObject(room);
+        
     }
 
     std::cout << "DemoGame: engine has been set up!\n";

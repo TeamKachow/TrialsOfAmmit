@@ -1,5 +1,6 @@
 #include "InputManager.h"
-
+#include "../Render/Renderer.h"
+#include "../Render/Window.h"
 
 using nlohmann::json;
 
@@ -25,15 +26,23 @@ using namespace Hudson::Input;
 
 std::vector<InputManager*> InputManager::instances;
 
-InputManager::InputManager()
+
+InputManager::InputManager() 
 {
 	initialiseKeys();
-	InputManager::instances.push_back(this);
+	//InputManager::instances.push_back(this);
 }
 
 InputManager::~InputManager()
 {
 	instances.erase(remove(instances.begin(), instances.end(), this), instances.end());
+}
+
+void Hudson::Input::InputManager::Setup(Hudson::Render::Renderer* renderer)
+{
+	cameraReference = renderer->GetCamera();
+	BindCallbacks(renderer->GetWindow()->GetWindow());
+
 }
 
 void InputManager::initialiseKeys()
@@ -232,6 +241,24 @@ bool Hudson::Input::InputManager::getActionState(std::string action)
 	return false;
 }
 
+void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMat)
+{
+	int width, height;
+	glfwGetWindowSize(window, &width, &height);
+
+	glm::vec3 win(screenMouseXpos, screenMouseYpos, 0);
+	glm::vec4 viewport(0, 0, height, width);
+
+	glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
+	glm::vec4 positionClip = glm::vec4(screenPos.x, -screenPos.y, -1.0f, 1.0f);
+	glm::vec4 worldPos = inverseProjMat * positionClip;
+
+	worldMouseXpos = worldPos.x;
+	worldMouseYpos = worldPos.y;
+
+	//return glm::vec2(worldPos.x, worldPos.y);
+}
+
 void Hudson::Input::InputManager::setDownTemp(std::string keyName)
 {
 	for (Key& tempKey : keys)
@@ -290,10 +317,10 @@ void InputManager::setKeyDown(int key, bool isDown)
 	}
 }
 
-void Hudson::Input::InputManager::setCursorPos(double xPos, double yPos)
+void Hudson::Input::InputManager::setScreenCursorPos(double xPos, double yPos)
 {
-	mouseXpos = xPos;
-	mouseYpos = yPos;
+	screenMouseXpos = xPos;
+	screenMouseYpos = yPos;
 }
 
 void Hudson::Input::InputManager::setM1Click(bool isDown)
@@ -324,9 +351,12 @@ void InputManager::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 
 void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 {
-	for (InputManager* cursorPos : instances)
+	for (InputManager* instance  : instances)
 	{
-		cursorPos->setCursorPos(xpos, ypos);
+		instance->setScreenCursorPos(xpos, ypos);
+		// Make Sure Setup has been called for this to work
+		if(instance->cameraReference != nullptr)
+			instance->setWorldCursorPos(window, instance->cameraReference->GetInverseViewProjectionMatrix());
 	}
 }
 

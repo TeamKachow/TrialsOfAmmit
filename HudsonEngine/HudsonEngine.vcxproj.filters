@@ -124,9 +124,6 @@
     <ClCompile Include="Util\stdafx.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Input\InputManager.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
@@ -135,9 +132,6 @@
     </ClCompile>
     <ClCompile Include="Common\DeferredObjectSet.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Camera.cpp">
-      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Common\EngineAccessors.cpp">
       <Filter>Common</Filter>
@@ -155,8 +149,14 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="Render\Camera.cpp" />
-    <ClCompile Include="Entity\Room.cpp">
-      <Filter>Entity</Filter>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,9 +257,6 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Hudson.h" />
-    <ClInclude Include="Input\InputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
@@ -269,17 +266,17 @@
     <ClInclude Include="Common\DeferredObjectSet.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Camera.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="Common\EngineAccessors.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Render\TextComponent.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Room.h">
-      <Filter>Entity</Filter>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
