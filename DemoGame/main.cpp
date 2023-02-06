@@ -56,6 +56,8 @@ void Init()
 #endif
 
     engine->Setup();
+    engine->GetRenderer()->SetupDefaultShaders();
+
 }
 
 void GameSetup()
@@ -65,11 +67,6 @@ void GameSetup()
 
     //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);
     //engine->GetRenderer()->CreateFramebuffers(1920, 1080);
-
-    // Load shaders
-    resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
-    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
 
     // Load textures
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
