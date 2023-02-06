@@ -34,6 +34,9 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
+	// Bind Input Manager
+	_engine->GetInputManager()->BindCallbacks(_window->GetWindow());
+
 #ifdef _DEBUG
 	io.IniFilename = "editor.ini";
 #endif
@@ -53,24 +56,6 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 
 	// Bind callback for glfw
 	//glfwSetFramebufferSizeCallback(_window->GetWindow(), CreateFramebuffers);
-
-	// TODO Have the resource manager load shaders and textures in dynamically - Brandon B
-	// I may make it so that when creating components we pass in the resource manager so the constructor adds things to it
-	// Resource manager is per scene so this needs to be taken into account might be best for the devs to control which resource manager holds data when creating scenes
-	// Bit of explicitness never harmed anyone
-
-	// VERY VERY TEMPORARY, DO NOT KEEP THIS HERE
-
-	// TODO move this into Demo Project as all loading should be handled by the creation of a scene
-	auto resManager = Hudson::Common::ResourceManager::GetInstance();
-
-	//resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-	//screenShader = resManager->GetShader("screenShader");
-
-	//resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
-	//resManager->GetShader("spriteShader")->Use();
-	//resManager->GetShader("spriteShader")->SetMatrix4("projection", _defaultCamera.GetProjectionMatrix());
-	//screenShader->Compile("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl");
 
 }
 
