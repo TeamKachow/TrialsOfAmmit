@@ -1,7 +1,9 @@
 #pragma once
 #include <Hudson.h>
+#include "AbilityHolder.h"
 #include "Player.h"
 #include "BaseAbilityClass.h"
+#include "Roll.h"
 class AbilityDisplayUI : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public: 
@@ -12,6 +14,7 @@ public:
 	Hudson::Render::SpriteComponent* _abilityFrameUISprite;
 	Hudson::Render::SpriteComponent* _frameSprite;
 	Hudson::World::Scene* _currentScene;
+	Hudson::Render::SpriteComponent* _abilitySprite;
 	Player* _currentPlayer;
 	glm::uvec2 _currentPos;
 

@@ -206,5 +206,8 @@
     <ClInclude Include="AbilityDisplayUI.h">
       <Filter>Source Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="AbilityType.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

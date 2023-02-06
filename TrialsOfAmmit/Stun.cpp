@@ -6,6 +6,7 @@ Stun::Stun()
 	_abilityActiveTime = 2;
 	_abilityCoolDownTime = 10;
 	_abilityState = ready;
+	_abilityType = AT_STUN;
 }
 
 Stun::~Stun()

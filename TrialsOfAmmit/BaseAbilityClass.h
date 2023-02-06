@@ -6,10 +6,12 @@
 #include "abilityTargets.h"
 #include "AbilityStates.h"
 #include "Player.h"
+#include "AbilityType.h"
 
 class BaseAbilityClass
 {
 public:
+	AbilityTypes _abilityType;
 	BaseAbilityClass();
 	~BaseAbilityClass();
 	virtual void UseAbility(Hudson::World::Scene* _CurrentPassScene);

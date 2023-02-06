@@ -50,6 +50,7 @@
     <ClInclude Include="AbilityHolder.h" />
     <ClInclude Include="AbilityStates.h" />
     <ClInclude Include="abilityTargets.h" />
+    <ClInclude Include="AbilityType.h" />
     <ClInclude Include="AiAgent.h" />
     <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />

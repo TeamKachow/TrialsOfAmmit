@@ -7,7 +7,7 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 
 	_slashSprite->SetGridSize(glm::vec2(3, 4));
 	_slashSprite->SetGridPos(glm::vec2(0, 0));
-	_slashSprite->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	_slashSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	_slash = _slashRef;
 

@@ -10,9 +10,9 @@ WeaponDisplayUI::WeaponDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObject*
 	_weaponUISprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_weaponUISprite->SetGridSize(glm::vec2(1, 1));
 	_weaponUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
+	_weaponUISprite->SetDepthOrder(1);
 	_weaponUI->AddComponent(_weaponUISprite);
-	_weaponUI->SetName("WeaponUI");
+	_weaponUI->SetName("WeaponUIFrame");
 	_weaponUI->GetTransform().scale = (glm::vec2(64, 64));
 	_currentPos = spawnPos;
 	_weaponUI->GetTransform().pos = spawnPos;
@@ -36,6 +36,7 @@ void WeaponDisplayUI::OnCreate()
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	_weaponSprite->SetDepthOrder(2);
 	WeaponUISprite->SetName("WeaponUIIcon");
 	WeaponUISprite->GetTransform().pos = _currentPos;
 	WeaponUISprite->GetTransform().scale = (glm::vec2(64, 64));
