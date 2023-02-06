@@ -49,7 +49,7 @@ namespace Hudson::Render
         ~Renderer();
 
         void StartImGui();
-
+        void SetupDefaultShaders();
         void InitRenderToTexture();
         void CreateFramebuffers(unsigned int extentWidth, unsigned int extentHeight);
 
