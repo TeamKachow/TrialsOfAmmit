@@ -87,7 +87,6 @@ void GameSetup()
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
-    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
     playerSprite->SetGridSize(glm::vec2(3, 4));
     playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -103,12 +102,10 @@ void GameSetup()
 
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite1->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
     Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
