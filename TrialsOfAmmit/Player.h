@@ -12,7 +12,6 @@ class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditabl
 {
 private:
 	//Set up Components
-	Hudson::Render::SpriteComponent* _playerSprite;
 	Hudson::Input::InputManager _inputManager;
 	Hudson::Physics::PhysicsComponent* _playerPhysics;
 	Hudson::World::Scene* _currentScene;
@@ -55,6 +54,7 @@ private:
 
 	
 public:
+	Hudson::Render::SpriteComponent* _playerSprite;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
 	float _playerMovementSpeed = 45.0;

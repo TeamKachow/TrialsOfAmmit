@@ -7,7 +7,7 @@ public:
 	Rage();
 	~Rage();
 	void UseAbility(Hudson::World::Scene* _CurrentPassScene) override;
-	void DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)override;
+	void DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)override;
 
 	Player* _player;
 	float _defaultAttackDamage;

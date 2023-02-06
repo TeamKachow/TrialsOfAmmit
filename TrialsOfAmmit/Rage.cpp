@@ -32,16 +32,8 @@ void Rage::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_player = other->GetComponent<Player>();
 
-			/*
-			_rageAttackDamage = _defaultAttackDamage * _rageAttackDamageMultiplier;
-			_player->_playersWeapon->_weaponAttackDamage = _rageAttackDamage;
+			_player->_playerSprite->SetColor(glm::vec3(1, 0, 0)); // make him red
 
-			_rageAttackSpeed = _defaultAttackSpeed * _rageAttackSpeedMultiplier;
-			_player->_playersWeapon->_weaponAttackSpeed = _rageAttackSpeed;
-			*/
-
-			/*
-			*/
 			_defaultAttackDamage =  _player->_playersWeapon->_weaponAttackDamage;
 			_rageAttackDamage = _defaultAttackDamage * _rageAttackDamageMultiplier;
 			_player->_playersWeapon->_weaponAttackDamage = _rageAttackDamage;
@@ -50,13 +42,14 @@ void Rage::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 			_rageAttackSpeed = _defaultAttackSpeed * _rageAttackSpeedMultiplier;
 			_player->_playersWeapon->_weaponAttackSpeed = _rageAttackSpeed;
 
-
 			break;
 		}
 	};
+
+	_abilityState = active;
 }
 
-void Rage::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
+void Rage::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 	Hudson::World::Scene* _currentScene;
 	_currentScene = _CurrentPassScene;
@@ -67,6 +60,8 @@ void Rage::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_player = other->GetComponent<Player>();
 
+			_player->_playerSprite->SetColor(glm::vec3(1, 1, 1)); // unmake him red
+
 			_player->_playersWeapon->_weaponAttackDamage = _defaultAttackDamage;
 
 			_player->_playersWeapon->_weaponAttackSpeed = _defaultAttackSpeed;
@@ -74,4 +69,7 @@ void Rage::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
 			break;
 		}
 	};
+
+	_abilityState = cooldown;
+
 }

@@ -39,7 +39,7 @@ void Roll::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 
 }
 
-void Roll::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
+void Roll::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 	Hudson::World::Scene* _currentScene;
 	_currentScene = _CurrentPassScene;

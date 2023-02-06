@@ -28,7 +28,7 @@ PickupAbilitys::~PickupAbilitys()
 void PickupAbilitys::OnCreate()
 {
 	random_device rand;
-	uniform_int_distribution<int> dist(0, 2);
+	uniform_int_distribution<int> dist(0, 4);
 	_randomAbilityInt = dist(rand);
 	if (_randomAbilityInt == 0)
 	{
@@ -43,6 +43,14 @@ void PickupAbilitys::OnCreate()
 	if (_randomAbilityInt == 2)
 	{
 		_abilityPickup = new Rage;
+	}
+	if (_randomAbilityInt == 3)
+	{
+		_abilityPickup = new Heal;
+	}
+	if (_randomAbilityInt == 4)
+	{
+		_abilityPickup = new RoomAOE;
 	}
 
 }

@@ -27,6 +27,7 @@
     <ClCompile Include="BaseAbilityClass.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeleeAttack.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="Rage.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
     <ClCompile Include="Roll.cpp" />
+    <ClCompile Include="RoomAOE.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="Stun.cpp" />
@@ -59,6 +61,7 @@
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="facingDirection.h" />
+    <ClInclude Include="Heal.h" />
     <ClInclude Include="Khopesh.h" />
     <ClInclude Include="MeleeAttack.h" />
     <ClInclude Include="MeleeBaseWeaponClass.h" />
@@ -72,6 +75,7 @@
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />
     <ClInclude Include="Roll.h" />
+    <ClInclude Include="RoomAOE.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="Stun.h" />

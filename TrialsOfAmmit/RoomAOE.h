@@ -2,13 +2,16 @@
 #include "BaseAbilityClass.h"
 #include "AiAgent.h"
 
-class Stun : public BaseAbilityClass
+class RoomAOE : public BaseAbilityClass
 {
 public:
-	Stun();
-	~Stun();
-	AiAgent* _agent;
+	RoomAOE();
+	~RoomAOE();
 	void UseAbility(Hudson::World::Scene* _CurrentPassScene) override;
 	void DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)override;
+
+	AiAgent* _agent;
+	float _aoeDamage;
+	float _enemyCurrentHealth;
 };
 

@@ -106,7 +106,7 @@ void Player::OnTick(const double& dt)
 
 	_playerAnimTimer += dt;
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
-	_playerSprite->SetColor(glm::vec3(1, 1, 1));
+	//_playerSprite->SetColor(glm::vec3(1, 1, 1)); -- oopsie
 
 }
 

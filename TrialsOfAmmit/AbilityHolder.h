@@ -4,6 +4,8 @@
 #include "Roll.h"
 #include "Stun.h"
 #include "Rage.h"
+#include "Heal.h"
+#include "RoomAOE.h"
 
 class AbilityHolder : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
@@ -12,6 +14,8 @@ public:
 	Roll* _roll;
 	Stun* _stun;
 	Rage* _rage;
+	Heal* _heal;
+	RoomAOE* _roomaoe;
 
 	AbilityHolder();
 	~AbilityHolder();

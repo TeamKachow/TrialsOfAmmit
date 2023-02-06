@@ -8,7 +8,9 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_roll = new Roll;
 	_stun = new Stun;
 	_rage = new Rage;
-	_currentAbility = _rage;
+	_heal = new Heal;
+	_roomaoe = new RoomAOE;
+	_currentAbility = _roomaoe;
 }
 
 AbilityHolder::~AbilityHolder()
@@ -28,7 +30,7 @@ void AbilityHolder::DrawPropertyUI()
 
 }
 
-void AbilityHolder::OnTick(const double& dt)
+void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead
 {
 	if (_currentAbility->_abilityState == ready)
 	{
@@ -42,7 +44,7 @@ void AbilityHolder::OnTick(const double& dt)
 		_timer += dt;
 		if (_timer >= _currentAbility->_abilityActiveTime)
 		{
-			_currentAbility->DeactiveAbility(_parent->GetScene());
+			_currentAbility->DeactivateAbility(_parent->GetScene());
 			_timer = 0;			
 		}
 	}
