@@ -180,12 +180,12 @@ int main(int argc, char** argv) {
     Hudson::Render::SpriteComponent* menuSprite = new Hudson::Render::SpriteComponent();
     Init();
     
-    SceneManager sceneManager;
+   /* SceneManager sceneManager;
     while (true)
     {
         sceneManager.update();
     }
-    return 0;
+    return 0;*/
 
     // Set up game scene/resources
     GameSetup();

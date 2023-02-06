@@ -7,6 +7,7 @@
 void Hudson::World::Scene::OnQueueUpdate(Common::DeferredObjectSet<Entity::GameObject*>::Action action)
 {
     Entity::GameObject* object = action.first;
+    Scene *_scene = this;
     switch (action.second)
     {
     case Common::DeferredObjectSet<Hudson::Entity::GameObject*>::ActionType::ADD:
