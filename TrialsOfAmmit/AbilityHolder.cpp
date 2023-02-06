@@ -7,7 +7,10 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_timer = 0;
 	_roll = new Roll;
 	_stun = new Stun;
-	_currentAbility = _stun;
+	_rage = new Rage;
+	_heal = new Heal;
+	_roomaoe = new RoomAOE;
+	_currentAbility = _roomaoe;
 }
 
 AbilityHolder::~AbilityHolder()
@@ -27,15 +30,13 @@ void AbilityHolder::DrawPropertyUI()
 
 }
 
-void AbilityHolder::OnTick(const double& dt)
+void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead
 {
 	if (_currentAbility->_abilityState == ready)
 	{
-		if (_input->getActionState("Ability")) //Key Checks
+		if (_input->getActionState("Ability")) //Key Checks --- Currently been made to E in game
 		{
-
 			_currentAbility->UseAbility(_parent->GetScene());
-
 		}
 	}
 	if (_currentAbility->_abilityState == active)
@@ -43,10 +44,8 @@ void AbilityHolder::OnTick(const double& dt)
 		_timer += dt;
 		if (_timer >= _currentAbility->_abilityActiveTime)
 		{
-			_currentAbility->DeactiveAbility(_parent->GetScene());
-			_timer = 0;
-	
-			
+			_currentAbility->DeactivateAbility(_parent->GetScene());
+			_timer = 0;			
 		}
 	}
 	if (_currentAbility->_abilityState == cooldown)
@@ -56,8 +55,7 @@ void AbilityHolder::OnTick(const double& dt)
 		{
 			_currentAbility->_abilityState = ready;
 			_timer = 0;
-
-
 		}
 	}
+	// * polish --- Switch Statement??? i mean.... its works so this is something AFTER.
 }

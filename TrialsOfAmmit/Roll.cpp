@@ -4,6 +4,8 @@ Roll::Roll()
 {
 	_abilityActiveTime = 0.2;
 	_abilityCoolDownTime = 5;
+	_abilityState = ready;
+
 	_rollSpeed = 500;
 	_defaultSpeed = 100;
 	_abilityState = ready;
@@ -37,7 +39,7 @@ void Roll::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 
 }
 
-void Roll::DeactiveAbility(Hudson::World::Scene* _CurrentPassScene)
+void Roll::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 	Hudson::World::Scene* _currentScene;
 	_currentScene = _CurrentPassScene;

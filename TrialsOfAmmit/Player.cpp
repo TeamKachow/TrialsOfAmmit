@@ -146,14 +146,13 @@ void Player::OnTick(const double& dt)
 
 	_playerAnimTimer += dt;
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
-	_playerSprite->SetColor(glm::vec3(1, 1, 1));
+	//_playerSprite->SetColor(glm::vec3(1, 1, 1)); -- oopsie
 
 }
 
 void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
 {
 	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene);
-
 }
 
 void Player::MoveUp() //Movement depending on _playerDirection

@@ -1,37 +1,34 @@
-#include "Stun.h"
+#include "RoomAOE.h"
 
-
-Stun::Stun()
+RoomAOE::RoomAOE()
 {
-	_abilityActiveTime = 2;
-	_abilityCoolDownTime = 10;
-	_abilityState = ready;
-	_abilityType = AT_STUN;
+	_abilityActiveTime = 3;
+	_abilityCoolDownTime = 7;
 }
 
-Stun::~Stun()
+RoomAOE::~RoomAOE()
 {
+
 }
 
-void Stun::UseAbility(Hudson::World::Scene* _CurrentPassScene)
+void RoomAOE::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 	Hudson::World::Scene* _currentScene;
 	_currentScene = _CurrentPassScene;
 	auto AllObjects = _currentScene->GetObjects();
-
+	
 	for (Hudson::Entity::GameObject* other : AllObjects)
 	{
 		if (other->GetComponent<AiAgent>() != nullptr)
 		{
-			_agent = other->GetComponent<AiAgent>();
-			_agent->_maxSpeed = 0;
-			// need to make it so that ai can't attack  or player is godmode
+			_agent = other->GetComponent<AiAgent>(); // maybe make it so when they take widespread dmg, they flash red quickly ???
+			_agent->TakeDamage(5);
 		}
 	};
 	_abilityState = active;
 }
 
-void Stun::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
+void RoomAOE::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 {
 	Hudson::World::Scene* _currentScene;
 	_currentScene = _CurrentPassScene;
@@ -42,9 +39,9 @@ void Stun::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 		if (other->GetComponent<AiAgent>() != nullptr)
 		{
 			_agent = other->GetComponent<AiAgent>();
-			_agent->_maxSpeed = 35;
-			// need to make it so that ai can attack again or player isn't godmode
+			_agent->_currentHealth = _enemyCurrentHealth;
 		}
 	};
 	_abilityState = cooldown;
 }
+
