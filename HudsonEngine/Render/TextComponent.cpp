@@ -116,6 +116,7 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 
 	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
 	shader->SetFloat3("textColor", color.x, color.y, color.z);
+	shader->SetFloat("depth", zOrder);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAO);

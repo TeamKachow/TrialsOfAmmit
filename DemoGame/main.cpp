@@ -62,7 +62,9 @@ void GameSetup()
 {
     // Set up default camera
     engine->GetRenderer()->SetCamera(_defaultCamera);
-    engine->GetInputManager()->Setup(engine->GetRenderer());
+
+    //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);
+    //engine->GetRenderer()->CreateFramebuffers(1920, 1080);
 
     // Load shaders
     resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));

@@ -39,7 +39,7 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 #endif
 
 	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), true);
+	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), false);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Depth is enabled by default but needs to be disabled for RTT to work

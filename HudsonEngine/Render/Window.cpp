@@ -66,7 +66,7 @@ Render::Window::Window(int width, int height, const char* name) {
 	// TODO Tie this into tools for the editor
 	// Should also be exposed for the game settings
 
-	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 	//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 #ifdef _DEBUG
