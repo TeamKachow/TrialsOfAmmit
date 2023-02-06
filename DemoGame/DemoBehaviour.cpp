@@ -10,10 +10,6 @@ DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double ani
 DemoBehaviour::~DemoBehaviour()
 = default;
 
-DemoBehaviour::DemoBehaviour() : Behaviour("Demo Behaviour"), _sprite(nullptr), _animSpeed(0.8)
-{
-}
-
 void DemoBehaviour::OnCreate()
 {
 	// If no sprite set yet, look for one on the parent

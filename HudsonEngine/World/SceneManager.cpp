@@ -8,7 +8,14 @@ Hudson::World::SceneManager::SceneManager()
         {
             for (auto& scene : _scenes.Get())
             {
-                scene->Tick(dt);
+                if (_paused)
+                {
+                    scene->UpdateDeferredObjects();
+                }
+                else
+                {
+                    scene->Tick(dt);
+                }
             }
         });
 }
@@ -86,4 +93,14 @@ void Hudson::World::SceneManager::Tick()
 
     // Clear ticking flag
     _isTicking = false;
+}
+
+bool Hudson::World::SceneManager::IsPaused() const
+{
+    return _paused;
+}
+
+void Hudson::World::SceneManager::SetPaused(bool paused)
+{
+    _paused = paused;
 }

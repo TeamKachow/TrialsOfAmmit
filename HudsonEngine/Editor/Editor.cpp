@@ -142,6 +142,19 @@ void Hudson::Editor::Editor::MenuBar()
 
 		if (ImGui::MenuItem("Help", 0, &_showHelp));
 
+		ImGui::Separator();
+
+		if (ImGui::MenuItem("Play", 0, !_engine->GetSceneManager()->IsPaused(), _engine->GetSceneManager()->IsPaused()))
+		{
+			// TODO: force all scenes to save first!!!
+			_engine->GetSceneManager()->SetPaused(false);
+		}
+
+		if (ImGui::MenuItem("Pause", 0, _engine->GetSceneManager()->IsPaused(), !_engine->GetSceneManager()->IsPaused()))
+		{
+			_engine->GetSceneManager()->SetPaused(true);
+		}
+
 		ImGui::EndMainMenuBar();
 	}
 }

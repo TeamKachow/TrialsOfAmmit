@@ -16,7 +16,7 @@ void Hudson::Entity::GameObject::DrawPropertyUI()
     }
 }
 
-void Hudson::Entity::GameObject::UpdateComponents()
+void Hudson::Entity::GameObject::UpdateDeferredComponents()
 {
     _components.Update();
 }

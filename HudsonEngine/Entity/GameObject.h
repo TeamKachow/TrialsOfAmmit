@@ -60,7 +60,7 @@ namespace Hudson::Entity
         bool _isCurrentlyTicking = false;
 
         void DrawPropertyUI() override;
-        void UpdateComponents();
+        void UpdateDeferredComponents();
         void OnQueueUpdate(Common::DeferredObjectSet<Component*>::Action action);
 
     public:

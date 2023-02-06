@@ -102,6 +102,15 @@ Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObjec
     return object;
 }
 
+void Hudson::World::Scene::UpdateDeferredObjects()
+{
+    _objects.Update();
+    for (auto gameObject : _objects.Get())
+    {
+        gameObject->UpdateDeferredComponents();
+    }
+}
+
 uint32_t Hudson::World::Scene::GetSerialID()
 {
     return _serialId;

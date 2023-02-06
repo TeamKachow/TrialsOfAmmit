@@ -125,6 +125,11 @@ namespace Hudson::World
          */
         Entity::GameObject* RemoveObject(Entity::GameObject* object);
 
+        /**
+         * \brief Update pending object adds/removals in deferred object set.
+         */
+        void UpdateDeferredObjects();
+
         uint32_t GetSerialID() override;
 
         friend void to_json(nlohmann::json& j, const Scene& scene);

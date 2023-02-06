@@ -19,12 +19,12 @@ private:
     double _animSpeed = 0, _animAcc = 0;
 
 public:
-    DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double animSpeed = 0.8);
+    // Editor components need a no-args constructor and a copy constructor
+    DemoBehaviour(Hudson::Render::SpriteComponent* sprite = nullptr, double animSpeed = 0.8); // new DemoBehaviour()
+    DemoBehaviour(const DemoBehaviour& other) = default;
+
     ~DemoBehaviour() override;
 
-    // Editor components need a no-args constructor and a copy constructor
-    DemoBehaviour();
-    DemoBehaviour(const DemoBehaviour& other) = default;
 
     void OnCreate() override;
     void OnTick(const double& dt) override;

@@ -57,6 +57,10 @@ void Init()
 #endif
 
     engine->Setup();
+
+#ifdef ENABLE_EDITOR
+    engine->GetSceneManager()->SetPaused(true);
+#endif
 }
 
 void GameSetup()
