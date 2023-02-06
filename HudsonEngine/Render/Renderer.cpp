@@ -34,15 +34,12 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
-	// Bind Input Manager
-	_engine->GetInputManager()->BindCallbacks(_window->GetWindow());
-
 #ifdef _DEBUG
 	io.IniFilename = "editor.ini";
 #endif
 
 	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), true);
+	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), false);
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	// Depth is enabled by default but needs to be disabled for RTT to work
