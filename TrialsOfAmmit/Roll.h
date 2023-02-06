@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseAbilityClass.h"
 
+
 class Roll : public BaseAbilityClass
 {
 public:

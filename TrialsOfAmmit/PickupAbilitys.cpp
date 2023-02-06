@@ -8,14 +8,14 @@ PickupAbilitys::PickupAbilitys(glm::vec2 spawnPos, Hudson::Entity::GameObject* _
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
 	_abilitySprite->SetSize(glm::vec2(16.0f, 16.0f));
-	_abilitySprite->SetGridSize(glm::vec2(1, 1));
+	_abilitySprite->SetGridSize(glm::vec2(2, 1));
 	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	_abilityObject->AddComponent(_abilitySprite);
 	_abilityObject->AddComponent(_abilityCollider);
 	_abilityObject->SetName("AbilityPickup");
 
-	_abilitySprite->SetGridPos(glm::vec2(1, 1));
+	_abilitySprite->SetGridPos(glm::vec2(0, 1));
 	_abilityObject->GetTransform().pos = spawnPos;
 	_randomAbilityInt = 0;
 }
@@ -32,10 +32,12 @@ void PickupAbilitys::OnCreate()
 	_randomAbilityInt = dist(rand);
 	if (_randomAbilityInt == 0)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(0, 1));
 		_abilityPickup = new Roll;
 	}
 	if (_randomAbilityInt == 1)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(1, 1));
 		_abilityPickup = new Stun;
 	}
 	if (_randomAbilityInt == 2)

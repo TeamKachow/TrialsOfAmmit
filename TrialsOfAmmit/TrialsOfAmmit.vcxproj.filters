@@ -116,6 +116,8 @@
     </ClCompile>
     <ClCompile Include="Rage.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
+    <ClCompile Include="AbilityDisplayUI.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +206,10 @@
       <Filter>Source Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Rage.h">
+    <ClInclude Include="AbilityDisplayUI.h">
+      <Filter>Source Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="AbilityType.h">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
   </ItemGroup>

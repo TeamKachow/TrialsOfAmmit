@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbilityDisplayUI.cpp" />
     <ClCompile Include="AbilityHolder.cpp" />
     <ClCompile Include="AiAgent.cpp" />
     <ClCompile Include="AiMelee.cpp" />
@@ -46,9 +47,11 @@
     <ClCompile Include="WeaponDisplayUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbilityDisplayUI.h" />
     <ClInclude Include="AbilityHolder.h" />
     <ClInclude Include="AbilityStates.h" />
     <ClInclude Include="abilityTargets.h" />
+    <ClInclude Include="AbilityType.h" />
     <ClInclude Include="AiAgent.h" />
     <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />
