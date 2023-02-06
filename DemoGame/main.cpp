@@ -145,13 +145,6 @@ void GameSetup()
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
 
-        Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
-        room->SetName("Room");
-        room->AddComponent(new Room("rooms/jsonROOM.room"));
-
-        //room->GetTransform().scale = glm::vec2(32.0f, 32.0f);
-        startScene->AddObject(room);
-
         
     }
 

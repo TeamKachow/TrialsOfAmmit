@@ -152,9 +152,6 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="Render\Camera.cpp" />
-    <ClCompile Include="Entity\Room.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
     <ClCompile Include="Render\Camera.cpp">
       <Filter>Render</Filter>
     </ClCompile>
@@ -277,9 +274,6 @@
     </ClInclude>
     <ClInclude Include="Render\TextComponent.h">
       <Filter>Render</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity\Room.h">
-      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

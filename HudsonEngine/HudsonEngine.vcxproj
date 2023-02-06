@@ -100,7 +100,6 @@
     <ClCompile Include="Entity\Behaviour.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
     <ClCompile Include="Entity\GameObject.cpp" />
-    <ClCompile Include="Entity\Room.cpp" />
     <ClCompile Include="Entity\System.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -139,7 +138,6 @@
     <ClInclude Include="Entity\Common.h" />
     <ClInclude Include="Entity\Component.h" />
     <ClInclude Include="Entity\GameObject.h" />
-    <ClInclude Include="Entity\Room.h" />
     <ClInclude Include="Entity\System.h" />
     <ClCompile Include="AudioManager.cpp" />
   </ItemGroup>
