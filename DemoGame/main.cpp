@@ -58,7 +58,18 @@ void Init()
     engine->Setup();
     engine->GetRenderer()->SetupDefaultShaders();
 
+#ifdef ENABLE_EDITOR
+    engine->GetInputManager()->SetEditorRef(editor);
+#endif
+
+
 }
+
+void Hello(bool& isActive)
+{
+    std::cout << "Hello" << std::endl;
+}
+
 
 void GameSetup()
 {
@@ -70,6 +81,14 @@ void GameSetup()
 
     // Load textures
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+
+	#ifdef ENABLE_EDITOR
+    ToolData toolData;
+    toolData.function = Hello;
+    toolData.isRepeatingFunction = false;
+    editor->AddTool("Hello", toolData);
+	#endif
+
 
     // Create scene
     {
@@ -160,6 +179,7 @@ int main() {
 
     // Run engine loop until it is shut down
     engine->Run();
+
 
     // Clean up
     engine->Cleanup();

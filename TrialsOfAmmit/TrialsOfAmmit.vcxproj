@@ -45,6 +45,7 @@
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
     <ClCompile Include="Roll.cpp" />
     <ClCompile Include="RoomAOE.cpp" />
+    <ClCompile Include="SettingsButton.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="Stun.cpp" />
@@ -80,6 +81,7 @@
     <ClInclude Include="RangedBaseWeaponClass.h" />
     <ClInclude Include="Roll.h" />
     <ClInclude Include="RoomAOE.h" />
+    <ClInclude Include="SettingsButton.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="Stun.h" />

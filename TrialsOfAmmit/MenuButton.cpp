@@ -1,9 +1,8 @@
 #include "MenuButton.h"
 
-MenuButton::MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset) : Behaviour("ButtonBehaviour")
+MenuButton::MenuButton(string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset) : Behaviour("ButtonBehaviour")
 {
-	_buttonSprite - ButtonSprite;
-	_buttonScale = Scale;
+	_buttonScale = vec2(200,100);
 	_buttonText = Text;
 	_nextScene = NextScene;
 	_inputManager = InputRef;
@@ -17,8 +16,11 @@ MenuButton::~MenuButton()
 
 void MenuButton::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_buttonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+	_parent->AddComponent(_buttonSprite);
 	_parent->GetTransform().scale = (_buttonScale);
-	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\origa___.ttf",glm::vec2(0, 0));
+	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf",glm::vec2(0, 0));
 	_buttonTextObject->SetText(_buttonText);
 	_buttonTextObject->SetColor(vec3(1, 1, 1));
 	_buttonTextObject->SetDepthOrder(2);
@@ -42,7 +44,6 @@ void MenuButton::OnTick(const double& dt)
 	
 	if (_inputManager->getWorldMPos().x >= _parent->GetTransform().pos.x && _inputManager->getWorldMPos().x <= _parent->GetTransform().pos.x + 200 && _inputManager->getWorldMPos().y >= _parent->GetTransform().pos.y && _inputManager->getWorldMPos().y <= _parent->GetTransform().pos.y + 100)
 	{
-		cout << "hit" << endl;
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
 			if (_nextScene->IsActive() == false)
