@@ -4,6 +4,8 @@ RoomAOE::RoomAOE()
 {
 	_abilityActiveTime = 3;
 	_abilityCoolDownTime = 7;
+
+	_abilityType = AT_AOEDAMAGE;
 }
 
 RoomAOE::~RoomAOE()

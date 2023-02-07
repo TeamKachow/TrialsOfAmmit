@@ -54,7 +54,7 @@ void Player::OnCreate()
 	HealthBarUI();
 }
 
-void Player::TakeDamage(float _damageTaken)//TODO Add Damage Features -> FLASHING AND PHYSICs
+void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)
 	{
@@ -87,7 +87,7 @@ void Player::OnTick(const double& dt)
 		}
 	}
 
-	if(_inputManager.getActionState("Up")) //Key Checks
+	if(_inputManager.getActionState("Up"))
 	{
 		_playerDirection = Up;
 		_playerFacingDirection = Up;
@@ -116,7 +116,7 @@ void Player::OnTick(const double& dt)
 	_attackTimer += dt;
 	if (_inputManager.getActionState("Attack"))
 	{
-		if (_attackTimer > _playersWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
+		if (_attackTimer > _playersWeapon->_weaponAttackSpeed)
 		{
 			Fire();
 			_attackTimer = 0;
@@ -291,5 +291,10 @@ void Player::DrawPropertyUI()
 	{
 		_playersWeapon = &_slingshot;
 	}
+	if (ImGui::Button("Upgrade Weapon"))
+	{
+		_playersWeapon->UpgradeWeapon(Gold);
+	}
+
 
 }

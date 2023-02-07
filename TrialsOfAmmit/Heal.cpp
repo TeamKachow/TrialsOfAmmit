@@ -8,6 +8,7 @@ Heal::Heal()
 
 	_healAmount = 20;
 	_currentHealth;
+	_abilityType = AT_HEAL;
 }
 
 Heal::~Heal()
