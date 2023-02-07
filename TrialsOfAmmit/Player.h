@@ -29,9 +29,15 @@ private:
 	int _gridX = 0;
 	int _gridY = 0;
 
+	glm::vec2 _spawnPos;
 
 	bool _isDamaged;
 	bool _isDead;
+
+	bool _isHittingUp;
+	bool _isHittingDown;
+	bool _isHittingRight;
+	bool _isHittingLeft;
 
 	//Attack Timer
 	double _attackTimer = 0;
@@ -61,6 +67,7 @@ private:
 
 	void Respawn();
 	void WallCollisions();
+	void InverseForce();
 	//Anim Functions
 	void AnimMove();
 	void OnDeath();

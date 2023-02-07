@@ -28,10 +28,10 @@ void MeleeAttack::OnCreate()
 
 	_slashSprite->SetGridSize(glm::vec2(3, 4));
 	_slashSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
+	_slashSprite->SetDepthOrder(10);
 	_parent->AddComponent(_slashSprite);
 	_parent->SetName("SlashAttack");
-	_slashSprite->SetDepthOrder(-1);
+
 
 	switch (_slashDirection) {
 		case Down:

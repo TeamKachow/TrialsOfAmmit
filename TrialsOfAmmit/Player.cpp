@@ -21,6 +21,12 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_isDead = false;
 	_isDamaged = false;
 	_playerDamageMod = 1;
+	_spawnPos = spawnPos;
+
+	_isHittingUp = false;
+	_isHittingDown = false;
+	_isHittingRight = false;
+	_isHittingLeft = false;
 
 }
 
@@ -35,7 +41,7 @@ void Player::OnCreate()
 	_playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
 	_playerSprite->SetGridSize(glm::vec2(3, 4));
 	_playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
+	_playerSprite->SetDepthOrder(10);
 	playerCollider = new Hudson::Physics::ColliderComponent();
 	playerPhysics = new Hudson::Physics::PhysicsComponent();
 	playerPhysics->SetMass(1.0f);
@@ -50,7 +56,7 @@ void Player::OnCreate()
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
 
-	_parent->GetTransform().pos = (glm::vec2(0, 0));
+	_parent->GetTransform().pos = _spawnPos;
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
 	_parent->AddComponent(new PickupBehaviour());
@@ -97,7 +103,13 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	_isHittingDown = false;
+	_isHittingRight = false;
+	_isHittingUp = false;
+	_isHittingLeft = false;
+
 	WallCollisions();
+
 	if (_isDamaged)
 	{
 		_playerSprite->SetColor(glm::vec3(1, 1, 1));
@@ -190,31 +202,46 @@ void Player::Fire() //Attack Uses facing Direction not the way the player is mov
 
 void Player::MoveUp() //Movement depending on _playerDirection
 {
-	_gridY = 3;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+	if (_isHittingUp == false)
+	{
+		_gridY = 3;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+	}
+	
 }
 
 void Player::MoveDown()
 {
-
-	_gridY = 0;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
+	if (_isHittingDown == false)
+	{
+		_gridY = 0;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
+	}
+	
 }
 
 void Player::MoveRight()
 {
-	_gridY = 2;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
+	if (_isHittingRight == false)
+	{
+		_gridY = 2;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
+	}
+
 }
 
 void Player::MoveLeft()
 {
-	_gridY = 1;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
+	if (_isHittingLeft == false)
+	{
+		_gridY = 1;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
+	}
+	
 }
 
 void Player::StopMove()
@@ -269,22 +296,50 @@ void Player::WallCollisions()
 		{
 			if (other->GetParent()->GetComponent<Room>() != nullptr)
 			{
-				std::cout << "Hitting Wall" << "\n";
-				/*AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
-				if (_aiAgent != nullptr)
+				Room* _Room = other->GetParent()->GetComponent<Room>();
+				if (_Room != nullptr)
 				{
-					collider->ClearColliding();
+					std::cout << "Hitting Wall" << "\n";
+					InverseForce();
 					break;
-				}*/
+				}
 			}
 			else
 			{
-				collider->ClearColliding();
+				break;
 			}
+			
 
 
 		}
 
+	}
+}
+
+void Player::InverseForce()
+{
+	
+	switch (_playerFacingDirection)
+	{
+	case Down:
+		cout << "Running Down" << "\n";
+		_isHittingDown = true;
+		break;
+	case Left:
+		_isHittingLeft = true;
+		cout << "Running LEft" << "\n";
+		break;
+	case Right:
+		_isHittingRight = true;
+		cout << "Running Right" << "\n";
+		break;
+	case Up:
+		_isHittingUp = true;
+		cout << "Running Up" << "\n";
+		break;
+	case Stopped:
+		break;
+	default:;
 	}
 }
 

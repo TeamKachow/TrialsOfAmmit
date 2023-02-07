@@ -135,7 +135,9 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		resManager->LoadTexture(object["textureRoot"], true, "Dummy");
 		
 		Hudson::Render::SpriteComponent* newSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Dummy"), glm::vec2(object["gridSizeX"], object["gridSizeY"]), glm::vec2(object["gridPosX"], object["gridPosY"]));
+		newSprite->SetDepthOrder(0);
 		texture_reference_.insert({ object["textureID"], newSprite});
+
 	}
 
 	for (int i = 0; i < y; ++i)
