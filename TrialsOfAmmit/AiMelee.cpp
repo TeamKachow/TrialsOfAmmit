@@ -2,7 +2,7 @@
 
 AiMelee::AiMelee()
 {
-	_weaponAttackDamage = 35;
+	_weaponAttackDamage = 25;
 	_weaponAttackSpeed = 1.5;
 }
 

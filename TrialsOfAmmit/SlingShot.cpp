@@ -5,7 +5,7 @@ SlingShot::SlingShot()
 	_weaponAttackDamage = 15.0;
 	_projectileMovementSpeed = 200;
 	_projectileRange = 2.0;
-	_weaponAttackSpeed = 0.75;
+	_weaponAttackSpeed = 1.5;
 	_weaponType = WT_SlingShot;
 }
 
@@ -21,35 +21,35 @@ void SlingShot::UpgradeWeapon(WeaponUpgradeTypes Level)
 		_weaponAttackDamage = 15;
 		_projectileMovementSpeed = 200;
 		_projectileRange = 2.0;
-		_weaponAttackSpeed = 0.75;
+		_weaponAttackSpeed = 1.5;
 		_weaponLevel = Wood;
 		break;
 	case Stone:
 		_weaponAttackDamage = 20;
 		_projectileMovementSpeed = 225;
 		_projectileRange = 2.0;
-		_weaponAttackSpeed = 0.7;
+		_weaponAttackSpeed = 1.75;
 		_weaponLevel = Stone;
 		break;
 	case Bronze:
 		_weaponAttackDamage = 25;
 		_projectileMovementSpeed = 250;
 		_projectileRange = 2.25;
-		_weaponAttackSpeed = 0.65;
+		_weaponAttackSpeed = 1.85;
 		_weaponLevel = Bronze;
 		break;
 	case Iron:
 		_weaponAttackDamage = 30;
 		_projectileMovementSpeed = 250;
 		_projectileRange = 2.5;
-		_weaponAttackSpeed = 0.6;
+		_weaponAttackSpeed = 1.85;
 		_weaponLevel = Iron;
 		break;
 	case Gold:
 		_weaponAttackDamage = 35;
 		_projectileMovementSpeed = 250;
 		_projectileRange = 2.5;
-		_weaponAttackSpeed = 0.5;
+		_weaponAttackSpeed = 2;
 		_weaponLevel = Gold;
 		break;
 	}

@@ -3,7 +3,7 @@
 Rage::Rage()
 {
 	_abilityActiveTime = 5;
-	_abilityCoolDownTime = 5;
+	_abilityCoolDownTime = 6;
 	_abilityState = ready;
 
 	_defaultAttackDamage;

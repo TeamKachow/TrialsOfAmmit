@@ -4,8 +4,8 @@
 
 Bow::Bow()
 {
-	_weaponAttackDamage = 20.0;
-	_weaponAttackSpeed = 2;
+	_weaponAttackDamage = 60;
+	_weaponAttackSpeed = 0.5;
 	_projectileMovementSpeed = 500.0;
 	_projectileRange = 1.5;
 	_weaponType = WT_Bow;
@@ -21,35 +21,35 @@ void Bow::UpgradeWeapon(WeaponUpgradeTypes Level)
 	switch (Level)
 	{
 	case Wood:
-		_weaponAttackDamage = 20;
+		_weaponAttackDamage = 60;
 		_projectileMovementSpeed = 500;
 		_projectileRange = 1.5;
-		_weaponAttackSpeed = 2;
+		_weaponAttackSpeed = 0.5;
 		_weaponLevel = Wood;
 		break;
 	case Stone:
-		_weaponAttackDamage = 25;
+		_weaponAttackDamage = 65;
 		_projectileMovementSpeed = 500;
 		_projectileRange = 1.5;
-		_weaponAttackSpeed = 1.75;
+		_weaponAttackSpeed = 0.5;
 		_weaponLevel = Stone;
 		break;
 	case Bronze:
-		_weaponAttackDamage = 35;
+		_weaponAttackDamage = 70;
 		_projectileMovementSpeed = 500;
 		_projectileRange = 1.5;
-		_weaponAttackSpeed = 1.5;
+		_weaponAttackSpeed = 0.75;
 		_weaponLevel = Bronze;
 		break;
 	case Iron:
-		_weaponAttackDamage = 40;
+		_weaponAttackDamage = 75;
 		_projectileMovementSpeed = 600;
 		_projectileRange = 1.5;
-		_weaponAttackSpeed = 1.25;
+		_weaponAttackSpeed = 0.75;
 		_weaponLevel = Iron;
 		break;
 	case Gold:
-		_weaponAttackDamage = 45;
+		_weaponAttackDamage = 80;
 		_projectileMovementSpeed = 500;
 		_projectileRange = 1.5;
 		_weaponAttackSpeed = 1;
