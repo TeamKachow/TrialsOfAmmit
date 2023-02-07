@@ -13,16 +13,14 @@ class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditabl
 private:
 	//Set up Components
 	Hudson::Input::InputManager _inputManager;
-	//Hudson::Physics::PhysicsComponent* _playerPhysics;
 	Hudson::Physics::PhysicsComponent* playerPhysics;
 	Hudson::World::Scene* _currentScene;
 	Hudson::Physics::ColliderComponent* playerCollider;
-	//Hudson::Entity::GameObject* _player;
 
 	Hudson::Render::SpriteComponent* GraveSprite;
 
-	float deathTimer;
-	float deathAnim;
+	float _deathTimer;
+	float _deathAnim;
 	int _deathGridX;
 
 	//Anim Variables
@@ -31,6 +29,8 @@ private:
 	int _gridX = 0;
 	int _gridY = 0;
 
+
+	bool _isDamaged;
 	bool _isDead;
 
 	//Attack Timer
@@ -70,9 +70,15 @@ public:
 	Hudson::Render::SpriteComponent* _playerSprite;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
-	float _playerMovementSpeed = 45.0;
+	float _maxHealth;
+	float _playerMovementSpeed = 500;
 	float _playerHealth = 100.0f;
+	float _playerDamageMod;
 	bool _godMode;
+
+	void PassiveAddMaxHealth(float additionalHealth);
+	void PassiveAddSpeed(float additionalSpeed);
+	void PassiveAddDamageMod(float additionalDamage);
 
 	void TakeDamage(float _damageTaken);
 	Player(const Player& other) = default;

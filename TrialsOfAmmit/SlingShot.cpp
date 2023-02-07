@@ -55,10 +55,10 @@ void SlingShot::UpgradeWeapon(WeaponUpgradeTypes Level)
 	}
 }
 
-void SlingShot::Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene)
+void SlingShot::Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, float _playerDamageMod)
 {
 	_projectile = new Hudson::Entity::GameObject();
-	_projectile->AddComponent(new Projectile(projectileDirection, spawnPos, CurrentScene, WT_SlingShot, _weaponAttackDamage, _projectileMovementSpeed, _projectileRange));
+	_projectile->AddComponent(new Projectile(projectileDirection, spawnPos, CurrentScene, WT_SlingShot, _weaponAttackDamage* _playerDamageMod, _projectileMovementSpeed, _projectileRange));
 	CurrentScene->AddObject(_projectile);
 	std::cout << "Player Has Attacked With Slingshot" << "\n";
 

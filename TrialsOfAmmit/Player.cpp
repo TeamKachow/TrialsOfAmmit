@@ -6,16 +6,20 @@
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
-	deathTimer = 0;
-	deathAnim = 0.4;
+	_maxHealth = 100;
+	_playerHealth = _maxHealth;
+	_deathTimer = 0;
+	_deathAnim = 0.4;
 	_deathGridX;
 	_playerAnimSpeed = 0.2;
 	_playerDirection = Stopped;
 	_playerFacingDirection = Stopped;
 	_attackTimer = 0;
-	_playerMovementSpeed = 100.0;
+	_playerMovementSpeed = 125.0;
 	_godMode = false;
 	_isDead = false;
+	_isDamaged = false;
+	_playerDamageMod = 1;
 
 }
 
@@ -54,12 +58,33 @@ void Player::OnCreate()
 	HealthBarUI();
 }
 
+//Function the Passive Mods will access to change the player Stats
+void Player::PassiveAddMaxHealth(float additionalHealth)
+{
+	std::cout << "Added Health" << "\n";
+	_maxHealth = _maxHealth + additionalHealth;
+	_playerHealth = _playerHealth + additionalHealth;
+}
+
+void Player::PassiveAddSpeed(float additionalSpeed)
+{
+	std::cout << "Added Speed" << "\n";
+	_playerMovementSpeed = _playerMovementSpeed + additionalSpeed;
+}
+
+void Player::PassiveAddDamageMod(float additionalDamage)
+{
+	std::cout << "Added Damage" << "\n";
+	_playerDamageMod = _playerDamageMod + additionalDamage;
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)
 	{
 		_playerHealth = _playerHealth - _damageTaken;
 		_playerSprite->SetColor(glm::vec3(1, 0, 0));
+		_isDamaged = true;
 		if (_playerHealth <= 0)
 		{
 			OnDeath();
@@ -71,13 +96,19 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	if (_isDamaged)
+	{
+		_playerSprite->SetColor(glm::vec3(1, 1, 1));
+		_isDamaged = false;
+	}
+
 	if (_isDead)
 	{
-		deathTimer += dt;
-		if (deathTimer >= deathAnim)
+		_deathTimer += dt;
+		if (_deathTimer >= _deathAnim)
 		{
 			GraveSprite->SetGridPos(glm::vec2(_deathGridX, 0));
-			deathTimer = 0;
+			_deathTimer = 0;
 			_deathGridX += 1;
 			if (_deathGridX >= 3)
 			{
@@ -152,7 +183,7 @@ void Player::OnTick(const double& dt)
 
 void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
 {
-	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene);
+	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene, _playerDamageMod);
 }
 
 void Player::MoveUp() //Movement depending on _playerDirection
