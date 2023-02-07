@@ -41,6 +41,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
     <ClCompile Include="Roll.cpp" />
+    <ClCompile Include="Rooms\Room.cpp" />
     <ClCompile Include="SlingShot.cpp" />
     <ClCompile Include="Spear.cpp" />
     <ClCompile Include="Stun.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />
     <ClInclude Include="Roll.h" />
+    <ClInclude Include="Rooms\Room.h" />
     <ClInclude Include="SlingShot.h" />
     <ClInclude Include="Spear.h" />
     <ClInclude Include="Stun.h" />
