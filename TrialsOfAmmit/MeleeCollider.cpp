@@ -1,6 +1,7 @@
 #include "MeleeCollider.h"
 #include "AiAgent.h"
 #include "Player.h"
+#include "Chest.h"
 
 MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi) : Behaviour("MeleeCollision")
 {
@@ -89,6 +90,18 @@ void MeleeCollider::OnTick(const double& dt)
 						break;
 					}
 					break;
+				}
+				if (other->GetParent()->GetComponent<Chest>() != nullptr)
+				{
+					Chest* _chest = other->GetParent()->GetComponent<Chest>();
+					if (_chest != nullptr)
+					{
+						_chest->OnInteract();
+						collider->ClearColliding();
+
+						break;
+					}
+
 				}
 			}
 

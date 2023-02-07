@@ -8,6 +8,8 @@
 #include "SettingsButton.h"
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
+#include "PassivePickups.h"
+#include "Chest.h"
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
@@ -96,6 +98,8 @@ void GameSetup()
     resManager->LoadTexture("textures/Test.png", true, "Test");
     resManager->LoadTexture("textures/TempBackground.png", true, "backgroundImage");
     resManager->LoadTexture("textures/SettingsMarker.png", true, "SettingsMarkerImage");
+    resManager->LoadTexture("textures/Passives.png", true, "Passives");
+    resManager->LoadTexture("textures/Chest.png", true, "Chest");
 
     Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
     Sprite1->SetGridSize(glm::vec2(3, 4));
@@ -161,17 +165,21 @@ void GameSetup()
     startScene->AddObject(blah2);
     blah2->GetTransform().pos.x = 1400.0f;
 
-    Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
-    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f)));
-    startScene->AddObject(WeaponPickup);
+  
 
-    Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f)));
-    startScene->AddObject(WeaponPickup1);
+
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
     AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));
     startScene->AddObject(AbilityPickup);
+
+    Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
+    PassivePickup->AddComponent(new PassivePickups(glm::vec2(600, 300.0f)));
+    startScene->AddObject(PassivePickup);
+
+    Hudson::Entity::GameObject* _chest = new Hudson::Entity::GameObject();
+    _chest->AddComponent(new Chest(glm::vec2(700, 300.0f)));
+    startScene->AddObject(_chest);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));

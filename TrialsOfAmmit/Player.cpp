@@ -61,17 +61,20 @@ void Player::OnCreate()
 //Function the Passive Mods will access to change the player Stats
 void Player::PassiveAddMaxHealth(float additionalHealth)
 {
+	std::cout << "Added Health" << "\n";
 	_maxHealth = _maxHealth + additionalHealth;
 	_playerHealth = _playerHealth + additionalHealth;
 }
 
 void Player::PassiveAddSpeed(float additionalSpeed)
 {
+	std::cout << "Added Speed" << "\n";
 	_playerMovementSpeed = _playerMovementSpeed + additionalSpeed;
 }
 
 void Player::PassiveAddDamageMod(float additionalDamage)
 {
+	std::cout << "Added Damage" << "\n";
 	_playerDamageMod = _playerDamageMod + additionalDamage;
 }
 

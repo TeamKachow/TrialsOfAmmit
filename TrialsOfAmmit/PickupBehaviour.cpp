@@ -1,4 +1,5 @@
 #include "PickupBehaviour.h"
+#include "PassivePickups.h"
 
 
 PickupBehaviour::PickupBehaviour() : Behaviour("Pickup")
@@ -51,6 +52,35 @@ void PickupBehaviour::CheckCollision()
 				}
 
 			}
+			if (other->GetParent()->GetComponent<PassivePickups>() != nullptr)
+			{
+				PassivePickups* _pickupPassive = other->GetParent()->GetComponent<PassivePickups>();
+				if (_pickupPassive != nullptr)
+				{
+					switch (_pickupPassive->_passiveType)
+					{
+					case PT_HEAL:
+						_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(10);
+						break;
+					case PT_ATTACK:
+						_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddDamageMod(0.1);
+						break;
+					case PT_SPEED:
+						_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(5);
+						break;
+
+					}
+					
+					collider->ClearColliding();
+					_currentScene->RemoveObject(other->GetParent());
+
+					break;
+				}
+
+			}
+			
+
+
 
 		}
 	}

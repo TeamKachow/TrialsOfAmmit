@@ -107,9 +107,6 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Rooms\Room.cpp">
-      <Filter>Rooms</Filter>
-    </ClCompile>
     <ClCompile Include="AiAgent.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
@@ -120,18 +117,6 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="Heal.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomAOE.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Heal.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
     <ClCompile Include="Rage.cpp">
@@ -140,9 +125,12 @@
     <ClCompile Include="RoomAOE.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
-    <ClCompile Include="PassivePickups.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClCompile Include="Heal.cpp" />
+    <ClCompile Include="PassivePickups.cpp" />
+    <ClCompile Include="Rage.cpp" />
+    <ClCompile Include="RoomAOE.cpp" />
+    <ClCompile Include="SettingsButton.cpp" />
+    <ClCompile Include="Chest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -227,9 +215,6 @@
       <Filter>AbilityStuff</Filter>
     </ClInclude>
     <ClInclude Include="facingDirection.h" />
-    <ClInclude Include="Rooms\Room.h">
-      <Filter>Rooms</Filter>
-    </ClInclude>
     <ClInclude Include="AiAgent.h">
       <Filter>Ai</Filter>
     </ClInclude>
@@ -240,18 +225,6 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="Heal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomAOE.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsButton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Heal.h">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
     <ClInclude Include="Rage.h">
@@ -260,8 +233,12 @@
     <ClInclude Include="RoomAOE.h">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
-    <ClInclude Include="PassivePickups.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="Heal.h" />
+    <ClInclude Include="PassivePickups.h" />
+    <ClInclude Include="Rage.h" />
+    <ClInclude Include="RoomAOE.h" />
+    <ClInclude Include="SettingsButton.h" />
+    <ClInclude Include="PassiveType.h" />
+    <ClInclude Include="Chest.h" />
   </ItemGroup>
 </Project>
