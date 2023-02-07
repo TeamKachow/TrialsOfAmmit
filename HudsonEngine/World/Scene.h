@@ -132,8 +132,8 @@ namespace Hudson::World
 
         uint32_t GetSerialID() override;
 
-        friend void to_json(nlohmann::json& j, const Scene& scene);
+        void ToJson(nlohmann::json& j);
 
-        friend void from_json(const nlohmann::json& j, Scene& scene);
+        void FromJson(const nlohmann::json& j);
     };
 }

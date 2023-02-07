@@ -1,11 +1,9 @@
-#include "../Editor/Editor.h"
+#include "Editor.h"
 #include "../Common/Engine.h"
 #include "../Entity/Component.h"
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
-#include "../Render/Texture.h"
-#include "../Render/Window.h"
 #include "../Util/Debug.h"
 
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
@@ -21,12 +19,19 @@ extern const std::filesystem::path filePath = std::filesystem::current_path();
 
 Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry), currentPath(filePath)
 {
-	engine->RegisterPreFrameHook([](Common::Engine* engine)
+	engine->RegisterPreFrameHook([&](Common::Engine* engine)
 		{
 			engine->GetRenderer()->SetImguiDockspace(true);
+		    if (!engine->GetSceneManager()->IsPaused())
+		    {
+                for (SceneMeta& meta : _sceneMeta | std::views::values)
+                {
+					meta.pendingChanges = true;
+                }
+		    }
 		});
 
-	engine->RegisterMidFrameHook([this](Common::Engine* engine)
+	engine->RegisterMidFrameHook([&](Common::Engine* engine)
 		{
 			this->Draw();
 		});
@@ -758,6 +763,10 @@ void Hudson::Editor::Editor::SaveDialogs()
 				try
 				{
 					World::Scene* loadedScene = World::SceneManager::LoadScene(_sceneToLoad);
+					if (!loadedScene)
+					{
+						throw std::exception("File could not be opened");
+					}
 					GetSceneMeta(loadedScene) = {
 						.pendingChanges = false,
 						.filePath = _sceneToLoad,

@@ -41,7 +41,8 @@ Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& 
     }
 
     nlohmann::json jsonIn = nlohmann::json::parse(file);
-    Scene* scene = new Scene(jsonIn.get<Scene>());
+    Scene* scene = new Scene();
+    scene->FromJson(jsonIn);
 
     return scene;
 }
@@ -55,7 +56,8 @@ void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scen
     }
 
     std::ofstream file(path);
-    nlohmann::json jsonOut = *scene;
+    nlohmann::json jsonOut;
+    scene->ToJson(jsonOut);
     file << jsonOut.dump(2);
 }
 

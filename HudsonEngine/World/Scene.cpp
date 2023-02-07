@@ -141,14 +141,14 @@ void Hudson::World::Scene::SetRendering(bool rendering)
     _rendering = rendering;
 }
 
-void Hudson::World::to_json(nlohmann::json& j, const Scene& scene)
+void Hudson::World::Scene::ToJson(nlohmann::json& j)
 {
-    j["id"] = scene._serialId;
-    j["name"] = scene._name;
-    j["active"] = scene._active;
-    j["rendering"] = scene._rendering;
+    j["id"] = _serialId;
+    j["name"] = _name;
+    j["active"] = _active;
+    j["rendering"] = _rendering;
     j["objects"] = nlohmann::json::array();
-    for (auto && pObject : scene._objects.Get())
+    for (auto && pObject : _objects.Get())
     {
         nlohmann::json objJson;
         pObject->ToJson(objJson);
@@ -156,17 +156,17 @@ void Hudson::World::to_json(nlohmann::json& j, const Scene& scene)
     }
 }
 
-void Hudson::World::from_json(const nlohmann::json& j, Scene& scene)
+void Hudson::World::Scene::FromJson(const nlohmann::json& j)
 {
-    scene._serialId = j.at("id");
-    scene._name = j.at("name");
-    scene._active = j.at("active");
-    scene._rendering = j.at("rendering");
+    _serialId = j.at("id");
+    _name = j.at("name");
+    _active = j.at("active");
+    _rendering = j.at("rendering");
     for (auto && objectJson : j.at("objects"))
     {
         Entity::GameObject* go = new Entity::GameObject();
         go->FromJson(objectJson);
-        scene._objects.Add(go);
+        _objects.Add(go);
     }
-    scene._objects.Update();
+    _objects.Update();
 }
