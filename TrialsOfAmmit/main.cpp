@@ -72,6 +72,10 @@ void Init()
 
     engine->Setup();
     engine->GetRenderer()->SetupDefaultShaders();
+
+#ifdef ENABLE_EDITOR
+    engine->GetInputManager()->SetEditorRef(editor);
+#endif
 }
 
 void GameSetup()
