@@ -32,12 +32,16 @@ namespace Hudson::Editor
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();
 
+		ImVec2 viewportSize = { 0,0 };
+		ImVec2 cursorPos = { 0,0 };
+		ImVec2 worldSpacePos = { 0,0 };
+
 	private:
 
 		static bool LoadImGuiImage(const char* filename, unsigned int* out_texture, int* out_width, int* out_height);
 		void InfiniteButton();
 		void MenuBar();
-		void Scene();
+		void Viewport();
 		void Hierarchy();
 		void ContentBrowser();
 		void ComponentList();
