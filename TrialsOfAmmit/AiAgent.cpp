@@ -1,5 +1,6 @@
 #include "AiAgent.h"
 #include "PickupAbilitys.h"
+#include "PassivePickups.h"
 
 AiAgent::AiAgent(vec2 spawnPos) : Behaviour("AiBehavior")
 {
@@ -17,12 +18,13 @@ void AiAgent::OnCreate()
 	//sets up collider
 	_aiCollider = new Hudson::Physics::ColliderComponent();
 	_parent->AddComponent(_aiCollider);
-
+	//sets up physics componant
 	_aiPhysicsComponent = new Hudson::Physics::PhysicsComponent();
 	_aiPhysicsComponent->SetMass(1.0f);
 	_aiPhysicsComponent->SetForce(glm::vec2(10.0, 0));
 	_aiPhysicsComponent->SetAcceleration(glm::vec2(10, 0), true);
 	_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+	//adds objects to the parent game object 
 	_parent->AddComponent(_aiPhysicsComponent);
 	_parent->SetName("AIAgent");
 	_parent->GetTransform().pos = _spawnPosition;
@@ -41,18 +43,16 @@ void AiAgent::OnCreate()
 	_target = vec2(0, 0);
 	//Starting state
 	_currentState = WANDER;
-	_attackTimer = 0;
+	_attackTimer = 1.5;
 	_aiAnimDeathTimer = 0;
-	//sets from parent phyics componants 
-	//_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-
+	//sets eatch physics opertaion 
 	_velocity = _aiPhysicsComponent->GetVelocity();
 	_mass = _aiPhysicsComponent->GetMass();
 	_acceleration = _aiPhysicsComponent->GetAcceleration();
-
+	//adds sprite from resManager to the _AiDeathSprite
 	_aiDeathSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Blood"));
 	Blood = new Hudson::Entity::GameObject;
-
+	//gets the player from the current scene 
 	_currentScene = _parent->GetScene();
 	auto _sceneObjects = _currentScene->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
@@ -114,47 +114,35 @@ void AiAgent::OnTick(const double& dt)
 		break;
 	case DEAD:
 
-		_aiDeathSprite->SetGridSize(glm::vec2(3, 1));
-		_aiDeathSprite->SetGridPos(glm::vec2(1, 1));
-		_aiDeathSprite->SetDepthOrder(2);
-		Blood->AddComponent(_aiDeathSprite);
-		_parent->RemoveComponent(_aiSprite);
-		_currentScene->AddObject(Blood);
-		Blood->GetTransform().pos = _parent->GetTransform().pos;
-		_maxSpeed = 0;
-		if (_alive == false)
+		if (_alive)
 		{
-		/*	_aiAnimDeathTimer += dt;
-			if (_aiAnimDeathTimer >= _aiAnimSpeed)
-			{
-				_aiAnimDeathTimer -= _aiAnimSpeed;
-				int _gridX = _aiDeathSprite->GetGridPos().x;
-				int _gridY = _aiDeathSprite->GetGridPos().y;
-				vec2 spriteGridSize = _aiDeathSprite->GetGridSize();
-				_gridY = 1;
-				if (_gridX < spriteGridSize.x - 1)
-				{
-					_gridX++;
-				}
-				else
-				{
-					AiDead();
-				}
-				_aiDeathSprite->SetGridPos(vec2(_gridX, _gridY));
-			}*/
+			_aiDeathSprite->SetGridSize(glm::vec2(3, 1));
+			_aiDeathSprite->SetGridPos(glm::vec2(1, 1));
+			_aiDeathSprite->SetDepthOrder(2);
+			_parent->RemoveComponent(_aiSprite);
+			Blood->AddComponent(_aiDeathSprite);
+			_currentScene->AddObject(Blood);
+			Blood->GetTransform().pos = _parent->GetTransform().pos;
+			_maxSpeed = 0;
+			_alive = false;
+		}	
+		_aiAnimDeathTimer += dt;	
+		if (_aiAnimDeathTimer > 0.5)
+		{
+			AiDead();
 		}
-				
+		_currentState = DEAD;
 		break;
 	default:
 
 		break;
 	}
 
-	if (_distanceFromPlayer < 300.0f && _distanceFromPlayer > 100.0f)
+	if (_distanceFromPlayer < 300.0f && _distanceFromPlayer > 100.0f && _alive)
 	{
 		_currentState = SEEK;
 	}
-	else if (_distanceFromPlayer < 100.0f)
+	else if (_distanceFromPlayer < 100.0f && _alive)
 	{
 		_attackTimer += dt;
 		if (_attackTimer > _aiWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
@@ -168,7 +156,7 @@ void AiAgent::OnTick(const double& dt)
 			_attackTimer = 0;
 		}
 	}
-	else if (_distanceFromPlayer > 300.0f)
+	else if (_distanceFromPlayer > 300.0f && _alive)
 	{
 		_currentState = WANDER;
 	}
@@ -422,27 +410,31 @@ vec2 AiAgent::Wander(vec2 Target)
 
 void AiAgent::AiAttack()
 {
-	//TODO 
 	_currentScene = _parent->GetScene();
 	_aiWeapon->AiAttack(_facingDirection, _parent->GetTransform().pos, _currentScene);
-	//_currentState = SEEK;
+	_attackTimer = 0;
 }
 
 void AiAgent::AiDead()
 {
-	//TODO: make a random chance of dropping an item 
-	Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-	WeaponPickup1->AddComponent(new PickupWeapon(_parent->GetTransform().pos));
-	_currentScene->AddObject(WeaponPickup1);
-
-	Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-	AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
-	_currentScene->AddObject(AbilityPickup);
-	//TODO: Add death animation
-
+	random_device rand;
+	uniform_int_distribution<int> dist(1, 100);
+	int randChance = dist(rand);
+	if (randChance < 60)
+	{
+		//TODO: make a random chance of dropping an item 
+		Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
+		PassivePickup->AddComponent(new PassivePickups(_parent->GetTransform().pos));
+		_currentScene->AddObject(PassivePickup);
+	}
+	if (randChance < 30 && randChance > 60)
+	{
+		Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+		AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
+		_currentScene->AddObject(AbilityPickup);
+	}
 	//TODO: Remove the AI from the scene after the animaion 
-	_alive = false;
-	cout << "ISDEAD" << "\n";
+	_currentScene->RemoveObject(Blood);
 	_currentScene->RemoveObject(_parent);
 }
 
@@ -532,7 +524,7 @@ void AiAgent::Move(float deltatime)
 {
 	//adds the acceleration and velocity to the physics componant
 
-		//sets velocity
+	//sets velocity
 	trunc(_moveForce);
 	_acceleration = _moveForce / _mass;
 	_velocity = _acceleration * deltatime;
