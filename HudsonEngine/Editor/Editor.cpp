@@ -29,9 +29,9 @@ Hudson::Editor::Editor::~Editor()
 
 }
 
-void Hudson::Editor::Editor::AddTool(std::string toolName, std::function<void()> toolFunction)
+void Hudson::Editor::Editor::AddTool(std::string toolName, ToolData toolData)
 {
-	toolFunctions.insert(std::pair<std::string, std::function<void()>>(toolName, toolFunction));
+	toolFunctions.insert(std::pair<std::string, ToolData>(toolName, toolData));
 }
 
 bool Hudson::Editor::Editor::LoadImGuiImage(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
@@ -245,8 +245,8 @@ void Hudson::Editor::Editor::Hierarchy()
 				}
 				ImGui::EndPopup();
 			}
-		    for (auto object : scene->GetObjects())
-            {
+			for (auto object : scene->GetObjects())
+			{
 				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
 				if (_selected == object)
 				{
@@ -337,7 +337,7 @@ void Hudson::Editor::Editor::ContentBrowser()
 		auto icon = entry.is_directory() ? directoryIcon : fileIcon;
 
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		ImGui::ImageButton((ImTextureID)icon, {thumbnailSize, thumbnailSize}, {0,1}, {1,0});
+		ImGui::ImageButton((ImTextureID)icon, { thumbnailSize, thumbnailSize }, { 0,1 }, { 1,0 });
 		ImGui::PopStyleColor();
 
 		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
@@ -540,17 +540,33 @@ void Hudson::Editor::Editor::ObjectProperties()
 void Hudson::Editor::Editor::Tools()
 {
 	ImGui::Begin("Tools");
-	if(toolFunctions.size() > 0)
+	if (toolFunctions.size() > 0)
 	{
-		for (const auto& [key, value] : toolFunctions) {
+		for (auto& [key, value] : toolFunctions) {
+
 			ImGui::Text(key.c_str());
 			ImGui::SameLine();
 			ImGui::PushID((void*)(key.c_str()));
-			if (ImGui::SmallButton("+"))
+
+			if (value.isRepeatingFunction && value.isActive)
 			{
-				// Call function
-				value();
+				value.function(value.isActive);
 			}
+			else
+			{
+				if (ImGui::SmallButton("+"))
+				{
+					value.isActive = true;
+					// Call function
+					value.function(value.isActive);
+
+					if (value.isRepeatingFunction == false)
+					{
+						value.isActive = false;
+					}
+				}
+			}
+
 			ImGui::PopID();
 
 		}
