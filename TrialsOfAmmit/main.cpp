@@ -182,6 +182,7 @@ void GameSetup()
     PlayButton->AddComponent(new MenuButton(Sprite3, glm::vec2(200,100), "Play", startScene, engine->GetInputManager(), vec2(70,60)));
     PlayButton->SetName("PlayButton");
     TestScene->AddObject(PlayButton);
+    SettingsScene->AddObject(PlayButton);
     PlayButton->GetTransform().pos.x = 100.0f;
     PlayButton->GetTransform().pos.y = 100.0f;
 
@@ -196,6 +197,7 @@ void GameSetup()
     Hudson::Entity::GameObject* Background = new Hudson::Entity::GameObject();
     Background->AddComponent(Sprite4);
     TestScene->AddObject(Background);
+    SettingsScene->AddObject(Background);
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 

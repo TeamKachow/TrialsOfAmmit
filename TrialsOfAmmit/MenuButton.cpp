@@ -42,7 +42,6 @@ void MenuButton::OnTick(const double& dt)
 	
 	if (_inputManager->getWorldMPos().x >= _parent->GetTransform().pos.x && _inputManager->getWorldMPos().x <= _parent->GetTransform().pos.x + 200 && _inputManager->getWorldMPos().y >= _parent->GetTransform().pos.y && _inputManager->getWorldMPos().y <= _parent->GetTransform().pos.y + 100)
 	{
-		cout << "hit" << endl;
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
 			if (_nextScene->IsActive() == false)
