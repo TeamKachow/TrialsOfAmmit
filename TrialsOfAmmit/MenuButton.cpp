@@ -18,7 +18,7 @@ MenuButton::~MenuButton()
 void MenuButton::OnCreate()
 {
 	_parent->GetTransform().scale = (_buttonScale);
-	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\origa___.ttf",glm::vec2(0, 0));
+	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf",glm::vec2(0, 0));
 	_buttonTextObject->SetText(_buttonText);
 	_buttonTextObject->SetColor(vec3(1, 1, 1));
 	_buttonTextObject->SetDepthOrder(2);

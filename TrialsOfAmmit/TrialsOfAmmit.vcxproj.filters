@@ -120,6 +120,18 @@
     <ClCompile Include="MenuButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAOE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -213,6 +225,18 @@
       <Filter>Source Files\AbilityStuff</Filter>
     </ClInclude>
     <ClInclude Include="MenuButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAOE.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
