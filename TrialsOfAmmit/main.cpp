@@ -10,6 +10,7 @@
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
 #include "Chest.h"
+#include "Rooms/Room.h"
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
