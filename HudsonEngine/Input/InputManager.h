@@ -1,6 +1,7 @@
 #pragma once
 #include "../Util/stdafx.h"
 #include "../Render/Renderer.h"
+#include "../Editor/Editor.h"
 #include <iostream>
 #include <cstring>
 #include "json.hpp"
@@ -32,6 +33,7 @@ namespace Hudson::Input
 		glm::vec2 getScreenMPos() { return glm::vec2(screenMouseXpos, screenMouseYpos); }
 
 		void Setup(Hudson::Render::Renderer* renderer);
+		void SetEditorRef(Hudson::Editor::Editor* editorReference) { editorRef = editorReference; }
 
 		void setDownTemp(std::string keyName);
 
@@ -56,6 +58,9 @@ namespace Hudson::Input
 
 		static std::vector<InputManager*> instances;
 		Hudson::Render::Renderer* renderRef;
+
+		Hudson::Editor::Editor* editorRef;
+
 
 		void initialiseKeys();
 		void setKeyDown(int key, bool isDown);

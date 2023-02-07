@@ -29,6 +29,11 @@ Hudson::Editor::Editor::~Editor()
 
 }
 
+void Hudson::Editor::Editor::AddTool(std::string toolName, std::function<void()> toolFunction)
+{
+	toolFunctions.insert(std::pair<std::string, std::function<void()>>(toolName, toolFunction));
+}
+
 bool Hudson::Editor::Editor::LoadImGuiImage(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
 	int image_width = 0;
@@ -146,29 +151,42 @@ void Hudson::Editor::Editor::MenuBar()
 	}
 }
 
-void Hudson::Editor::Editor::Scene()
+void Hudson::Editor::Editor::Viewport()
 {
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-	ImGui::Begin("Scene", nullptr, ImGuiWindowFlags_NoScrollbar);
+	ImGui::Begin("Viewport", nullptr, ImGuiWindowFlags_NoScrollbar);
+
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+
 	//ImGui::Scale
 	ImTextureID textureID = reinterpret_cast<ImTextureID>(_engine->GetRenderer()->GetRenderedSceneTexture());
 
 	// TODO take an Unreal approach and make it so that the image caps at a certain size
-	ImVec2 imageSize = { ImGui::GetContentRegionAvail().x,ImGui::GetContentRegionAvail().y };
+	viewportSize = { ImGui::GetContentRegionAvail().x,ImGui::GetContentRegionAvail().y };
 
 	ImVec2 uv_min = ImVec2(0.0f, 1.0f); // Top-left
 	ImVec2 uv_max = ImVec2(1.0f, 0.0f); // Lower-right
 	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
 
-	ImGui::Image(textureID, imageSize, uv_min, uv_max, tint_col, border_col);
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+	cursorPos = ImVec2(io.MousePos.x - pos.x, io.MousePos.y - pos.y);
+
+	ImGui::Image(textureID, viewportSize, uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text("Pos: (%.2f, %.2f)", worldSpacePos.x, worldSpacePos.y);
+		ImGui::EndTooltip();
+	}
 
 	// TODO clean this up, doesnt need to run every frame but testing for now
 	// TODO detect a change easy enough
-	if (imageSize.x > 0 && imageSize.y > 0)
+	if (viewportSize.x > 0 && viewportSize.y > 0)
 	{
 		// Framebuffer can't have 0 or less so, this queues framebuffer recreate for when the application isnt minimized
-		_engine->GetRenderer()->CreateFramebuffers(imageSize.x, imageSize.y);
+		_engine->GetRenderer()->CreateFramebuffers(viewportSize.x, viewportSize.y);
 	}
 
 	ImGui::End();
@@ -522,7 +540,27 @@ void Hudson::Editor::Editor::ObjectProperties()
 void Hudson::Editor::Editor::Tools()
 {
 	ImGui::Begin("Tools");
-	ImGui::TextColored(IM_COLOR_GRAY, "Not yet implemented");
+	if(toolFunctions.size() > 0)
+	{
+		for (const auto& [key, value] : toolFunctions) {
+			ImGui::Text(key.c_str());
+			ImGui::SameLine();
+			ImGui::PushID((void*)(key.c_str()));
+			if (ImGui::SmallButton("+"))
+			{
+				// Call function
+				value();
+			}
+			ImGui::PopID();
+
+		}
+	}
+	else
+	{
+		ImGui::TextColored(IM_COLOR_GRAY, "No tools added");
+	}
+
+
 	ImGui::End();
 }
 
@@ -625,7 +663,7 @@ void Hudson::Editor::Editor::Input()
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
-	Scene();
+	Viewport();
 	Hierarchy();
 	ContentBrowser();
 	ComponentList();
