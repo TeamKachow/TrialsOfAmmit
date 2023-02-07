@@ -36,3 +36,31 @@ private:
 	std::vector<Hudson::Render::SpriteComponent*> spriteComponents;
 	std::vector<Hudson::Physics::ColliderComponent*> colliderComponents;
 };
+
+// ImGui Room Maker
+inline void StartRoomMaker(bool& isActive)
+{
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	ImGui::SetNextWindowPos(ImVec2(0,0));
+	ImGui::SetNextWindowSize(io.DisplaySize);
+
+	ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			ImGui::MenuItem("Open");
+			ImGui::MenuItem("Save");
+			if(ImGui::MenuItem("Exit"))
+			{
+				isActive = false;
+			}
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMenuBar();
+	}
+
+	ImGui::End();
+}

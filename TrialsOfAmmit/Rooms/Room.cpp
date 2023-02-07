@@ -254,10 +254,6 @@ void Room::OnTick(const double& dt)
 		_parent->AddComponent(collider);
 	}
 
-
-
-
-
 }
 
 void Room::OnDestroy()

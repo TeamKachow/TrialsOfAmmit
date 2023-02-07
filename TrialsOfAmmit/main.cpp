@@ -9,6 +9,8 @@
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
 
+#include "Rooms/Room.h"
+
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
 
@@ -202,11 +204,40 @@ void GameSetup()
     std::cout << "Game: engine has been set up!\n";
 }
 
+void ToolFunc()
+{
+    std::cout << "Hello" << std::endl;
+}
+
+void RoomGameSetup()
+{
+    engine->GetRenderer()->SetCamera(_defaultCamera);
+    resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+
+    Hudson::World::Scene* startScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(startScene);
+
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->SetName("Room");
+    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
+
+	#ifdef ENABLE_EDITOR
+	    ToolData toolData;
+	    toolData.function = StartRoomMaker;
+	    toolData.isRepeatingFunction = true;
+	    editor->AddTool("Room Maker", toolData);
+	#endif
+
+}
+
+
 int main() {
     Init();
 
     // Set up game scene/resources
-    GameSetup();
+    //GameSetup();
+    RoomGameSetup();
 
     // Run engine loop until it is shut down
     engine->Run();
