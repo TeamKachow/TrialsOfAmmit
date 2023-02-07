@@ -35,6 +35,9 @@
     <Filter Include="UI">
       <UniqueIdentifier>{5bff2961-da13-4ede-a120-ff2a1b5ae2e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ai">
+      <UniqueIdentifier>{572c0137-974f-4dce-b2a2-5b3c8f44ef6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Axe.cpp">
@@ -103,12 +106,18 @@
     <ClCompile Include="AbilityDisplayUI.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="AiAgent.cpp" />
-    <ClCompile Include="AiMelee.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuButton.cpp" />
     <ClCompile Include="Rooms\Room.cpp">
       <Filter>Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="AiAgent.cpp">
+      <Filter>Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="AiMelee.cpp">
+      <Filter>Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuButton.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -193,12 +202,18 @@
     <ClInclude Include="AbilityType.h">
       <Filter>AbilityStuff</Filter>
     </ClInclude>
-    <ClInclude Include="AiAgent.h" />
-    <ClInclude Include="AiMelee.h" />
     <ClInclude Include="facingDirection.h" />
-    <ClInclude Include="MenuButton.h" />
     <ClInclude Include="Rooms\Room.h">
       <Filter>Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="AiAgent.h">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="AiMelee.h">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuButton.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
