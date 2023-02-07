@@ -1,5 +1,6 @@
 #include "InputManager.h"
 #include "../Render/Renderer.h"
+#include "../Editor/Editor.h"
 #include "../Render/Window.h"
 
 using nlohmann::json;
@@ -244,23 +245,39 @@ bool Hudson::Input::InputManager::getActionState(std::string action)
 
 void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMat)
 {
-	int width, height;
-	glfwGetWindowSize(window, &width, &height);
+	if(editorRef!=nullptr) // editor viewport handling
+	{
+		glm::vec3 win(editorRef->cursorPos.x, editorRef->cursorPos.y, 0);
+		glm::vec4 viewport(0, 0, editorRef->viewportSize.x, editorRef->viewportSize.y);
 
-	glm::vec3 win(screenMouseXpos, screenMouseYpos, 0);
-	glm::vec4 viewport(0, 0, width, height);
+		glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
+		glm::vec4 positionClip = glm::vec4(screenPos.x, -screenPos.y, -1.0f, 1.0f);
+		glm::vec4 worldPos = inverseProjMat * positionClip;
 
-	glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
-	glm::vec4 positionClip = glm::vec4(screenPos.x, -screenPos.y, -1.0f, 1.0f);
-	glm::vec4 worldPos = inverseProjMat * positionClip;
+		worldMouseXpos = worldPos.x;
+		worldMouseYpos = worldPos.y;
 
-	//worldPos = glm::normalize(worldPos);
+		editorRef->worldSpacePos = ImVec2(worldMouseXpos, worldMouseYpos);
 
+		std::cout << worldMouseXpos << " " << worldMouseYpos << std::endl;
 
-	worldMouseXpos = worldPos.x;
-	worldMouseYpos = worldPos.y;
+	}
+	else
+	{
+		int width, height;
 
-	//return glm::vec2(worldPos.x, worldPos.y);
+		glfwGetWindowSize(window, &width, &height);
+		glm::vec3 win(screenMouseXpos, screenMouseYpos, 0);
+		glm::vec4 viewport(0, 0, width, height);
+
+		glm::vec2 screenPos = glm::unProject(win, glm::mat4(1), glm::mat4(1), viewport);
+		glm::vec4 positionClip = glm::vec4(screenPos.x, -screenPos.y, -1.0f, 1.0f);
+		glm::vec4 worldPos = inverseProjMat * positionClip;
+
+		worldMouseXpos = worldPos.x;
+		worldMouseYpos = worldPos.y;
+	}
+
 }
 
 void Hudson::Input::InputManager::setDownTemp(std::string keyName)
@@ -363,7 +380,7 @@ void InputManager::cursorPosCallback(GLFWwindow* window, double xpos, double ypo
 			if (instance->renderRef->GetCamera() != nullptr)
 				instance->setWorldCursorPos(window, instance->renderRef->GetCamera()->GetInverseViewProjectionMatrix());
 
-		std::cout << instance->getWorldMPos().x << " " << instance->getWorldMPos().y << std::endl;
+		//std::cout << instance->getWorldMPos().x << " " << instance->getWorldMPos().y << std::endl;
 	}
 	
 }

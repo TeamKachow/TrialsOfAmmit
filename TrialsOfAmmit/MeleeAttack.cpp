@@ -7,7 +7,7 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 
 	_slashSprite->SetGridSize(glm::vec2(3, 4));
 	_slashSprite->SetGridPos(glm::vec2(0, 0));
-	_slashSprite->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+	_slashSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
 	_slash = _slashRef;
 
@@ -18,12 +18,12 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 	_slashDirection = slashDirection;
 
 	_animTimer = 0;
-	_animSpeed = 0.2;
+	_animSpeed = 0.1;
 
 	_gridX = 0;
 	_gridY = 0;
 
-	_deleteTime = 0.5;
+	_deleteTime = 0.3;
 	_deleteTimer = 0;
 
 	_playerPos = playerPos;
@@ -60,6 +60,8 @@ void MeleeAttack::OnCreate()
 			_gridY = 0;
 			break;
 		case Stopped: 
+			_slash->GetTransform().pos.y = _playerPos.y + 50;
+			_slash->GetTransform().pos.x = _playerPos.x;
 			break;
 		default: ;
 	}

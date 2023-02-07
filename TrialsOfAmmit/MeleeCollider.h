@@ -5,7 +5,7 @@
 class MeleeCollider : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef);
+	MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef, float _damage, bool isAi);
 	~MeleeCollider();
 
 	void OnCreate() override;
@@ -13,14 +13,16 @@ public:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 
-	void AnimSlash(double dt);
 
 	Hudson::Render::SpriteComponent* _slashSprite;
 	Hudson::Entity::GameObject* _slash;
 	facingDirections _slashDirection;
 	glm::vec2 _playerPos;
+
 	Hudson::World::Scene* _currentScene;
 
+	float _meleeDamage;
+	bool _isAI;
 	float _animTimer;
 	float _animSpeed;
 
