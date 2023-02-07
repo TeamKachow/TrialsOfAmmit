@@ -3,6 +3,7 @@
 #include "AbilityDisplayUI.h"
 #include "PlayerHealthUI.h"
 #include "PickupBehaviour.h"
+#include "Rooms/Room.h"
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
@@ -96,6 +97,7 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	WallCollisions();
 	if (_isDamaged)
 	{
 		_playerSprite->SetColor(glm::vec3(1, 1, 1));
@@ -254,6 +256,36 @@ void Player::Respawn()
 	_parent->GetTransform().pos = glm::vec2(500, 500);
 	_playerHealth = 100;
 	_playersWeapon = new Axe;
+}
+
+void Player::WallCollisions()
+{
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
+	if (!colliders.empty())
+	{
+		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			if (other->GetParent()->GetComponent<Room>() != nullptr)
+			{
+				std::cout << "Hitting Wall" << "\n";
+				/*AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
+				if (_aiAgent != nullptr)
+				{
+					collider->ClearColliding();
+					break;
+				}*/
+			}
+			else
+			{
+				collider->ClearColliding();
+			}
+
+
+		}
+
+	}
 }
 
 void Player::AnimMove()//General move through sprite sheet function

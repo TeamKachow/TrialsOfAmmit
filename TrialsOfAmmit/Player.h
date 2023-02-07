@@ -60,7 +60,7 @@ private:
 	void HealthBarUI();
 
 	void Respawn();
-
+	void WallCollisions();
 	//Anim Functions
 	void AnimMove();
 	void OnDeath();

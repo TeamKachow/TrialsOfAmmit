@@ -166,8 +166,11 @@ void GameSetup()
     startScene->AddObject(blah2);
     blah2->GetTransform().pos.x = 1400.0f;
 
-  
-
+ 
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->SetName("Room");
+    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
 
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
