@@ -34,6 +34,8 @@ Hudson::Physics::ColliderComponent* Collider2;
 
 Hudson::Render::TextComponent* Text;
 
+Hudson::Render::SpriteComponent* LaserSprite;
+
 //Player 
 Hudson::Render::SpriteComponent* playerSprite;
 Hudson::Physics::PhysicsComponent* playerPhysics;
@@ -85,6 +87,8 @@ void GameSetup()
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
     resManager->LoadTexture("textures/MeleeSpriteSheet.png", true, "Slash");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
+    resManager->LoadTexture("textures/LaserHorizontal.png", true, "LaserHori");
+    resManager->LoadTexture("textures/LaserVertical.png", true, "LaserVert");
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
     playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
@@ -111,6 +115,12 @@ void GameSetup()
     Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
     Sprite2->SetGridSize(glm::vec2(3, 4));
     //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+
+    LaserSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("LaserVert"));
+    //HORIZONTAL SPRITES FOR LASERS ARE 48X320, VERTICAL ARE 320X48
+    LaserSprite->SetSize(glm::vec2(48.0f, 320.0f));
+    LaserSprite->SetGridSize(glm::vec2(5, 2));
+    LaserSprite->SetGridPos(glm::vec2(0, 1));
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
@@ -143,6 +153,12 @@ void GameSetup()
     blah->SetName("AI1");
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
+
+    Hudson::Entity::GameObject* Laser = new Hudson::Entity::GameObject();
+    Laser->AddComponent(LaserSprite);
+    Laser->GetTransform().scale.x = 48.0f;
+    Laser->GetTransform().scale.y = 640.0f;
+    startScene->AddObject(Laser);
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite2);
