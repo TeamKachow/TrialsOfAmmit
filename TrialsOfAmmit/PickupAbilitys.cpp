@@ -16,7 +16,7 @@ void PickupAbilitys::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
-	_abilitySprite->SetGridSize(glm::vec2(2, 1));
+	_abilitySprite->SetGridSize(glm::vec2(5, 1));
 	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_abilityCollider = new Hudson::Physics::ColliderComponent();
 
@@ -41,14 +41,17 @@ void PickupAbilitys::OnCreate()
 	}
 	if (_randomAbilityInt == 2)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(2, 1));
 		_abilityPickup = new Rage;
 	}
 	if (_randomAbilityInt == 3)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(3, 1));
 		_abilityPickup = new Heal;
 	}
 	if (_randomAbilityInt == 4)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		_abilityPickup = new RoomAOE;
 	}
 
