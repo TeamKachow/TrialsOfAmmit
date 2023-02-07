@@ -245,7 +245,7 @@ bool Hudson::Input::InputManager::getActionState(std::string action)
 
 void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMat)
 {
-	if(editorRef!=nullptr)
+	if(editorRef!=nullptr) // editor viewport handling
 	{
 		glm::vec3 win(editorRef->cursorPos.x, editorRef->cursorPos.y, 0);
 		glm::vec4 viewport(0, 0, editorRef->viewportSize.x, editorRef->viewportSize.y);
@@ -256,6 +256,9 @@ void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMa
 
 		worldMouseXpos = worldPos.x;
 		worldMouseYpos = worldPos.y;
+
+		editorRef->worldSpacePos = ImVec2(worldMouseXpos, worldMouseYpos);
+
 		std::cout << worldMouseXpos << " " << worldMouseYpos << std::endl;
 
 	}

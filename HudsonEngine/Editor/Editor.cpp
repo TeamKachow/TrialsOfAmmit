@@ -172,7 +172,7 @@ void Hudson::Editor::Editor::Viewport()
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		ImGui::Text("Pos: (%.2f, %.2f)", cursorPos.x, cursorPos.y);
+		ImGui::Text("Pos: (%.2f, %.2f)", worldSpacePos.x, worldSpacePos.y);
 		ImGui::EndTooltip();
 	}
 

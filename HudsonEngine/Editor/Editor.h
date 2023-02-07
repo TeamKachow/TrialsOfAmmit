@@ -34,6 +34,7 @@ namespace Hudson::Editor
 
 		ImVec2 viewportSize = { 0,0 };
 		ImVec2 cursorPos = { 0,0 };
+		ImVec2 worldSpacePos = { 0,0 };
 
 	private:
 
