@@ -58,6 +58,11 @@ void Init()
     engine->Setup();
     engine->GetRenderer()->SetupDefaultShaders();
 
+#ifdef ENABLE_EDITOR
+    engine->GetInputManager()->SetEditorRef(editor);
+#endif
+
+
 }
 
 void GameSetup()
@@ -160,6 +165,7 @@ int main() {
 
     // Run engine loop until it is shut down
     engine->Run();
+
 
     // Clean up
     engine->Cleanup();
