@@ -1,6 +1,7 @@
 ﻿#include "../Entity/GameObject.h"
 
 #include "Behaviour.h"
+#include "../Common/Engine.h"
 #include "../Entity/Component.h"
 #include "../Util/Debug.h"
 
@@ -183,6 +184,8 @@ void Hudson::Entity::from_json(const nlohmann::json& j, GameObject& gameObject)
 
 void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
 {
+    Hudson::Common::ComponentRegistry* componentRegistry = Hudson::Common::Engine::GetInstance()->GetComponentRegistry();
+
     _name = j.at("name");
     _serialId = j.at("id");
     _transform = j.at("transform");
@@ -190,12 +193,20 @@ void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
 
     for (auto&& componentJson : j.at("components"))
     {
-        // TODO: resolve converter from component registry using type name
+        // check component is registered
+        std::string typeName = componentJson.at("type");
+        if (!componentRegistry->IsComponentRegistered(typeName))
+        {
+            Hudson::Util::Debug::LogError(std::format("Could not find component registered as type '{}'!", typeName));
+            continue;
+        }
 
-        // TODO: construct from component registry
-
-        // TODO: from_json each object
+        // construct and initialise object using component registry
+        Component* comp = componentRegistry->CreateComponentFromJson(componentJson);
+        _components.Add(comp);
     }
+
+    _components.Update();
 }
 
 void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const

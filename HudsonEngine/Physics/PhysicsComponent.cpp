@@ -68,9 +68,9 @@ void Hudson::Physics::PhysicsComponent::UpdatePosition(float deltaTime)
 
 void Hudson::Physics::PhysicsComponent::FromJson(const nlohmann::json& j)
 {
-	_velocity = j.at("velocity");
-	_acceleration = j.at("acceleration");
-	_force= j.at("force");
+	_velocity = j.at("velocity").get<glm::vec2>();
+	_acceleration = j.at("acceleration").get<glm::vec2>();
+	_force= j.at("force").get<glm::vec2>();
 	_mass= j.at("mass");
 	_constantAccel= j.at("constantAccel");
 }

@@ -110,10 +110,10 @@ void Hudson::Render::SpriteComponent::FromJson(const nlohmann::json& j)
     // TODO: _shader = resourceManager->GetShaderName(j.at("shader"));
     // TODO: _texture = resourceManager->GetTextureName(j.at("texture"));
 
-    _gridSize = j.at("gridSize");
-    _gridPos = j.at("gridPos");
-    _color = j.at("color");
-    _size = j.at("size");
+    _gridSize = j.at("gridSize").get<glm::vec2>();
+    _gridPos = j.at("gridPos").get<glm::vec2>();
+    _color = j.at("color").get<glm::vec3>();
+    _size = j.at("size").get<glm::vec2>();
 }
 
 void Hudson::Render::SpriteComponent::ToJson(nlohmann::json& j)

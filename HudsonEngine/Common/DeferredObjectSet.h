@@ -28,8 +28,6 @@ namespace Hudson::Common
         DeferredObjectSet(std::function<void(Action&)> callback = {}) : _callback(callback)
         {}
 
-        void SetImmediate(std::set<T>& newContents, bool clearPending = false);
-
         /**
          * \brief Get a view of the object currently held at this point in time.
          * \return A view of currently-held objects.

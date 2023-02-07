@@ -40,7 +40,26 @@ namespace Hudson::Common
          */
         std::map<std::string, Entry>& GetKnownComponents();
 
+        /**
+         * \brief Check whether a component type has been registered with the given type name.
+         * \param name The component type name to check
+         * \return Whether a component type has been registered with the name
+         */
         bool IsComponentRegistered(std::string& name);
+
+        /**
+         * \brief Create an empty component of the given type.
+         * \param name The component type name to create
+         * \return An empty component with the given type
+         */
+        Entity::Component* CreateEmptyComponent(std::string name);
+
+        /**
+         * \brief Create and initialise a component using a JSON object for values.
+         * \param j The JSON tree of the component
+         * \return An initialised component of the appropriate type 
+         */
+        Entity::Component* CreateComponentFromJson(const nlohmann::json& j);
     };
 
     template <Entity::is_editor_component T>

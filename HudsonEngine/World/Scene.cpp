@@ -68,6 +68,11 @@ void Hudson::World::Scene::Tick(const double dt)
 
 Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* object)
 {
+    if (object == nullptr)
+    {
+        Hudson::Util::Debug::LogError("Can't add a null object!");
+    }
+
     if (object->_scene != nullptr)
     {
         std::stringstream msg;
@@ -83,6 +88,11 @@ Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* 
 
 Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObject* object)
 {
+    if (object == nullptr)
+    {
+        Hudson::Util::Debug::LogError("Can't remove a null object!");
+    }
+
     if (!_objects.Get().contains(object))
     {
         std::stringstream msg;
