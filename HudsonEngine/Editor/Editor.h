@@ -9,6 +9,13 @@ struct Action
 	bool isSelected;
 };
 
+struct ToolData
+{
+	std::function<void(bool&)> function;
+	bool isRepeatingFunction = false;
+	bool isActive = false;
+};
+
 namespace Hudson::Common
 {
 	class Engine;
@@ -32,7 +39,7 @@ namespace Hudson::Editor
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
 		~Editor();
 
-		void AddTool(std::string, std::function<void()> toolFunction);
+		void AddTool(std::string, ToolData);
 
 		ImVec2 viewportSize = { 0,0 };
 		ImVec2 cursorPos = { 0,0 };
@@ -65,6 +72,6 @@ namespace Hudson::Editor
 
 		std::filesystem::path currentPath;
 
-		std::map<std::string, std::function<void()>> toolFunctions;
+		std::map<std::string, ToolData> toolFunctions;
 	};
 }

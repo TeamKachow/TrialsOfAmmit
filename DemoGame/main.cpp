@@ -65,7 +65,7 @@ void Init()
 
 }
 
-void Hello()
+void Hello(bool& isActive)
 {
     std::cout << "Hello" << std::endl;
 }
@@ -83,8 +83,10 @@ void GameSetup()
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
 
 	#ifdef ENABLE_EDITOR
-    editor->AddTool(std::string("Room"), Hello);
-    editor->AddTool(std::string("Room"), Hello);
+    ToolData toolData;
+    toolData.function = Hello;
+    toolData.isRepeatingFunction = false;
+    editor->AddTool("Hello", toolData);
 	#endif
 
 
