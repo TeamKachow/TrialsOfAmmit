@@ -37,30 +37,59 @@ private:
 	std::vector<Hudson::Physics::ColliderComponent*> colliderComponents;
 };
 
-// ImGui Room Maker
-inline void StartRoomMaker(bool& isActive)
-{
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+struct textureRefData {
+	int textureID = -1;
+	int gridPosX = 0;
+	int gridPosY = 0;
+	int gridSizeX = 1;
+	int gridSizeY = 1;
+	std::string textureRoot = "";
 
-	ImGui::SetNextWindowPos(ImVec2(0,0));
-	ImGui::SetNextWindowSize(io.DisplaySize);
-
-	ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar);
-	if (ImGui::BeginMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ImGui::MenuItem("Open");
-			ImGui::MenuItem("Save");
-			if(ImGui::MenuItem("Exit"))
-			{
-				isActive = false;
-			}
-			ImGui::EndMenu();
-		}
-
-		ImGui::EndMenuBar();
+	void Clear() {
+		textureID = -1;
+		gridPosX = 0;
+		gridPosY = 0;
+		gridSizeX = 1;
+		gridSizeY = 1;
+		textureRoot = "";
 	}
+};
 
-	ImGui::End();
-}
+struct tileData{
+	bool isSolid = false;
+	int textureRef = -1;
+	int objectRef = -1;
+};
+
+struct ImGuiRoomData
+{
+	int roomX = 10;
+	int roomY = 10;
+	bool isResizing = false;
+
+	tileData* selected = nullptr;
+	tileData* roomGrid = new tileData[roomX * roomY];
+
+	std::vector<textureRefData*> textureRefs;
+
+
+
+	void updateRoomSize(int currentRoomX, int currentRoomY) {
+		
+		if (isResizing == false) {
+			isResizing = true;
+
+			// make temp copy
+			int size = (currentRoomX * currentRoomY) * 2;
+			tileData* tempGridData = new tileData[size];
+			for (int i = 0; i < size; ++i) {
+				tempGridData[i] = roomGrid[i];
+			}
+			roomGrid = tempGridData;
+
+			isResizing = false;
+		}
+	}
+};
+
+void StartRoomMaker(bool& isActive);

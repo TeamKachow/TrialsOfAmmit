@@ -213,6 +213,8 @@ void RoomGameSetup()
 {
     engine->GetRenderer()->SetCamera(_defaultCamera);
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+    resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
+
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);
