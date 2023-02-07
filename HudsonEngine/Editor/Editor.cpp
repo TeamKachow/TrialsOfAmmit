@@ -1,5 +1,6 @@
 #include "Editor.h"
 #include "../Common/Engine.h"
+#include "../Common/ComponentRegistry.h"
 #include "../Entity/Component.h"
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
@@ -17,7 +18,7 @@ static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstring_converter;
 
 extern const std::filesystem::path filePath = std::filesystem::current_path();
 
-Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry), currentPath(filePath)
+Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine), currentPath(filePath)
 {
 	engine->RegisterPreFrameHook([&](Common::Engine* engine)
 		{
@@ -427,11 +428,13 @@ void Hudson::Editor::Editor::ContentBrowser()
 
 void Hudson::Editor::Editor::ComponentList()
 {
+	Hudson::Common::ComponentRegistry* registry = _engine->GetComponentRegistry();
+
 	ImGui::Begin("Components List");
 
-	if (_registry)
+	if (registry)
 	{
-		if (_registry->GetKnownComponents().empty())
+		if (registry->GetKnownComponents().empty())
 		{
 			ImGui::TextColored(IM_COLOR_ORANGE, "No components registered!");
 		}
@@ -443,15 +446,15 @@ void Hudson::Editor::Editor::ComponentList()
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select a component below to add.");
 
-			for (auto& element : _registry->GetKnownComponents())
+			for (auto& [name, entry] : registry->GetKnownComponents())
 			{
-				ImGui::Text(element.name.c_str());
+				ImGui::Text(name.c_str());
 				ImGui::SameLine();
-				ImGui::PushID((void*)(&element));
+				ImGui::PushID((void*)(&entry));
 				if (ImGui::SmallButton("+"))
 				{
 					// Add the component
-					auto component = element.constructor();
+					auto component = entry.constructor();
 					_selectedObj->AddComponent(component);
 				}
 				ImGui::PopID();
@@ -503,7 +506,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%u", /*_selectedObj.GetSerialID()*/ 0); // TODO
+				ImGui::Text("%u", _selectedObj->GetSerialID());
 				ImGui::TableNextColumn();
 			}
 

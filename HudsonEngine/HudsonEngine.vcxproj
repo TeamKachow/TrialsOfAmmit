@@ -97,7 +97,7 @@
     <ClCompile Include="Common\EngineAccessors.cpp" />
     <ClCompile Include="Common\ISerialisable.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
-    <ClCompile Include="Editor\ComponentRegistry.cpp" />
+    <ClCompile Include="Common\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
     <ClCompile Include="Entity\Behaviour.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
@@ -135,7 +135,7 @@
     <ClInclude Include="Common\DeferredObjectSet.h" />
     <ClInclude Include="Common\ISerialisable.h" />
     <ClInclude Include="Common\ResourceManager.h" />
-    <ClInclude Include="Editor\ComponentRegistry.h" />
+    <ClInclude Include="Common\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />
     <ClInclude Include="Entity\Behaviour.h" />
     <ClInclude Include="Entity\Common.h" />

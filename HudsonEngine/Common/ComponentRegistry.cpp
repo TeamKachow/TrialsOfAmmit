@@ -4,7 +4,7 @@
 #include "../Physics/ColliderComponent.h"
 #include "../Render/TextComponent.h"
 
-void Hudson::Editor::ComponentRegistry::RegisterEngineComponents()
+void Hudson::Common::ComponentRegistry::RegisterEngineComponents()
 {
     Register<Render::SpriteComponent>("Sprite");
     Register<Physics::PhysicsComponent>("Physics");
@@ -12,7 +12,12 @@ void Hudson::Editor::ComponentRegistry::RegisterEngineComponents()
 	Register<Render::TextComponent>("Text");
 }
 
-std::vector<Hudson::Editor::ComponentRegistry::Entry>& Hudson::Editor::ComponentRegistry::GetKnownComponents()
+std::map<std::string, Hudson::Common::ComponentRegistry::Entry>& Hudson::Common::ComponentRegistry::GetKnownComponents()
 {
     return _entries;
+}
+
+bool Hudson::Common::ComponentRegistry::IsComponentRegistered(std::string& name)
+{
+    return _entries.contains(name);
 }

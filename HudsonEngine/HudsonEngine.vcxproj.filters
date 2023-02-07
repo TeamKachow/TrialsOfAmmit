@@ -67,9 +67,6 @@
     <ClCompile Include="Common\ResourceManager.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\ComponentRegistry.cpp">
-      <Filter>Editor</Filter>
-    </ClCompile>
     <ClCompile Include="Editor\Editor.cpp">
       <Filter>Editor</Filter>
     </ClCompile>
@@ -157,6 +154,9 @@
     <ClCompile Include="Common\ISerialisable.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="Common\ComponentRegistry.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\imconfig.h">
@@ -191,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="Common\ResourceManager.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Editor\ComponentRegistry.h">
-      <Filter>Editor</Filter>
     </ClInclude>
     <ClInclude Include="Editor\Editor.h">
       <Filter>Editor</Filter>
@@ -281,6 +278,9 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Common\ISerialisable.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ComponentRegistry.h">
       <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>

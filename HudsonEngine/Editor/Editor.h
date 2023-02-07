@@ -1,6 +1,6 @@
 #pragma once
 #include "../Util/stdafx.h"
-#include "../Editor/ComponentRegistry.h"
+#include "../Common/ComponentRegistry.h"
 
 struct Action
 {
@@ -31,7 +31,7 @@ namespace Hudson::Editor
 		};
 
 		Common::Engine* _engine;
-		ComponentRegistry* _registry;
+
 		bool openInput;
 		char selected;
 		char keyAction[255]{};
@@ -45,7 +45,7 @@ namespace Hudson::Editor
 		std::string _sceneToLoad;
 
 	public:
-		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
+		Editor(Common::Engine* engine);
 		~Editor();
 
 	private:
