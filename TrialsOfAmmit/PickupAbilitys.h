@@ -11,12 +11,12 @@
 class PickupAbilitys : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	PickupAbilitys(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject);
+	PickupAbilitys(glm::vec2 spawnPos);
 	~PickupAbilitys();
 
 	BaseAbilityClass* _abilityPickup;
 		
-	Hudson::Entity::GameObject* _abilityObject;
+	glm::vec2 _spawnPos;
 	Hudson::Render::SpriteComponent* _abilitySprite;
 	Hudson::Physics::ColliderComponent* _abilityCollider;
 	int _randomAbilityInt;

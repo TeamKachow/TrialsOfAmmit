@@ -48,7 +48,6 @@ void Init()
 
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
-
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
@@ -57,35 +56,50 @@ void Init()
 #endif
 
     engine->Setup();
+    engine->GetRenderer()->SetupDefaultShaders();
+
+#ifdef ENABLE_EDITOR
+    engine->GetInputManager()->SetEditorRef(editor);
+#endif
+
+
 }
+
+void Hello(bool& isActive)
+{
+    std::cout << "Hello" << std::endl;
+}
+
 
 void GameSetup()
 {
     // Set up default camera
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
-    // Load shaders
-    resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
-    resManager->LoadShader("../HudsonEngine/Render/shaders/renderTextureVert.glsl", "../HudsonEngine/Render/shaders/renderTextureFrag.glsl", std::string("screenShader"));
-    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);
+    //engine->GetRenderer()->CreateFramebuffers(1920, 1080);
 
     // Load textures
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+
+	#ifdef ENABLE_EDITOR
+    ToolData toolData;
+    toolData.function = Hello;
+    toolData.isRepeatingFunction = false;
+    editor->AddTool("Hello", toolData);
+	#endif
+
 
     // Create scene
     {
 
         Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite1->SetGridSize(glm::vec2(3, 4));
         Sprite1->SetDepthOrder(1);
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite2->SetGridSize(glm::vec2(3, 4));
         Sprite2->SetDepthOrder(2);
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 
         Physics1 = new Hudson::Physics::PhysicsComponent();
         Physics1->SetMass(1.0f);
@@ -102,11 +116,11 @@ void GameSetup()
         Collider1 = new Hudson::Physics::ColliderComponent();
         Collider2 = new Hudson::Physics::ColliderComponent();
 
-        Text1 = new Hudson::Render::TextComponent(glm::vec2(20.0f, 20.0f));
+        Text1 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
         Text1->SetText("the quick brown fox jumps over the lazy dog");
         Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
 
-        Text2 = new Hudson::Render::TextComponent(glm::vec2(20.0f, 20.0f));
+        Text2 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
         Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
         Text2->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -150,12 +164,7 @@ void GameSetup()
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
 
-        Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
-        room->SetName("Room");
-        room->AddComponent(new Room("rooms/jsonROOM.room"));
-
-        //room->GetTransform().scale = glm::vec2(32.0f, 32.0f);
-        startScene->AddObject(room);
+        
     }
 
     std::cout << "DemoGame: engine has been set up!\n";
@@ -170,6 +179,7 @@ int main() {
 
     // Run engine loop until it is shut down
     engine->Run();
+
 
     // Clean up
     engine->Cleanup();

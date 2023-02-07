@@ -7,31 +7,8 @@ Projectile::~Projectile()
 
 }
 
-Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
+Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
 {
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	if (_weaponFiring == WT_Bow)
-	{
-		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
-	}
-	if (_weaponFiring == WT_SlingShot)
-	{
-		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Rock"));
-	}
-	//TODO CHANGE DEPENDING ON THE WEAPON FIRING
-	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
-	_projectileCollider = new Hudson::Physics::ColliderComponent();
-
-
-	_projectileSprite->SetGridSize(glm::vec2(3, 4));
-	_projectileSprite->SetGridPos(glm::vec2(0, 0));
-	_projectilePhysics->SetMass(1.0f);
-
-	_projectile = _projectileRef;
-	_projectile->AddComponent(_projectileSprite);
-	_projectile->AddComponent(_projectilePhysics);
-	_projectile->AddComponent(_projectileCollider);
-	_projectile->SetName("Projectile");
 
 	_projectileDirection = projectileDirection;
 
@@ -50,41 +27,64 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 	_spawnPos = spawnPos;
 
 	_currentScene = CurrentScene;
-	_currentScene->AddObject(_projectile);
+	
 }
 
 void Projectile::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	if (_currentWeaponFiring == WT_Bow)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
+	}
+	if (_currentWeaponFiring == WT_SlingShot)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Rock"));
+	}
+	//TODO CHANGE DEPENDING ON THE WEAPON FIRING
+	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
+	_projectileCollider = new Hudson::Physics::ColliderComponent();
+
+	_projectileSprite->SetGridSize(glm::vec2(3, 4));
+	_projectileSprite->SetGridPos(glm::vec2(0, 0));
+	_projectilePhysics->SetMass(1.0f);
+
+	_parent->AddComponent(_projectileSprite);
+	_parent->AddComponent(_projectilePhysics);
+	_parent->AddComponent(_projectileCollider);
+	_parent->SetName("Projectile");
+
+	
 	switch (_projectileDirection)
 	{
 	case Down:
 		_projectilePhysics->SetVelocity(glm::vec2(0, _projectileMoveSpeed));
-		_projectile->GetTransform().pos.y = _spawnPos.y + 50 ;
-		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_parent->GetTransform().pos.y = _spawnPos.y + 50 ;
+		_parent->GetTransform().pos.x = _spawnPos.x;
 		_gridY = 3;
 		break;
 	case Left:
 		_projectilePhysics->SetVelocity(glm::vec2(-_projectileMoveSpeed, 0));
-		_projectile->GetTransform().pos.x = _spawnPos.x - 50;
-		_projectile->GetTransform().pos.y = _spawnPos.y;
+		_parent->GetTransform().pos.x = _spawnPos.x - 50;
+		_parent->GetTransform().pos.y = _spawnPos.y;
 		_gridY = 2;
 		break;
 	case Right:
 		_projectilePhysics->SetVelocity(glm::vec2(_projectileMoveSpeed, 0));
-		_projectile->GetTransform().pos.x = _spawnPos.x + 50;
-		_projectile->GetTransform().pos.y = _spawnPos.y;
+		_parent->GetTransform().pos.x = _spawnPos.x + 50;
+		_parent->GetTransform().pos.y = _spawnPos.y;
 		_gridY = 1;
 		break;
 	case Up:
 		_projectilePhysics->SetVelocity(glm::vec2(0, -_projectileMoveSpeed));
-		_projectile->GetTransform().pos.y = _spawnPos.y - 50;
-		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_parent->GetTransform().pos.y = _spawnPos.y - 50;
+		_parent->GetTransform().pos.x = _spawnPos.x;
 		_gridY = 0;
 		break;
 	case Stopped: 
 		_projectilePhysics->SetVelocity(glm::vec2(0, _projectileMoveSpeed));
-		_projectile->GetTransform().pos.y = _spawnPos.y + 50;
-		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_parent->GetTransform().pos.y = _spawnPos.y + 50;
+		_parent->GetTransform().pos.x = _spawnPos.x;
 		_gridY = 3;
 		break;
 	default: ;
@@ -106,7 +106,7 @@ void Projectile::OnTick(const double& dt)
 	}
 	if(_deleteTimer >= _projectileRange)
 	{
-		_currentScene->RemoveObject(_projectile);
+		_currentScene->RemoveObject(_parent);
 	}
 
 	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
@@ -123,7 +123,7 @@ void Projectile::OnTick(const double& dt)
 				{
 					_aiAgent->TakeDamage(_projectileDamage);
 					collider->ClearColliding();
-					_currentScene->RemoveObject(_projectile);
+					_currentScene->RemoveObject(_parent);
 					break;
 				}
 			}

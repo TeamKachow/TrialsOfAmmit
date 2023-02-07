@@ -13,14 +13,25 @@ class Player : public Hudson::Entity::Behaviour, public Hudson::Common::IEditabl
 private:
 	//Set up Components
 	Hudson::Input::InputManager _inputManager;
-	Hudson::Physics::PhysicsComponent* _playerPhysics;
+	Hudson::Physics::PhysicsComponent* playerPhysics;
 	Hudson::World::Scene* _currentScene;
+	Hudson::Physics::ColliderComponent* playerCollider;
+
+	Hudson::Render::SpriteComponent* GraveSprite;
+
+	float _deathTimer;
+	float _deathAnim;
+	int _deathGridX;
 
 	//Anim Variables
 	double _playerAnimSpeed = 0.2;
 	double _playerAnimTimer = 0;
 	int _gridX = 0;
 	int _gridY = 0;
+
+
+	bool _isDamaged;
+	bool _isDead;
 
 	//Attack Timer
 	double _attackTimer = 0;
@@ -48,6 +59,8 @@ private:
 	void CreateUI();
 	void HealthBarUI();
 
+	void Respawn();
+
 	//Anim Functions
 	void AnimMove();
 	void OnDeath();
@@ -57,13 +70,19 @@ public:
 	Hudson::Render::SpriteComponent* _playerSprite;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
-	float _playerMovementSpeed = 45.0;
+	float _maxHealth;
+	float _playerMovementSpeed = 500;
 	float _playerHealth = 100.0f;
+	float _playerDamageMod;
 	bool _godMode;
 
-	void TakeDamage(float _damageTaken);
+	void PassiveAddMaxHealth(float additionalHealth);
+	void PassiveAddSpeed(float additionalSpeed);
+	void PassiveAddDamageMod(float additionalDamage);
 
-	Player(Hudson::Render::SpriteComponent* playerSprite, double animSpeed = 0.8);
+	void TakeDamage(float _damageTaken);
+	Player(const Player& other) = default;
+	Player(glm::vec2 spawnPos = glm::vec2(0,0));
 	~Player() override;
 	
 	//Base Needed Functions

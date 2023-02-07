@@ -7,10 +7,9 @@
 class AbilityDisplayUI : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public: 
-	AbilityDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject, Hudson::World::Scene* _Scene, Player* _player);
+	AbilityDisplayUI(glm::vec2 spawnPos, Hudson::World::Scene* _Scene, Player* _player);
 	~AbilityDisplayUI();
 
-	Hudson::Entity::GameObject* _abilityFrameUI;
 	Hudson::Render::SpriteComponent* _abilityFrameUISprite;
 	Hudson::Render::SpriteComponent* _frameSprite;
 	Hudson::World::Scene* _currentScene;

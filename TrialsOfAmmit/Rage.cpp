@@ -14,6 +14,8 @@ Rage::Rage()
 
 	_rageAttackDamageMultiplier = 2.0f;
 	_rageAttackSpeedMultiplier = 1.25f;
+
+	_abilityType = AT_RAGE;
 }
 
 Rage::~Rage()

@@ -1,22 +1,7 @@
 #include "MeleeAttack.h"
 
-MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, Hudson::Entity::GameObject* _slashRef) : Behaviour("MeleeBehaviour")
+MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene) : Behaviour("MeleeBehaviour")
 {
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_slashSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Slash"));
-
-	_slashSprite->SetGridSize(glm::vec2(3, 4));
-	_slashSprite->SetGridPos(glm::vec2(0, 0));
-	_slashSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	_slash = _slashRef;
-
-	_slash->AddComponent(_slashSprite);
-	
-	_slash->SetName("SlashAttack");
-
-	_slashDirection = slashDirection;
-
 	_animTimer = 0;
 	_animSpeed = 0.1;
 
@@ -27,9 +12,9 @@ MeleeAttack::MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, H
 	_deleteTimer = 0;
 
 	_playerPos = playerPos;
-
+	_slashDirection = slashDirection;
 	_currentScene = currentScene;
-	_currentScene->AddObject(_slash);
+
 }
 
 MeleeAttack::~MeleeAttack()
@@ -38,30 +23,40 @@ MeleeAttack::~MeleeAttack()
 
 void MeleeAttack::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_slashSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Slash"));
+
+	_slashSprite->SetGridSize(glm::vec2(3, 4));
+	_slashSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+
+	_parent->AddComponent(_slashSprite);
+	_parent->SetName("SlashAttack");
+	_slashSprite->SetDepthOrder(-1);
+
 	switch (_slashDirection) {
 		case Down:
-			_slash->GetTransform().pos.y = _playerPos.y + 50;
-			_slash->GetTransform().pos.x = _playerPos.x;
+			_parent->GetTransform().pos.y = _playerPos.y + 50;
+			_parent->GetTransform().pos.x = _playerPos.x;
 			_gridY = 3;
 			break;
 		case Left:
-			_slash->GetTransform().pos.y = _playerPos.y;
-			_slash->GetTransform().pos.x = _playerPos.x - 50;
+			_parent->GetTransform().pos.y = _playerPos.y;
+			_parent->GetTransform().pos.x = _playerPos.x - 50;
 			_gridY = 2;
 			break;
 		case Right:
-			_slash->GetTransform().pos.y = _playerPos.y;
-			_slash->GetTransform().pos.x = _playerPos.x + 50;
+			_parent->GetTransform().pos.y = _playerPos.y;
+			_parent->GetTransform().pos.x = _playerPos.x + 50;
 			_gridY = 1;
 			break;
 		case Up:
-			_slash->GetTransform().pos.y = _playerPos.y - 50;
-			_slash->GetTransform().pos.x = _playerPos.x;
+			_parent->GetTransform().pos.y = _playerPos.y - 50;
+			_parent->GetTransform().pos.x = _playerPos.x;
 			_gridY = 0;
 			break;
 		case Stopped: 
-			_slash->GetTransform().pos.y = _playerPos.y + 50;
-			_slash->GetTransform().pos.x = _playerPos.x;
+			_parent->GetTransform().pos.y = _playerPos.y + 50;
+			_parent->GetTransform().pos.x = _playerPos.x;
 			break;
 		default: ;
 	}
@@ -82,7 +77,7 @@ void MeleeAttack::OnTick(const double& dt)
 	}
 	if (_deleteTimer >= _deleteTime)
 	{
-		_currentScene->RemoveObject(_slash);
+		_currentScene->RemoveObject(_parent);
 	}
 }
 

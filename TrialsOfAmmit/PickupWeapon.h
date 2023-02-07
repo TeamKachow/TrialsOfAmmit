@@ -12,13 +12,13 @@
 class PickupWeapon : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject);
+	PickupWeapon(glm::vec2 spawnPos);
 	~PickupWeapon();
 	void RandomiseItem();
 	BaseWeaponClass* _weaponPickup;
 	WeaponUpgradeTypes _weaponLevel;
 
-	Hudson::Entity::GameObject* _weaponObject;
+	glm::vec2 _spawnPos;
 	Hudson::Render::SpriteComponent* _weaponSprite;
 	Hudson::Physics::ColliderComponent* _weaponCollider;
 

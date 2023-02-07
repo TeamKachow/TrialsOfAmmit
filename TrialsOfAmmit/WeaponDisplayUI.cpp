@@ -1,25 +1,16 @@
 #include "WeaponDisplayUI.h"
 
 
-WeaponDisplayUI::WeaponDisplayUI(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject, Hudson::World::Scene* _Scene, Player* _player) : Behaviour("WeaponUIDisplay")
+WeaponDisplayUI::WeaponDisplayUI(glm::vec2 spawnPos, Hudson::World::Scene* _Scene, Player* _player) : Behaviour("WeaponUIDisplay")
 {
-	_weaponUI = _refObject;
+	//_weaponUI = _refObject;
 	_currentScene = _Scene;
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_weaponUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("UIFrame"));
-	_weaponUISprite->SetSize(glm::vec2(16.0f, 16.0f));
-	_weaponUISprite->SetGridSize(glm::vec2(1, 1));
-	_weaponUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-	_weaponUISprite->SetDepthOrder(1);
-	_weaponUI->AddComponent(_weaponUISprite);
-	_weaponUI->SetName("WeaponUIFrame");
-	_weaponUI->GetTransform().scale = (glm::vec2(64, 64));
 	_currentPos = spawnPos;
-	_weaponUI->GetTransform().pos = spawnPos;
+	_currentPlayer = _player;
+
 	_gridX = 0;
 	_gridY = 0;
 
-	_currentPlayer = _player;
 }
 
 WeaponDisplayUI::~WeaponDisplayUI()
@@ -28,11 +19,22 @@ WeaponDisplayUI::~WeaponDisplayUI()
 
 void WeaponDisplayUI::OnCreate()
 {
+	//Makes the Frame
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	Hudson::Entity::GameObject* WeaponUISprite = new Hudson::Entity::GameObject();
+	_weaponUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("UIFrame"));
+	_weaponUISprite->SetGridSize(glm::vec2(1, 1));
+	_weaponUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_weaponUISprite->SetDepthOrder(1);
+	_parent->AddComponent(_weaponUISprite);
+	_parent->SetName("WeaponUIFrame");
+	_parent->GetTransform().scale = (glm::vec2(64, 64));
+	
+	_parent->GetTransform().pos = _currentPos;
 
+
+	//Makes the Weapon Icon
+	Hudson::Entity::GameObject* WeaponUISprite = new Hudson::Entity::GameObject();
 	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-	_weaponSprite->SetSize(glm::vec2(16.0f, 16.0f));
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));

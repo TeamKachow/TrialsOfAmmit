@@ -36,7 +36,7 @@ void Hudson::Util::Timestep::CalculateTimestep()
 	if (glfwGetTime() - _timer > 1.0)
 	{
 		_timer++;
-		std::cout << "FPS: " << _updates << std::endl;
+		//std::cout << "UPS: " << _updates << std::endl;
 		_updates = 0;
 		_frames = 0;
 	}

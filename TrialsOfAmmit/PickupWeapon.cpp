@@ -5,32 +5,39 @@ using namespace std;
 
 
 
-PickupWeapon::PickupWeapon(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject) : Behaviour("WeaponPickUp")
+PickupWeapon::PickupWeapon(glm::vec2 spawnPos) : Behaviour("WeaponPickUp")
 {
-	_weaponObject = _refObject;
-	_weaponCollider = new Hudson::Physics::ColliderComponent();
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
-	_weaponSprite->SetSize(glm::vec2(16.0f, 16.0f));
-	_weaponSprite->SetGridSize(glm::vec2(5, 5));
-	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	_weaponObject->AddComponent(_weaponSprite);
-	_weaponObject->AddComponent(_weaponCollider);
-	_weaponObject->SetName("WeaponPickup");
-
-	_weaponObject->GetTransform().pos = spawnPos;
 
 	_gridX = 0;
 	_gridY = 0;
+	_spawnPos = spawnPos;
 
 	_randomRarityInt = 0;
 	_randomRarityInt = 0;
-	RandomiseItem();
+
 }
 
 PickupWeapon::~PickupWeapon()
 {
+}
+
+void PickupWeapon::OnCreate()
+{
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
+	_weaponSprite->SetGridSize(glm::vec2(5, 5));
+	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_weaponCollider = new Hudson::Physics::ColliderComponent();
+
+	_parent->AddComponent(_weaponSprite);
+	_parent->AddComponent(_weaponCollider);
+	_parent->SetName("WeaponPickup");
+	_parent->GetTransform().pos = _spawnPos;
+	_parent->GetTransform().scale = glm::vec2(48, 48);
+	
+
+	RandomiseItem();
+	
 }
 
 void PickupWeapon::RandomiseItem()
@@ -92,16 +99,10 @@ void PickupWeapon::RandomiseItem()
 	}
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 	_weaponPickup->UpgradeWeapon(_weaponLevel);
-	std::cout << _weaponLevel << "\n";
-	std::cout << _randomWeaponInt << "\n";
-
 
 }
 
-void PickupWeapon::OnCreate()
-{
-	_parent->GetTransform().scale = glm::vec2(48, 48);
-}
+
 
 void PickupWeapon::OnTick(const double& dt)
 {
@@ -114,4 +115,8 @@ void PickupWeapon::OnDestroy()
 
 void PickupWeapon::DrawPropertyUI()
 {
+	if (ImGui::Button("Reshuffle"))
+	{
+		RandomiseItem();
+	}
 }

@@ -1,32 +1,31 @@
 #include "PickupAbilitys.h"
 #include <random>
 
-PickupAbilitys::PickupAbilitys(glm::vec2 spawnPos, Hudson::Entity::GameObject* _refObject) : Behaviour ("AbiltyPickup")
+PickupAbilitys::PickupAbilitys(glm::vec2 spawnPos) : Behaviour ("AbiltyPickup")
 {
-	_abilityObject = _refObject;
-	_abilityCollider = new Hudson::Physics::ColliderComponent();
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
-	_abilitySprite->SetSize(glm::vec2(16.0f, 16.0f));
-	_abilitySprite->SetGridSize(glm::vec2(2, 1));
-	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
-	_abilityObject->AddComponent(_abilitySprite);
-	_abilityObject->AddComponent(_abilityCollider);
-	_abilityObject->SetName("AbilityPickup");
-
-	_abilitySprite->SetGridPos(glm::vec2(0, 1));
-	_abilityObject->GetTransform().pos = spawnPos;
+	_spawnPos = spawnPos;
 	_randomAbilityInt = 0;
 }
 
 PickupAbilitys::~PickupAbilitys()
 {
-	
+
 }
 
 void PickupAbilitys::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
+	_abilitySprite->SetGridSize(glm::vec2(5, 1));
+	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_abilityCollider = new Hudson::Physics::ColliderComponent();
+
+	_parent->AddComponent(_abilitySprite);
+	_parent->AddComponent(_abilityCollider);
+	_parent->SetName("AbilityPickup");
+	_parent->GetTransform().pos = _spawnPos;
+
+
 	random_device rand;
 	uniform_int_distribution<int> dist(0, 4);
 	_randomAbilityInt = dist(rand);
@@ -42,14 +41,17 @@ void PickupAbilitys::OnCreate()
 	}
 	if (_randomAbilityInt == 2)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(2, 1));
 		_abilityPickup = new Rage;
 	}
 	if (_randomAbilityInt == 3)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(3, 1));
 		_abilityPickup = new Heal;
 	}
 	if (_randomAbilityInt == 4)
 	{
+		_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		_abilityPickup = new RoomAOE;
 	}
 
