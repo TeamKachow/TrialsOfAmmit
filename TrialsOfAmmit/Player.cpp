@@ -58,6 +58,23 @@ void Player::OnCreate()
 	HealthBarUI();
 }
 
+//Function the Passive Mods will access to change the player Stats
+void Player::PassiveAddMaxHealth(float additionalHealth)
+{
+	_maxHealth = _maxHealth + additionalHealth;
+	_playerHealth = _playerHealth + additionalHealth;
+}
+
+void Player::PassiveAddSpeed(float additionalSpeed)
+{
+	_playerMovementSpeed = _playerMovementSpeed + additionalSpeed;
+}
+
+void Player::PassiveAddDamageMod(float additionalDamage)
+{
+	_playerDamageMod = _playerDamageMod + additionalDamage;
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)

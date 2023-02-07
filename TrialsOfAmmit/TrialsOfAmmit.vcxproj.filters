@@ -129,6 +129,9 @@
     <ClCompile Include="RoomAOE.cpp">
       <Filter>Source Files\AbilityStuff</Filter>
     </ClCompile>
+    <ClCompile Include="PassivePickups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="facingDirection.h">
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="RoomAOE.h">
       <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PassivePickups.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
