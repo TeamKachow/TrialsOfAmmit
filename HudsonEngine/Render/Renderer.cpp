@@ -7,6 +7,125 @@
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 
+constexpr const char* RTTVert = R"END(
+#version 460 core
+layout(location = 0) in vec2 aPos;
+layout(location = 1) in vec2 aTexCoords;
+
+out vec2 TexCoords;
+
+void main()
+{
+	gl_Position = vec4(aPos.x, aPos.y, 0.0, 1.0);
+	TexCoords = aTexCoords;
+}
+)END";
+
+constexpr const char* RTTFrag = R"END(
+#version 460 core
+out vec4 FragColor;
+  
+in vec2 TexCoords;
+
+uniform sampler2D screenTexture;
+
+void main()
+{ 
+    FragColor = texture(screenTexture, TexCoords);
+}
+)END";
+
+constexpr const char* TextVert = R"END(
+#version 460 core
+layout (location = 0) in vec4 vertex;
+out vec2 TexCoords;
+
+uniform mat4 projection;
+uniform mat4 model;
+
+uniform float depth;
+
+void main()
+{
+    gl_Position = projection * model * vec4(vertex.xy, depth, 1.0);
+    TexCoords = vertex.zw;
+}
+)END";
+
+constexpr const char* TextFrag = R"END(
+#version 460 core
+in vec2 TexCoords;
+out vec4 color;
+
+uniform sampler2D text;
+
+uniform vec3 textColor;
+
+void main()
+{
+	vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
+    vec4 tempColor = vec4(textColor, 1.0) * sampled;
+    if(tempColor.a < 0.2)
+        discard;
+
+    color = tempColor;
+
+}
+)END";
+
+constexpr const char* SpriteVert = R"END(
+#version 460 core
+layout (location = 0) in vec4 vertex;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 projection;
+
+uniform float depth;
+
+uniform vec2 gridPos;
+uniform vec2 gridSize;
+
+void main()
+{   
+    vec2 position = vertex.xy;
+    vec2 texCoords = vertex.zw;
+
+    float xWidth = 1.0 / gridSize.x;
+    float yHeight = 1.0 / gridSize.y;
+
+    float texX = gridPos.x * xWidth;
+    float texY = gridPos.y * yHeight;
+
+    texCoords.x = texX + (texCoords.x * xWidth);
+    texCoords.y = texY + (texCoords.y * yHeight);
+
+    TexCoords = texCoords;
+
+    gl_Position = projection * model * vec4(position, depth, 1.0);
+}
+)END";
+
+constexpr const char* SpriteFrag = R"END(
+#version 460 core
+
+in vec2 TexCoords;
+out vec4 color;
+
+uniform sampler2D sampler;
+uniform vec3 spriteColor;
+
+void main()
+{   
+    vec4 tempColor = vec4(spriteColor, 1.0) * texture(sampler, TexCoords);
+    if(tempColor.a < 0.1)
+        discard;
+
+    color = tempColor;
+} 
+)END";
+
 //
 //void framebufferSizeCallback(GLFWwindow* window, int width, int height)
 //{
@@ -34,17 +153,13 @@ Hudson::Render::Renderer::Renderer(Common::Engine* engine) :
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_DockingEnable;
 
-	// Bind Input Manager
-	_engine->GetInputManager()->BindCallbacks(_window->GetWindow());
-
 #ifdef _DEBUG
 	io.IniFilename = "editor.ini";
 #endif
 
 	ImGui::StyleColorsDark();
-	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), true);
+	ImGui_ImplGlfw_InitForOpenGL(_window->GetWindow(), false);
 	ImGui_ImplOpenGL3_Init("#version 460");
-
 	// Depth is enabled by default but needs to be disabled for RTT to work
 	// Due to it being 2D rendering we can disable this from the start
 
@@ -77,6 +192,15 @@ void Hudson::Render::Renderer::StartImGui()
 		ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 	}
 
+}
+
+void Hudson::Render::Renderer::SetupDefaultShaders()
+{
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+	resManager->LoadShaderLiteral(RTTVert, RTTFrag, std::string("screenShader"));
+	resManager->LoadShaderLiteral(TextVert, TextFrag, std::string("textShader"));
+	resManager->LoadShaderLiteral(SpriteVert, SpriteFrag, std::string("spriteShader"));
 }
 
 void Hudson::Render::Renderer::InitRenderToTexture()

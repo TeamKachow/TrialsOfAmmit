@@ -1,23 +1,47 @@
 #include "Axe.h"
-#include "MeleeAttack.h"
-#include "MeleeCollider.h"
 
 Axe::Axe()
 {
-	_weaponAttackDamage = 5.0;
-	_weaponAttackSpeed = 0.5;
-	_weaponName = "Axe";
+	_weaponAttackDamage = 50;
+	_weaponAttackSpeed = 1;
+	_weaponLevel = Wood;
+	_weaponType = WT_Axe;
+	UpgradeWeapon(_weaponLevel);
 }
 
 Axe::~Axe()
 {
 }
 
-void Axe::Attack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene)
+void Axe::UpgradeWeapon(WeaponUpgradeTypes CurrentWeaponLevel)
 {
-	_slashAttack = new Hudson::Entity::GameObject();
-	_slashAttack->AddComponent(new MeleeAttack(slashDirection, playerPos, currentScene, _slashAttack));
-
-	_slashCollider = new Hudson::Entity::GameObject();
-	_slashCollider->AddComponent(new MeleeCollider(slashDirection, playerPos, currentScene, _slashCollider));
+	switch (CurrentWeaponLevel)
+	{
+	case Wood: 
+		_weaponAttackDamage = 50;
+		_weaponAttackSpeed = 1;
+		_weaponLevel = Wood;
+		break;
+	case Stone:
+		_weaponAttackDamage = 60;
+		_weaponAttackSpeed = 1;
+		_weaponLevel = Stone;
+		break;
+	case Bronze:
+		_weaponAttackDamage = 70;
+		_weaponAttackSpeed = 0.9;
+		_weaponLevel = Bronze;
+		break;
+	case Iron:
+		_weaponAttackDamage = 80;
+		_weaponAttackSpeed = 0.8;
+		_weaponLevel = Iron;
+		break;
+	case Gold:
+		_weaponAttackDamage = 80;
+		_weaponAttackSpeed = 0.7;
+		_weaponLevel = Gold;
+		break;
+	}
+	
 }

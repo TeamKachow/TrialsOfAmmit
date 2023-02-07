@@ -1,21 +1,26 @@
 #pragma once
 #include <Hudson.h>
 #include "facingDirection.h"
+#include "WeaponType.h"
 class Projectile : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	
-	Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef);
+
+	Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _projectileSpeed, float _range);
 	~Projectile()override;
 
 	Hudson::World::Scene* _currentScene;
-	Hudson::Entity::GameObject* _projectile;
 	Hudson::Physics::PhysicsComponent* _projectilePhysics;
 	Hudson::Render::SpriteComponent* _projectileSprite;
 	Hudson::Physics::ColliderComponent* _projectileCollider;
 	facingDirections _projectileDirection;
 
+	WeaponTypes _currentWeaponFiring;
+	float _projectileDamage;
+	float _projectileMoveSpeed;
+	float _projectileRange;
 	glm::vec2 _spawnPos;
+
 
 	float _animTimer;
 	float _animSpeed;

@@ -8,9 +8,6 @@
     <Filter Include="Resource Files\ImGui">
       <UniqueIdentifier>{36b4a40d-c0f5-4b29-bb23-9f364cbb50d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders">
-      <UniqueIdentifier>{765ba375-0b3a-4ca8-b4bc-6d8ccd7b9cf6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{a7871133-ad17-458b-a8d8-df8e833fe1a7}</UniqueIdentifier>
     </Filter>
@@ -124,9 +121,6 @@
     <ClCompile Include="Util\stdafx.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Input\InputManager.cpp">
-      <Filter>Input</Filter>
-    </ClCompile>
     <ClCompile Include="imgui\imgui_stdlib.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
@@ -135,9 +129,6 @@
     </ClCompile>
     <ClCompile Include="Common\DeferredObjectSet.cpp">
       <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Render\Camera.cpp">
-      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Common\EngineAccessors.cpp">
       <Filter>Common</Filter>
@@ -155,8 +146,14 @@
       <Filter>Util</Filter>
     </ClCompile>
     <ClCompile Include="Render\Camera.cpp" />
-    <ClCompile Include="Entity\Room.cpp">
-      <Filter>Entity</Filter>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\Camera.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -257,9 +254,6 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="Hudson.h" />
-    <ClInclude Include="Input\InputManager.h">
-      <Filter>Input</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\imgui_stdlib.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
@@ -269,31 +263,17 @@
     <ClInclude Include="Common\DeferredObjectSet.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Render\Camera.h">
-      <Filter>Render</Filter>
-    </ClInclude>
     <ClInclude Include="Common\EngineAccessors.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Render\TextComponent.h">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Entity\Room.h">
-      <Filter>Entity</Filter>
+    <ClInclude Include="Render\Camera.h">
+      <Filter>Render</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Render\shaders\renderTextureFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\renderTextureVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\textVert.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Render\shaders\textFrag.glsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
+    <ClInclude Include="Input\InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

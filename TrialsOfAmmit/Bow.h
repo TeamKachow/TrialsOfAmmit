@@ -1,15 +1,15 @@
 #pragma once
-#include "BaseWeaponClass.h"
+#include "RangedBaseWeaponClass.h"
+#include "WeaponType.h"
 #include "Projectile.h"
 #include <Hudson.h>
 
-class Bow : public BaseWeaponClass
+class Bow : public RangedBaseWeaponClass
 {
 public:
-	Hudson::Entity::GameObject* _projectile;
 	Bow();
 	~Bow();
+	void UpgradeWeapon(WeaponUpgradeTypes Level) override;
 	void Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene) override;
-
 };
 

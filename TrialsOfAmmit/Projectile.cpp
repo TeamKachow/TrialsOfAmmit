@@ -1,25 +1,22 @@
 #include "Projectile.h"
 #include "AiAgent.h"
 
-Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, Hudson::Entity::GameObject* _projectileRef) : Behaviour("ProjectileBehaviour")
+
+Projectile::~Projectile()
 {
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
-	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
-	_projectileCollider = new Hudson::Physics::ColliderComponent();
 
-	
-	_projectileSprite->SetGridSize(glm::vec2(3, 4));
-	_projectileSprite->SetGridPos(glm::vec2(0, 0));
-	_projectilePhysics->SetMass(1.0f);
+}
 
-	_projectile = _projectileRef;
-	_projectile->AddComponent(_projectileSprite);
-	_projectile->AddComponent(_projectilePhysics);
-	_projectile->AddComponent(_projectileCollider);
-	_projectile->SetName("Projectile");
+Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
+{
 
 	_projectileDirection = projectileDirection;
+
+	_currentWeaponFiring = _weaponFiring; //Change Behavoir Depending on which on 
+
+	_projectileDamage = _damage;
+	_projectileMoveSpeed = _speed;
+	_projectileRange = _range;
 
 	_animTimer = 0;
 	_animSpeed = 0.2;
@@ -29,61 +26,76 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 
 	_spawnPos = spawnPos;
 
-	
 	_currentScene = CurrentScene;
-	_currentScene->AddObject(_projectile);
-}
-
-Projectile::~Projectile()
-{
-
+	
 }
 
 void Projectile::OnCreate()
 {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	if (_currentWeaponFiring == WT_Bow)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Projectile"));
+	}
+	if (_currentWeaponFiring == WT_SlingShot)
+	{
+		_projectileSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Rock"));
+	}
+	//TODO CHANGE DEPENDING ON THE WEAPON FIRING
+	_projectilePhysics = new Hudson::Physics::PhysicsComponent();
+	_projectileCollider = new Hudson::Physics::ColliderComponent();
+
+	_projectileSprite->SetGridSize(glm::vec2(3, 4));
+	_projectileSprite->SetGridPos(glm::vec2(0, 0));
+	_projectilePhysics->SetMass(1.0f);
+
+	_parent->AddComponent(_projectileSprite);
+	_parent->AddComponent(_projectilePhysics);
+	_parent->AddComponent(_projectileCollider);
+	_parent->SetName("Projectile");
+
+	
 	switch (_projectileDirection)
 	{
 	case Down:
-		_projectilePhysics->SetVelocity(glm::vec2(0, 250));
-		_projectile->GetTransform().pos.y = _spawnPos.y + 50 ;
-		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_projectilePhysics->SetVelocity(glm::vec2(0, _projectileMoveSpeed));
+		_parent->GetTransform().pos.y = _spawnPos.y + 50 ;
+		_parent->GetTransform().pos.x = _spawnPos.x;
 		_gridY = 3;
 		break;
 	case Left:
-		_projectilePhysics->SetVelocity(glm::vec2(-250, 0));
-		_projectile->GetTransform().pos.x = _spawnPos.x - 50;
-		_projectile->GetTransform().pos.y = _spawnPos.y;
+		_projectilePhysics->SetVelocity(glm::vec2(-_projectileMoveSpeed, 0));
+		_parent->GetTransform().pos.x = _spawnPos.x - 50;
+		_parent->GetTransform().pos.y = _spawnPos.y;
 		_gridY = 2;
 		break;
 	case Right:
-		_projectilePhysics->SetVelocity(glm::vec2(250, 0));
-		_projectile->GetTransform().pos.x = _spawnPos.x + 50;
-		_projectile->GetTransform().pos.y = _spawnPos.y;
+		_projectilePhysics->SetVelocity(glm::vec2(_projectileMoveSpeed, 0));
+		_parent->GetTransform().pos.x = _spawnPos.x + 50;
+		_parent->GetTransform().pos.y = _spawnPos.y;
 		_gridY = 1;
 		break;
 	case Up:
-		_projectilePhysics->SetVelocity(glm::vec2(0, -250));
-		_projectile->GetTransform().pos.y = _spawnPos.y - 50;
-		_projectile->GetTransform().pos.x = _spawnPos.x;
+		_projectilePhysics->SetVelocity(glm::vec2(0, -_projectileMoveSpeed));
+		_parent->GetTransform().pos.y = _spawnPos.y - 50;
+		_parent->GetTransform().pos.x = _spawnPos.x;
 		_gridY = 0;
 		break;
 	case Stopped: 
+		_projectilePhysics->SetVelocity(glm::vec2(0, _projectileMoveSpeed));
+		_parent->GetTransform().pos.y = _spawnPos.y + 50;
+		_parent->GetTransform().pos.x = _spawnPos.x;
+		_gridY = 3;
 		break;
 	default: ;
 	}
-
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _projectile->GetComponent<Hudson::Physics::ColliderComponent>();
-	//std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-
-	
-
-
 
 	_projectileSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 }
 
 void Projectile::OnTick(const double& dt)
 {
+
 	_animTimer += dt;
 	_deleteTimer += dt;
 	if(_animTimer >= _animSpeed )
@@ -92,12 +104,12 @@ void Projectile::OnTick(const double& dt)
 		_gridX++;
 		_projectileSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 	}
-	if(_deleteTimer >= _deleteTime)
+	if(_deleteTimer >= _projectileRange)
 	{
-		_currentScene->RemoveObject(_projectile);
+		_currentScene->RemoveObject(_parent);
 	}
 
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
 	if (!colliders.empty())
 	{
 		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
@@ -109,16 +121,15 @@ void Projectile::OnTick(const double& dt)
 				AiAgent* _aiAgent = other->GetParent()->GetComponent<AiAgent>();
 				if(_aiAgent != nullptr)
 				{
-					_currentScene->RemoveObject(_projectile);
-					_aiAgent->AiDead();
-					_aiAgent = nullptr;
+					_aiAgent->TakeDamage(_projectileDamage);
+					collider->ClearColliding();
+					_currentScene->RemoveObject(_parent);
 					break;
 				}
-				else
-				{
-					break;
-				}
-				break;
+			}
+			else
+			{
+				collider->ClearColliding();
 			}
 
 

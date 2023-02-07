@@ -19,30 +19,75 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AbilityDisplayUI.cpp" />
+    <ClCompile Include="AbilityHolder.cpp" />
     <ClCompile Include="AiAgent.cpp" />
     <ClCompile Include="AnubisBoss.cpp" />
+    <ClCompile Include="AiMelee.cpp" />
     <ClCompile Include="Axe.cpp" />
+    <ClCompile Include="BaseAbilityClass.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeleeAttack.cpp" />
+    <ClCompile Include="MeleeBaseWeaponClass.cpp" />
     <ClCompile Include="MeleeCollider.cpp" />
+    <ClCompile Include="MenuButton.cpp" />
+    <ClCompile Include="PickupAbilitys.cpp" />
+    <ClCompile Include="PickupBehaviour.cpp" />
+    <ClCompile Include="PickupWeapon.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerHealthUI.cpp" />
     <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="Rage.cpp" />
+    <ClCompile Include="RangedBaseWeaponClass.cpp" />
+    <ClCompile Include="Roll.cpp" />
+    <ClCompile Include="RoomAOE.cpp" />
+    <ClCompile Include="SettingsButton.cpp" />
+    <ClCompile Include="SlingShot.cpp" />
+    <ClCompile Include="Spear.cpp" />
+    <ClCompile Include="Stun.cpp" />
+    <ClCompile Include="WeaponDisplayUI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AbilityDisplayUI.h" />
+    <ClInclude Include="AbilityHolder.h" />
+    <ClInclude Include="AbilityStates.h" />
+    <ClInclude Include="abilityTargets.h" />
+    <ClInclude Include="AbilityType.h" />
     <ClInclude Include="AiAgent.h" />
     <ClInclude Include="AnubisBoss.h" />
+    <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />
+    <ClInclude Include="BaseAbilityClass.h" />
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="facingDirection.h" />
+    <ClInclude Include="Heal.h" />
     <ClInclude Include="Khopesh.h" />
     <ClInclude Include="MeleeAttack.h" />
+    <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />
+    <ClInclude Include="MenuButton.h" />
+    <ClInclude Include="PickupAbilitys.h" />
+    <ClInclude Include="PickupBehaviour.h" />
+    <ClInclude Include="PickupWeapon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerHealthUI.h" />
     <ClInclude Include="Projectile.h" />
+    <ClInclude Include="Rage.h" />
+    <ClInclude Include="RangedBaseWeaponClass.h" />
+    <ClInclude Include="Roll.h" />
+    <ClInclude Include="RoomAOE.h" />
+    <ClInclude Include="SettingsButton.h" />
+    <ClInclude Include="SlingShot.h" />
+    <ClInclude Include="Spear.h" />
+    <ClInclude Include="Stun.h" />
+    <ClInclude Include="WeaponDisplayUI.h" />
+    <ClInclude Include="WeaponType.h" />
+    <ClInclude Include="WeaponUpgrade.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HudsonEngine\HudsonEngine.vcxproj">

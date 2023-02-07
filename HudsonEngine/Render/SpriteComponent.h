@@ -34,9 +34,6 @@ namespace Hudson::Render {
         void SetYOffset(float yOff) { this->yOffset = yOff; };
         float GetYOffset() { return this->yOffset; };
 
-        void SetSize(glm::vec2 size) { this->_size = size; };
-        glm::vec2 GetSize() { return this->_size; };
-
         void SetColor(glm::vec3 color) { this->_color = color; };
         glm::vec3 GetColor() { return this->_color; };
 

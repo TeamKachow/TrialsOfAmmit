@@ -1,4 +1,7 @@
-﻿#include "Room.h"
+﻿ #include "Room.h"
+
+// Want to spawn something new include here
+#include "../AiAgent.h"
 
 Room::Room() : Behaviour("Room")
 {
@@ -47,7 +50,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
+		0,0,0,2,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,
 		0,0,0,0,0,0,0,0,0,0,
@@ -59,7 +62,6 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 
 
 	roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
-
 	writeFile << std::setw(1) << roomData << std::endl;
 
 	// Read from file JSON
@@ -173,24 +175,6 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		}
 	}
 
-	for (int i = 0; i < y; ++i)
-	{
-		for (int j = 0; j < x; ++j)
-		{
-			// relevant texID
-			int value = char(object_grid[i * x + j]) - 48;
-
-			if (texture_reference_.find(value) != texture_reference_.end()) {
-				//Hudson::Render::SpriteComponent* newSprite = new Hudson::Render::SpriteComponent(*texture_reference_.find(value)->second);
-				//newSprite->SetXOffset(j);
-				//newSprite->SetYOffset(i);
-				//newSprite->SetDepthOrder(0);
-				//spriteComponents.push_back(newSprite);
-			}
-
-		}
-	}
-
 	// Debug
 	// print the 2D array
 	for (int i = 0; i < y; ++i)
@@ -214,6 +198,50 @@ void Room::OnCreate()
 {
 	Behaviour::OnCreate();
 
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+	// 1 = Player
+	// 2 = Mummy AI
+
+	// I want to spawn game object, how do I determine what to spawn based on some things
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			// relevant texID
+			int value = char(object_grid[i * x + j]) - 48;
+			if (value == 1) {
+
+			}
+			else if (value == 2) {
+				// Spawn Mummy AI
+				Hudson::Render::SpriteComponent* spriteComponent = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
+				spriteComponent->SetGridSize(glm::vec2(3, 4));
+				spriteComponent->SetDepthOrder(1);
+
+				Hudson::Physics::PhysicsComponent* physicComponent = new Hudson::Physics::PhysicsComponent();
+				physicComponent->SetMass(1.0f);
+				physicComponent->SetAcceleration(glm::vec2(10, 0), true);
+
+				Hudson::Physics::ColliderComponent* colliderComponent = new Hudson::Physics::ColliderComponent();
+
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Mummy");
+				newObject->AddComponent(physicComponent);
+				newObject->AddComponent(colliderComponent);
+				newObject->AddComponent(spriteComponent);
+				newObject->AddComponent(new AiAgent(spriteComponent, 0));
+
+				newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
+				newObject->GetTransform().pos.y = i * newObject->GetTransform().scale.y;
+
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
+
+		}
+	}
 
 }
 
@@ -244,4 +272,5 @@ void Room::OnDestroy()
 
 void Room::DrawPropertyUI()
 {
+
 }
