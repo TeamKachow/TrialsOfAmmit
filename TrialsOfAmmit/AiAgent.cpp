@@ -1,14 +1,31 @@
 #include "AiAgent.h"
 #include "PickupAbilitys.h"
 
-AiAgent::AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed) : Behaviour("AiBehavior")
+AiAgent::AiAgent(vec2 spawnPos) : Behaviour("AiBehavior")
 {
-	_aiSprite = aiSprite;
 	_aiAnimSpeed = 0.4;
+	_spawnPosition = spawnPos;
 }
 
 void AiAgent::OnCreate()
 {
+	//sets up sprite
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_aiSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
+	_aiSprite ->SetGridSize(glm::vec2(3, 4));
+	_parent->AddComponent(_aiSprite);
+	//sets up collider
+	_aiCollider = new Hudson::Physics::ColliderComponent();
+	_parent->AddComponent(_aiCollider);
+
+	_aiPhysicsComponent = new Hudson::Physics::PhysicsComponent();
+	_aiPhysicsComponent->SetMass(1.0f);
+	_aiPhysicsComponent->SetForce(glm::vec2(10.0, 0));
+	_aiPhysicsComponent->SetAcceleration(glm::vec2(10, 0), true);
+	_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+	_parent->AddComponent(_aiPhysicsComponent);
+	_parent->SetName("AIAgent");
+	_parent->GetTransform().pos = _spawnPosition;
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
@@ -25,12 +42,16 @@ void AiAgent::OnCreate()
 	//Starting state
 	_currentState = WANDER;
 	_attackTimer = 0;
+	_aiAnimDeathTimer = 0;
 	//sets from parent phyics componants 
-	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-	auto _aiPhysics = _aiPhysicsComponent.front();
-	_velocity = _aiPhysics->GetVelocity();
-	_mass = _aiPhysics->GetMass();
-	_acceleration = _aiPhysics->GetAcceleration();
+	//_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
+
+	_velocity = _aiPhysicsComponent->GetVelocity();
+	_mass = _aiPhysicsComponent->GetMass();
+	_acceleration = _aiPhysicsComponent->GetAcceleration();
+
+	_aiDeathSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Blood"));
+	Blood = new Hudson::Entity::GameObject;
 
 	_currentScene = _parent->GetScene();
 	auto _sceneObjects = _currentScene->GetObjects();
@@ -92,7 +113,37 @@ void AiAgent::OnTick(const double& dt)
 		}
 		break;
 	case DEAD:
-		AiDead();
+
+		_aiDeathSprite->SetGridSize(glm::vec2(3, 1));
+		_aiDeathSprite->SetGridPos(glm::vec2(1, 1));
+		_aiDeathSprite->SetDepthOrder(2);
+		Blood->AddComponent(_aiDeathSprite);
+		_parent->RemoveComponent(_aiSprite);
+		_currentScene->AddObject(Blood);
+		Blood->GetTransform().pos = _parent->GetTransform().pos;
+		_maxSpeed = 0;
+		if (_alive == false)
+		{
+		/*	_aiAnimDeathTimer += dt;
+			if (_aiAnimDeathTimer >= _aiAnimSpeed)
+			{
+				_aiAnimDeathTimer -= _aiAnimSpeed;
+				int _gridX = _aiDeathSprite->GetGridPos().x;
+				int _gridY = _aiDeathSprite->GetGridPos().y;
+				vec2 spriteGridSize = _aiDeathSprite->GetGridSize();
+				_gridY = 1;
+				if (_gridX < spriteGridSize.x - 1)
+				{
+					_gridX++;
+				}
+				else
+				{
+					AiDead();
+				}
+				_aiDeathSprite->SetGridPos(vec2(_gridX, _gridY));
+			}*/
+		}
+				
 		break;
 	default:
 
@@ -108,11 +159,11 @@ void AiAgent::OnTick(const double& dt)
 		_attackTimer += dt;
 		if (_attackTimer > _aiWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
 		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
+			//auto _aiPhysics = _aiPhysicsComponent.front();
 			_velocity = vec2(0, 0);
 			_acceleration = vec2(0, 0);
-			_aiPhysics->SetAcceleration(_acceleration, false);
-			_aiPhysics->SetVelocity(_velocity);
+			_aiPhysicsComponent->SetAcceleration(_acceleration, false);
+			_aiPhysicsComponent->SetVelocity(_velocity);
 			_currentState = ATTACK;
 			_attackTimer = 0;
 		}
@@ -129,42 +180,7 @@ void AiAgent::CollisionCheck()
 	//TODO: Remove code and change to check for collision with the wall 
 	
 	// pushes Ai back and choses a new destination when trying to leave the map bounds 
-	if (_parent->GetTransform().pos.x >= 1550.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(-100, 0));
-			RandomTargetSelector();
-		}
-	}
-	if (_parent->GetTransform().pos.y >= 830.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(0, -100));
-			RandomTargetSelector();
-		}
-	}
-	if (_parent->GetTransform().pos.x <= 0.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(100, 0));
-			RandomTargetSelector();
-		};
-	}
-	if (_parent->GetTransform().pos.y <= 0.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(0, 100));
-			RandomTargetSelector();
-		}
-	}
+	
 }
 
 void AiAgent::Animate(float deltaTime)
@@ -436,7 +452,10 @@ void AiAgent::TakeDamage(int damageAmount)
 	_currentHealth = _currentHealth - damageAmount;
 
 	_aiSprite->SetColor(vec3(1, 0, 0));
-	_currentState = SEEK;
+	if (_currentHealth >= 0)
+	{
+		_currentState = SEEK;
+	}
 	if (_currentHealth <= 0)
 	{
 		_currentState = DEAD;
@@ -512,18 +531,15 @@ void AiAgent::SetPlayerPos()
 void AiAgent::Move(float deltatime)
 {
 	//adds the acceleration and velocity to the physics componant
-	if (!_aiPhysicsComponent.empty())
-	{
-		auto _aiPhysics = _aiPhysicsComponent.front();
+
 		//sets velocity
-		trunc(_moveForce);
-		_acceleration = _moveForce / _mass;
-		_velocity = _acceleration * deltatime;
-		//cout << _velocity.x << "" << _velocity.y << endl;
-		_aiPhysics->SetAcceleration(_acceleration, true);
-		_aiPhysics->SetVelocity(_velocity);
-		CollisionCheck();
-	}
+	trunc(_moveForce);
+	_acceleration = _moveForce / _mass;
+	_velocity = _acceleration * deltatime;
+	//cout << _velocity.x << "" << _velocity.y << endl;
+	_aiPhysicsComponent->SetAcceleration(_acceleration, true);
+	_aiPhysicsComponent->SetVelocity(_velocity);
+	CollisionCheck();
 }
 
 void AiAgent::DrawPropertyUI()

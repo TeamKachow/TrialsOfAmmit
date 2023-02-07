@@ -29,10 +29,9 @@ enum AiState
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
-	AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed);
+	AiAgent(vec2 spawnPos = { 100, 100 });
 	~AiAgent();
 	void TakeDamage(int damageAmount);
-	Hudson::Render::SpriteComponent* _aiSprite;
 	float _maxHealth;
 	float _currentHealth;
 	float _meleeDamage;
@@ -45,8 +44,11 @@ protected:
 	virtual void AiAttack();
 	AiMelee _melee;
 	BaseWeaponClass* _aiWeapon = &_melee;
-	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
+	Hudson::Render::SpriteComponent* _aiSprite;
+	Hudson::Render::SpriteComponent* _aiDeathSprite;
+	Hudson::Physics::PhysicsComponent*_aiPhysicsComponent;
 	Hudson::World::Scene* _currentScene;
+	Hudson::Physics::ColliderComponent* _aiCollider;
 	Player* _player;
 	AiState _currentState;
 	vec2 _target;
@@ -57,15 +59,17 @@ protected:
 	float _distanceFromPlayer;
 	facingDirections _facingDirection;
 	float _currentSpeed;
-	
+	vec2 _spawnPosition;
 	float _mass;
 	float _maxRange;
 	float _minRange;
 	float _attackTimer;
 	double _aiAnimSpeed;
 	double _aiAnimTimer;
+	double _aiAnimDeathTimer;
 	bool _alive;
 	bool _arrive;
+	Hudson::Entity::GameObject* Blood;
 
 private: 
 	void OnCreate() override;

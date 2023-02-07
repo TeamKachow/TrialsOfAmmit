@@ -93,17 +93,11 @@ void GameSetup()
     resManager->LoadTexture("textures/Blood.png", true, "Blood");
     resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
-    resManager->LoadTexture("textures/Test.png", true, "Test");
+    resManager->LoadTexture("textures/Test.png", true, "MainButtonImage");
     resManager->LoadTexture("textures/TempBackground.png", true, "backgroundImage");
     resManager->LoadTexture("textures/SettingsMarker.png", true, "SettingsMarkerImage");
 
-    Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite1->SetGridSize(glm::vec2(3, 4));
-
-    Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite2->SetGridSize(glm::vec2(3, 4));
-
-    ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));
 
     SettingsMarkerImage = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("SettingsMarkerImage"));
@@ -113,7 +107,7 @@ void GameSetup()
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
 
-    Physics1 = new Hudson::Physics::PhysicsComponent();
+    /*Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
     Physics1->SetForce(glm::vec2(10.0, 0));
     Physics1->SetAcceleration(glm::vec2(10, 0), true);
@@ -123,10 +117,10 @@ void GameSetup()
     Physics2->SetMass(1.0f);
     Physics2->SetForce(glm::vec2(-10.0, 0));
     Physics2->SetAcceleration(glm::vec2(-100, 0), true);
-    Physics2->SetVelocity(glm::vec2(-100, 0));
+    Physics2->SetVelocity(glm::vec2(-100, 0));*/
 
-    Collider1 = new Hudson::Physics::ColliderComponent();
-    Collider2 = new Hudson::Physics::ColliderComponent();
+   /* Collider1 = new Hudson::Physics::ColliderComponent();
+    Collider2 = new Hudson::Physics::ColliderComponent();*/
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
@@ -144,20 +138,12 @@ void GameSetup()
     startScene->AddObject(player);
 
     Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
-    blah->AddComponent(Sprite2);
-	blah->AddComponent(Physics1);
-    blah->AddComponent(Collider1);
-    blah->AddComponent(new AiAgent(Sprite2, 0.8));
-    blah->SetName("AI1");
+    blah->AddComponent(new AiAgent(vec2(700,700)));
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
-    blah2->AddComponent(Sprite1);
-    blah2->AddComponent(Physics2);
-    blah2->AddComponent(Collider2);
-    blah2->AddComponent(new AiAgent(Sprite1, 0.8));
-    blah2->SetName("AI2");
+    blah2->AddComponent(new AiAgent(vec2(100, 100)));
     startScene->AddObject(blah2);
     blah2->GetTransform().pos.x = 1400.0f;
 
