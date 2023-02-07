@@ -29,6 +29,11 @@ Hudson::Editor::Editor::~Editor()
 
 }
 
+void Hudson::Editor::Editor::AddTool(std::string toolName, std::function<void()> toolFunction)
+{
+	toolFunctions.insert(std::pair<std::string, std::function<void()>>(toolName, toolFunction));
+}
+
 bool Hudson::Editor::Editor::LoadImGuiImage(const char* filename, GLuint* out_texture, int* out_width, int* out_height)
 {
 	int image_width = 0;
@@ -535,7 +540,27 @@ void Hudson::Editor::Editor::ObjectProperties()
 void Hudson::Editor::Editor::Tools()
 {
 	ImGui::Begin("Tools");
-	ImGui::TextColored(IM_COLOR_GRAY, "Not yet implemented");
+	if(toolFunctions.size() > 0)
+	{
+		for (const auto& [key, value] : toolFunctions) {
+			ImGui::Text(key.c_str());
+			ImGui::SameLine();
+			ImGui::PushID((void*)(key.c_str()));
+			if (ImGui::SmallButton("+"))
+			{
+				// Call function
+				value();
+			}
+			ImGui::PopID();
+
+		}
+	}
+	else
+	{
+		ImGui::TextColored(IM_COLOR_GRAY, "No tools added");
+	}
+
+
 	ImGui::End();
 }
 
