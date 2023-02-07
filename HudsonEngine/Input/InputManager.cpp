@@ -258,9 +258,6 @@ void InputManager::setWorldCursorPos(GLFWwindow* window, glm::mat4 inverseProjMa
 		worldMouseYpos = worldPos.y;
 
 		editorRef->worldSpacePos = ImVec2(worldMouseXpos, worldMouseYpos);
-
-		std::cout << worldMouseXpos << " " << worldMouseYpos << std::endl;
-
 	}
 	else
 	{
