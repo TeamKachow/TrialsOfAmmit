@@ -51,7 +51,7 @@ namespace Hudson::Entity
         uint32_t _serialId = rand();
         std::string _name = "Object";
         Transform _transform;
-        Common::DeferredObjectSet<Component*> _components;
+        Common::DeferredObjectSet<Component*> _components = {};
 
         World::Scene* _scene;
         /**

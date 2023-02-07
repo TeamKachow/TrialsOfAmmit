@@ -186,6 +186,7 @@ void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
     _name = j.at("name");
     _serialId = j.at("id");
     _transform = j.at("transform");
+    _components = {};
 
     for (auto&& componentJson : j.at("components"))
     {
@@ -201,7 +202,7 @@ void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 {
     // TODO: all of this
     j["name"] = _name;
-    j["serialId"] = _serialId;
+    j["id"] = _serialId;
     j["transform"] = _transform;
     j["components"] = nlohmann::json::array();
 
@@ -209,6 +210,7 @@ void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
     {
         nlohmann::json compJson;
         compJson["type"] = component->GetTypeName();
+        // TODO: check against component registry
         component->ToJson(compJson["data"]);
         j["components"].push_back(compJson); 
     }

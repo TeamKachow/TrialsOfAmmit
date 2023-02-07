@@ -5,13 +5,17 @@
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
 #include "../Render/Texture.h"
- #include "../Render/Window.h"
+#include "../Render/Window.h"
+#include "../Util/Debug.h"
 
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
 
 const char* MODAL_HELP = "'How to Hudson', a memoir by best-selling author Doc Hudson";
 const char* MODAL_SCENE_SAVE = "Save Scene";
+const char* MODAL_SCENE_LOAD = "Load Scene";
+
+static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstring_converter;
 
 extern const std::filesystem::path filePath = std::filesystem::current_path();
 
@@ -249,12 +253,15 @@ void Hudson::Editor::Editor::Hierarchy()
 				ImGui::Separator();
 				if (ImGui::MenuItem("Save Scene", 0, false, !GetSceneMeta(scene).filePath.empty()))
 				{
-					// TODO: modal
-					if (GetSceneMeta(scene).filePath.empty())
+					SceneMeta& meta = GetSceneMeta(scene);
+					if (meta.filePath.empty())
 					{
 						ShowSceneSaveAs(scene);
 					}
-					World::SceneManager::SaveScene(scene->GetName() + ".scene.json", scene);
+					else
+					{
+						World::SceneManager::SaveScene(meta.filePath, scene);
+					}
 				}
 				if (ImGui::MenuItem("Save Scene As..."))
 				{
@@ -389,14 +396,16 @@ void Hudson::Editor::Editor::ContentBrowser()
 			ImGui::EndDragDropSource();
 		}
 
-
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			if (entry.is_directory())
 			{
 				currentPath /= path.filename();
 			}
-
+			else if (entry.is_regular_file() && entry.path().string().ends_with(".scene.json"))
+			{
+				_sceneToLoad = std::filesystem::relative(entry.path()).string();
+			}
 			std::cout << relativePath.string() << std::endl;
 		}
 
@@ -705,6 +714,7 @@ void Hudson::Editor::Editor::SaveDialogs()
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::SameLine();
+			ImGui::BeginDisabled(meta.filePath.empty());
 			if (ImGui::Button("Save"))
 			{
 				World::SceneManager::SaveScene(meta.filePath, _sceneToSave);
@@ -712,15 +722,74 @@ void Hudson::Editor::Editor::SaveDialogs()
 				_sceneToSave = nullptr;
 				ImGui::CloseCurrentPopup();
 			}
+			ImGui::EndDisabled();
 		}
 
 		ImGui::EndPopup();
 	}
 
+	if (ImGui::BeginPopupModal(MODAL_SCENE_LOAD))
+	{
+		if (_sceneToLoad.empty())
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		else
+		{
+			bool disabled = false;
+			if (!_sceneToLoad.ends_with(".scene.json"))
+			{
+				disabled = true;
+				ImGui::TextColored(IM_COLOR_ORANGE, "Scene path not valid. Make sure the file ends with '.scene.json'.");
+			}
+			else
+			{
+				ImGui::Text("Load scene '%s'?", _sceneToLoad.c_str());
+			}
+
+		    if (ImGui::Button("Cancel"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			ImGui::BeginDisabled(disabled);
+			if (ImGui::Button("Load"))
+			{
+				try
+				{
+					World::Scene* loadedScene = World::SceneManager::LoadScene(_sceneToLoad);
+					GetSceneMeta(loadedScene) = {
+						.pendingChanges = false,
+						.filePath = _sceneToLoad,
+					};
+					_engine->GetSceneManager()->AddScene(loadedScene);
+					_sceneToLoad = "";
+				}
+				catch (std::exception& e)
+				{
+					std::stringstream msg;
+					msg << "Failed to load scene '" << _sceneToLoad << "': " << e.what();
+					Hudson::Util::Debug::LogError(msg.str());
+					_sceneToLoad = "";
+				}
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndDisabled();
+		}
+
+		ImGui::EndPopup();
+	}
+
+
 	if (_sceneToSave)
 	{
 		_engine->GetSceneManager()->SetPaused(true);
 		ImGui::OpenPopup(MODAL_SCENE_SAVE);
+	}
+	else if (!_sceneToLoad.empty())
+	{
+		_engine->GetSceneManager()->SetPaused(true);
+		ImGui::OpenPopup(MODAL_SCENE_LOAD);
 	}
 }
 

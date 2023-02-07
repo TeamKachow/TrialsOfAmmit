@@ -143,6 +143,7 @@ void Hudson::World::Scene::SetRendering(bool rendering)
 
 void Hudson::World::to_json(nlohmann::json& j, const Scene& scene)
 {
+    j["id"] = scene._serialId;
     j["name"] = scene._name;
     j["active"] = scene._active;
     j["rendering"] = scene._rendering;
@@ -157,12 +158,14 @@ void Hudson::World::to_json(nlohmann::json& j, const Scene& scene)
 
 void Hudson::World::from_json(const nlohmann::json& j, Scene& scene)
 {
+    scene._serialId = j.at("id");
     scene._name = j.at("name");
     scene._active = j.at("active");
     scene._rendering = j.at("rendering");
     for (auto && objectJson : j.at("objects"))
     {
-        Entity::GameObject* go = new Entity::GameObject(objectJson);
+        Entity::GameObject* go = new Entity::GameObject();
+        go->FromJson(objectJson);
         scene._objects.Add(go);
     }
     scene._objects.Update();

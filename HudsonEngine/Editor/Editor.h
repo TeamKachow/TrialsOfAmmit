@@ -42,6 +42,7 @@ namespace Hudson::Editor
 
 		std::map<World::Scene*, SceneMeta> _sceneMeta;
 		World::Scene* _sceneToSave;
+		std::string _sceneToLoad;
 
 	public:
 		Editor(Common::Engine* engine, ComponentRegistry* registry = nullptr);
@@ -68,13 +69,14 @@ namespace Hudson::Editor
 		void Draw();
 
 	private:
-		// const std::filesystem::path  filePath = "../DemoGame";
-
 		int my_image_width = 0;
 		int my_image_height = 0;
+
 		GLuint directoryIcon = 0;
 		GLuint fileIcon = 0;
 
 		std::filesystem::path currentPath;
 	};
+
 }
+

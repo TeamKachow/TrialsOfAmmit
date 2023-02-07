@@ -48,7 +48,11 @@ Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& 
 
 void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scene)
 {
-    std::filesystem::create_directories(std::filesystem::path(path).parent_path());
+    std::filesystem::path parentDir = std::filesystem::path(path).parent_path();
+    if (!std::filesystem::exists(parentDir))
+    {
+        std::filesystem::create_directories(parentDir);
+    }
 
     std::ofstream file(path);
     nlohmann::json jsonOut = *scene;
