@@ -30,6 +30,7 @@
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
+    <ClCompile Include="LaserBehaviour.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeleeAttack.cpp" />
     <ClCompile Include="MeleeBaseWeaponClass.cpp" />
@@ -67,6 +68,7 @@
     <ClInclude Include="facingDirection.h" />
     <ClInclude Include="Heal.h" />
     <ClInclude Include="Khopesh.h" />
+    <ClInclude Include="LaserBehaviour.h" />
     <ClInclude Include="MeleeAttack.h" />
     <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />

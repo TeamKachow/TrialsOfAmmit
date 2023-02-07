@@ -41,7 +41,8 @@ Hudson::Physics::ColliderComponent* Collider2;
 
 Hudson::Render::TextComponent* Text;
 
-Hudson::Render::SpriteComponent* LaserSprite;
+Hudson::Render::SpriteComponent* LaserSpriteVert;
+Hudson::Render::SpriteComponent* LaserSpriteHori;
 
 //Player 
 Hudson::Render::SpriteComponent* playerSprite;
@@ -106,7 +107,6 @@ void GameSetup()
 
 
     playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
-    playerSprite->SetSize(glm::vec2(64.0f, 64.0f));
     playerSprite->SetGridSize(glm::vec2(3, 4));
     playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -136,11 +136,14 @@ void GameSetup()
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
 
-    LaserSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("LaserVert"));
+    LaserSpriteVert = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("LaserVert"));
     //HORIZONTAL SPRITES FOR LASERS ARE 48X320, VERTICAL ARE 320X48
-    LaserSprite->SetSize(glm::vec2(48.0f, 320.0f));
-    LaserSprite->SetGridSize(glm::vec2(5, 2));
-    LaserSprite->SetGridPos(glm::vec2(0, 1));
+    LaserSpriteVert->SetGridSize(glm::vec2(5, 2));
+    LaserSpriteVert->SetGridPos(glm::vec2(4, 0));
+
+    LaserSpriteHori = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("LaserHori"));
+    LaserSpriteHori->SetGridSize(glm::vec2(5, 2));
+    LaserSpriteHori->SetGridPos(glm::vec2(4, 0));
 
     Physics1 = new Hudson::Physics::PhysicsComponent();
     Physics1->SetMass(1.0f);
@@ -181,11 +184,17 @@ void GameSetup()
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
-    Hudson::Entity::GameObject* Laser = new Hudson::Entity::GameObject();
-    Laser->AddComponent(LaserSprite);
-    Laser->GetTransform().scale.x = 48.0f;
-    Laser->GetTransform().scale.y = 640.0f;
-    startScene->AddObject(Laser);
+    Hudson::Entity::GameObject* LaserUp = new Hudson::Entity::GameObject();
+    LaserUp->AddComponent(LaserSpriteVert);
+    LaserUp->GetTransform().scale.x = 96.0f;
+    LaserUp->GetTransform().scale.y = 960.0f;
+    startScene->AddObject(LaserUp);
+
+    Hudson::Entity::GameObject* LaserAcross = new Hudson::Entity::GameObject();
+    LaserAcross->AddComponent(LaserSpriteHori);
+    LaserAcross->GetTransform().scale.x = 960.0f;
+    LaserAcross->GetTransform().scale.y = 96.0f;
+    startScene->AddObject(LaserAcross);
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite1);
