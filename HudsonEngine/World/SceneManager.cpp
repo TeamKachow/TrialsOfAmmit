@@ -104,6 +104,9 @@ void Hudson::World::SceneManager::Tick()
     // Tick active scenes
     _time->CalculateTimestep();
 
+    // Update pending scene adds/removals
+    _scenes.Update();
+
     // Clear ticking flag
     _isTicking = false;
 }

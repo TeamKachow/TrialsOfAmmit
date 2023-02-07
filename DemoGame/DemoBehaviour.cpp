@@ -61,16 +61,16 @@ void DemoBehaviour::OnTick(const double& dt)
 	// EXAMPLE: physics collision checks
 
 	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
-	if (!colliders.empty())
-	{
-		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-		auto collidingWith = collider->GetCurrentCollisions();
-		for (auto other : collidingWith)
-		{
-			// first collider is hitting another object - handle this collision
-			std::cout << this << " detected " << collider << " colllided with " << other << "\n";
-		}
-	}
+	//if (!colliders.empty())
+	//{
+	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+	//	auto collidingWith = collider->GetCurrentCollisions();
+	//	for (auto other : collidingWith)
+	//	{
+	//		// first collider is hitting another object - handle this collision
+	//		std::cout << this << " detected " << collider << " colllided with " << other << "\n";
+	//	}
+	//}
 
 	// EXAMPLE: screen wrapping
 
@@ -88,41 +88,37 @@ void DemoBehaviour::OnTick(const double& dt)
 	bool soundPlayed = false;
 	
 	// Check for collision
+	//if (!colliders.empty())
+	//{
+	//	Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+	//	auto collidingWith = collider->GetCurrentCollisions();
+	//	for (auto other : collidingWith)
+	//	{
+	//		if (!soundPlayed)
+	//		{
 
-	if (!colliders.empty())
-	{
+	//			// Load and play sound
+	//			audio->setSoundVolume("../audio/EnemyGrowl.wav", 0.0f);
+	//			audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
+	//			
+	//			
+	//			std::cout << "Audio file has been played." << std::endl;
+	//			soundPlayed = true;
 
-		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-		auto collidingWith = collider->GetCurrentCollisions();
-		for (auto other : collidingWith)
-		{
-			// first collider is hitting another object - handle this collision
-			std::cout << this << " is colliding with " << other << "\n";
+	//		}
+	//		else
+	//		{
+	//			std::cout << "Audio file could not be played." << std::endl;
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	// No collisions, stop and unload sound
+	//	audio->stopSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
+	//	soundPlayed = false;
 
-			if (!soundPlayed)
-			{
-
-				// Load and play sound
-				
-				audio->playSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f, 7.6f);
-				
-				std::cout << "Audio file has been played." << std::endl;
-				soundPlayed = true;
-
-			}
-			else
-			{
-				std::cout << "Audio file could not be played." << std::endl;
-			}
-		}
-	}
-	else
-	{
-		// No collisions, stop and unload sound
-		audio->stopSound("../audio/EnemyGrowl.wav", false, 0.0f, 0.0f);
-		soundPlayed = false;
-
-	};
+	//};
 	
 }
 

@@ -6,7 +6,7 @@ namespace Hudson::Render {
 	class Camera
 	{
 	public:
-		Camera(float left, float right, float bottom, float top);
+		Camera(float left, float right, float bottom, float top, float zNear, float zFar);
 
 		void ViewMatrixCalculation();
 
@@ -16,6 +16,7 @@ namespace Hudson::Render {
 		const glm::mat4& GetProjectionMatrix() const { return _projection; }
 		const glm::mat4& GetViewMatrix() const { return _view; }
 		const glm::mat4& GetViewProjectionMatrix() const { return _viewProjection; }
+		const glm::mat4& GetInverseViewProjectionMatrix() { return glm::inverse(_viewProjection); }
 	private:
 		glm::vec3 _position = { 0.0f, 0.0f, 0.0f };
 

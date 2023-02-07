@@ -5,6 +5,12 @@ Hudson::Physics::ColliderComponent::ColliderComponent() : Component("Box Collide
 
 }
 
+Hudson::Physics::ColliderComponent::ColliderComponent(float newXOffset, float newYOffset) : Component("Box Collider")
+{
+	xOffset = newXOffset;
+	yOffset = newYOffset;
+}
+
 Hudson::Physics::ColliderComponent::~ColliderComponent()
 {
 
@@ -36,11 +42,22 @@ bool Hudson::Physics::ColliderComponent::AABBCollision(ColliderComponent* collid
 AABB Hudson::Physics::ColliderComponent::GetAABB()
 {
 	AABB box;
-	box.Left = _parent->GetTransform().pos.x;
-	box.Right = _parent->GetTransform().pos.x + _parent->GetTransform().scale.x;
 
-	box.Up = _parent->GetTransform().pos.y;
-	box.Down = _parent->GetTransform().pos.y + _parent->GetTransform().scale.x;
+	// 0,0
+	// 6 xOffset
+	box.Left = _parent->GetTransform().pos.x + (_parent->GetTransform().scale.x * 0.02f); // 2%
+	box.Left += _parent->GetTransform().scale.x * xOffset; // + 64*6
+	// xLeft = 384
+
+	box.Right = _parent->GetTransform().pos.x + _parent->GetTransform().scale.x - (_parent->GetTransform().scale.x * 0.02f);
+	box.Right += _parent->GetTransform().scale.x * xOffset; // 64*6 // 384
+	// 384+64 = 448
+
+	box.Up = _parent->GetTransform().pos.y + (_parent->GetTransform().scale.y * 0.02f); //0
+	box.Up += _parent->GetTransform().scale.y * yOffset;
+
+	box.Down = _parent->GetTransform().pos.y + _parent->GetTransform().scale.y - (_parent->GetTransform().scale.y * 0.02f);
+	box.Down += _parent->GetTransform().scale.y * yOffset;
 
 	return box;
 }

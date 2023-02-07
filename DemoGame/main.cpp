@@ -18,7 +18,7 @@ Hudson::Common::Engine* engine;
 Hudson::Editor::Editor* editor;
 #endif
 
-Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f);
+Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
 
 Hudson::Render::TextComponent* Text1;
 Hudson::Render::TextComponent* Text2;
@@ -47,7 +47,6 @@ void Init()
 
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
-
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
@@ -56,35 +55,50 @@ void Init()
 
     engine->Setup();
     InitRegistry();
+    
+    engine->GetRenderer()->SetupDefaultShaders();
 
 #ifdef ENABLE_EDITOR
+    engine->GetInputManager()->SetEditorRef(editor);
     engine->GetSceneManager()->SetPaused(true);
 #endif
 }
+
+void Hello(bool& isActive)
+{
+    std::cout << "Hello" << std::endl;
+}
+
 
 void GameSetup()
 {
     // Set up default camera
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
-    // Load shaders
-    resManager->LoadShader("../HudsonEngine/Render/shaders/textVert.glsl", "../HudsonEngine/Render/shaders/textFrag.glsl", std::string("textShader"));
-    resManager->LoadShader("shaders/SpriteVertShader.glsl", "shaders/SpriteFragShader.glsl", std::string("spriteShader"));
+    //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);
+    //engine->GetRenderer()->CreateFramebuffers(1920, 1080);
 
     // Load textures
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
 
+	#ifdef ENABLE_EDITOR
+    ToolData toolData;
+    toolData.function = Hello;
+    toolData.isRepeatingFunction = false;
+    editor->AddTool("Hello", toolData);
+	#endif
+
+
     // Create scene
     {
+
         Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite1->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite1->SetGridSize(glm::vec2(3, 4));
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+        Sprite1->SetDepthOrder(1);
 
         Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-        Sprite2->SetSize(glm::vec2(64.0f, 64.0f));
         Sprite2->SetGridSize(glm::vec2(3, 4));
-        //Sprite1->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+        Sprite2->SetDepthOrder(2);
 
         Physics1 = new Hudson::Physics::PhysicsComponent();
         Physics1->SetMass(1.0f);
@@ -101,11 +115,11 @@ void GameSetup()
         Collider1 = new Hudson::Physics::ColliderComponent();
         Collider2 = new Hudson::Physics::ColliderComponent();
 
-        Text1 = new Hudson::Render::TextComponent(glm::vec2(20.0f, 20.0f));
+        Text1 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
         Text1->SetText("the quick brown fox jumps over the lazy dog");
         Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
 
-        Text2 = new Hudson::Render::TextComponent(glm::vec2(20.0f, 20.0f));
+        Text2 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
         Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
         Text2->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -122,16 +136,18 @@ void GameSetup()
         blah->AddComponent(Collider1);
         startScene->AddObject(blah);
 
-        blah->GetTransform().pos.x = 200.0f;
+        blah->GetTransform().pos.x = 64.0f;
+        blah->GetTransform().pos.y = 0.0f;
 
         Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
         blah2->AddComponent(Sprite2);
-        blah2->AddComponent(new DemoBehaviour(Sprite2));
+        //blah2->AddComponent(new DemoBehaviour(Sprite2));
         blah2->AddComponent(Physics2);
         blah2->AddComponent(Collider2);
         startScene->AddObject(blah2);
 
-        blah2->GetTransform().pos.x = 1400.0f;
+        blah2->GetTransform().pos.x = 1280.0f;
+        blah2->GetTransform().pos.y = 128.0f;
 
         Hudson::Entity::GameObject* hud = new Hudson::Entity::GameObject();
         hud->SetName("Text");
@@ -146,6 +162,8 @@ void GameSetup()
         transform = { glm::vec2(-10,200), glm::vec2(1,1), 0 };
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
+
+        
     }
 
     std::cout << "DemoGame: engine has been set up!\n";
@@ -160,6 +178,7 @@ int main() {
 
     // Run engine loop until it is shut down
     engine->Run();
+
 
     // Clean up
     engine->Cleanup();

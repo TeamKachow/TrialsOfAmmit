@@ -12,7 +12,7 @@
 
 Hudson::Audio::AudioManager::AudioManager()
 {
-   
+    ISound* sound;
     try 
     {
         // Initialize the sound engine
@@ -28,6 +28,8 @@ Hudson::Audio::AudioManager::AudioManager()
     {
         // error checking 
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
+        engine->drop();
+
     }
 
 }
@@ -46,20 +48,17 @@ Hudson::Audio::AudioManager::~AudioManager()
 // This is an important fuhnction which allows the sound to be played with settings, so you can adjust the pitch and pan of the sound
 // The playlooped setting can be adjusted in the UI function which controls if a sound file repeats a sound infinitely or not.
 
-irrklang::ISound* Hudson::Audio::AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan, float sVolume) 
+irrklang::ISound* Hudson::Audio::AudioManager::playSound(const std::string& filePath, bool playLooped, float pitch, float pan) 
 {
     try
     {
         // Play a sound file
-        irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, sVolume);
+        irrklang::ISound* sound = engine->play2D(filePath.c_str(), playLooped, pitch, pan);
        
         if (sound)
         {
 
-            sounds[filePath.c_str()].push_back(sound);
-        
-            sound->setVolume(sVolume);
-           
+            sounds[filePath.c_str()].push_back(sound); 
 
         }
         return sound;
@@ -67,6 +66,7 @@ irrklang::ISound* Hudson::Audio::AudioManager::playSound(const std::string& file
     catch (std::exception& e)
     {
         std::cout << "Exception: Sound could not be played!" << e.what() << std::endl;
+        sound->drop();
     }
     return NULL;
 }
@@ -188,7 +188,8 @@ void Hudson::Audio::AudioManager::setListenerPosition(float x, float y)
 void Hudson::Audio::AudioManager::setSoundVolume(const std::string& filePath, float sVolume)
 {
     // Set the volume of a sound file
-
+    ISound* sound = engine->play2D(filePath.c_str());
+    
     if (sounds.count(filePath.c_str()) > 0)
     {
         for (auto& sound : sounds[filePath.c_str()])

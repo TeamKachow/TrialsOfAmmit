@@ -20,7 +20,7 @@ namespace Hudson::Render
 	{
 	public:
 		TextComponent();
-		TextComponent(glm::vec2 position);
+		TextComponent(const char* path, glm::vec2 position);
 		~TextComponent();
 
         void StartFreeType(const std::filesystem::path& path);
@@ -31,9 +31,11 @@ namespace Hudson::Render
 		void Draw(glm::vec2 position);
 
 		void SetText(std::string txt) { text = txt; }
+		void SetDepthOrder(float depthOrder) { zOrder = depthOrder; }
 		void SetColor(glm::vec3 col) { color = col; }
 
 		Shader* GetShader() { return shader; }
+		float GetDepthOrder() { return this->zOrder; };
 
 		void DrawPropertyUI() override;
         void FromJson(const nlohmann::json& j) override;
@@ -54,6 +56,9 @@ namespace Hudson::Render
 		std::string text;
 		float scale;
 		glm::vec3 color;
+
+		// TODO serialise this
+		float zOrder = 0;
 
 		float newLineOffset = 30.0f;
 	};

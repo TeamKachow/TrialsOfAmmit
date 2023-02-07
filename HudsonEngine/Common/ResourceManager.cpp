@@ -18,6 +18,12 @@ Render::Shader* Common::ResourceManager::LoadShader(const char* vertShaderFile, 
 	return &_shaders[name];
 }
 
+Render::Shader* Hudson::Common::ResourceManager::LoadShaderLiteral(const char* vertShaderCode, const char* fragShaderCode, std::string name)
+{
+	_shaders[name] = LoadShaderFromLiteral(vertShaderCode, fragShaderCode);
+	return &_shaders[name];
+}
+
 Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 {
 	return &_textures[name];
@@ -85,7 +91,17 @@ Render::Shader Common::ResourceManager::LoadShaderFromFile(const char* vertShade
 	Render::Shader shader;
 	shader.Compile(vertShaderCode, fragShaderCode);
 	return shader;
-};
+}
+
+Render::Shader Hudson::Common::ResourceManager::LoadShaderFromLiteral(const char* vertCode, const char* fragCode)
+{
+	const char* vertShaderCode = vertCode;
+	const char* fragShaderCode = fragCode;
+	// now create shader object from source code
+	Render::Shader shader;
+	shader.Compile(vertShaderCode, fragShaderCode);
+	return shader;
+}
 
 Render::Texture Common::ResourceManager::LoadTextureFromFile(const char* file)
 {

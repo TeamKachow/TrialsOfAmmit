@@ -39,6 +39,7 @@ void Hudson::Common::Engine::Setup()
 
     // create input system
     _input = std::make_unique<Hudson::Input::InputManager>();
+    _input.get()->Setup(_renderer.get());
 
     // create component registry
     _componentRegistry = std::make_unique<Hudson::Common::ComponentRegistry>();
@@ -46,8 +47,8 @@ void Hudson::Common::Engine::Setup()
 
 void Hudson::Common::Engine::Run()
 {
+
     bool shouldExit = false;
-    //_input->BindCallbacks(_renderer.get()->GetWindow()->GetWindow());
     while (!shouldExit)
     {
         // Call pre-frame hooks

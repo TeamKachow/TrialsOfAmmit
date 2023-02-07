@@ -8,6 +8,13 @@ struct Action
 	bool isSelected;
 };
 
+struct ToolData
+{
+	std::function<void(bool&)> function;
+	bool isRepeatingFunction = false;
+	bool isActive = false;
+};
+
 namespace Hudson::Common
 {
 	class Engine;
@@ -48,6 +55,12 @@ namespace Hudson::Editor
 		Editor(Common::Engine* engine);
 		~Editor();
 
+		void AddTool(std::string, ToolData);
+
+		ImVec2 viewportSize = { 0,0 };
+		ImVec2 cursorPos = { 0,0 };
+		ImVec2 worldSpacePos = { 0,0 };
+
 	private:
         SceneMeta& GetSceneMeta(World::Scene* scene);
         void ShowSceneSaveAs(World::Scene* scene);
@@ -55,7 +68,7 @@ namespace Hudson::Editor
 		static bool LoadImGuiImage(const char* filename, unsigned int* out_texture, int* out_width, int* out_height);
 		void InfiniteButton();
 		void MenuBar();
-		void Scene();
+		void Viewport();
 		void Hierarchy();
 		void ContentBrowser();
 		void ComponentList();
@@ -76,6 +89,8 @@ namespace Hudson::Editor
 		GLuint fileIcon = 0;
 
 		std::filesystem::path currentPath;
+
+		std::map<std::string, ToolData> toolFunctions;
 	};
 
 }

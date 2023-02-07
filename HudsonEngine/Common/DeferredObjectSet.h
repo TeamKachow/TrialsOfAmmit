@@ -44,7 +44,10 @@ namespace Hudson::Common
          */
         void Update()
         {
-            for (auto action : _pending)
+            std::vector<Action> pendingCopy = _pending;
+            _pending.clear();
+
+            for (auto&& action : pendingCopy)
             {
                 switch (action.second)
                 {
@@ -63,8 +66,6 @@ namespace Hudson::Common
                     _callback(action);
                 }
             }
-
-            _pending.clear();
         }
 
         /**
