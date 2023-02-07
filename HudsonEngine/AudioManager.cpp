@@ -343,5 +343,15 @@ void Hudson::Audio::AudioManager::soundButtonUI(const std::string& filePath)
     }
 }
 
+float Hudson::Audio::AudioManager::getGlobalVolume()
+{
+    return engine->getSoundVolume();
+}
+
+void Hudson::Audio::AudioManager::setGlobalVolume(float volume)
+{
+    engine->setSoundVolume(volume);
+}
+
 
 
