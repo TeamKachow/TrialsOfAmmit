@@ -12,7 +12,7 @@
 
 Hudson::Audio::AudioManager::AudioManager()
 {
-   
+    ISound* sound;
     try 
     {
         // Initialize the sound engine
@@ -28,6 +28,8 @@ Hudson::Audio::AudioManager::AudioManager()
     {
         // error checking 
         std::cout << "An exception occurred while initializing the sound engine: " << e.what() << std::endl;
+        engine->drop();
+
     }
 
 }
@@ -64,6 +66,7 @@ irrklang::ISound* Hudson::Audio::AudioManager::playSound(const std::string& file
     catch (std::exception& e)
     {
         std::cout << "Exception: Sound could not be played!" << e.what() << std::endl;
+        sound->drop();
     }
     return NULL;
 }
@@ -338,6 +341,16 @@ void Hudson::Audio::AudioManager::soundButtonUI(const std::string& filePath)
         unloadSoundFile(filePath.c_str());
 
     }
+}
+
+float Hudson::Audio::AudioManager::getGlobalVolume()
+{
+    return engine->getSoundVolume();
+}
+
+void Hudson::Audio::AudioManager::setGlobalVolume(float volume)
+{
+    engine->setSoundVolume(volume);
 }
 
 

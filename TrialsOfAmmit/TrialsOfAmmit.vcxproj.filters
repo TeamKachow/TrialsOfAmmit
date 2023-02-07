@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -116,10 +116,21 @@
     <ClCompile Include="MenuButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Rage.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAOE.cpp">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClCompile>
     <ClCompile Include="Heal.cpp" />
+    <ClCompile Include="PassivePickups.cpp" />
     <ClCompile Include="Rage.cpp" />
     <ClCompile Include="RoomAOE.cpp" />
     <ClCompile Include="SettingsButton.cpp" />
+    <ClCompile Include="Chest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -213,9 +224,21 @@
     <ClInclude Include="MenuButton.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Rage.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAOE.h">
+      <Filter>Source Files\AbilityStuff</Filter>
+    </ClInclude>
     <ClInclude Include="Heal.h" />
+    <ClInclude Include="PassivePickups.h" />
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RoomAOE.h" />
     <ClInclude Include="SettingsButton.h" />
+    <ClInclude Include="PassiveType.h" />
+    <ClInclude Include="Chest.h" />
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ protected:
 public:
 	BaseWeaponClass();
 	~BaseWeaponClass();
-	virtual void Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene);
+	virtual void Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, float _playerDamageMod);
 	virtual void AiAttack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene);
 	virtual void UpgradeWeapon(WeaponUpgradeTypes Level);
 	float _weaponAttackSpeed;
