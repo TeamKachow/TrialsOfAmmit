@@ -65,6 +65,12 @@ void Init()
 
 }
 
+void Hello()
+{
+    std::cout << "Hello" << std::endl;
+}
+
+
 void GameSetup()
 {
     // Set up default camera
@@ -75,6 +81,12 @@ void GameSetup()
 
     // Load textures
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+
+	#ifdef ENABLE_EDITOR
+    editor->AddTool(std::string("Room"), Hello);
+    editor->AddTool(std::string("Room"), Hello);
+	#endif
+
 
     // Create scene
     {
