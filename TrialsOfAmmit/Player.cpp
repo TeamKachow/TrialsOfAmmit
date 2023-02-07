@@ -78,6 +78,27 @@ void Player::PassiveAddDamageMod(float additionalDamage)
 	_playerDamageMod = _playerDamageMod + additionalDamage;
 }
 
+
+// Kenny's edit...
+//void Player::TakeDamage(float _damageTaken)
+//{
+//	if (_godMode == false)
+//	{
+//		_playerHealth = _playerHealth - _damageTaken;
+//		_playerSprite->SetColor(glm::vec3(1, 0, 0));
+//		_isDamaged = true;
+//		if (_playerHealth <= 0)
+//		{
+//			
+//		}
+//		else
+//		{
+//			OnDeath();
+//			_isDead = true;
+//		}
+//	}
+//}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)

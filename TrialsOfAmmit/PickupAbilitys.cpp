@@ -27,7 +27,7 @@ void PickupAbilitys::OnCreate()
 
 
 	random_device rand;
-	uniform_int_distribution<int> dist(0, 4);
+	uniform_int_distribution<int> dist(0, 5);
 	_randomAbilityInt = dist(rand);
 	if (_randomAbilityInt == 0)
 	{
@@ -53,6 +53,11 @@ void PickupAbilitys::OnCreate()
 	{
 		_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		_abilityPickup = new RoomAOE;
+	}
+	if (_randomAbilityInt == 5)
+	{
+		_abilitySprite->SetGridPos(glm::vec2(5, 1));
+		_abilityPickup = new OneUP;
 	}
 
 }

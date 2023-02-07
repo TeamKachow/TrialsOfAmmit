@@ -10,7 +10,9 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_rage = new Rage;
 	_heal = new Heal;
 	_roomaoe = new RoomAOE;
-	_currentAbility = _roll;
+	_oneup = new OneUP;
+	_currentAbility = _oneup;
+	//_currentAbility = _roll;
 }
 
 AbilityHolder::~AbilityHolder()

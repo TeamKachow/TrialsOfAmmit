@@ -12,6 +12,7 @@ public:
 	Player* _player;
 	bool _hasBeenUsed;
 	bool _playerDead;
+	float _healthRegained;
 
 	// make a simple phoenix ult - run it back?
 	// make a second chance thing like in hades?

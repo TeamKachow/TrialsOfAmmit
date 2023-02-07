@@ -6,6 +6,7 @@
 #include "Rage.h"
 #include "Heal.h"
 #include "RoomAOE.h"
+#include "OneUP.h"
 
 class AbilityHolder : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
@@ -16,6 +17,8 @@ public:
 	Rage* _rage;
 	Heal* _heal;
 	RoomAOE* _roomaoe;
+	OneUP* _oneup;
+	
 
 	AbilityHolder();
 	~AbilityHolder();

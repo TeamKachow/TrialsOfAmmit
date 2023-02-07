@@ -35,6 +35,7 @@
     <ClCompile Include="MeleeBaseWeaponClass.cpp" />
     <ClCompile Include="MeleeCollider.cpp" />
     <ClCompile Include="MenuButton.cpp" />
+    <ClCompile Include="OneUP.cpp" />
     <ClCompile Include="PassivePickups.cpp" />
     <ClCompile Include="PickupAbilitys.cpp" />
     <ClCompile Include="PickupBehaviour.cpp" />
@@ -72,6 +73,7 @@
     <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />
     <ClInclude Include="MenuButton.h" />
+    <ClInclude Include="OneUP.h" />
     <ClInclude Include="PassivePickups.h" />
     <ClInclude Include="PassiveType.h" />
     <ClInclude Include="PickupAbilitys.h" />

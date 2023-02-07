@@ -7,6 +7,7 @@
 #include "Rage.h"
 #include "Heal.h"
 #include "RoomAOE.h"
+#include "OneUP.h"
 
 class PickupAbilitys : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
