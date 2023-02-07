@@ -15,6 +15,7 @@ public:
 	Hudson::Input::InputManager* _inputManager;
 	Hudson::World::Scene* _nextScene;
 	Hudson::Render::TextComponent* _buttonTextObject;
+	Hudson::Render::TextComponent* _buttonTextObjectAudio;
 
 	vec2 _buttonScale;
 	string _buttonText;
@@ -26,6 +27,8 @@ protected:
 private:
 	Hudson::Entity::GameObject* MenuForward;
 	Hudson::Entity::GameObject* MenuBack;
+	Hudson::Entity::GameObject* MenuForwardAudio;
+	Hudson::Entity::GameObject* MenuBackAudio;
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;

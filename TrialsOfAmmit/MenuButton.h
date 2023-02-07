@@ -7,7 +7,7 @@ using namespace glm;
 class MenuButton : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MenuButton(Hudson::Render::SpriteComponent* ButtonSprite, vec2 Scale, string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset);
+	MenuButton(string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset);
 	~MenuButton();
 	Hudson::Render::SpriteComponent* _buttonSprite;
 	Hudson::Render::TextComponent* _buttonTextObject;
@@ -18,7 +18,6 @@ public:
 	string _buttonText;
 	vec2 _textOffset;
 protected:
-
 
 private:
 	void OnCreate() override;

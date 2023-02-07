@@ -65,7 +65,7 @@ void main()
 {
 	vec4 sampled = vec4(1.0, 1.0, 1.0, texture(text, TexCoords).r);
     vec4 tempColor = vec4(textColor, 1.0) * sampled;
-    if(tempColor.a < 0.1)
+    if(tempColor.a < 0.2)
         discard;
 
     color = tempColor;
