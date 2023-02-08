@@ -144,7 +144,13 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
     _isCurrentlyTicking = true;
 
     // Run cached component adds/removals
-    _components.Update();
+    try {
+        _components.Update();
+    }
+    catch (std::exception& e)
+    {
+        Hudson::Util::Debug::LogError(std::format("Failed to update component list! This is bad!\n    {}", e.what()));
+    }
 
     // Update behaviours
     for (const auto& component : _components.Get())
@@ -152,8 +158,13 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
         auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
         if (behaviour != nullptr)
         {
-            // TODO: exception catching -> stacktrace?
-            behaviour->OnTick(dt);
+            try {
+                behaviour->OnTick(dt);
+            }
+            catch (std::exception& e)
+            {
+                Hudson::Util::Debug::LogError(std::format("Failed to tick behaviour {}\n    {}", (void*)behaviour, e.what()));
+            }
         }
     }
 
@@ -207,7 +218,8 @@ void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
 
 void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 {
-    // TODO: all of this
+    Hudson::Common::ComponentRegistry* componentRegistry = Hudson::Common::Engine::GetInstance()->GetComponentRegistry();
+    
     j["name"] = _name;
     j["id"] = _serialId;
     j["transform"] = _transform;
@@ -215,9 +227,22 @@ void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 
     for (auto&& component: _components.Get())
     {
+        if (!component->_shouldSave)
+        {
+            // Skip temporary components
+            continue;
+        }
+
         nlohmann::json compJson;
-        compJson["type"] = component->GetTypeName();
-        // TODO: check against component registry
+        std::string compType = component->GetTypeName();
+        
+        // check component is registered
+        if (!componentRegistry->IsComponentRegistered(compType))
+        {
+            Hudson::Util::Debug::LogError(std::format("Could not find component registered as type '{}'!\nGoing to save anyway, but this component will not load back in.", compType));
+        }
+
+        compJson["type"] = compType;
         component->ToJson(compJson["data"]);
         j["components"].push_back(compJson); 
     }
