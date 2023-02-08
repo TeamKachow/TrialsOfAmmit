@@ -67,68 +67,96 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	// Read from file JSON
 
 	std::ifstream i(roomFile);
-	nlohmann::json j;
-	i >> j;
+	nlohmann::json json;
+	i >> json;
 
-	x = j["roomX"];
-	y = j["roomY"];
+	x = json["roomX"];
+	y = json["roomY"];
 
 	nav_grid_ = new char[x * y];
 	texture_grid_ = new char[x * y];
 	object_grid = new char[x * y];
 
-	std::string standardArray = j["navGrid"].dump();
+	std::string standardArray = json["navGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	int offset = 0;
 	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j)
 		{
-			nav_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x + j] != ',') {
+				nav_grid_[i * x + (j - offset)] = charArray[i * x + j];
+				
+				std::cout << nav_grid_[i * x + (j - offset)];
+				//std::cout << i * x + (j - offset) << std::endl;
+				offset = 0;
+			}
+			else {
+				++offset;
+
+			}
 		}
+		offset = 0;
+		std::cout << std::endl;
 	}
 	delete[] charArray;
 
-	standardArray = j["texGrid"].dump();
+	standardArray = json["texGrid"].dump();
+	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
+	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
+	//standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
+	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
+	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
+
+	offset = 0;
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			if (charArray[i * x + j] != ',') {
+				texture_grid_[i * x + (j - offset)] = charArray[i * x + j];
+			}
+			else {
+				++offset;
+			}
+		}
+		//offset = 0;
+
+	}
+	delete[] charArray;
+
+	standardArray = json["objGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			texture_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x + j] != ',') {
+				object_grid[i * x + (j - offset)] = charArray[i * x + j];
+			}
+			else {
+				++offset;
+			}
 		}
-	}
-	delete[] charArray;
+		//offset = 0;
 
-	standardArray = j["objGrid"].dump();
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
-	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-	for (int i = 0; i < y; ++i)
-	{
-		for (int j = 0; j < x; ++j)
-		{
-			object_grid[i * x + j] = charArray[i * x + j];
-		}
 	}
 	delete[] charArray;
 
 	// map local texture ids to std::map<int, Texture*>
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
-	nlohmann::json texRef = j["texReference"];
+	nlohmann::json texRef = json["texReference"];
 	for (const auto &object : texRef)
 	{
 		// TODO determine alpha channel in storage of tex
