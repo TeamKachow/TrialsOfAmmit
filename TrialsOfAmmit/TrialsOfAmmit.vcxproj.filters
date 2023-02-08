@@ -125,6 +125,7 @@
     <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Rage.cpp" />
     <ClCompile Include="RoomAOE.cpp" />
+    <ClCompile Include="OneUP.cpp" />
     <ClCompile Include="Rooms\Room.cpp">
       <Filter>Rooms</Filter>
     </ClCompile>
@@ -234,6 +235,7 @@
     <ClInclude Include="Heal.h" />
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RoomAOE.h" />
+    <ClInclude Include="OneUP.h" />
     <ClInclude Include="Rooms\Room.h">
       <Filter>Rooms</Filter>
     </ClInclude>

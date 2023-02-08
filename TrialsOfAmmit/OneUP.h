@@ -1,18 +1,20 @@
 #pragma once
 #include "BaseAbilityClass.h"
 
-class Roll : public BaseAbilityClass
+class OneUP : public BaseAbilityClass
 {
 public:
-	// Default Methods
-	Roll();
-	~Roll();
+	OneUP();
+	~OneUP();
 	void UseAbility(Hudson::World::Scene* _CurrentPassScene) override;
 	void DeactivateAbility(Hudson::World::Scene* _CurrentPassScene) override;
 
-	// Class Variables
 	Player* _player;
-	float _rollSpeed;
-	float _defaultSpeed;
+	bool _hasBeenUsed;
+	bool _playerDead;
+	float _healthRegained;
+
+	// make a simple phoenix ult - run it back?
+	// make a second chance thing like in hades?
 };
 
