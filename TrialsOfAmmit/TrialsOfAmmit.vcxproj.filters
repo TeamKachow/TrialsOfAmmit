@@ -128,6 +128,7 @@
     <ClCompile Include="Rooms\Room.cpp">
       <Filter>Rooms</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -234,5 +235,6 @@
     <ClInclude Include="Rooms\Room.h">
       <Filter>Rooms</Filter>
     </ClInclude>
+    <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
 </Project>

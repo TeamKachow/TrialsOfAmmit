@@ -17,12 +17,11 @@ private:
 	Hudson::World::Scene* _currentScene;
 	Hudson::Physics::ColliderComponent* playerCollider;
 
+	Hudson::World::Scene* _pauseScene;
+
 	Hudson::Render::SpriteComponent* GraveSprite;
 	glm::vec2 _lastFramePos;
 	glm::vec2 _lastLastFramePos;
-
-	float _moveX;
-	float _moveY;
 
 	float _deathTimer;
 	float _deathAnim;
@@ -33,6 +32,8 @@ private:
 	double _playerAnimTimer = 0;
 	int _gridX = 0;
 	int _gridY = 0;
+
+	
 
 	glm::vec2 _spawnPos;
 
@@ -79,7 +80,11 @@ private:
 
 	
 public:
+	bool _isPaused;
+	bool _pauseKeyIsDeactive;
 	Hudson::Render::SpriteComponent* _playerSprite;
+
+	Hudson::Entity::GameObject* _pauseMenu;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
 	float _maxHealth;

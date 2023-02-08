@@ -4,32 +4,41 @@
 #include "PlayerHealthUI.h"
 #include "PickupBehaviour.h"
 #include "Rooms/Room.h"
+#include "PauseMenu.h"
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
-	_maxHealth = 100;
-	_playerHealth = _maxHealth;
-	_deathTimer = 0;
-	_deathAnim = 0.4;
-	_deathGridX;
-	_playerAnimSpeed = 0.2;
+	//Player Moving Directions
 	_playerDirection = Stopped;
 	_playerFacingDirection = Stopped;
-	_attackTimer = 0;
+	
+	//Player Stats
+	_maxHealth = 100;
+	_playerHealth = _maxHealth;
 	_playerMovementSpeed = 125.0;
+	_playerDamageMod = 1;
+	_attackTimer = 0;
+	_playerAnimSpeed = 0.2;
+	_spawnPos = spawnPos;
+
+	//Checks
 	_godMode = false;
 	_isDead = false;
 	_isDamaged = false;
-	_playerDamageMod = 1;
-	_spawnPos = spawnPos;
 
+	//Pause Menus
+	_isPaused = false;
+
+	//Death Vars
+	_deathTimer = 0;
+	_deathAnim = 0.4;
+	_deathGridX = 0;
+
+	//Wall Collisions
 	_isHittingUp = false;
 	_isHittingDown = false;
 	_isHittingRight = false;
 	_isHittingLeft = false;
-
-	_moveX = 0;
-	_moveY = 0;
 
 }
 
@@ -38,7 +47,7 @@ Player::~Player()
 	
 }
 
-void Player::OnCreate()
+void Player::OnCreate() //The magic is set up here
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
@@ -64,11 +73,19 @@ void Player::OnCreate()
 	_playersWeapon = &_axe;
 	_parent->AddComponent(new PickupBehaviour());
 	_parent->AddComponent(new AbilityHolder());
+
+	_pauseScene = new Hudson::World::Scene();
+	_pauseScene->SetName("PauseScene");
+	_pauseMenu = new Hudson::Entity::GameObject();
+	_pauseMenu->AddComponent(new PauseMenu(glm::vec2(500, 500), _parent->GetScene(), _parent->GetComponent<Player>()));
+	_pauseScene->AddObject(_pauseMenu);
+	GetEngine()->GetSceneManager()->AddScene(_pauseScene);
+
 	CreateUI();
 	HealthBarUI();
 }
 
-//Function the Passive Mods will access to change the player Stats
+//Function the Passive Mods will access to change the player Stats when passives are pickup in the pickup behaviour
 void Player::PassiveAddMaxHealth(float additionalHealth)
 {
 	std::cout << "Added Health" << "\n";
@@ -90,6 +107,7 @@ void Player::PassiveAddDamageMod(float additionalDamage)
 
 void Player::TakeDamage(float _damageTaken)
 {
+	//God Mode For DEBUG and Unity Frames on Roll
 	if (_godMode == false)
 	{
 		_playerHealth = _playerHealth - _damageTaken;
@@ -106,6 +124,7 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	//Wall Collisions Reset once a frame due to the player being pushed back and now not colliding and if they are it will be picked up in the function
 	_isHittingUp = false;
 	_isHittingDown = false;
 	_isHittingLeft = false;
@@ -113,13 +132,13 @@ void Player::OnTick(const double& dt)
 	WallCollisions();
 	
 	
-
+	//Flashing When Damaged
 	if (_isDamaged)
 	{
 		_playerSprite->SetColor(glm::vec3(1, 1, 1));
 		_isDamaged = false;
 	}
-
+	//Checking For Death
 	if (_isDead)
 	{
 		_deathTimer += dt;
@@ -136,6 +155,21 @@ void Player::OnTick(const double& dt)
 		}
 	}
 
+	//Checks for keypress is not it is paused - It works with the pause menus double key check system
+	if (_inputManager.getActionState("Pause"))
+	{
+		if (_isPaused == false)
+		{
+			_pauseMenu->GetComponent<PauseMenu>()->PauseScene();
+		}
+	}
+	else
+	{
+		_isPaused = false;
+	}
+		
+
+	//Keypresses
 	if(_inputManager.getActionState("Up"))
 	{
 		_playerDirection = Up;
@@ -162,7 +196,7 @@ void Player::OnTick(const double& dt)
 		_playerDirection = Stopped;
 	}
 
-
+	//Attack Timer / Function using the current weapon stats
 	_attackTimer += dt;
 	if (_inputManager.getActionState("Attack"))
 	{
@@ -173,8 +207,7 @@ void Player::OnTick(const double& dt)
 		}
 		
 	}
-
-	switch (_playerDirection)
+	switch (_playerDirection) //Switch for the player movement
 	{
 	case Down:
 		MoveDown();
@@ -194,13 +227,11 @@ void Player::OnTick(const double& dt)
 	default:;
 	}
 	
-	_lastFramePos = _parent->GetTransform().pos;
+	_lastFramePos = _parent->GetTransform().pos; //Saving Last Frame for wall collsions
 
-	_playerAnimTimer += dt;
-	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	_playerAnimTimer += dt; //Calls Anim Calculations
+	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY)); //Sets the Based of the Calcs
 	
-	//_playerSprite->SetColor(glm::vec3(1, 1, 1)); -- oopsie
-
 }
 
 void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
@@ -208,7 +239,7 @@ void Player::Fire() //Attack Uses facing Direction not the way the player is mov
 	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene, _playerDamageMod);
 }
 
-void Player::MoveUp() //Movement depending on _playerDirection
+void Player::MoveUp() //Movement depending on _playerDirection called once a frame
 {
 	if (_isHittingUp == false)
 	{
@@ -217,12 +248,6 @@ void Player::MoveUp() //Movement depending on _playerDirection
 		playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
 		
 	}
-	else
-	{
-		//StopMove();
-		//_parent->GetTransform().pos = (_lastFramePos);
-	}
-	
 }
 
 void Player::MoveDown()
@@ -233,13 +258,6 @@ void Player::MoveDown()
 		AnimMove();
 		playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
 	}
-	else
-	{
-		//StopMove();
-		//_parent->GetTransform().pos = (_lastFramePos);
-	}
-	
-	
 }
 
 void Player::MoveRight()
@@ -251,12 +269,6 @@ void Player::MoveRight()
 		playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed,0));
 
 	}
-	else
-	{
-		//StopMove();
-		//
-	}
-
 }
 
 void Player::MoveLeft()
@@ -267,19 +279,14 @@ void Player::MoveLeft()
 		AnimMove();
 		playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
 	}
-	else
-	{
-		//StopMove();
-		//_parent->GetTransform().pos = (_lastFramePos);
-	}
-	
+
 }
 
-void Player::StopMove()
+void Player::StopMove()//When the player isnt moving sets sprite sheet and stops them
 {
 	playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 	playerPhysics->SetVelocity(glm::vec2(0, 0));
-	if (_playerFacingDirection == Right || _playerFacingDirection == Down) //When Stop player the player stadning still frame
+	if (_playerFacingDirection == Right || _playerFacingDirection == Down) 
 	{
 		_gridX = 0;
 	}
@@ -291,7 +298,7 @@ void Player::StopMove()
 	
 }
 
-void Player::CreateUI()
+void Player::CreateUI() //Both functions are to make the UI of the player Stats
 {
 	Hudson::Entity::GameObject* WeaponUIPickup = new Hudson::Entity::GameObject();
 	WeaponUIPickup->AddComponent(new WeaponDisplayUI(glm::vec2(1450.0f, 25.0f), _currentScene, _parent->GetComponent<Player>()));
@@ -302,7 +309,6 @@ void Player::CreateUI()
 	_currentScene->AddObject(AbilityUI);
 
 }
-
 void Player::HealthBarUI()
 {
 	Hudson::Entity::GameObject* HealthBar = new Hudson::Entity::GameObject();
@@ -310,14 +316,14 @@ void Player::HealthBarUI()
 	_currentScene->AddObject(HealthBar);
 }
 
-void Player::Respawn()
+void Player::Respawn() //DEBUG RESPAWN PLAYER
 {
 	_parent->GetTransform().pos = glm::vec2(500, 500);
 	_playerHealth = 100;
 	_playersWeapon = new Axe;
 }
 
-void Player::WallCollisions()
+void Player::WallCollisions()//Checks the First collision box on the player to see if they are hitting walls
 {
 	
 	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
@@ -350,9 +356,8 @@ void Player::WallCollisions()
 	}
 }
 
-void Player::InverseForce()
+void Player::InverseForce()//Called When colliding on walls and then stops the player moving does this by calling opersite force and making back to last frame pos to stop the player colliding
 {
-	
 	switch (_playerFacingDirection)
 	{
 	case Down:
@@ -383,7 +388,7 @@ void Player::InverseForce()
 	}
 }
 
-void Player::AnimMove()//General move through sprite sheet function
+void Player::AnimMove()//Animation is based of player moving and called when it is
 {
 	if (_playerAnimTimer >= _playerAnimSpeed)
 	{
@@ -401,7 +406,7 @@ void Player::AnimMove()//General move through sprite sheet function
 	}
 }
 
-void Player::OnDeath()
+void Player::OnDeath() //Makes the graves stone and animates after
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	Hudson::Entity::GameObject* Grave = new Hudson::Entity::GameObject;
@@ -423,7 +428,7 @@ void Player::OnDestroy()
 {
 }
 
-void Player::DrawPropertyUI()
+void Player::DrawPropertyUI() //IMGUI DEBUG TOOLS
 {
 	if (ImGui::Button("Respawn"))
 	{

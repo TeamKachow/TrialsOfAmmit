@@ -15,6 +15,7 @@ void Chest::OnInteract()
 {
 	if (_isOpen == false)
 	{
+		_spawnPos = _parent->GetTransform().pos;
 		_chestSprite->SetGridPos(glm::vec2(1, 1));
 		Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
 		WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(_spawnPos.x, _spawnPos.y + 75)));

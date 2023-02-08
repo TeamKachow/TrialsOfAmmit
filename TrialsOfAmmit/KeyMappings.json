@@ -166,7 +166,9 @@
         "Name": "O"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Unpause"
+        ],
         "KeyDown": false,
         "KeyID": 80,
         "Name": "P"
@@ -236,7 +238,9 @@
         "Name": "Z"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Pause"
+        ],
         "KeyDown": false,
         "KeyID": 256,
         "Name": "Escape"

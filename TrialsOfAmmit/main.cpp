@@ -18,6 +18,7 @@
 #include "MeleeAttack.h"
 #include "Projectile.h"
 #include "MeleeCollider.h"
+#include "PauseMenu.h"
 
 Hudson::Common::Engine* engine;
 
@@ -80,6 +81,7 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
+    registry->Register<PauseMenu>("Pause");
 }
 
 void Init() 
