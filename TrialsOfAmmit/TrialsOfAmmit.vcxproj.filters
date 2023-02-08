@@ -129,6 +129,8 @@
     <ClCompile Include="Rooms\Room.cpp">
       <Filter>Rooms</Filter>
     </ClCompile>
+    <ClCompile Include="CameraDolly.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -237,6 +239,8 @@
     <ClInclude Include="Rooms\Room.h">
       <Filter>Rooms</Filter>
     </ClInclude>
+    <ClInclude Include="CameraDolly.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
 </Project>

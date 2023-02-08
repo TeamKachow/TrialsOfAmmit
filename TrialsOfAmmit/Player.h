@@ -102,6 +102,7 @@ public:
 	void PassiveAddMaxHealth(float additionalHealth);
 	void PassiveAddSpeed(float additionalSpeed);
 	void PassiveAddDamageMod(float additionalDamage);
+	void SetPosition(glm::vec2 Position);
 
 	void TakeDamage(float _damageTaken);
 	Player(const Player& other) = default;
