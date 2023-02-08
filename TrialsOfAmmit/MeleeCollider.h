@@ -13,6 +13,8 @@ public:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	Hudson::Render::SpriteComponent* _slashSprite;
 	facingDirections _slashDirection;

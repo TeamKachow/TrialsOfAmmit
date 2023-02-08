@@ -17,6 +17,7 @@
 #include "PickupBehaviour.h"
 #include "MeleeAttack.h"
 #include "Projectile.h"
+#include "MeleeCollider.h"
 
 Hudson::Common::Engine* engine;
 
@@ -78,6 +79,7 @@ void InitRegistry()
     registry->Register<PickupWeapon>("WeaponPickUp");
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
+    registry->Register<MeleeCollider>("MeleeCollision");
 
 
 

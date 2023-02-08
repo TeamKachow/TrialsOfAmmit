@@ -161,3 +161,11 @@ void MeleeCollider::OnDestroy()
 void MeleeCollider::DrawPropertyUI()
 {
 }
+
+void MeleeCollider::FromJson(const nlohmann::json& j)
+{
+}
+
+void MeleeCollider::ToJson(nlohmann::json& j)
+{
+}

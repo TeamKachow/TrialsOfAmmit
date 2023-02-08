@@ -4,7 +4,7 @@
 class PlayerHealthUI : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	PlayerHealthUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene, Player* _player);
+	//PlayerHealthUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene, Player* _player);
 	PlayerHealthUI(glm::vec2 spawnPos = { 100.0f, 25.0f }, Hudson::World::Scene* _scene = nullptr, Player* _player = nullptr);
 	~PlayerHealthUI();
 
