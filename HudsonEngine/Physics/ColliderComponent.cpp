@@ -70,3 +70,11 @@ void Hudson::Physics::ColliderComponent::DrawPropertyUI()
 		ImGui::BulletText("Col %p\nObj %p", collider, collider->_parent);
     }
 }
+
+void Hudson::Physics::ColliderComponent::FromJson(const nlohmann::json& j)
+{
+}
+
+void Hudson::Physics::ColliderComponent::ToJson(nlohmann::json& j)
+{
+}

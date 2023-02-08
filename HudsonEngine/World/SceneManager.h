@@ -20,7 +20,9 @@ namespace Hudson::World
 
         Hudson::Util::Timestep* _time;
 
+        bool _paused = false;
         bool _isTicking = false;
+
         /**
          * \brief Handles pending scene removals then additions after each tick.
          */
@@ -74,5 +76,17 @@ namespace Hudson::World
         * \brief Tick the current scenes.
         */
         void Tick();
+
+        /**
+         * \brief Check whether all scenes have been paused.
+         * \return Whether all scenes are paused
+         */
+        [[nodiscard]] bool IsPaused() const;
+
+        /**
+         * \brief Set whether all scenes are paused.
+         * \param paused Whether all scenes are paused
+         */
+        void SetPaused(bool paused);
     };
 }

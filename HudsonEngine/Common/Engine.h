@@ -17,6 +17,7 @@ namespace Hudson
 
 namespace Hudson::Common
 {
+    class ComponentRegistry;
     /**
      * \brief The entrypoint to the engine.
      * \details This manages the lifecycle (start -> game loop -> exit) of the game.
@@ -29,6 +30,7 @@ namespace Hudson::Common
         std::unique_ptr<Physics::PhysicsManager> _physics;
         std::unique_ptr<Audio::AudioManager> _audio;
         std::unique_ptr<Input::InputManager> _input;
+        std::unique_ptr<Common::ComponentRegistry> _componentRegistry;
 
         bool _shutdownFlag = false;
 
@@ -95,6 +97,12 @@ namespace Hudson::Common
         [[nodiscard]] Input::InputManager* GetInputManager() override;
 
         Engine* GetEngine() override;
+
+        /**
+         * \brief Get the engine's component registry.
+         * \return The component registry
+         */
+        [[nodiscard]] Hudson::Common::ComponentRegistry* GetComponentRegistry() override;
 
         static Engine* GetInstance();
 

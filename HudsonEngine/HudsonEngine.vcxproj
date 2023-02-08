@@ -64,6 +64,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\imgui;$(SolutionDir)\Dependencies\includes;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ExternalWarningLevel>Level1</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,8 +95,9 @@
     <ClCompile Include="Common\Engine.cpp" />
     <ClCompile Include="Common\DeferredObjectSet.cpp" />
     <ClCompile Include="Common\EngineAccessors.cpp" />
+    <ClCompile Include="Common\ISerialisable.cpp" />
     <ClCompile Include="Common\ResourceManager.cpp" />
-    <ClCompile Include="Editor\ComponentRegistry.cpp" />
+    <ClCompile Include="Common\ComponentRegistry.cpp" />
     <ClCompile Include="Editor\Editor.cpp" />
     <ClCompile Include="Entity\Behaviour.cpp" />
     <ClCompile Include="Entity\Component.cpp" />
@@ -131,8 +133,9 @@
     <ClInclude Include="Common\EngineAccessors.h" />
     <ClInclude Include="Common\IEditable.h" />
     <ClInclude Include="Common\DeferredObjectSet.h" />
+    <ClInclude Include="Common\ISerialisable.h" />
     <ClInclude Include="Common\ResourceManager.h" />
-    <ClInclude Include="Editor\ComponentRegistry.h" />
+    <ClInclude Include="Common\ComponentRegistry.h" />
     <ClInclude Include="Editor\Editor.h" />
     <ClInclude Include="Entity\Behaviour.h" />
     <ClInclude Include="Entity\Common.h" />
@@ -165,6 +168,7 @@
     <ClInclude Include="Render\Texture.h" />
     <ClInclude Include="Render\Window.h" />
     <ClInclude Include="Util\Debug.h" />
+    <ClInclude Include="Util\GlmJsonFunctions.h" />
     <ClInclude Include="Util\stdafx.h" />
     <ClInclude Include="Util\Timestep.h" />
     <ClInclude Include="World\Common.h" />

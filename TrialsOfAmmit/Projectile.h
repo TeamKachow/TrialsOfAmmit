@@ -6,8 +6,11 @@ class Projectile : public Hudson::Entity::Behaviour, public Hudson::Common::IEdi
 {
 public:
 
-	Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _projectileSpeed, float _range);
+	Projectile(facingDirections projectileDirection = {Down}, glm::vec2 spawnPos = {0,0}, Hudson::World::Scene* CurrentScene = {nullptr}, WeaponTypes _weaponFiring = { WT_Bow }, float _damage = {0}, float _projectileSpeed = {0}, float _range = {0});
 	~Projectile()override;
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	Hudson::World::Scene* _currentScene;
 	Hudson::Physics::PhysicsComponent* _projectilePhysics;

@@ -21,7 +21,6 @@ void Chest::OnInteract()
 		_parent->GetScene()->AddObject(WeaponPickup);
 		_isOpen = true;
 	}
-	
 }
 
 void Chest::OnCreate()
@@ -32,6 +31,7 @@ void Chest::OnCreate()
 	_chestSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_chestCollider = new Hudson::Physics::ColliderComponent();
 	_chestSprite->SetGridPos(glm::vec2(0, 1));
+	_chestSprite->SetDepthOrder(1);
 	_parent->AddComponent(_chestSprite);
 	_parent->AddComponent(_chestCollider);
 	_parent->SetName("Chest");
@@ -47,5 +47,13 @@ void Chest::OnDestroy()
 }
 
 void Chest::DrawPropertyUI()
+{
+}
+
+void Chest::FromJson(const nlohmann::json& j)
+{
+}
+
+void Chest::ToJson(nlohmann::json& j)
 {
 }

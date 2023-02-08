@@ -23,6 +23,9 @@ public:
 
 	void DrawPropertyUI() override;
 
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
+
 private:
 	int x, y;
 	

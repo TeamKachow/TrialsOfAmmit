@@ -38,12 +38,16 @@ namespace Hudson::Render
 		float GetDepthOrder() { return this->zOrder; };
 
 		void DrawPropertyUI() override;
+        void FromJson(const nlohmann::json& j) override;
+        void ToJson(nlohmann::json& j) override;
 
-	private:
+    private:
 		Render::Shader* shader;
 
 		FT_Library _ft;
 		FT_Face _face;
+		std::string _fontPath = "";
+
 		std::map<char, Character> Characters;
 
 		unsigned int VAO;

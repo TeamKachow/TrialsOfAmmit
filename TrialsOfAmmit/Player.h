@@ -18,6 +18,11 @@ private:
 	Hudson::Physics::ColliderComponent* playerCollider;
 
 	Hudson::Render::SpriteComponent* GraveSprite;
+	glm::vec2 _lastFramePos;
+	glm::vec2 _lastLastFramePos;
+
+	float _moveX;
+	float _moveY;
 
 	float _deathTimer;
 	float _deathAnim;
@@ -29,9 +34,15 @@ private:
 	int _gridX = 0;
 	int _gridY = 0;
 
+	glm::vec2 _spawnPos;
 
 	bool _isDamaged;
 	bool _isDead;
+
+	bool _isHittingUp;
+	bool _isHittingDown;
+	bool _isHittingRight;
+	bool _isHittingLeft;
 
 	//Attack Timer
 	double _attackTimer = 0;
@@ -60,7 +71,8 @@ private:
 	void HealthBarUI();
 
 	void Respawn();
-
+	void WallCollisions();
+	void InverseForce();
 	//Anim Functions
 	void AnimMove();
 	void OnDeath();
@@ -90,6 +102,9 @@ public:
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 
 

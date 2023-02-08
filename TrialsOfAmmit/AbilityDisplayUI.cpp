@@ -14,6 +14,14 @@ AbilityDisplayUI::~AbilityDisplayUI()
 {
 }
 
+void AbilityDisplayUI::FromJson(const nlohmann::json& j)
+{
+}
+
+void AbilityDisplayUI::ToJson(nlohmann::json& j)
+{
+}
+
 void AbilityDisplayUI::OnCreate()
 {
 	//Makes the frame 
