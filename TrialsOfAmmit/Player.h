@@ -18,6 +18,12 @@ private:
 	Hudson::Physics::ColliderComponent* playerCollider;
 
 	Hudson::Render::SpriteComponent* GraveSprite;
+	glm::vec2 _lastFramePos;
+	glm::vec2 _lastLastFramePos;
+
+	float _moveX;
+	float _moveY;
+
 
 	float _deathTimer;
 	float _deathAnim;

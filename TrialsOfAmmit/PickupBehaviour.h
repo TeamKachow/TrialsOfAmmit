@@ -11,6 +11,8 @@ public:
 	~PickupBehaviour();
 	Hudson::Input::InputManager _inputManager;
 	Hudson::World::Scene* _currentScene;
+	Hudson::Physics::ColliderComponent* _ThisCollider;
+
 	Player* _currentPlayer;
 	void CheckCollision();
 	void OnCreate() override;

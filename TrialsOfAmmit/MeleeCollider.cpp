@@ -89,7 +89,6 @@ void MeleeCollider::OnTick(const double& dt)
 					{
 						break;
 					}
-					break;
 				}
 				if (other->GetParent()->GetComponent<Chest>() != nullptr)
 				{
@@ -101,8 +100,13 @@ void MeleeCollider::OnTick(const double& dt)
 
 						break;
 					}
+					else
+					{
+						break;
+					}
 
 				}
+				
 			}
 
 		}
@@ -137,7 +141,6 @@ void MeleeCollider::OnTick(const double& dt)
 					{
 						break;
 					}
-					break;
 				}
 
 			}

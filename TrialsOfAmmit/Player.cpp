@@ -28,6 +28,9 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_isHittingRight = false;
 	_isHittingLeft = false;
 
+	_moveX = 0;
+	_moveY = 0;
+
 }
 
 Player::~Player()
@@ -103,12 +106,13 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
-	_isHittingDown = false;
-	_isHittingRight = false;
 	_isHittingUp = false;
+	_isHittingDown = false;
 	_isHittingLeft = false;
-
+	_isHittingRight = false;
 	WallCollisions();
+	
+	
 
 	if (_isDamaged)
 	{
@@ -141,6 +145,7 @@ void Player::OnTick(const double& dt)
 	{
 		_playerDirection = Down;
 		_playerFacingDirection = Down;
+		
 	}
 	else if (_inputManager.getActionState("Right"))
 	{
@@ -169,7 +174,7 @@ void Player::OnTick(const double& dt)
 		
 	}
 
-	switch(_playerDirection)
+	switch (_playerDirection)
 	{
 	case Down:
 		MoveDown();
@@ -186,11 +191,14 @@ void Player::OnTick(const double& dt)
 	case Stopped:
 		StopMove();
 		break;
-	default: ;
+	default:;
 	}
+	
+	_lastFramePos = _parent->GetTransform().pos;
 
 	_playerAnimTimer += dt;
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	
 	//_playerSprite->SetColor(glm::vec3(1, 1, 1)); -- oopsie
 
 }
@@ -207,6 +215,12 @@ void Player::MoveUp() //Movement depending on _playerDirection
 		_gridY = 3;
 		AnimMove();
 		playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+		
+	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
 	}
 	
 }
@@ -219,6 +233,12 @@ void Player::MoveDown()
 		AnimMove();
 		playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
 	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
+	}
+	
 	
 }
 
@@ -228,7 +248,13 @@ void Player::MoveRight()
 	{
 		_gridY = 2;
 		AnimMove();
-		playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
+		playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed,0));
+
+	}
+	else
+	{
+		//StopMove();
+		//
 	}
 
 }
@@ -241,11 +267,17 @@ void Player::MoveLeft()
 		AnimMove();
 		playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
 	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
+	}
 	
 }
 
 void Player::StopMove()
 {
+	playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 	playerPhysics->SetVelocity(glm::vec2(0, 0));
 	if (_playerFacingDirection == Right || _playerFacingDirection == Down) //When Stop player the player stadning still frame
 	{
@@ -287,6 +319,7 @@ void Player::Respawn()
 
 void Player::WallCollisions()
 {
+	
 	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
 	if (!colliders.empty())
 	{
@@ -294,23 +327,24 @@ void Player::WallCollisions()
 		auto collidingWith = collider->GetCurrentCollisions();
 		for (auto other : collidingWith)
 		{
-			if (other->GetParent()->GetComponent<Room>() != nullptr)
+			if (other != nullptr)
 			{
-				Room* _Room = other->GetParent()->GetComponent<Room>();
-				if (_Room != nullptr)
+				if (other->GetParent()->GetComponent<Room>() != nullptr)
 				{
-					std::cout << "Hitting Wall" << "\n";
-					InverseForce();
+					Room* _Room = other->GetParent()->GetComponent<Room>();
+					if (_Room != nullptr)
+					{
+						playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
+						InverseForce();
+					}
+				}
+				else
+				{
+					collider->ClearColliding();
 					break;
 				}
 			}
-			else
-			{
-				break;
-			}
 			
-
-
 		}
 
 	}
@@ -322,24 +356,30 @@ void Player::InverseForce()
 	switch (_playerFacingDirection)
 	{
 	case Down:
-		cout << "Running Down" << "\n";
 		_isHittingDown = true;
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Up;
 		break;
 	case Left:
 		_isHittingLeft = true;
-		cout << "Running LEft" << "\n";
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Right;
 		break;
 	case Right:
 		_isHittingRight = true;
-		cout << "Running Right" << "\n";
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Left;
 		break;
 	case Up:
 		_isHittingUp = true;
-		cout << "Running Up" << "\n";
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Down;
+
 		break;
-	case Stopped:
-		break;
-	default:;
 	}
 }
 

@@ -27,6 +27,7 @@ void PickupWeapon::OnCreate()
 	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_weaponSprite->SetDepthOrder(1);
 	_weaponCollider = new Hudson::Physics::ColliderComponent();
 
 	_parent->AddComponent(_weaponSprite);

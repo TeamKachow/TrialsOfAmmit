@@ -174,15 +174,15 @@ void GameSetup()
 
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));
+    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(200.0f, 300.0f)));
     startScene->AddObject(AbilityPickup);
 
     Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
-    PassivePickup->AddComponent(new PassivePickups(glm::vec2(600, 300.0f)));
+    PassivePickup->AddComponent(new PassivePickups(glm::vec2(300, 300.0f)));
     startScene->AddObject(PassivePickup);
 
     Hudson::Entity::GameObject* _chest = new Hudson::Entity::GameObject();
-    _chest->AddComponent(new Chest(glm::vec2(700, 300.0f)));
+    _chest->AddComponent(new Chest(glm::vec2(400, 300.0f)));
     startScene->AddObject(_chest);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();

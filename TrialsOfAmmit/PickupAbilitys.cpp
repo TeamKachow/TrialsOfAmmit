@@ -17,6 +17,7 @@ void PickupAbilitys::OnCreate()
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_abilitySprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Abilitys"));
 	_abilitySprite->SetGridSize(glm::vec2(5, 1));
+	_abilitySprite->SetDepthOrder(1);
 	_abilitySprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 	_abilityCollider = new Hudson::Physics::ColliderComponent();
 
