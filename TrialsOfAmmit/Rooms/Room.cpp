@@ -254,6 +254,15 @@ void Room::DrawPropertyUI()
 
 }
 
+void Room::FromJson(const nlohmann::json& j)
+{
+}
+
+void Room::ToJson(nlohmann::json& j)
+{
+}
+
+
 ImGuiRoomData imguiRoomData;
 bool addingTextureRef = false;
 textureRefData newRefData;
@@ -341,7 +350,7 @@ void StartRoomMaker(bool& isActive)
 
 					ImGui::InputTextWithHint("File Name", ".room", fileName, IM_ARRAYSIZE(fileName));
 					ImGui::Separator();
-					if(ImGui::Button("Save"))
+					if (ImGui::Button("Save"))
 					{
 						imguiRoomData.saveToFile(fileName);
 					}
@@ -415,7 +424,7 @@ void StartRoomMaker(bool& isActive)
 			ImGui::Text("Texture References");
 			ImGui::Separator();
 
-			for (textureRefData* textureRef: imguiRoomData.textureRefs) // access by reference to avoid copying
+			for (textureRefData* textureRef : imguiRoomData.textureRefs) // access by reference to avoid copying
 			{
 				Hudson::Render::Texture* relevantTex = resManager->GetTexture(textureRef->textureRoot);
 
@@ -487,7 +496,7 @@ void StartRoomMaker(bool& isActive)
 				ImGui::PopID();
 			}
 
-			if(addingTextureRef) {
+			if (addingTextureRef) {
 
 				ImGui::InputText("Texture Root", &newRefData.textureRoot);
 				ImGui::InputInt("Texture ID", &newRefData.textureID);
@@ -495,7 +504,7 @@ void StartRoomMaker(bool& isActive)
 				ImGui::InputInt("Grid Size Y", &newRefData.gridSizeY);
 				ImGui::InputInt("Grid Pos X", &newRefData.gridPosX);
 				ImGui::InputInt("Grid Pos Y", &newRefData.gridPosY);
-				
+
 				if (ImGui::Button("Save", ImVec2(ImGui::GetWindowSize().x, 0))) {
 					textureRefData* copyRefData = new textureRefData();
 					copyRefData->textureID = newRefData.textureID;
@@ -539,10 +548,4 @@ void StartRoomMaker(bool& isActive)
 		ImGui::End();
 	}
 
-void Room::FromJson(const nlohmann::json& j)
-{
-}
-
-void Room::ToJson(nlohmann::json& j)
-{
 }
