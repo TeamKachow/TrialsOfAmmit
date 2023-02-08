@@ -18,7 +18,7 @@ namespace Hudson::Render {
 		const glm::mat4& GetViewProjectionMatrix() const { return _viewProjection; }
 		const glm::mat4& GetInverseViewProjectionMatrix() { return glm::inverse(_viewProjection); }
 	private:
-		glm::vec3 _position = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 _position = { 200.0f, 200.0f, 0.0f };
 
 		glm::mat4 _projection;
 		glm::mat4 _view;

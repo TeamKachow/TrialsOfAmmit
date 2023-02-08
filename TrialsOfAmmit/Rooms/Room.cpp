@@ -13,56 +13,56 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	// Determine x,y from file
 	// This is debug, file will already be wrote to
 
-	nlohmann::json roomData;
-	std::ofstream writeFile(roomFile);
-	roomData["roomX"] = 10;
-	roomData["roomY"] = 12;
-	roomData["navGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
-	roomData["texGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
-	roomData["objGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,2,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
+	//nlohmann::json roomData;
+	//std::ofstream writeFile(roomFile);
+	//roomData["roomX"] = 10;
+	//roomData["roomY"] = 12;
+	//roomData["navGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
+	//roomData["texGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
+	//roomData["objGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,2,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
 
 
-	roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
-	writeFile << std::setw(1) << roomData << std::endl;
+	//roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
+	//writeFile << std::setw(1) << roomData << std::endl;
 
 	// Read from file JSON
 
@@ -146,7 +146,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		{
 			// relevant texID
 			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
-			if(value == 0)
+			if(value == 1)
 			{
 				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent(j, i);
 				
@@ -242,20 +242,11 @@ void Room::OnTick(const double& dt)
 		_parent->AddComponent(collider);
 	}
 
-
-
-
-
 }
 
 void Room::OnDestroy()
 {
 	Behaviour::OnDestroy();
-	//std::map<int, Hudson::Render::SpriteComponent*>::iterator iter;
-	//for (iter = texture_reference_.begin(); iter != texture_reference_.end(); ++iter)
-	//{
-	//	_parent->RemoveComponent(iter->second);
-	//}
 }
 
 void Room::DrawPropertyUI()
@@ -269,4 +260,292 @@ void Room::FromJson(const nlohmann::json& j)
 
 void Room::ToJson(nlohmann::json& j)
 {
+}
+
+
+ImGuiRoomData imguiRoomData;
+bool addingTextureRef = false;
+textureRefData newRefData;
+char fileName[128] = "";
+
+void ObjectList() {
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+
+	ImVec2 imageSize = ImVec2(128, 128);
+	ImVec2 uv_min = ImVec2(1.0f, 0.0f); // Top-left
+	ImVec2 uv_max = ImVec2(0.0f, 1.0f); // Lower-right
+	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
+	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
+	
+	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
+	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
+
+	ImGui::Text("ID: 1 - Player");
+	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
+
+		imageSize = ImVec2(48, 64);
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
+
+	ImGui::Text("ID: 2 - Mummy");
+	ImGui::Image(mummyID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
+
+		imageSize = ImVec2(48, 64);
+
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
+}
+
+void StartRoomMaker(bool& isActive)
+{
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(io.DisplaySize);
+
+	if (ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings)) {
+		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("File"))
+			{
+				ImGui::MenuItem("Open");
+				if (ImGui::BeginMenu("Save")) {
+
+					ImGui::InputTextWithHint("File Name", ".room", fileName, IM_ARRAYSIZE(fileName));
+					ImGui::Separator();
+					if (ImGui::Button("Save"))
+					{
+						imguiRoomData.saveToFile(fileName);
+					}
+					ImGui::EndMenu();
+
+				}
+				if (ImGui::MenuItem("Exit"))
+				{
+					isActive = false;
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		if (ImGui::BeginChild("Room Editor", ImVec2((io.DisplaySize.x / 3 * 2) - io.DisplaySize.x * 0.02f, 0), true, ImGuiWindowFlags_HorizontalScrollbar)) {
+			ImGui::Text("Room Editor");
+			ImGui::Separator();
+
+			if (ImGui::SliderInt("Room Size X", &imguiRoomData.roomX, 10, 40)) {
+				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
+			}
+			if (ImGui::SliderInt("Room Size Y", &imguiRoomData.roomY, 10, 40)) {
+				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
+			}
+
+			for (int y = 0; y < imguiRoomData.roomY; ++y) {
+				for (int x = 0; x < imguiRoomData.roomX; ++x) {
+					if (x > 0)
+						ImGui::SameLine();
+					ImGui::PushID(y * 4 + x);
+
+					stringstream ss;
+					ss << x;
+					ss << ",";
+					ss << y;
+					string str = ss.str();
+
+					if (ImGui::Selectable(str.c_str(), imguiRoomData.selected == &imguiRoomData.roomGrid[y * imguiRoomData.roomX + x], 0, ImVec2(30, 30)))
+					{
+						imguiRoomData.selected = &imguiRoomData.roomGrid[y * imguiRoomData.roomX + x];
+					}
+					ImGui::PopID();
+				}
+			}
+			ImGui::Text("Room Overview");
+			ImGui::Separator();
+
+
+			ImGui::EndChild();
+			ImGui::PopStyleVar();
+
+		}
+
+		ImGui::SameLine();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_ChildRounding, 5.0f);
+		if (ImGui::BeginChild("Functionality", ImVec2(io.DisplaySize.x / 3, 0), true)) {
+
+			if (imguiRoomData.selected != nullptr) {
+
+				ImGui::Text("Tile Editor");
+				ImGui::Separator();
+
+				ImGui::Checkbox("isSolid?", &imguiRoomData.selected->isSolid);
+				ImGui::InputInt("Texture Reference", &imguiRoomData.selected->textureRef);
+				ImGui::InputInt("Object Reference", &imguiRoomData.selected->objectRef);
+			}
+
+			ImGui::Text("Texture References");
+			ImGui::Separator();
+
+			for (textureRefData* textureRef : imguiRoomData.textureRefs) // access by reference to avoid copying
+			{
+				Hudson::Render::Texture* relevantTex = resManager->GetTexture(textureRef->textureRoot);
+
+				ImTextureID textureID = reinterpret_cast<ImTextureID>(relevantTex->ID);
+				ImVec2 pos = ImGui::GetCursorScreenPos();
+
+				ImVec2 imageSize = ImVec2(128, 128);
+				ImVec2 uv_min = ImVec2(1.0f, 0.0f); // Top-left
+				ImVec2 uv_max = ImVec2(0.0f, 1.0f); // Lower-right
+				ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
+				ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
+
+				ImGui::PushID(textureRef);
+
+				ImGui::Image(textureID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
+				if (ImGui::IsItemHovered())
+				{
+					if (ImGui::IsMouseDown(ImGuiMouseButton_Right)) {
+						ImGui::OpenPopup("Texture Options");
+					}
+
+					ImGui::BeginTooltip();
+					float region_sz = 64.0f;
+					float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+					float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+					float zoom = 4.0f;
+
+					imageSize = ImVec2(48, 64);
+
+					if (region_x < 0.0f) { region_x = 0.0f; }
+					else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+					if (region_y < 0.0f) { region_y = 0.0f; }
+					else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+					ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+					ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+					ImGui::Image(textureID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+
+					ImGui::Text("textureID: %.1f", (float)textureRef->textureID);
+					ImGui::Text("textureRoot: %s", textureRef->textureRoot.c_str());
+					ImGui::Text("gridSizeX: %.1f", (float)textureRef->gridSizeX);
+					ImGui::Text("gridSizeY: %.1f", (float)textureRef->gridSizeY);
+					ImGui::Text("gridPosX: %.1f", (float)textureRef->gridPosX);
+					ImGui::Text("gridPosY: %.1f", (float)textureRef->gridPosY);
+					ImGui::Text("Right click for more options");
+					ImGui::EndTooltip();
+				}
+
+				if (ImGui::BeginPopup("Texture Options")) {
+
+					if (ImGui::Button("Delete")) {
+
+						auto it = find(imguiRoomData.textureRefs.begin(), imguiRoomData.textureRefs.end(), textureRef);
+						if (it != imguiRoomData.textureRefs.end())
+						{
+							int index = it - imguiRoomData.textureRefs.begin();
+							imguiRoomData.textureRefs.erase(imguiRoomData.textureRefs.begin() + index);
+						}
+
+						ImGui::CloseCurrentPopup();
+					}
+					ImGui::Separator();
+					if (ImGui::Button("Dismiss")) {
+						ImGui::CloseCurrentPopup();
+					}
+
+					ImGui::EndPopup();
+				}
+				ImGui::PopID();
+			}
+
+			if (addingTextureRef) {
+
+				ImGui::InputText("Texture Root", &newRefData.textureRoot);
+				ImGui::InputInt("Texture ID", &newRefData.textureID);
+				ImGui::InputInt("Grid Size X", &newRefData.gridSizeX);
+				ImGui::InputInt("Grid Size Y", &newRefData.gridSizeY);
+				ImGui::InputInt("Grid Pos X", &newRefData.gridPosX);
+				ImGui::InputInt("Grid Pos Y", &newRefData.gridPosY);
+
+				if (ImGui::Button("Save", ImVec2(ImGui::GetWindowSize().x, 0))) {
+					textureRefData* copyRefData = new textureRefData();
+					copyRefData->textureID = newRefData.textureID;
+					copyRefData->textureRoot = newRefData.textureRoot;
+					copyRefData->gridSizeX = newRefData.gridSizeX;
+					copyRefData->gridSizeY = newRefData.gridSizeY;
+					copyRefData->gridPosX = newRefData.gridPosX;
+					copyRefData->gridPosY = newRefData.gridPosY;
+
+					imguiRoomData.textureRefs.push_back(copyRefData);
+					resManager->LoadTexture(copyRefData->textureRoot, true, copyRefData->textureRoot);
+					addingTextureRef = false;
+
+				}
+				if (ImGui::Button("Discard", ImVec2(ImGui::GetWindowSize().x, 0))) {
+					addingTextureRef = false;
+				}
+			}
+			else {
+				if (ImGui::Button("+", ImVec2(ImGui::GetWindowSize().x, 0))) {
+					newRefData.Clear();
+					addingTextureRef = true;
+				}
+				if (ImGui::IsItemHovered())
+				{
+					ImGui::BeginTooltip();
+					ImGui::Text("Add new texture");
+					ImGui::EndTooltip();
+				}
+			}
+
+			ImGui::Text("Object References");
+			ImGui::Separator();
+			ObjectList();
+
+
+			ImGui::EndChild();
+			ImGui::PopStyleVar();
+		}
+
+		ImGui::End();
+	}
+
 }
