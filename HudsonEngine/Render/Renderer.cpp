@@ -297,7 +297,7 @@ void Hudson::Render::Renderer::Draw()
 				Shader* shader = sprite->GetShader();
 				if (shader && _camera)
 				{
-					shader->Use().SetMatrix4("projection", _camera->GetProjectionMatrix());
+					shader->Use().SetMatrix4("projection", _camera->GetViewProjectionMatrix());
 					sprite->DrawSprite(gameObject->GetTransform().pos);
 				}
 			}
@@ -307,7 +307,7 @@ void Hudson::Render::Renderer::Draw()
 				Shader* shader = text->GetShader();
 				if (shader && _camera)
 				{
-					shader->Use().SetMatrix4("projection", _camera->GetProjectionMatrix());
+					shader->Use().SetMatrix4("projection", _camera->GetViewProjectionMatrix());
 					text->Draw(gameObject->GetTransform().pos);
 				}
 			}
