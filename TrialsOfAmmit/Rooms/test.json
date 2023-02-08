@@ -1,8 +1,0 @@
-{
- "navGrid": "",
- "roomX": 10,
- "roomY": 10,
- "texReference": [
-  "{ \"textureID\":0\"textureRoot\":\"textures/blah.room\",\"gridSizeX\":1\"gridSizeY\":1\"gridPosX\":0\"gridPosY\":0 }"
- ]
-}
