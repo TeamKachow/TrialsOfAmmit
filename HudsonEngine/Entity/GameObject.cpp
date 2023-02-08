@@ -218,7 +218,8 @@ void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
 
 void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 {
-    // TODO: all of this
+    Hudson::Common::ComponentRegistry* componentRegistry = Hudson::Common::Engine::GetInstance()->GetComponentRegistry();
+    
     j["name"] = _name;
     j["id"] = _serialId;
     j["transform"] = _transform;
@@ -227,8 +228,15 @@ void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
     for (auto&& component: _components.Get())
     {
         nlohmann::json compJson;
-        compJson["type"] = component->GetTypeName();
-        // TODO: check against component registry
+        std::string compType = component->GetTypeName();
+        
+        // check component is registered
+        if (!componentRegistry->IsComponentRegistered(compType))
+        {
+            Hudson::Util::Debug::LogError(std::format("Could not find component registered as type '{}'!\nGoing to save anyway, but this component will not load back in.", compType));
+        }
+
+        compJson["type"] = compType;
         component->ToJson(compJson["data"]);
         j["components"].push_back(compJson); 
     }
