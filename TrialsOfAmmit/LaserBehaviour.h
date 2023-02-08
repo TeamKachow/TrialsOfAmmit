@@ -14,8 +14,11 @@ enum laserState
 class LaserBehaviour : public Hudson::Entity::Behaviour
 {
 public:
-	LaserBehaviour(glm::vec2 spawnPos, int laserType);
+	LaserBehaviour(glm::vec2 spawnPos = {100,100}, int laserType = {0});
 	~LaserBehaviour();
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	void Charge();
 	void DeActivate();

@@ -18,6 +18,8 @@
 #include "MeleeAttack.h"
 #include "Projectile.h"
 #include "MeleeCollider.h"
+#include "LaserBehaviour.h"
+#include "LocustBehaviour.h"
 
 #include "Rooms/Room.h"
 
@@ -89,6 +91,8 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
+    registry->Register<LaserBehaviour>("LaserBehaviour");
+    registry->Register<LocustBehaviour>("LocustBehaviour");
 }
 
 void Init() 
@@ -134,6 +138,9 @@ void GameSetup()
     resManager->LoadTexture("textures/Passives.png", true, "Passives");
     resManager->LoadTexture("textures/Chest.png", true, "Chest");
     resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
+    resManager->LoadTexture("textures/LaserVertical.png", true, "LaserVert");
+    resManager->LoadTexture("textures/LaserHorizontal.png", true, "LaserHori");
+    resManager->LoadTexture("textures/LocustSpriteSheet.png", true, "Locust");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));

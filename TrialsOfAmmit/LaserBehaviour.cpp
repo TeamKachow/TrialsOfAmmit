@@ -37,6 +37,9 @@ void LaserBehaviour::OnCreate()
 		_parent->GetTransform().scale.x = 960.0f;
 		_parent->GetTransform().scale.y = 96.0f;
 	}
+	CollisionBox = new Hudson::Physics::ColliderComponent();
+	_parent->AddComponent(CollisionBox);
+	LaserSprite->SetDepthOrder(20);
 	_parent->AddComponent(LaserSprite);
 	_parent->GetTransform().pos = _spawnPos;
 	Charge();
@@ -189,3 +192,11 @@ void LaserBehaviour::Animate(float deltaTime)
 		}
 	}
 }
+void LaserBehaviour::FromJson(const nlohmann::json& j)
+{
+}
+
+void LaserBehaviour::ToJson(nlohmann::json& j)
+{
+}
+
