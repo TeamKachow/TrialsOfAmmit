@@ -130,6 +130,7 @@
     </ClCompile>
     <ClCompile Include="CameraDolly.cpp" />
     <ClCompile Include="Door.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -238,5 +239,6 @@
     </ClInclude>
     <ClInclude Include="CameraDolly.h" />
     <ClInclude Include="Door.h" />
+    <ClInclude Include="PauseMenu.h" />
   </ItemGroup>
 </Project>

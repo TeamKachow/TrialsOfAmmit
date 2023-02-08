@@ -29,7 +29,7 @@ public:
 	float _maxSpeed;
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
-
+	Hudson::Render::SpriteComponent* _aiSprite;
 protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
@@ -37,7 +37,7 @@ protected:
 	void InverseVel();
 	AiMelee _melee;
 	BaseWeaponClass* _aiWeapon = &_melee;
-	Hudson::Render::SpriteComponent* _aiSprite;
+
 	Hudson::Render::SpriteComponent* _aiDeathSprite;
 	Hudson::Physics::PhysicsComponent*_aiPhysicsComponent;
 	Hudson::World::Scene* _currentScene;

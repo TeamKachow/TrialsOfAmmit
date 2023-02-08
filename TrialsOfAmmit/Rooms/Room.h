@@ -23,6 +23,8 @@ public:
 
 	void DrawPropertyUI() override;
 
+	glm::vec2 GetRoomSize() { return glm::vec2(x, y); }
+
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
 

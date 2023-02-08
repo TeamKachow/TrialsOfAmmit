@@ -19,6 +19,8 @@
 #include "Projectile.h"
 #include "MeleeCollider.h"
 #include "CameraDolly.h"
+#include "PauseMenu.h"
+
 #include "Rooms/Room.h"
 #include "Door.h"
 
@@ -85,6 +87,7 @@ void InitRegistry()
     registry->Register<MeleeCollider>("MeleeCollision");
     registry->Register<CameraDolly>("CameraDollyBehaviour");
     registry->Register<Door>("DoorBehaviour");
+    registry->Register<PauseMenu>("Pause");
 }
 
 void Init() 
@@ -163,6 +166,10 @@ void GameSetup()
     TestScene->AddObject(MainCameraDolly);
     SettingsScene->AddObject(MainCameraDolly);
     startScene->AddObject(MainCameraDolly);
+    Hudson::Entity::GameObject* _PickupAbilitys = new Hudson::Entity::GameObject();
+    _PickupAbilitys->AddComponent(new PickupAbilitys(glm::vec2(500, 500)));
+    _PickupAbilitys->SetName("Player");
+    startScene->AddObject(_PickupAbilitys);
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
