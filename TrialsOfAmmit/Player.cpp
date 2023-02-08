@@ -40,6 +40,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_isHittingRight = false;
 	_isHittingLeft = false;
 
+	toPause = false;
 }
 
 Player::~Player()
@@ -80,6 +81,19 @@ void Player::OnCreate() //The magic is set up here
 	_pauseMenu->AddComponent(new PauseMenu(glm::vec2(500, 500), _parent->GetScene(), _parent->GetComponent<Player>()));
 	_pauseScene->AddObject(_pauseMenu);
 	GetEngine()->GetSceneManager()->AddScene(_pauseScene);
+
+	_pauseText = new Hudson::Render::TextComponent("Fonts\\origa___.ttf", glm::vec2(0, 0));
+	_pauseText->SetText("Pause");
+	_pauseText->SetColor(vec3(1, 1, 1));
+	_pauseText->SetDepthOrder(30);
+	
+	PauseText = new Hudson::Entity::GameObject();
+	PauseText->AddComponent(_pauseText);
+	PauseText->SetName("PauseText");
+	PauseText->GetTransform().pos = vec2(500, 200);
+	PauseText->GetTransform().scale = vec2(5, 1);
+	_parent->GetScene()->AddObject(PauseText);
+
 
 	CreateUI();
 	HealthBarUI();
@@ -124,6 +138,7 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	
 	//Wall Collisions Reset once a frame due to the player being pushed back and now not colliding and if they are it will be picked up in the function
 	_isHittingUp = false;
 	_isHittingDown = false;
@@ -160,14 +175,19 @@ void Player::OnTick(const double& dt)
 	{
 		if (_isPaused == false)
 		{
+			PauseText->GetTransform().pos = vec2(500, 200);
 			_pauseMenu->GetComponent<PauseMenu>()->PauseScene();
+			
+			
 		}
 	}
 	else
 	{
+		PauseText->GetTransform().pos = vec2(INT64_MAX, INT64_MAX);
 		_isPaused = false;
 	}
-		
+
+
 
 	//Keypresses
 	if(_inputManager.getActionState("Up"))

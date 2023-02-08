@@ -154,6 +154,11 @@ void GameSetup()
     player->SetName("Player");
     startScene->AddObject(player);
 
+    Hudson::Entity::GameObject* _PickupAbilitys = new Hudson::Entity::GameObject();
+    _PickupAbilitys->AddComponent(new PickupAbilitys(glm::vec2(500, 500)));
+    _PickupAbilitys->SetName("Player");
+    startScene->AddObject(_PickupAbilitys);
+
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
     room->AddComponent(new class Room("Rooms/roomJson.room"));

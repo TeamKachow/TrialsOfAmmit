@@ -19,9 +19,14 @@ private:
 
 	Hudson::World::Scene* _pauseScene;
 
+	Hudson::Render::TextComponent* _pauseText;
+	Hudson::Entity::GameObject* PauseText;
+
 	Hudson::Render::SpriteComponent* GraveSprite;
 	glm::vec2 _lastFramePos;
 	glm::vec2 _lastLastFramePos;
+
+
 
 	float _deathTimer;
 	float _deathAnim;
@@ -80,6 +85,7 @@ private:
 
 	
 public:
+	bool toPause;
 	bool _isPaused;
 	bool _pauseKeyIsDeactive;
 	Hudson::Render::SpriteComponent* _playerSprite;

@@ -2,7 +2,7 @@
 
 Heal::Heal()
 {
-	_abilityActiveTime = 3;
+	_abilityActiveTime = 1;
 	_abilityCoolDownTime = 7;
 	_abilityState = ready;
 
@@ -30,6 +30,7 @@ void Heal::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 			if (_player->_playerHealth < _player->_maxHealth)
 			{
 				_player->_playerHealth += _healAmount; // need to make it so it doesnt go over max health which is 100
+				_player->_playerSprite->SetColor(glm::vec3(0, 1, 0));
 			}
 
 			_currentHealth = _player->_playerHealth;
@@ -50,8 +51,7 @@ void Heal::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 	{
 		if (other->GetName() == "Player")
 		{
-			_player = other->GetComponent<Player>();
-			_player->_playerHealth = _currentHealth;
+			_player->_playerSprite->SetColor(glm::vec3(1, 1, 1));
 			break;
 		}
 	};
