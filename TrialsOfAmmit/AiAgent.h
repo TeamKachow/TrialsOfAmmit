@@ -18,22 +18,12 @@ enum AiState
 	DEAD
 };
 
-//enum facingDirections
-//{
-//	UP,
-//	DOWN,
-//	LEFT,
-//	RIGHT
-//};
-
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
 	AiAgent(vec2 spawnPos = { 100, 100 });
 	~AiAgent();
 	void TakeDamage(int damageAmount);
-	float _maxHealth;
-	float _currentHealth;
 	float _meleeDamage;
 	virtual void AiDead();
 	float _maxSpeed;
@@ -82,5 +72,8 @@ private:
 	void SetPlayerPos();
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
+	float _maxHealth;
+	float _currentHealth;
+	bool _isDamaged;
 };
 
