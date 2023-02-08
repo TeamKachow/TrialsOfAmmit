@@ -150,7 +150,7 @@ void GameSetup()
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
-
+    
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
 
     engine->GetSceneManager()->AddScene(TestScene);
