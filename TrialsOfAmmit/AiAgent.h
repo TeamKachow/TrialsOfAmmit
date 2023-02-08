@@ -27,6 +27,8 @@ public:
 	float _meleeDamage;
 	virtual void AiDead();
 	float _maxSpeed;
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 protected:
 	void CollisionCheck();

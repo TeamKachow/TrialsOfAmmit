@@ -262,3 +262,11 @@ void Room::DrawPropertyUI()
 {
 
 }
+
+void Room::FromJson(const nlohmann::json& j)
+{
+}
+
+void Room::ToJson(nlohmann::json& j)
+{
+}

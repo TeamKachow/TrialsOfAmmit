@@ -7,8 +7,10 @@ using namespace glm;
 class SettingsButton : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	SettingsButton(Hudson::Input::InputManager* InputRef);
+	SettingsButton(Hudson::Input::InputManager* InputRef = {nullptr});
 	~SettingsButton();
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 	Hudson::Render::SpriteComponent* _buttonSprite;
 	Hudson::Render::SpriteComponent* _buttonSprite1;
 	Hudson::Render::SpriteComponent* _buttonSpriteFullScreen;

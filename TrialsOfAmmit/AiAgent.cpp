@@ -570,3 +570,13 @@ void AiAgent::DrawPropertyUI()
 		_currentState = DEAD;
 	}
 }
+
+void AiAgent::FromJson(const nlohmann::json& j)
+{
+
+}
+
+void AiAgent::ToJson(nlohmann::json& j)
+{
+
+}

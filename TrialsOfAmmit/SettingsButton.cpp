@@ -10,6 +10,14 @@ SettingsButton::~SettingsButton()
 
 }
 
+void SettingsButton::FromJson(const nlohmann::json& j)
+{
+}
+
+void SettingsButton::ToJson(nlohmann::json& j)
+{
+}
+
 void SettingsButton::OnCreate()
 {
 	//gets instance of resource manager

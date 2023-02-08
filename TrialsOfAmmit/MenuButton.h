@@ -7,8 +7,10 @@ using namespace glm;
 class MenuButton : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MenuButton(string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset);
+	MenuButton(string Text = { " " }, Hudson::World::Scene* NextScene = { nullptr }, Hudson::Input::InputManager* InputRef = {nullptr}, vec2 textOffset = { 0, 0 });
 	~MenuButton();
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 	Hudson::Render::SpriteComponent* _buttonSprite;
 	Hudson::Render::TextComponent* _buttonTextObject;
 	Hudson::World::Scene* _currentScene;

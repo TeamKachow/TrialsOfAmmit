@@ -57,6 +57,10 @@ void InitRegistry()
     Hudson::Common::ComponentRegistry* registry = engine->GetComponentRegistry();
     registry->RegisterEngineComponents();
     registry->Register<Player>("PlayerTest");
+    registry->Register<AiAgent>("AiBehavior");
+    registry->Register<MenuButton>("ButtonBehaviour");
+    registry->Register<SettingsButton>("SettingButtonBehaviour");
+    registry->Register<Room>("Room");
 }
 
 void Init() 
@@ -135,17 +139,17 @@ void GameSetup()
     room->AddComponent(new class Room("Rooms/roomJson.room"));
     startScene->AddObject(room);
 
-    Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(200.0f, 300.0f)));
-    startScene->AddObject(AbilityPickup);
+    //Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+    //AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(200.0f, 300.0f)));
+    //startScene->AddObject(AbilityPickup);
 
-    Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
-    PassivePickup->AddComponent(new PassivePickups(glm::vec2(300, 300.0f)));
-    startScene->AddObject(PassivePickup);
+    //Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
+    //PassivePickup->AddComponent(new PassivePickups(glm::vec2(300, 300.0f)));
+    //startScene->AddObject(PassivePickup);
 
-    Hudson::Entity::GameObject* _chest = new Hudson::Entity::GameObject();
-    _chest->AddComponent(new Chest(glm::vec2(400, 300.0f)));
-    startScene->AddObject(_chest);
+    //Hudson::Entity::GameObject* _chest = new Hudson::Entity::GameObject();
+    //_chest->AddComponent(new Chest(glm::vec2(400, 300.0f)));
+    //startScene->AddObject(_chest);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));

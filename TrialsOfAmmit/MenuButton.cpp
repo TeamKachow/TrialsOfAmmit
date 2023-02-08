@@ -14,6 +14,14 @@ MenuButton::~MenuButton()
 
 }
 
+void MenuButton::FromJson(const nlohmann::json& j)
+{
+}
+
+void MenuButton::ToJson(nlohmann::json& j)
+{
+}
+
 void MenuButton::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
