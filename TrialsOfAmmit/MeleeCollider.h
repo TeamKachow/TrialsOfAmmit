@@ -5,7 +5,7 @@
 class MeleeCollider : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi);
+	MeleeCollider(facingDirections slashDirection = {Down}, glm::vec2 playerPos = {0,0}, Hudson::World::Scene* currentScene = {nullptr}, float _damage = {0}, bool isAi = {false});
 	~MeleeCollider();
 
 	void OnCreate() override;
@@ -13,6 +13,8 @@ public:
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
 
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	Hudson::Render::SpriteComponent* _slashSprite;
 	facingDirections _slashDirection;

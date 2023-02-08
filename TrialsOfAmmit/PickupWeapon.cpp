@@ -27,6 +27,7 @@ void PickupWeapon::OnCreate()
 	_weaponSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Weapon"));
 	_weaponSprite->SetGridSize(glm::vec2(5, 5));
 	_weaponSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_weaponSprite->SetDepthOrder(1);
 	_weaponCollider = new Hudson::Physics::ColliderComponent();
 
 	_parent->AddComponent(_weaponSprite);
@@ -100,6 +101,14 @@ void PickupWeapon::RandomiseItem()
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
 	_weaponPickup->UpgradeWeapon(_weaponLevel);
 
+}
+
+void PickupWeapon::FromJson(const nlohmann::json& j)
+{
+}
+
+void PickupWeapon::ToJson(nlohmann::json& j)
+{
 }
 
 

@@ -10,6 +10,6 @@ public:
 	SlingShot();
 	~SlingShot();
 	void UpgradeWeapon(WeaponUpgradeTypes Level) override;
-	void Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene) override;
+	void Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, float _playerDamageMod) override;
 };
 

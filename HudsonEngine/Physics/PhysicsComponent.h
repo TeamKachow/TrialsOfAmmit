@@ -50,6 +50,8 @@ namespace Hudson::Physics
 		const float GetMass() const { return _mass; }
 
         void DrawPropertyUI() override;
+        void FromJson(const nlohmann::json& j) override;
+        void ToJson(nlohmann::json& j) override;
 
     private:
 		void CalculateVelocity(float deltaTime);

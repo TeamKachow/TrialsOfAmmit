@@ -14,6 +14,8 @@ Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) 
 
 	_timestep = new Hudson::Util::Timestep([&](const double dt)
 		{
+			if (_engine->GetSceneManager()->IsPaused()) return;
+
 			UpdateMovement(dt);
 			UpdateCollider();
 		});

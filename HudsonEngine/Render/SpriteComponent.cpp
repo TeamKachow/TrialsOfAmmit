@@ -1,16 +1,14 @@
 #include "../Render/SpriteComponent.h"
 
 #include "../Entity/GameObject.h"
+#include "../Common/ResourceManager.h"
 
-Hudson::Render::SpriteComponent::SpriteComponent() : Component("Sprite")
+Hudson::Render::SpriteComponent::SpriteComponent() : SpriteComponent(nullptr, nullptr, { 1, 1 }, { 0, 0 })
 {
 }
 
-Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture) : Component("Sprite")
+Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture) : SpriteComponent(shader, texture, { 1, 1 }, { 0, 0 })
 {
-    this->_shader = shader;
-    this->_texture = texture;
-    this->InitRenderData();
 }
 
 Hudson::Render::SpriteComponent::SpriteComponent(Shader* shader, Texture* texture, glm::vec2 gridSize, glm::vec2 gridPosition) : Component("Sprite"), _shader(shader), _texture(texture), _gridSize(gridSize), _gridPos(gridPosition)
@@ -75,7 +73,18 @@ void Hudson::Render::SpriteComponent::DrawPropertyUI()
     ImGui::InputFloat2("Grid Size", &_gridSize.r);
     ImGui::InputFloat2("Grid Position", &_gridPos.r);
     ImGui::ColorEdit3("Colour Tint", &_color.r);
-    ImGui::InputFloat2("Size", &_size.r); 
+    ImGui::InputFloat2("Size", &_size.r);
+
+    ImGui::BeginChild("Image", ImVec2(_size.x, _size.y), false, ImGuiWindowFlags_HorizontalScrollbar);
+    if (_texture && _texture->ID < UINT_MAX)
+    {
+        ImGui::Image((ImTextureID) _texture->ID, ImVec2(_texture->_width, _texture->_height), ImVec2(0, 0), ImVec2(1, 1));
+    }
+    else
+    {
+        ImGui::TextDisabled("No texture loaded");
+    }
+    ImGui::EndChild();
 }
 
 void Hudson::Render::SpriteComponent::InitRenderData()
@@ -103,4 +112,29 @@ void Hudson::Render::SpriteComponent::InitRenderData()
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+}
+
+void Hudson::Render::SpriteComponent::FromJson(const nlohmann::json& j)
+{
+    Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+    _shader = resManager->GetShader(j.at("shader").get<std::string>());
+    _texture = resManager->GetTexture(j.at("texture").get<std::string>());
+
+    _gridSize = j.at("gridSize").get<glm::vec2>();
+    _gridPos = j.at("gridPos").get<glm::vec2>();
+    _color = j.at("color").get<glm::vec3>();
+    _size = j.at("size").get<glm::vec2>();
+}
+
+void Hudson::Render::SpriteComponent::ToJson(nlohmann::json& j)
+{
+    Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+    j["shader"] = resManager->GetShaderName(_shader);
+    j["texture"] = resManager->GetTextureName(_texture);
+
+    j["gridSize"] = _gridSize;
+    j["gridPos"] = _gridPos;
+    j["color"] = _color;
+    j["size"] = _size;
 }

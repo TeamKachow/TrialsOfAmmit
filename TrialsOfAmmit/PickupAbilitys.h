@@ -11,8 +11,11 @@
 class PickupAbilitys : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	PickupAbilitys(glm::vec2 spawnPos);
+	PickupAbilitys(glm::vec2 spawnPos = {0,0});
 	~PickupAbilitys();
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	BaseAbilityClass* _abilityPickup;
 		

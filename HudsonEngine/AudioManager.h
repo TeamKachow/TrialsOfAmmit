@@ -47,6 +47,9 @@ namespace Hudson::Audio
 
         void soundButtonUI(const std::string& filePath);
 
+        float getGlobalVolume();
+        void setGlobalVolume(float volume);
+
     private:
 
         std::string filePath;

@@ -8,11 +8,20 @@
 #include "SettingsButton.h"
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
+#include "PassivePickups.h"
+#include "Chest.h"
+#include "Rooms/Room.h"
+#include "WeaponDisplayUI.h"
+#include "PlayerHealthUI.h"
+#include "AbilityDisplayUI.h"
+#include "PickupBehaviour.h"
+#include "MeleeAttack.h"
+#include "Projectile.h"
+#include "MeleeCollider.h"
 
 #include "Rooms/Room.h"
 
 Hudson::Common::Engine* engine;
-Hudson::Editor::ComponentRegistry* registry;
 
 #ifdef _DEBUG
 #define ENABLE_EDITOR
@@ -54,35 +63,52 @@ Hudson::Common::ResourceManager* resManager;
 
 void InitRegistry()
 {
-    registry = new Hudson::Editor::ComponentRegistry();
+    Hudson::Common::ComponentRegistry* registry = engine->GetComponentRegistry();
     registry->RegisterEngineComponents();
     registry->Register<Player>("PlayerTest");
+    registry->Register<AiAgent>("AiBehavior");
+    registry->Register<MenuButton>("ButtonBehaviour");
+    registry->Register<SettingsButton>("SettingButtonBehaviour");
+    registry->Register<Room>("Room");
+    registry->Register<WeaponDisplayUI>("WeaponUIDisplay");
+    registry->Register<PlayerHealthUI>("HealthUI");
+    registry->Register<AbilityDisplayUI>("AbilityUI");
+    registry->Register<Chest>("Chest");
+    registry->Register<PassivePickups>("PassivePickups");
+    registry->Register<AbilityHolder>("Ability");
+    registry->Register<PickupAbilitys>("AbiltyPickup");
+    registry->Register<PickupBehaviour>("Pickup");
+    registry->Register<PickupWeapon>("WeaponPickUp");
+    registry->Register<MeleeAttack>("MeleeBehaviour");
+    registry->Register<Projectile>("ProjectileUpdatedBehaviour");
+    registry->Register<MeleeCollider>("MeleeCollision");
 }
 
 void Init() 
 {
+    Hudson::Util::Debug::RegisterAbortHandler();
+
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
 
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
-    InitRegistry();
-    editor = new Hudson::Editor::Editor(engine, registry);
+    editor = new Hudson::Editor::Editor(engine); 
 #endif
-
     engine->Setup();
+    InitRegistry();
     engine->GetRenderer()->SetupDefaultShaders();
 
 #ifdef ENABLE_EDITOR
     engine->GetInputManager()->SetEditorRef(editor);
+    engine->GetSceneManager()->SetPaused(true);
 #endif
 }
 
 void GameSetup()
 {
     engine->GetRenderer()->SetCamera(_defaultCamera);
-
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -95,17 +121,14 @@ void GameSetup()
     resManager->LoadTexture("textures/Blood.png", true, "Blood");
     resManager->LoadTexture("textures/Grave.png", true, "Grave");
     resManager->LoadTexture("textures/InvisSpriteSheet.png", true, "Invis");
-    resManager->LoadTexture("textures/Test.png", true, "Test");
+    resManager->LoadTexture("textures/Test.png", true, "MainButtonImage");
     resManager->LoadTexture("textures/TempBackground.png", true, "backgroundImage");
     resManager->LoadTexture("textures/SettingsMarker.png", true, "SettingsMarkerImage");
+    resManager->LoadTexture("textures/Passives.png", true, "Passives");
+    resManager->LoadTexture("textures/Chest.png", true, "Chest");
+    resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
 
-    Sprite1 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite1->SetGridSize(glm::vec2(3, 4));
-
-    Sprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-    Sprite2->SetGridSize(glm::vec2(3, 4));
-
-    ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+    ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));
 
     SettingsMarkerImage = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("SettingsMarkerImage"));
@@ -115,65 +138,26 @@ void GameSetup()
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
 
-    Physics1 = new Hudson::Physics::PhysicsComponent();
-    Physics1->SetMass(1.0f);
-    Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(10, 0), true);
-    Physics1->SetVelocity(glm::vec2(0, 0));
-
-    Physics2 = new Hudson::Physics::PhysicsComponent();
-    Physics2->SetMass(1.0f);
-    Physics2->SetForce(glm::vec2(-10.0, 0));
-    Physics2->SetAcceleration(glm::vec2(-100, 0), true);
-    Physics2->SetVelocity(glm::vec2(-100, 0));
-
-    Collider1 = new Hudson::Physics::ColliderComponent();
-    Collider2 = new Hudson::Physics::ColliderComponent();
-
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
-    engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
 
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
+
+    engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(new Player(glm::vec2(500, 500)));
     player->SetName("Player");
     startScene->AddObject(player);
 
-    Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
-    blah->AddComponent(Sprite2);
-	blah->AddComponent(Physics1);
-    blah->AddComponent(Collider1);
-    blah->AddComponent(new AiAgent(Sprite2, 0.8));
-    blah->SetName("AI1");
-    startScene->AddObject(blah);
-    blah->GetTransform().pos.x = 200.0f;
-
-    Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
-    blah2->AddComponent(Sprite1);
-    blah2->AddComponent(Physics2);
-    blah2->AddComponent(Collider2);
-    blah2->AddComponent(new AiAgent(Sprite1, 0.8));
-    blah2->SetName("AI2");
-    startScene->AddObject(blah2);
-    blah2->GetTransform().pos.x = 1400.0f;
-
-    Hudson::Entity::GameObject* WeaponPickup = new Hudson::Entity::GameObject();
-    WeaponPickup->AddComponent(new PickupWeapon(glm::vec2(300.0f, 300.0f)));
-    startScene->AddObject(WeaponPickup);
-
-    Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-    WeaponPickup1->AddComponent(new PickupWeapon(glm::vec2(400.0f, 300.0f)));
-    startScene->AddObject(WeaponPickup1);
-
-    Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-    AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));
-    startScene->AddObject(AbilityPickup);
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->SetName("Room");
+    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));

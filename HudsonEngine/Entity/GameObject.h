@@ -2,6 +2,7 @@
 #include "../Util/stdafx.h"
 #include "../Entity/Common.h"
 #include "../Common/IEditable.h"
+#include "../Common/ISerialisable.h"
 #include "../Common/DeferredObjectSet.h"
 
 namespace Hudson
@@ -31,7 +32,7 @@ namespace Hudson::Entity
     /**
      * \brief A game object that exists within a scene.
      */
-    class GameObject final : public Common::IEditable
+    class GameObject final : public Common::IEditable, public Common::ISerialisable
     {
         friend World::Scene;
         friend Editor::Editor;
@@ -39,25 +40,27 @@ namespace Hudson::Entity
     public:
         struct Transform
         {
-            // TODO: replace with vec2f
             glm::vec2 pos = { 0,0 };
             glm::vec2 scale = { 64, 64 };
             float rotateZ = 0;
+
+            NLOHMANN_DEFINE_TYPE_INTRUSIVE(Transform, pos, scale, rotateZ)
         };
 
     private:
+        uint32_t _serialId = rand();
         std::string _name = "Object";
-        World::Scene* _scene;
-        uint32_t _id;
-        Hudson::Common::DeferredObjectSet<Component*> _components;
         Transform _transform;
+        Common::DeferredObjectSet<Component*> _components = {};
+
+        World::Scene* _scene;
         /**
          * \brief Whether or not the object is currently being ticked.
          */
         bool _isCurrentlyTicking = false;
 
         void DrawPropertyUI() override;
-        void UpdateComponents();
+        void UpdateDeferredComponents();
         void OnQueueUpdate(Common::DeferredObjectSet<Component*>::Action action);
 
     public:
@@ -146,6 +149,11 @@ namespace Hudson::Entity
          * \return The scene this object currently is in, or null if none.
          */
         [[nodiscard]] World::Scene* GetScene() const;
+        
+        uint32_t GetSerialID() override;
+
+        void FromJson(const nlohmann::json& j);
+        void ToJson(nlohmann::json& j) const;
     };
 
     template <is_component T>

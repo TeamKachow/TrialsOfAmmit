@@ -18,6 +18,7 @@ public:
 	RoomAOE* _roomaoe;
 
 	AbilityHolder();
+
 	~AbilityHolder();
 	float _timer;
 	Hudson::Input::InputManager* _input;
@@ -25,5 +26,8 @@ public:
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 };
