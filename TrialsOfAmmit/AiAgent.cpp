@@ -1,14 +1,38 @@
 #include "AiAgent.h"
 #include "PickupAbilitys.h"
+#include "PassivePickups.h"
 
-AiAgent::AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed) : Behaviour("AiBehavior")
+AiAgent::AiAgent(vec2 spawnPos) : Behaviour("AiBehavior")
 {
-	_aiSprite = aiSprite;
 	_aiAnimSpeed = 0.4;
+	_spawnPosition = spawnPos;
 }
 
 void AiAgent::OnCreate()
 {
+	//sets up sprite
+	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	_aiSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
+	_aiSprite ->SetGridSize(glm::vec2(3, 4));
+	_aiSprite->SetDepthOrder(9);
+	_parent->AddComponent(_aiSprite);
+
+	//sets up collider
+	_aiCollider = new Hudson::Physics::ColliderComponent();
+	_parent->AddComponent(_aiCollider);
+
+	//sets up physics componant
+	_aiPhysicsComponent = new Hudson::Physics::PhysicsComponent();
+	_aiPhysicsComponent->SetMass(1.0f);
+	_aiPhysicsComponent->SetForce(glm::vec2(10.0, 0));
+	_aiPhysicsComponent->SetAcceleration(glm::vec2(10, 0), true);
+	_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+
+	//adds objects to the parent game object 
+	_parent->AddComponent(_aiPhysicsComponent);
+	_parent->SetName("AIAgent");
+	_parent->GetTransform().pos = _spawnPosition;
+
 	//Set up of health and damage
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
@@ -18,20 +42,29 @@ void AiAgent::OnCreate()
 	_distanceFromPlayer = 10000;
 	_currentHealth = _maxHealth;
 	_alive = true;
+
 	//sets to true to chose a new point
 	_arrive = true;
+
 	//need to add _position
 	_target = vec2(0, 0);
+
 	//Starting state
 	_currentState = WANDER;
-	_attackTimer = 0;
-	//sets from parent phyics componants 
-	_aiPhysicsComponent = _parent->GetComponents<Hudson::Physics::PhysicsComponent>();
-	auto _aiPhysics = _aiPhysicsComponent.front();
-	_velocity = _aiPhysics->GetVelocity();
-	_mass = _aiPhysics->GetMass();
-	_acceleration = _aiPhysics->GetAcceleration();
+	_attackTimer = 1.5;
+	_aiAnimDeathTimer = 0;
+	_isDamaged = false;
 
+	//sets eatch physics opertaion 
+	_velocity = _aiPhysicsComponent->GetVelocity();
+	_mass = _aiPhysicsComponent->GetMass();
+	_acceleration = _aiPhysicsComponent->GetAcceleration();
+
+	//adds sprite from resManager to the _AiDeathSprite
+	_aiDeathSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Blood"));
+	Blood = new Hudson::Entity::GameObject;
+
+	//gets the player from the current scene 
 	_currentScene = _parent->GetScene();
 	auto _sceneObjects = _currentScene->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
@@ -56,22 +89,25 @@ void AiAgent::OnDestroy()
 
 void AiAgent::OnTick(const double& dt)
 {
-	float deltatime = dt;
-	Animate(deltatime);
+	if (_isDamaged)
+	{
+		_aiSprite->SetColor(vec3(1, 1, 1));
+		_isDamaged = false;
+	}
+	Animate(dt);
 	//lets the Ai chose a new destinations before it has reached the current higher = less jitter
 	if (_distanceFromTarget < 100)
 	{
 		_arrive = true;
 	}
 	GetPlayerPos();
-
 	//finite state machine 
 	switch (_currentState)
 	{
 	case SEEK:
 		SetPlayerPos();
 		_moveForce = Seek(_target);
-		Move(deltatime);
+		Move(dt);
 		break;
 	case WANDER:
 		if (_parent->GetTransform().pos != _target)
@@ -81,7 +117,7 @@ void AiAgent::OnTick(const double& dt)
 				RandomTargetSelector();
 			}
 			_moveForce = Wander(_target);
-			Move(deltatime);
+			Move(dt);
 		}
 		break;
 	case ATTACK:
@@ -92,36 +128,53 @@ void AiAgent::OnTick(const double& dt)
 		}
 		break;
 	case DEAD:
-		AiDead();
+
+		if (_alive)
+		{
+			_aiDeathSprite->SetGridSize(glm::vec2(3, 1));
+			_aiDeathSprite->SetGridPos(glm::vec2(1, 1));
+			_aiDeathSprite->SetDepthOrder(9);
+			_parent->RemoveComponent(_aiSprite);
+			Blood->AddComponent(_aiDeathSprite);
+			_currentScene->AddObject(Blood);
+			Blood->GetTransform().pos = _parent->GetTransform().pos;
+			_maxSpeed = 0;
+			_alive = false;
+		}	
+		_aiAnimDeathTimer += dt;	
+		if (_aiAnimDeathTimer > 0.5)
+		{
+			AiDead();
+		}
+		_currentState = DEAD;
 		break;
 	default:
 
 		break;
 	}
 
-	if (_distanceFromPlayer < 300.0f && _distanceFromPlayer > 100.0f)
+	if (_distanceFromPlayer < 300.0f && _distanceFromPlayer > 100.0f && _alive)
 	{
 		_currentState = SEEK;
 	}
-	else if (_distanceFromPlayer < 100.0f)
+	else if (_distanceFromPlayer < 100.0f && _alive)
 	{
 		_attackTimer += dt;
 		if (_attackTimer > _aiWeapon->_weaponAttackSpeed) //Checks the attack Timer of the weapon
 		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
+			//auto _aiPhysics = _aiPhysicsComponent.front();
 			_velocity = vec2(0, 0);
 			_acceleration = vec2(0, 0);
-			_aiPhysics->SetAcceleration(_acceleration, false);
-			_aiPhysics->SetVelocity(_velocity);
+			_aiPhysicsComponent->SetAcceleration(_acceleration, false);
+			_aiPhysicsComponent->SetVelocity(_velocity);
 			_currentState = ATTACK;
 			_attackTimer = 0;
 		}
 	}
-	else if (_distanceFromPlayer > 300.0f)
+	else if (_distanceFromPlayer > 300.0f && _alive)
 	{
 		_currentState = WANDER;
 	}
-	_aiSprite->SetColor(vec3(1, 1, 1));
 }
 
 void AiAgent::CollisionCheck()
@@ -129,42 +182,7 @@ void AiAgent::CollisionCheck()
 	//TODO: Remove code and change to check for collision with the wall 
 	
 	// pushes Ai back and choses a new destination when trying to leave the map bounds 
-	if (_parent->GetTransform().pos.x >= 1550.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(-100, 0));
-			RandomTargetSelector();
-		}
-	}
-	if (_parent->GetTransform().pos.y >= 830.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(0, -100));
-			RandomTargetSelector();
-		}
-	}
-	if (_parent->GetTransform().pos.x <= 0.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(100, 0));
-			RandomTargetSelector();
-		};
-	}
-	if (_parent->GetTransform().pos.y <= 0.0f)
-	{
-		if (!_aiPhysicsComponent.empty())
-		{
-			auto _aiPhysics = _aiPhysicsComponent.front();
-			_aiPhysics->SetVelocity(vec2(0, 100));
-			RandomTargetSelector();
-		}
-	}
+	
 }
 
 void AiAgent::Animate(float deltaTime)
@@ -406,27 +424,31 @@ vec2 AiAgent::Wander(vec2 Target)
 
 void AiAgent::AiAttack()
 {
-	//TODO 
 	_currentScene = _parent->GetScene();
 	_aiWeapon->AiAttack(_facingDirection, _parent->GetTransform().pos, _currentScene);
-	//_currentState = SEEK;
+	_attackTimer = 0;
 }
 
 void AiAgent::AiDead()
 {
-	//TODO: make a random chance of dropping an item 
-	Hudson::Entity::GameObject* WeaponPickup1 = new Hudson::Entity::GameObject();
-	WeaponPickup1->AddComponent(new PickupWeapon(_parent->GetTransform().pos));
-	_currentScene->AddObject(WeaponPickup1);
-
-	Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-	AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
-	_currentScene->AddObject(AbilityPickup);
-	//TODO: Add death animation
-
+	random_device rand;
+	uniform_int_distribution<int> dist(1, 100);
+	int randChance = dist(rand);
+	if (randChance < 60)
+	{
+		//TODO: make a random chance of dropping an item 
+		Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
+		PassivePickup->AddComponent(new PassivePickups(_parent->GetTransform().pos));
+		_currentScene->AddObject(PassivePickup);
+	}
+	if (randChance < 30 && randChance > 60)
+	{
+		Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+		AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
+		_currentScene->AddObject(AbilityPickup);
+	}
 	//TODO: Remove the AI from the scene after the animaion 
-	_alive = false;
-	cout << "ISDEAD" << "\n";
+	_currentScene->RemoveObject(Blood);
 	_currentScene->RemoveObject(_parent);
 }
 
@@ -434,13 +456,18 @@ void AiAgent::TakeDamage(int damageAmount)
 {
 	//removes damage passed to it and calls dead once health is 0
 	_currentHealth = _currentHealth - damageAmount;
-
 	_aiSprite->SetColor(vec3(1, 0, 0));
-	_currentState = SEEK;
+
+	if (_currentHealth >= 0)
+	{
+		_currentState = SEEK;
+		_aiSprite->SetColor(vec3(1, 0, 0));
+	}
 	if (_currentHealth <= 0)
 	{
 		_currentState = DEAD;
 	}
+	_isDamaged = true;
 }
 
 void AiAgent::RandomTargetSelector()
@@ -512,18 +539,15 @@ void AiAgent::SetPlayerPos()
 void AiAgent::Move(float deltatime)
 {
 	//adds the acceleration and velocity to the physics componant
-	if (!_aiPhysicsComponent.empty())
-	{
-		auto _aiPhysics = _aiPhysicsComponent.front();
-		//sets velocity
-		trunc(_moveForce);
-		_acceleration = _moveForce / _mass;
-		_velocity = _acceleration * deltatime;
-		//cout << _velocity.x << "" << _velocity.y << endl;
-		_aiPhysics->SetAcceleration(_acceleration, true);
-		_aiPhysics->SetVelocity(_velocity);
-		CollisionCheck();
-	}
+
+	//sets velocity
+	trunc(_moveForce);
+	_acceleration = _moveForce / _mass;
+	_velocity = _acceleration * deltatime;
+	//cout << _velocity.x << "" << _velocity.y << endl;
+	_aiPhysicsComponent->SetAcceleration(_acceleration, true);
+	_aiPhysicsComponent->SetVelocity(_velocity);
+	CollisionCheck();
 }
 
 void AiAgent::DrawPropertyUI()
