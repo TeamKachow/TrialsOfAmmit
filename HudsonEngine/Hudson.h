@@ -9,9 +9,9 @@
 #include "Common/Engine.h"
 #include "Common/IEditable.h"
 #include "Common/ResourceManager.h"
+#include "Common/ComponentRegistry.h"
 
 #include "Editor/Editor.h"
-#include "Editor/ComponentRegistry.h"
 
 #include "Entity/Common.h"
 #include "Entity/Behaviour.h"

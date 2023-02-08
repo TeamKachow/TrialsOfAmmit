@@ -1,24 +1,38 @@
-#include "../Editor/Editor.h"
+#include "Editor.h"
 #include "../Common/Engine.h"
+#include "../Common/ComponentRegistry.h"
 #include "../Entity/Component.h"
 #include "../Entity/GameObject.h"
 #include "../World/Scene.h"
 #include "../Render/Renderer.h"
-#include "../Render/Window.h"
+#include "../Util/Debug.h"
 
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
 
+const char* MODAL_HELP = "'How to Hudson', a memoir by best-selling author Doc Hudson";
+const char* MODAL_SCENE_SAVE = "Save Scene";
+const char* MODAL_SCENE_LOAD = "Load Scene";
+
+static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> wstring_converter;
+
 extern const std::filesystem::path filePath = std::filesystem::current_path();
 
-Hudson::Editor::Editor::Editor(Common::Engine* engine, ComponentRegistry* registry) : _engine(engine), _registry(registry), currentPath(filePath)
+Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine), currentPath(filePath)
 {
-	engine->RegisterPreFrameHook([](Common::Engine* engine)
+	engine->RegisterPreFrameHook([&](Common::Engine* engine)
 		{
 			engine->GetRenderer()->SetImguiDockspace(true);
+		    if (!engine->GetSceneManager()->IsPaused())
+		    {
+                for (SceneMeta& meta : _sceneMeta | std::views::values)
+                {
+					meta.pendingChanges = true;
+                }
+		    }
 		});
 
-	engine->RegisterMidFrameHook([this](Common::Engine* engine)
+	engine->RegisterMidFrameHook([&](Common::Engine* engine)
 		{
 			this->Draw();
 		});
@@ -135,7 +149,17 @@ void Hudson::Editor::Editor::MenuBar()
 			{
 				_engine->GetSceneManager()->AddScene(new World::Scene());
 			}
-			ImGui::MenuItem("Load Scene...", 0, false, false);
+			if (ImGui::BeginMenu("Load Scene (?)"))
+			{
+				//ImGui::PushTextWrapPos(120);
+				ImGui::TextWrapped("To load a scene, double click it in the content browser.");
+				//ImGui::PopTextWrapPos();
+				if (ImGui::SmallButton("Show Content Browser"))
+				{
+					ImGui::SetWindowFocus("Content Browser");
+				}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenu();
 		}
 
@@ -146,6 +170,19 @@ void Hudson::Editor::Editor::MenuBar()
 		}
 
 		if (ImGui::MenuItem("Help", 0, &_showHelp));
+
+		ImGui::Separator();
+
+		if (ImGui::MenuItem("Play", 0, !_engine->GetSceneManager()->IsPaused(), _engine->GetSceneManager()->IsPaused()))
+		{
+			// TODO: force all scenes to save first!!!
+			_engine->GetSceneManager()->SetPaused(false);
+		}
+
+		if (ImGui::MenuItem("Pause", 0, _engine->GetSceneManager()->IsPaused(), !_engine->GetSceneManager()->IsPaused()))
+		{
+			_engine->GetSceneManager()->SetPaused(true);
+		}
 
 		ImGui::EndMainMenuBar();
 	}
@@ -193,6 +230,21 @@ void Hudson::Editor::Editor::Viewport()
 	ImGui::PopStyleVar();
 }
 
+Hudson::Editor::Editor::SceneMeta& Hudson::Editor::Editor::GetSceneMeta(World::Scene* scene)
+{
+	if (!_sceneMeta.contains(scene))
+	{
+		_sceneMeta.insert_or_assign(scene, SceneMeta());
+	}
+
+	return _sceneMeta[scene];
+}
+
+void Hudson::Editor::Editor::ShowSceneSaveAs(World::Scene* scene)
+{
+	_sceneToSave = scene;
+}
+
 void Hudson::Editor::Editor::Hierarchy()
 {
 	ImGui::Begin("Hierarchy");
@@ -205,7 +257,6 @@ void Hudson::Editor::Editor::Hierarchy()
 
 		if (ImGui::TreeNode((void*)(intptr_t)i, "Scene %d - %s", i, scene->GetName().c_str()))
 		{
-
 			if (ImGui::BeginPopupContextItem())
 			{
 				ImGui::PushID(&scene);
@@ -230,25 +281,53 @@ void Hudson::Editor::Editor::Hierarchy()
 					// TODO: object/component clipboard
 				}
 				ImGui::Separator();
-				if (ImGui::MenuItem("Save Scene...", 0, false, false))
+				if (ImGui::MenuItem("Save Scene", 0, false, !GetSceneMeta(scene).filePath.empty()))
 				{
-					// TODO: save
+					SceneMeta& meta = GetSceneMeta(scene);
+					if (meta.filePath.empty())
+					{
+						ShowSceneSaveAs(scene);
+					}
+					else
+					{
+						World::SceneManager::SaveScene(meta.filePath, scene);
+					}
+				}
+				if (ImGui::MenuItem("Save Scene As..."))
+				{
+					ShowSceneSaveAs(scene);
 				}
 				if (ImGui::MenuItem("Duplicate Scene", 0, false, false))
 				{
-					// TODO: duplicate
 				}
 				if (ImGui::MenuItem("Delete Scene (!)"))
 				{
-					_selected = nullptr;
+					_selectedObj = nullptr;
 					_engine->GetSceneManager()->RemoveScene(scene);
 				}
 				ImGui::EndPopup();
 			}
-			for (auto object : scene->GetObjects())
+
+			SceneMeta& meta = GetSceneMeta(scene);
+			std::stringstream txt;
+			if (meta.filePath.empty())
 			{
-				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf;
-				if (_selected == object)
+				txt << "(not saved)";
+			}
+			else
+			{
+				txt << meta.filePath;
+				if (meta.pendingChanges)
+				{
+					txt << " (edited)";
+				}
+			}
+			ImGui::TextColored(IM_COLOR_GRAY, txt.str().c_str());
+
+		    for (auto object : scene->GetObjects())
+            {
+				ImGuiTreeNodeFlags objNodeFlags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_Bullet;
+				if (_selectedObj == object)
 				{
 					objNodeFlags |= ImGuiTreeNodeFlags_Selected;
 				}
@@ -256,7 +335,7 @@ void Hudson::Editor::Editor::Hierarchy()
 				ImGui::TreePop();
 				if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
 				{
-					_selected = object;
+					_selectedObj = object;
 				}
 				if (ImGui::BeginPopupContextItem())
 				{
@@ -271,9 +350,9 @@ void Hudson::Editor::Editor::Hierarchy()
 					if (ImGui::MenuItem("Delete Object"))
 					{
 						ImGui::CloseCurrentPopup();
-						if (_selected == object)
+						if (_selectedObj == object)
 						{
-							_selected = nullptr;
+							_selectedObj = nullptr;
 						}
 						scene->RemoveObject(object);
 					}
@@ -347,14 +426,16 @@ void Hudson::Editor::Editor::ContentBrowser()
 			ImGui::EndDragDropSource();
 		}
 
-
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			if (entry.is_directory())
 			{
 				currentPath /= path.filename();
 			}
-
+			else if (entry.is_regular_file() && entry.path().string().ends_with(".scene.json"))
+			{
+				_sceneToLoad = std::filesystem::relative(entry.path()).string();
+			}
 			std::cout << relativePath.string() << std::endl;
 		}
 
@@ -371,15 +452,17 @@ void Hudson::Editor::Editor::ContentBrowser()
 
 void Hudson::Editor::Editor::ComponentList()
 {
+	Hudson::Common::ComponentRegistry* registry = _engine->GetComponentRegistry();
+
 	ImGui::Begin("Components List");
 
-	if (_registry)
+	if (registry)
 	{
-		if (_registry->GetKnownComponents().empty())
+		if (registry->GetKnownComponents().empty())
 		{
 			ImGui::TextColored(IM_COLOR_ORANGE, "No components registered!");
 		}
-		else if (_selected == nullptr)
+		else if (_selectedObj == nullptr)
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select an object from Hierarchy.");
 		}
@@ -387,16 +470,16 @@ void Hudson::Editor::Editor::ComponentList()
 		{
 			ImGui::TextColored(IM_COLOR_GRAY, "Select a component below to add.");
 
-			for (auto& element : _registry->GetKnownComponents())
+			for (auto& [name, entry] : registry->GetKnownComponents())
 			{
-				ImGui::Text(element.name.c_str());
+				ImGui::Text(name.c_str());
 				ImGui::SameLine();
-				ImGui::PushID((void*)(&element));
+				ImGui::PushID((void*)(&entry));
 				if (ImGui::SmallButton("+"))
 				{
 					// Add the component
-					auto component = element.constructor();
-					_selected->AddComponent(component);
+					auto component = entry.constructor();
+					_selectedObj->AddComponent(component);
 				}
 				ImGui::PopID();
 			}
@@ -415,7 +498,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 {
 	ImGui::Begin("Object Properties");
 
-	if (_selected == nullptr)
+	if (_selectedObj == nullptr)
 	{
 		ImGui::TextColored(IM_COLOR_GRAY, "Select an object from Hierarchy.");
 	}
@@ -430,7 +513,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Rename");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::InputText("", &_selected->GetName());
+			ImGui::InputText("", &_selectedObj->GetName());
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -440,14 +523,14 @@ void Hudson::Editor::Editor::ObjectProperties()
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%p", (void*)_selected);
+				ImGui::Text("%p", (void*)_selectedObj);
 				ImGui::TableNextColumn();
 
 				ImGui::Text("Serial ID (?)");
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%u", /*_selected.GetSerialID()*/ 0); // TODO
+				ImGui::Text("%u", _selectedObj->GetSerialID());
 				ImGui::TableNextColumn();
 			}
 
@@ -456,7 +539,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Pos");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().pos.x, 0.5f);
+			ImGui::DragFloat2("", &_selectedObj->GetTransform().pos.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -465,7 +548,7 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Scale");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selected->GetTransform().scale.x, 0.5f);
+			ImGui::DragFloat2("", &_selectedObj->GetTransform().scale.x, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
@@ -474,15 +557,15 @@ void Hudson::Editor::Editor::ObjectProperties()
 
 			ImGui::PushID("ObjEditor_Rotate");
 			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat("", &_selected->GetTransform().rotateZ, 0.5f);
+			ImGui::DragFloat("", &_selectedObj->GetTransform().rotateZ, 0.5f);
 			ImGui::PopID();
 			ImGui::TableNextColumn();
 
 			ImGui::EndTable();
 		}
 
-		for (auto component : _selected->GetAllComponents())
-		{
+        for (auto component : _selectedObj->GetAllComponents())
+        {
 			Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
 			ImGuiTreeNodeFlags headerFlags = 0;
 			if (!editable && !_showIds)
@@ -513,14 +596,14 @@ void Hudson::Editor::Editor::ObjectProperties()
 						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
 						ImGui::TableNextColumn();
 
-						ImGui::Text("%p", (void*)_selected);
+						ImGui::Text("%p", (void*)_selectedObj);
 						ImGui::TableNextColumn();
 
 						ImGui::Text("Serial ID (?)");
 						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
 						ImGui::TableNextColumn();
 
-						ImGui::Text("%u", /*_selected.GetSerialID()*/ 0); // TODO
+						ImGui::Text("%u", _selectedObj->GetSerialID()); // TODO
 						ImGui::EndTable();
 					}
 				}
@@ -589,7 +672,7 @@ void Hudson::Editor::Editor::Debug()
 
 void Hudson::Editor::Editor::Help()
 {
-	if (ImGui::BeginPopupModal("'How to Hudson', a memoir by best-selling author Doc Hudson", &_showHelp))
+	if (ImGui::BeginPopupModal(MODAL_HELP, &_showHelp))
 	{
 		ImGui::Text("Just try right-clicking things to see what menus exist");
 		ImGui::Text("The end");
@@ -599,7 +682,7 @@ void Hudson::Editor::Editor::Help()
 
 	if (_showHelp)
 	{
-		ImGui::OpenPopup("'How to Hudson', a memoir by best-selling author Doc Hudson");
+		ImGui::OpenPopup(MODAL_HELP);
 	}
 }
 
@@ -676,6 +759,112 @@ void Hudson::Editor::Editor::Input()
 	}
 }
 
+void Hudson::Editor::Editor::SaveDialogs()
+{
+	if (ImGui::BeginPopupModal(MODAL_SCENE_SAVE))
+	{
+		if (!_sceneToSave)
+		{
+			_sceneToSave = nullptr;
+			ImGui::CloseCurrentPopup();
+		}
+		else
+		{
+			ImGui::Text("Save scene '%s' as:", _sceneToSave->GetName().c_str());
+			SceneMeta& meta = GetSceneMeta(_sceneToSave);
+			if (meta.filePath.empty())
+			{
+				meta.filePath = std::format("Scenes/{}.scene.json", _sceneToSave->GetName());
+			}
+			ImGui::InputText("File name", &meta.filePath);
+			if (ImGui::Button("Cancel"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			ImGui::BeginDisabled(meta.filePath.empty());
+			if (ImGui::Button("Save"))
+			{
+				World::SceneManager::SaveScene(meta.filePath, _sceneToSave);
+				meta.pendingChanges = false;
+				_sceneToSave = nullptr;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndDisabled();
+		}
+
+		ImGui::EndPopup();
+	}
+
+	if (ImGui::BeginPopupModal(MODAL_SCENE_LOAD))
+	{
+		if (_sceneToLoad.empty())
+		{
+			ImGui::CloseCurrentPopup();
+		}
+		else
+		{
+			bool disabled = false;
+			if (!_sceneToLoad.ends_with(".scene.json"))
+			{
+				disabled = true;
+				ImGui::TextColored(IM_COLOR_ORANGE, "Scene path not valid. Make sure the file ends with '.scene.json'.");
+			}
+			else
+			{
+				ImGui::Text("Load scene '%s'?", _sceneToLoad.c_str());
+			}
+
+		    if (ImGui::Button("Cancel"))
+			{
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			ImGui::BeginDisabled(disabled);
+			if (ImGui::Button("Load"))
+			{
+				try
+				{
+					World::Scene* loadedScene = World::SceneManager::LoadScene(_sceneToLoad);
+					if (!loadedScene)
+					{
+						throw std::exception("File could not be opened");
+					}
+					GetSceneMeta(loadedScene) = {
+						.pendingChanges = false,
+						.filePath = _sceneToLoad,
+					};
+					_engine->GetSceneManager()->AddScene(loadedScene);
+					_sceneToLoad = "";
+				}
+				catch (std::exception& e)
+				{
+					std::stringstream msg;
+					msg << "Failed to load scene '" << _sceneToLoad << "': " << e.what();
+					Hudson::Util::Debug::LogError(msg.str());
+					_sceneToLoad = "";
+				}
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndDisabled();
+		}
+
+		ImGui::EndPopup();
+	}
+
+
+	if (_sceneToSave)
+	{
+		_engine->GetSceneManager()->SetPaused(true);
+		ImGui::OpenPopup(MODAL_SCENE_SAVE);
+	}
+	else if (!_sceneToLoad.empty())
+	{
+		_engine->GetSceneManager()->SetPaused(true);
+		ImGui::OpenPopup(MODAL_SCENE_LOAD);
+	}
+}
+
 void Hudson::Editor::Editor::Draw()
 {
 	MenuBar();
@@ -687,6 +876,7 @@ void Hudson::Editor::Editor::Draw()
 	Tools();
 	Debug();
 	Help();
+	SaveDialogs();
 	if (openInput)
 	{
 		Input();

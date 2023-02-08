@@ -1,6 +1,7 @@
 ﻿#include "../Entity/GameObject.h"
 
 #include "Behaviour.h"
+#include "../Common/Engine.h"
 #include "../Entity/Component.h"
 #include "../Util/Debug.h"
 
@@ -16,7 +17,7 @@ void Hudson::Entity::GameObject::DrawPropertyUI()
     }
 }
 
-void Hudson::Entity::GameObject::UpdateComponents()
+void Hudson::Entity::GameObject::UpdateDeferredComponents()
 {
     _components.Update();
 }
@@ -28,7 +29,6 @@ void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Compone
     switch (action.second)
     {
     case Common::DeferredObjectSet<Hudson::Entity::Component*>::ActionType::ADD:
-        component->_parent = this;
         if (behaviour != nullptr) behaviour->OnCreate();
         break;
 
@@ -42,7 +42,6 @@ void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Compone
 
 Hudson::Entity::GameObject::GameObject() : _scene(nullptr)
 {
-    _id = rand();
     _components.SetCallback([&](auto action)
         {
             this->OnQueueUpdate(action);
@@ -88,6 +87,7 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
 
     // Queue for addition
     _components.Add(component);
+    component->_parent = this;
 
     return component;
 }
@@ -127,9 +127,15 @@ Hudson::Entity::GameObject::Transform& Hudson::Entity::GameObject::GetTransform(
 
 void Hudson::Entity::GameObject::OnSceneAdd()
 {
-    for (auto behaviour : this->GetComponents<Behaviour>())
+    for (auto component : GetAllComponents())
     {
-        behaviour->OnCreate();
+        component->_parent = this;
+
+        auto behaviour = dynamic_cast<Behaviour*>(component);
+        if (behaviour)
+        {
+            behaviour->OnCreate();
+        }
     }
 }
 
@@ -165,4 +171,54 @@ void Hudson::Entity::GameObject::OnSceneRemove()
 Hudson::World::Scene* Hudson::Entity::GameObject::GetScene() const
 {
     return _scene;
+}
+
+uint32_t Hudson::Entity::GameObject::GetSerialID()
+{
+    return _serialId;
+}
+
+void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
+{
+    Hudson::Common::ComponentRegistry* componentRegistry = Hudson::Common::Engine::GetInstance()->GetComponentRegistry();
+
+    _name = j.at("name");
+    _serialId = j.at("id");
+    _transform = j.at("transform");
+    _components = {};
+
+    for (auto&& componentJson : j.at("components"))
+    {
+        // check component is registered
+        std::string typeName = componentJson.at("type");
+        if (!componentRegistry->IsComponentRegistered(typeName))
+        {
+            Hudson::Util::Debug::LogError(std::format("Could not find component registered as type '{}'!", typeName));
+            continue;
+        }
+
+        // construct and initialise object using component registry
+        Component* comp = componentRegistry->CreateComponentFromJson(componentJson);
+        _components.Add(comp);
+    }
+
+    _components.Update();
+}
+
+void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
+{
+    // TODO: all of this
+    j["name"] = _name;
+    j["id"] = _serialId;
+    j["transform"] = _transform;
+    j["components"] = nlohmann::json::array();
+
+    for (auto&& component: _components.Get())
+    {
+        nlohmann::json compJson;
+        compJson["type"] = component->GetTypeName();
+        // TODO: check against component registry
+        component->ToJson(compJson["data"]);
+        j["components"].push_back(compJson); 
+    }
 }

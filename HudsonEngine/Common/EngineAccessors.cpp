@@ -31,3 +31,8 @@ Hudson::Common::Engine* Hudson::Common::EngineAccessors::GetEngine()
 {
     return GetEngineAccessorDelegate()->GetEngine();
 }
+
+Hudson::Common::ComponentRegistry* Hudson::Common::EngineAccessors::GetComponentRegistry()
+{
+    return GetEngine()->GetComponentRegistry();
+}

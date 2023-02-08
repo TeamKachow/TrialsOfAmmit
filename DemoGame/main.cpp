@@ -5,7 +5,6 @@
 #include "DemoBehaviour.h"
 
 Hudson::Common::Engine* engine;
-Hudson::Editor::ComponentRegistry* registry;
 
 #ifdef _DEBUG
 #define ENABLE_EDITOR
@@ -36,7 +35,7 @@ Hudson::Common::ResourceManager* resManager;
 
 void InitRegistry()
 {
-    registry = new Hudson::Editor::ComponentRegistry();
+    Hudson::Common::ComponentRegistry* registry = engine->GetComponentRegistry();
     registry->RegisterEngineComponents();
 
     registry->Register<DemoBehaviour>("Demo Behaviour");
@@ -51,18 +50,18 @@ void Init()
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
-    InitRegistry();
-    editor = new Hudson::Editor::Editor(engine, registry);
+    editor = new Hudson::Editor::Editor(engine);
 #endif
 
     engine->Setup();
+    InitRegistry();
+    
     engine->GetRenderer()->SetupDefaultShaders();
 
 #ifdef ENABLE_EDITOR
     engine->GetInputManager()->SetEditorRef(editor);
+    engine->GetSceneManager()->SetPaused(true);
 #endif
-
-
 }
 
 void Hello(bool& isActive)

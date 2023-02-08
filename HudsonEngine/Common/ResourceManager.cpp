@@ -24,9 +24,41 @@ Render::Shader* Hudson::Common::ResourceManager::LoadShaderLiteral(const char* v
 	return &_shaders[name];
 }
 
+std::string Common::ResourceManager::GetShaderName(Render::Shader* shader)
+{
+	if (shader == nullptr)
+	{
+		return "";
+	}
+
+	for (auto&& [name, value] : _shaders)
+	{
+		if (shader->ID == value.ID)
+			return name;
+	}
+
+	return "";
+}
+
 Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 {
 	return &_textures[name];
+}
+
+std::string Common::ResourceManager::GetTextureName(Render::Texture* texture)
+{
+	if (texture == nullptr)
+	{
+		return "";
+	}
+
+    for (auto && [name, tex]: _textures)
+    {
+		if (texture->ID == tex.ID)
+			return name;
+    }
+
+	return "";
 }
 
 Render::Texture* Common::ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
