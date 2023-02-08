@@ -59,3 +59,11 @@ void PassivePickups::OnDestroy()
 void PassivePickups::DrawPropertyUI()
 {
 }
+
+void PassivePickups::FromJson(const nlohmann::json& j)
+{
+}
+
+void PassivePickups::ToJson(nlohmann::json& j)
+{
+}

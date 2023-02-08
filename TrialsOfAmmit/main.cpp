@@ -11,6 +11,12 @@
 #include "PassivePickups.h"
 #include "Chest.h"
 #include "Rooms/Room.h"
+#include "WeaponDisplayUI.h"
+#include "PlayerHealthUI.h"
+#include "AbilityDisplayUI.h"
+#include "PickupBehaviour.h"
+#include "MeleeAttack.h"
+#include "Projectile.h"
 
 Hudson::Common::Engine* engine;
 
@@ -57,6 +63,21 @@ void InitRegistry()
     Hudson::Common::ComponentRegistry* registry = engine->GetComponentRegistry();
     registry->RegisterEngineComponents();
     registry->Register<Player>("PlayerTest");
+    registry->Register<WeaponDisplayUI>("WeaponUIDisplay");
+    registry->Register<PlayerHealthUI>("HealthUI");
+    registry->Register<AbilityDisplayUI>("AbilityUI");
+    registry->Register<Chest>("Chest");
+    registry->Register<PassivePickups>("PassivePickups");
+    registry->Register<AbilityHolder>("Ability");
+    registry->Register<PickupAbilitys>("AbiltyPickup");
+    registry->Register<PickupBehaviour>("Pickup");
+    registry->Register<PickupWeapon>("WeaponPickUp");
+    registry->Register<MeleeAttack>("MeleeBehaviour");
+    registry->Register<Projectile>("ProjectileUpdatedBehaviour");
+
+
+
+
 }
 
 void Init() 

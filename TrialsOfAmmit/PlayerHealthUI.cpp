@@ -48,3 +48,11 @@ void PlayerHealthUI::OnDestroy()
 void PlayerHealthUI::DrawPropertyUI()
 {
 }
+
+void PlayerHealthUI::FromJson(const nlohmann::json& j)
+{
+}
+
+void PlayerHealthUI::ToJson(nlohmann::json& j)
+{
+}

@@ -12,6 +12,14 @@ PickupAbilitys::~PickupAbilitys()
 
 }
 
+void PickupAbilitys::FromJson(const nlohmann::json& j)
+{
+}
+
+void PickupAbilitys::ToJson(nlohmann::json& j)
+{
+}
+
 void PickupAbilitys::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();

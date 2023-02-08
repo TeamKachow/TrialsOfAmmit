@@ -3,11 +3,6 @@
 #include "Chest.h"
 
 
-Projectile::~Projectile()
-{
-
-}
-
 Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
 {
 
@@ -29,6 +24,17 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 
 	_currentScene = CurrentScene;
 	
+}
+Projectile::~Projectile()
+{
+
+}
+void Projectile::FromJson(const nlohmann::json& j)
+{
+}
+
+void Projectile::ToJson(nlohmann::json& j)
+{
 }
 
 void Projectile::OnCreate()
