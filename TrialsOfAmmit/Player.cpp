@@ -3,19 +3,33 @@
 #include "AbilityDisplayUI.h"
 #include "PlayerHealthUI.h"
 #include "PickupBehaviour.h"
+#include "Rooms/Room.h"
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
-	deathTimer = 0;
-	deathAnim = 0.4;
+	_maxHealth = 100;
+	_playerHealth = _maxHealth;
+	_deathTimer = 0;
+	_deathAnim = 0.4;
 	_deathGridX;
 	_playerAnimSpeed = 0.2;
 	_playerDirection = Stopped;
 	_playerFacingDirection = Stopped;
 	_attackTimer = 0;
-	_playerMovementSpeed = 100.0;
+	_playerMovementSpeed = 125.0;
 	_godMode = false;
 	_isDead = false;
+	_isDamaged = false;
+	_playerDamageMod = 1;
+	_spawnPos = spawnPos;
+
+	_isHittingUp = false;
+	_isHittingDown = false;
+	_isHittingRight = false;
+	_isHittingLeft = false;
+
+	_moveX = 0;
+	_moveY = 0;
 
 }
 
@@ -30,7 +44,7 @@ void Player::OnCreate()
 	_playerSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Player"));
 	_playerSprite->SetGridSize(glm::vec2(3, 4));
 	_playerSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
-
+	_playerSprite->SetDepthOrder(10);
 	playerCollider = new Hudson::Physics::ColliderComponent();
 	playerPhysics = new Hudson::Physics::PhysicsComponent();
 	playerPhysics->SetMass(1.0f);
@@ -45,7 +59,7 @@ void Player::OnCreate()
 	_gridX = _playerSprite->GetGridPos().x;
 	_gridY = _playerSprite->GetGridPos().y;
 
-	_parent->GetTransform().pos = (glm::vec2(0, 0));
+	_parent->GetTransform().pos = _spawnPos;
 	_currentScene = _parent->GetScene();
 	_playersWeapon = &_axe;
 	_parent->AddComponent(new PickupBehaviour());
@@ -54,12 +68,33 @@ void Player::OnCreate()
 	HealthBarUI();
 }
 
+//Function the Passive Mods will access to change the player Stats
+void Player::PassiveAddMaxHealth(float additionalHealth)
+{
+	std::cout << "Added Health" << "\n";
+	_maxHealth = _maxHealth + additionalHealth;
+	_playerHealth = _playerHealth + additionalHealth;
+}
+
+void Player::PassiveAddSpeed(float additionalSpeed)
+{
+	std::cout << "Added Speed" << "\n";
+	_playerMovementSpeed = _playerMovementSpeed + additionalSpeed;
+}
+
+void Player::PassiveAddDamageMod(float additionalDamage)
+{
+	std::cout << "Added Damage" << "\n";
+	_playerDamageMod = _playerDamageMod + additionalDamage;
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)
 	{
 		_playerHealth = _playerHealth - _damageTaken;
 		_playerSprite->SetColor(glm::vec3(1, 0, 0));
+		_isDamaged = true;
 		if (_playerHealth <= 0)
 		{
 			OnDeath();
@@ -71,13 +106,27 @@ void Player::TakeDamage(float _damageTaken)
 
 void Player::OnTick(const double& dt)
 {
+	_isHittingUp = false;
+	_isHittingDown = false;
+	_isHittingLeft = false;
+	_isHittingRight = false;
+	WallCollisions();
+	
+	
+
+	if (_isDamaged)
+	{
+		_playerSprite->SetColor(glm::vec3(1, 1, 1));
+		_isDamaged = false;
+	}
+
 	if (_isDead)
 	{
-		deathTimer += dt;
-		if (deathTimer >= deathAnim)
+		_deathTimer += dt;
+		if (_deathTimer >= _deathAnim)
 		{
 			GraveSprite->SetGridPos(glm::vec2(_deathGridX, 0));
-			deathTimer = 0;
+			_deathTimer = 0;
 			_deathGridX += 1;
 			if (_deathGridX >= 3)
 			{
@@ -96,6 +145,7 @@ void Player::OnTick(const double& dt)
 	{
 		_playerDirection = Down;
 		_playerFacingDirection = Down;
+		
 	}
 	else if (_inputManager.getActionState("Right"))
 	{
@@ -124,7 +174,7 @@ void Player::OnTick(const double& dt)
 		
 	}
 
-	switch(_playerDirection)
+	switch (_playerDirection)
 	{
 	case Down:
 		MoveDown();
@@ -141,51 +191,93 @@ void Player::OnTick(const double& dt)
 	case Stopped:
 		StopMove();
 		break;
-	default: ;
+	default:;
 	}
+	
+	_lastFramePos = _parent->GetTransform().pos;
 
 	_playerAnimTimer += dt;
 	_playerSprite->SetGridPos(glm::vec2(_gridX, _gridY));
+	
 	//_playerSprite->SetColor(glm::vec3(1, 1, 1)); -- oopsie
 
 }
 
 void Player::Fire() //Attack Uses facing Direction not the way the player is moving 
 {
-	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene);
+	_playersWeapon->Attack(_playerFacingDirection, _parent->GetTransform().pos, _currentScene, _playerDamageMod);
 }
 
 void Player::MoveUp() //Movement depending on _playerDirection
 {
-	_gridY = 3;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+	if (_isHittingUp == false)
+	{
+		_gridY = 3;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(0, -_playerMovementSpeed));
+		
+	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
+	}
+	
 }
 
 void Player::MoveDown()
 {
-
-	_gridY = 0;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
+	if (_isHittingDown == false)
+	{
+		_gridY = 0;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(0, _playerMovementSpeed));
+	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
+	}
+	
+	
 }
 
 void Player::MoveRight()
 {
-	_gridY = 2;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed, 0));
+	if (_isHittingRight == false)
+	{
+		_gridY = 2;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(_playerMovementSpeed,0));
+
+	}
+	else
+	{
+		//StopMove();
+		//
+	}
+
 }
 
 void Player::MoveLeft()
 {
-	_gridY = 1;
-	AnimMove();
-	playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
+	if (_isHittingLeft == false)
+	{
+		_gridY = 1;
+		AnimMove();
+		playerPhysics->SetVelocity(glm::vec2(-_playerMovementSpeed, 0));
+	}
+	else
+	{
+		//StopMove();
+		//_parent->GetTransform().pos = (_lastFramePos);
+	}
+	
 }
 
 void Player::StopMove()
 {
+	playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 	playerPhysics->SetVelocity(glm::vec2(0, 0));
 	if (_playerFacingDirection == Right || _playerFacingDirection == Down) //When Stop player the player stadning still frame
 	{
@@ -223,6 +315,72 @@ void Player::Respawn()
 	_parent->GetTransform().pos = glm::vec2(500, 500);
 	_playerHealth = 100;
 	_playersWeapon = new Axe;
+}
+
+void Player::WallCollisions()
+{
+	
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
+	if (!colliders.empty())
+	{
+		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			if (other != nullptr)
+			{
+				if (other->GetParent()->GetComponent<Room>() != nullptr)
+				{
+					Room* _Room = other->GetParent()->GetComponent<Room>();
+					if (_Room != nullptr)
+					{
+						playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
+						InverseForce();
+					}
+				}
+				else
+				{
+					collider->ClearColliding();
+					break;
+				}
+			}
+			
+		}
+
+	}
+}
+
+void Player::InverseForce()
+{
+	
+	switch (_playerFacingDirection)
+	{
+	case Down:
+		_isHittingDown = true;
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Up;
+		break;
+	case Left:
+		_isHittingLeft = true;
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Right;
+		break;
+	case Right:
+		_isHittingRight = true;
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Left;
+		break;
+	case Up:
+		_isHittingUp = true;
+		playerPhysics->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_playerDirection = Down;
+
+		break;
+	}
 }
 
 void Player::AnimMove()//General move through sprite sheet function
@@ -296,5 +454,15 @@ void Player::DrawPropertyUI()
 		_playersWeapon->UpgradeWeapon(Gold);
 	}
 
+
+}
+
+void Player::FromJson(const nlohmann::json& j)
+{
+
+}
+
+void Player::ToJson(nlohmann::json& j)
+{
 
 }

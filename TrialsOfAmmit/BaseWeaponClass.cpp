@@ -10,7 +10,7 @@ BaseWeaponClass::~BaseWeaponClass()
 {
 }
 
-void BaseWeaponClass::Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene)
+void BaseWeaponClass::Attack(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, float _playerDamageMod)
 {
 	std::cout << "Player Has Attacked" << "\n";
 }

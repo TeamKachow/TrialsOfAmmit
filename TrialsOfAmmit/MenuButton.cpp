@@ -14,10 +14,18 @@ MenuButton::~MenuButton()
 
 }
 
+void MenuButton::FromJson(const nlohmann::json& j)
+{
+}
+
+void MenuButton::ToJson(nlohmann::json& j)
+{
+}
+
 void MenuButton::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	_buttonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Test"));
+	_buttonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
 	_parent->AddComponent(_buttonSprite);
 	_parent->GetTransform().scale = (_buttonScale);
 	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf",glm::vec2(0, 0));

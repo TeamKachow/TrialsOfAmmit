@@ -41,7 +41,6 @@ void RoomAOE::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 		if (other->GetComponent<AiAgent>() != nullptr)
 		{
 			_agent = other->GetComponent<AiAgent>();
-			_agent->_currentHealth = _enemyCurrentHealth;
 		}
 	};
 	_abilityState = cooldown;

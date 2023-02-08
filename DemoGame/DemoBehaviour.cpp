@@ -10,10 +10,6 @@ DemoBehaviour::DemoBehaviour(Hudson::Render::SpriteComponent* sprite, double ani
 DemoBehaviour::~DemoBehaviour()
 = default;
 
-DemoBehaviour::DemoBehaviour() : Behaviour("Demo Behaviour"), _sprite(nullptr), _animSpeed(0.8)
-{
-}
-
 void DemoBehaviour::OnCreate()
 {
 	// If no sprite set yet, look for one on the parent
@@ -138,4 +134,14 @@ void DemoBehaviour::DrawPropertyUI()
 {
 	ImGui::DragScalar("Anim spd", ImGuiDataType_Double, &_animSpeed, 0.05);
 	ImGui::Text("Acc: %lf", _animAcc);
+}
+
+void DemoBehaviour::FromJson(const nlohmann::json& j)
+{
+	_animSpeed = j.at("animSpeed");
+}
+
+void DemoBehaviour::ToJson(nlohmann::json& j)
+{
+	j["animSpeed"] = _animSpeed;
 }

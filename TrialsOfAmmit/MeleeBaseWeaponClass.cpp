@@ -2,7 +2,9 @@
 #include "MeleeAttack.h"
 #include "MeleeCollider.h"
 
-void MeleeBaseWeaponClass::Attack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene)
+
+
+void MeleeBaseWeaponClass::Attack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float playerDamageMod)
 {
 	std::cout << _weaponAttackDamage << "\n";
 
@@ -11,7 +13,7 @@ void MeleeBaseWeaponClass::Attack(facingDirections slashDirection, glm::vec2 pla
 	currentScene->AddObject(_slashAttack);
 
 	_slashCollider = new Hudson::Entity::GameObject();
-	_slashCollider->AddComponent(new MeleeCollider(slashDirection, playerPos, currentScene, _weaponAttackDamage, false));
+	_slashCollider->AddComponent(new MeleeCollider(slashDirection, playerPos, currentScene, _weaponAttackDamage * playerDamageMod, false));
 	currentScene->AddObject(_slashCollider);
 }
 

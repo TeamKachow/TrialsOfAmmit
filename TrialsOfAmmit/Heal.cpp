@@ -27,7 +27,7 @@ void Heal::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_player = other->GetComponent<Player>(); // wanna try make it per second?
 
-			if (_player->_playerHealth < 100)
+			if (_player->_playerHealth < _player->_maxHealth)
 			{
 				_player->_playerHealth += _healAmount; // need to make it so it doesnt go over max health which is 100
 			}

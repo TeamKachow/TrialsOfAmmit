@@ -68,6 +68,11 @@ void Hudson::World::Scene::Tick(const double dt)
 
 Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* object)
 {
+    if (object == nullptr)
+    {
+        Hudson::Util::Debug::LogError("Can't add a null object!");
+    }
+
     if (object->_scene != nullptr)
     {
         std::stringstream msg;
@@ -83,6 +88,11 @@ Hudson::Entity::GameObject* Hudson::World::Scene::AddObject(Entity::GameObject* 
 
 Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObject* object)
 {
+    if (object == nullptr)
+    {
+        Hudson::Util::Debug::LogError("Can't remove a null object!");
+    }
+
     if (!_objects.Get().contains(object))
     {
         std::stringstream msg;
@@ -100,6 +110,20 @@ Hudson::Entity::GameObject* Hudson::World::Scene::RemoveObject(Entity::GameObjec
     _objects.Remove(object);
 
     return object;
+}
+
+void Hudson::World::Scene::UpdateDeferredObjects()
+{
+    _objects.Update();
+    for (auto gameObject : _objects.Get())
+    {
+        gameObject->UpdateDeferredComponents();
+    }
+}
+
+uint32_t Hudson::World::Scene::GetSerialID()
+{
+    return _serialId;
 }
 
 void Hudson::World::Scene::SetName(const std::string& name)
@@ -125,4 +149,34 @@ bool Hudson::World::Scene::IsRendering() const
 void Hudson::World::Scene::SetRendering(bool rendering)
 {
     _rendering = rendering;
+}
+
+void Hudson::World::Scene::ToJson(nlohmann::json& j)
+{
+    j["id"] = _serialId;
+    j["name"] = _name;
+    j["active"] = _active;
+    j["rendering"] = _rendering;
+    j["objects"] = nlohmann::json::array();
+    for (auto && pObject : _objects.Get())
+    {
+        nlohmann::json objJson;
+        pObject->ToJson(objJson);
+        j["objects"].push_back(objJson);
+    }
+}
+
+void Hudson::World::Scene::FromJson(const nlohmann::json& j)
+{
+    _serialId = j.at("id");
+    _name = j.at("name");
+    _active = j.at("active");
+    _rendering = j.at("rendering");
+    for (auto && objectJson : j.at("objects"))
+    {
+        Entity::GameObject* go = new Entity::GameObject();
+        go->FromJson(objectJson);
+        _objects.Add(go);
+    }
+    _objects.Update();
 }

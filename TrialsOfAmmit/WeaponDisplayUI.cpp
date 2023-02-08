@@ -17,6 +17,14 @@ WeaponDisplayUI::~WeaponDisplayUI()
 {
 }
 
+void WeaponDisplayUI::FromJson(const nlohmann::json& j)
+{
+}
+
+void WeaponDisplayUI::ToJson(nlohmann::json& j)
+{
+}
+
 void WeaponDisplayUI::OnCreate()
 {
 	//Makes the Frame

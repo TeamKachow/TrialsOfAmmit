@@ -32,10 +32,13 @@ namespace Hudson::Physics
 		void ClearColliding();
 		AABB GetAABB();
 
-        void DrawPropertyUI() override;
+	    std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
 
-        std::set<ColliderComponent*> GetCurrentCollisions() { return _colliderList; }
-	private:
+        void DrawPropertyUI() override;
+        void FromJson(const nlohmann::json& j) override;
+        void ToJson(nlohmann::json& j) override;
+
+    private:
 		std::set<ColliderComponent*> _colliderList;
 		float xOffset = 0;
 		float yOffset = 0;
