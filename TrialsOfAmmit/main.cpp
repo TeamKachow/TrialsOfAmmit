@@ -100,6 +100,7 @@ void GameSetup()
     resManager->LoadTexture("textures/SettingsMarker.png", true, "SettingsMarkerImage");
     resManager->LoadTexture("textures/Passives.png", true, "Passives");
     resManager->LoadTexture("textures/Chest.png", true, "Chest");
+    resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));
@@ -110,21 +111,6 @@ void GameSetup()
     backgroundImage = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("backgroundImage"));
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
-
-    /*Physics1 = new Hudson::Physics::PhysicsComponent();
-    Physics1->SetMass(1.0f);
-    Physics1->SetForce(glm::vec2(10.0, 0));
-    Physics1->SetAcceleration(glm::vec2(10, 0), true);
-    Physics1->SetVelocity(glm::vec2(0, 0));
-
-    Physics2 = new Hudson::Physics::PhysicsComponent();
-    Physics2->SetMass(1.0f);
-    Physics2->SetForce(glm::vec2(-10.0, 0));
-    Physics2->SetAcceleration(glm::vec2(-100, 0), true);
-    Physics2->SetVelocity(glm::vec2(-100, 0));*/
-
-   /* Collider1 = new Hudson::Physics::ColliderComponent();
-    Collider2 = new Hudson::Physics::ColliderComponent();*/
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
@@ -150,10 +136,6 @@ void GameSetup()
     blah2->AddComponent(new AiAgent(vec2(100, 100)));
     startScene->AddObject(blah2);
     blah2->GetTransform().pos.x = 1400.0f;
-
-  
-
-
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
     AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(500.0f, 300.0f)));

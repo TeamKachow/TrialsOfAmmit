@@ -69,8 +69,8 @@ Render::Window::Window(int width, int height, const char* name) {
 #ifdef _DEBUG
     glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #else
-	glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-    glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+	//glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+    //glfwWindowHint(GLFW_MAXIMIZED, GLFW_FALSE);
 #endif
 
     // Create a GLFWwindow object of defined pixels

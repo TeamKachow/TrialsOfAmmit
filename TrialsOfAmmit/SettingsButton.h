@@ -11,11 +11,13 @@ public:
 	~SettingsButton();
 	Hudson::Render::SpriteComponent* _buttonSprite;
 	Hudson::Render::SpriteComponent* _buttonSprite1;
+	Hudson::Render::SpriteComponent* _buttonSpriteFullScreen;
 	Hudson::World::Scene* _currentScene;
 	Hudson::Input::InputManager* _inputManager;
 	Hudson::World::Scene* _nextScene;
 	Hudson::Render::TextComponent* _buttonTextObject;
 	Hudson::Render::TextComponent* _buttonTextObjectAudio;
+	Hudson::Render::TextComponent* _buttonTextObjectFullScreen;
 
 	vec2 _buttonScale;
 	string _buttonText;
@@ -29,13 +31,18 @@ private:
 	Hudson::Entity::GameObject* MenuBack;
 	Hudson::Entity::GameObject* MenuForwardAudio;
 	Hudson::Entity::GameObject* MenuBackAudio;
+	Hudson::Entity::GameObject* FullScreen;
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;
 	void Forawrd();
 	void Back();
+	void ForawrdAudio();
+	void BackAudio();
+	void SetFullScreen();
 	void DrawPropertyUI() override;
 	bool _clicked;
+	bool _fullScreen;
 	vec2 _resolution[6]{ vec2(1280,720), vec2(1366,768), vec2(1600,900), vec2(1920,1080), vec2(2560,1440), vec2(3840,2160) };
 	int _currentResIndex = 0;
 	float _timer;
