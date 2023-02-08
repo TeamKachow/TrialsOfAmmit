@@ -20,6 +20,8 @@
 #include "MeleeCollider.h"
 #include "PauseMenu.h"
 
+#include "Rooms/Room.h"
+
 Hudson::Common::Engine* engine;
 
 #ifdef _DEBUG
@@ -190,14 +192,53 @@ void GameSetup()
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 
+
+    #ifdef ENABLE_EDITOR
+        ToolData toolData;
+        toolData.function = StartRoomMaker;
+        toolData.isRepeatingFunction = true;
+        editor->AddTool("Room Maker", toolData);
+    #endif
+
     std::cout << "Game: engine has been set up!\n";
 }
+
+void ToolFunc()
+{
+    std::cout << "Hello" << std::endl;
+}
+
+void RoomGameSetup()
+{
+    engine->GetRenderer()->SetCamera(_defaultCamera);
+    resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+    resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
+
+
+    Hudson::World::Scene* startScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(startScene);
+
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->SetName("Room");
+    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
+
+	#ifdef ENABLE_EDITOR
+	    ToolData toolData;
+	    toolData.function = StartRoomMaker;
+	    toolData.isRepeatingFunction = true;
+	    editor->AddTool("Room Maker", toolData);
+	#endif
+
+}
+
 
 int main() {
     Init();
 
     // Set up game scene/resources
     GameSetup();
+    //RoomGameSetup();
 
     // Run engine loop until it is shut down
     engine->Run();
