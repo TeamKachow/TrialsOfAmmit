@@ -149,10 +149,16 @@ void Hudson::Editor::Editor::MenuBar()
 			{
 				_engine->GetSceneManager()->AddScene(new World::Scene());
 			}
-			ImGui::MenuItem("Load Scene...", 0, false, false);
-			if (ImGui::MenuItem("Save All..."))
+			if (ImGui::BeginMenu("Load Scene (?)"))
 			{
-			    // TODO: save all scenes
+				//ImGui::PushTextWrapPos(120);
+				ImGui::TextWrapped("To load a scene, double click it in the content browser.");
+				//ImGui::PopTextWrapPos();
+				if (ImGui::SmallButton("Show Content Browser"))
+				{
+					ImGui::SetWindowFocus("Content Browser");
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
 		}

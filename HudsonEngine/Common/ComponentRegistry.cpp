@@ -37,7 +37,7 @@ Hudson::Entity::Component* Hudson::Common::ComponentRegistry::CreateComponentFro
 
     try
     {
-        component->FromJson(j);
+        component->FromJson(j.at("data"));
     }
     catch (std::exception& e)
     {
