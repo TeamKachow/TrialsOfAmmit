@@ -188,6 +188,7 @@ void GameSetup()
     LaserUp->AddComponent(LaserSpriteVert);
     LaserUp->GetTransform().scale.x = 96.0f;
     LaserUp->GetTransform().scale.y = 960.0f;
+    LaserUp->GetTransform().pos.x = 100.0f;
     startScene->AddObject(LaserUp);
 
     Hudson::Entity::GameObject* LaserAcross = new Hudson::Entity::GameObject();
