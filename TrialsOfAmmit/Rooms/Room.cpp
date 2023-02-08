@@ -13,56 +13,56 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	// Determine x,y from file
 	// This is debug, file will already be wrote to
 
-	nlohmann::json roomData;
-	std::ofstream writeFile(roomFile);
-	roomData["roomX"] = 10;
-	roomData["roomY"] = 12;
-	roomData["navGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
-	roomData["texGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,1,1,1,1,1,1,1,1,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
-	roomData["objGrid"] = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,2,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,0,0,0
-	};
+	//nlohmann::json roomData;
+	//std::ofstream writeFile(roomFile);
+	//roomData["roomX"] = 10;
+	//roomData["roomY"] = 12;
+	//roomData["navGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
+	//roomData["texGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,1,1,1,1,1,1,1,1,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
+	//roomData["objGrid"] = {
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,2,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0,
+	//	0,0,0,0,0,0,0,0,0,0
+	//};
 
 
-	roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
-	writeFile << std::setw(1) << roomData << std::endl;
+	//roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
+	//writeFile << std::setw(1) << roomData << std::endl;
 
 	// Read from file JSON
 
@@ -144,7 +144,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		{
 			// relevant texID
 			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
-			if(value == 0)
+			if(value == 1)
 			{
 				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent(j, i);
 				
@@ -259,11 +259,6 @@ void Room::OnTick(const double& dt)
 void Room::OnDestroy()
 {
 	Behaviour::OnDestroy();
-	//std::map<int, Hudson::Render::SpriteComponent*>::iterator iter;
-	//for (iter = texture_reference_.begin(); iter != texture_reference_.end(); ++iter)
-	//{
-	//	_parent->RemoveComponent(iter->second);
-	//}
 }
 
 void Room::DrawPropertyUI()
@@ -339,6 +334,7 @@ void ObjectList() {
 
 bool addingTextureRef = false;
 textureRefData newRefData;
+char fileName[128] = "";
 
 void StartRoomMaker(bool& isActive)
 {
@@ -347,27 +343,7 @@ void StartRoomMaker(bool& isActive)
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 
-	//if (ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar)) {
-	//	if (ImGui::BeginMenuBar())
-	//	{
-	//		if (ImGui::BeginMenu("File"))
-	//		{
-	//			ImGui::MenuItem("Open");
-	//			ImGui::MenuItem("Save");
-	//			if (ImGui::MenuItem("Exit"))
-	//			{
-	//				isActive = false;
-	//			}
-	//			ImGui::EndMenu();
-	//		}
-	//		ImGui::EndMenuBar();
-	//	}
-
-	//	ImGui::End();
-	//}
-
-
-	if (ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar)) {
+	if (ImGui::Begin("Room Maker", nullptr, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoSavedSettings)) {
 		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
 		if (ImGui::BeginMenuBar())
@@ -375,12 +351,15 @@ void StartRoomMaker(bool& isActive)
 			if (ImGui::BeginMenu("File"))
 			{
 				ImGui::MenuItem("Open");
-				if (ImGui::MenuItem("Save")) {
+				if (ImGui::BeginMenu("Save")) {
 
-					char fileName[128] = "";
-					ImGui::InputText("File Name", fileName, IM_ARRAYSIZE(fileName));
-					// Ask for file name
-					// 
+					ImGui::InputTextWithHint("File Name", ".room", fileName, IM_ARRAYSIZE(fileName));
+					ImGui::Separator();
+					if(ImGui::Button("Save"))
+					{
+						imguiRoomData.saveToFile(fileName);
+					}
+					ImGui::EndMenu();
 
 				}
 				if (ImGui::MenuItem("Exit"))

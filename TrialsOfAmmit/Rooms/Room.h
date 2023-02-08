@@ -38,7 +38,7 @@ private:
 };
 
 struct textureRefData {
-	int textureID = -1;
+	int textureID = 0;
 	int gridPosX = 0;
 	int gridPosY = 0;
 	int gridSizeX = 1;
@@ -46,7 +46,7 @@ struct textureRefData {
 	std::string textureRoot = "";
 
 	void Clear() {
-		textureID = -1;
+		textureID = 0;
 		gridPosX = 0;
 		gridPosY = 0;
 		gridSizeX = 1;
@@ -57,8 +57,8 @@ struct textureRefData {
 
 struct tileData{
 	bool isSolid = false;
-	int textureRef = -1;
-	int objectRef = -1;
+	int textureRef = 0;
+	int objectRef = 0;
 };
 
 struct ImGuiRoomData
@@ -72,7 +72,91 @@ struct ImGuiRoomData
 
 	std::vector<textureRefData*> textureRefs;
 
+	void saveToFile(const char* filePath)
+	{
+		nlohmann::json roomData;
+		std::ofstream writeFile(filePath);
+		roomData["roomX"] = roomX;
+		roomData["roomY"] = roomY;
 
+		//roomData["navGrid"] =
+		char* navGridChar = new char[roomX * roomY];
+		char* texGridChar = new char[roomX * roomY];
+		char* objGridChar = new char[roomX * roomY];
+
+		std::string refTextureFinalString;
+
+		for(int y = 0; y < roomY; ++y)
+		{
+			for (int x = 0; x < roomX; ++x)
+			{
+				tileData tile = roomGrid[y * roomX + x];
+
+				if(tile.isSolid)
+				{
+					navGridChar[y * roomX + x] = '1';
+				}
+				else
+				{
+					navGridChar[y * roomX + x] = '0';
+				}
+
+				//texGridChar[y * roomX + x] = char(tile.textureRef);
+				//objGridChar[y * roomX + x] = char(tile.objectRef;
+			}
+		}
+
+		for (textureRefData* refData : textureRefs)
+		{
+			std::string refObject;
+
+			refObject.append("{ ");
+			refObject.append(R"("textureID":)");
+			refObject.append(std::to_string(refData->textureID));
+
+			refObject.append(R"("textureRoot":)");
+			refObject.append(R"(")" + refData->textureRoot + R"(",)");
+
+			refObject.append(R"("gridSizeX":)");
+			refObject.append(std::to_string(refData->gridSizeX));
+
+			refObject.append(R"("gridSizeY":)");
+			refObject.append(std::to_string(refData->gridSizeY));
+
+			refObject.append(R"("gridPosX":)");
+			refObject.append(std::to_string(refData->gridPosX));
+
+			refObject.append(R"("gridPosY":)");
+			refObject.append(std::to_string(refData->gridPosY));
+
+			refObject.append(" }");
+
+			//refObject.append("\"textureRoot\":");
+			//refObject.append("\""+refData->textureRoot+"\",\n");
+
+			//refObject.append("\"gridSizeX\":");
+			//refObject.append("\"" + std::to_string(refData->gridSizeX) + "\",\n");
+
+			//refObject.append("\"gridSizeY\":");
+			//refObject.append("\"" + std::to_string(refData->gridSizeY) + "\",\n");
+
+			//refObject.append("\"gridPosX\":");
+			//refObject.append("\"" + std::to_string(refData->gridPosX) + "\",\n");
+
+			//refObject.append("\"gridPosY\":");
+			//refObject.append("\"" + std::to_string(refData->gridPosY) + "\",\n");
+
+			refTextureFinalString.append(refObject);
+		}
+
+		roomData["navGrid"] = navGridChar;
+		//roomData["texGrid"] = texGridChar;
+		//roomData["objGrid"] = objGridChar;
+		roomData["texReference"] = { refTextureFinalString };
+
+		writeFile << std::setw(1) << roomData << std::endl;
+
+	}
 
 	void updateRoomSize(int currentRoomX, int currentRoomY) {
 		
