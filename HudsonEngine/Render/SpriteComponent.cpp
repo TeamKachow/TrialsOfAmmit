@@ -43,7 +43,7 @@ void Hudson::Render::SpriteComponent::DrawSprite(glm::vec2 position)
     model = glm::translate(model, glm::vec3(position, 0.0f));
     // TODO: make sprite's _size a multiplier of transform's _size
     model = glm::translate(model, glm::vec3(0.5f * _size.x, 0.5f * _size.y, 0.0f));
-    model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    model = glm::rotate(model, glm::radians(_parent->GetTransform().rotateZ), glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::translate(model, glm::vec3(-0.5f * _size.x, -0.5f * _size.y, 0.0f));
     model = glm::scale(model, glm::vec3(_size, 1.0f));
 

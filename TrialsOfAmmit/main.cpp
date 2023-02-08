@@ -19,6 +19,8 @@
 #include "Projectile.h"
 #include "MeleeCollider.h"
 
+#include "Rooms/Room.h"
+
 Hudson::Common::Engine* engine;
 
 #ifdef _DEBUG
@@ -80,10 +82,6 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
-
-
-
-
 }
 
 void Init() 
@@ -111,7 +109,6 @@ void Init()
 void GameSetup()
 {
     engine->GetRenderer()->SetCamera(_defaultCamera);
-
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -145,35 +142,22 @@ void GameSetup()
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
-    
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
-    
 
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
+
     engine->GetSceneManager()->AddScene(TestScene);
+
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(new Player(glm::vec2(500, 500)));
     player->SetName("Player");
     startScene->AddObject(player);
 
-
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
     room->AddComponent(new class Room("Rooms/roomJson.room"));
     startScene->AddObject(room);
-
-    //Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-    //AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(200.0f, 300.0f)));
-    //startScene->AddObject(AbilityPickup);
-
-    //Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
-    //PassivePickup->AddComponent(new PassivePickups(glm::vec2(300, 300.0f)));
-    //startScene->AddObject(PassivePickup);
-
-    //Hudson::Entity::GameObject* _chest = new Hudson::Entity::GameObject();
-    //_chest->AddComponent(new Chest(glm::vec2(400, 300.0f)));
-    //startScene->AddObject(_chest);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));
@@ -201,14 +185,53 @@ void GameSetup()
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 
+
+    #ifdef ENABLE_EDITOR
+        ToolData toolData;
+        toolData.function = StartRoomMaker;
+        toolData.isRepeatingFunction = true;
+        editor->AddTool("Room Maker", toolData);
+    #endif
+
     std::cout << "Game: engine has been set up!\n";
 }
+
+void ToolFunc()
+{
+    std::cout << "Hello" << std::endl;
+}
+
+void RoomGameSetup()
+{
+    engine->GetRenderer()->SetCamera(_defaultCamera);
+    resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
+    resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
+
+
+    Hudson::World::Scene* startScene = new Hudson::World::Scene();
+    engine->GetSceneManager()->AddScene(startScene);
+
+    Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
+    room->SetName("Room");
+    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    startScene->AddObject(room);
+
+	#ifdef ENABLE_EDITOR
+	    ToolData toolData;
+	    toolData.function = StartRoomMaker;
+	    toolData.isRepeatingFunction = true;
+	    editor->AddTool("Room Maker", toolData);
+	#endif
+
+}
+
 
 int main() {
     Init();
 
     // Set up game scene/resources
     GameSetup();
+    //RoomGameSetup();
 
     // Run engine loop until it is shut down
     engine->Run();

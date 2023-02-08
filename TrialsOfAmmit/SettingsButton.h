@@ -13,6 +13,8 @@ public:
 	void ToJson(nlohmann::json& j) override;
 	Hudson::Render::SpriteComponent* _buttonSprite;
 	Hudson::Render::SpriteComponent* _buttonSprite1;
+	Hudson::Render::SpriteComponent* _buttonSprite2;
+	Hudson::Render::SpriteComponent* _buttonSprite3;
 	Hudson::Render::SpriteComponent* _buttonSpriteFullScreen;
 	Hudson::World::Scene* _currentScene;
 	Hudson::Input::InputManager* _inputManager;

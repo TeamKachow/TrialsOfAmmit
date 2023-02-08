@@ -1,7 +1,8 @@
 #include "AiAgent.h"
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
-
+#include "Rooms/Room.h"
+#include "MeleeCollider.h"
 AiAgent::AiAgent(vec2 spawnPos) : Behaviour("AiBehavior")
 {
 	_aiAnimSpeed = 0.4;
@@ -20,6 +21,8 @@ void AiAgent::OnCreate()
 	//sets up collider
 	_aiCollider = new Hudson::Physics::ColliderComponent();
 	_parent->AddComponent(_aiCollider);
+	_aiColliderWall = new Hudson::Physics::ColliderComponent();
+	_parent->AddComponent(_aiColliderWall);
 
 	//sets up physics componant
 	_aiPhysicsComponent = new Hudson::Physics::PhysicsComponent();
@@ -37,8 +40,8 @@ void AiAgent::OnCreate()
 	_maxHealth = 100.0f;
 	_meleeDamage = 10.0f;
 	_maxSpeed = 35;
-	_maxRange = 250;
-	_minRange = -250;
+	_maxRange = 200;
+	_minRange = -200;
 	_distanceFromPlayer = 10000;
 	_currentHealth = _maxHealth;
 	_alive = true;
@@ -175,6 +178,8 @@ void AiAgent::OnTick(const double& dt)
 	{
 		_currentState = WANDER;
 	}
+	_lastFramePos = _parent->GetTransform().pos;
+
 }
 
 void AiAgent::CollisionCheck()
@@ -182,6 +187,41 @@ void AiAgent::CollisionCheck()
 	//TODO: Remove code and change to check for collision with the wall 
 	
 	// pushes Ai back and choses a new destination when trying to leave the map bounds 
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
+	if (!colliders.empty())
+	{
+		Hudson::Physics::ColliderComponent* collider = colliders.at(1);
+		auto collidingWith = collider->GetCurrentCollisions();
+		for (auto other : collidingWith)
+		{
+			if (other != nullptr)
+			{
+				if (other->GetParent()->GetComponent<MeleeCollider>() == nullptr)
+				{
+					collider->ClearColliding();
+				}
+				if (other->GetParent()->GetComponent<Room>() != nullptr)
+				{
+					Room* _Room = other->GetParent()->GetComponent<Room>();
+					if (_Room != nullptr)
+					{
+						_aiPhysicsComponent->SetAcceleration(glm::vec2(0, 0), true);
+						_aiPhysicsComponent->SetVelocity(vec2(0, 0));
+						InverseVel();
+						collider->ClearColliding();
+						break;
+					}
+				}
+				else
+				{
+					collider->ClearColliding();
+					break;
+				}
+			}
+
+		}
+
+	}
 	
 }
 
@@ -427,6 +467,37 @@ void AiAgent::AiAttack()
 	_currentScene = _parent->GetScene();
 	_aiWeapon->AiAttack(_facingDirection, _parent->GetTransform().pos, _currentScene);
 	_attackTimer = 0;
+}
+
+void AiAgent::InverseVel()
+{
+	_aiPhysicsComponent->SetVelocity(-_velocity);
+	_parent->GetTransform().pos = vec2(_parent->GetTransform().pos);
+	switch (_facingDirection)
+	{
+	case Down:
+		_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_facingDirection = Up;
+		break;
+	case Left:
+		_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_facingDirection = Right;
+		break;
+	case Right:
+		_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_facingDirection = Left;
+		break;
+	case Up:
+		_aiPhysicsComponent->SetVelocity(glm::vec2(0, 0));
+		_parent->GetTransform().pos = _lastFramePos;
+		_facingDirection = Down;
+		break;
+	}
+	RandomTargetSelector();
+
 }
 
 void AiAgent::AiDead()

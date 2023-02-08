@@ -73,6 +73,7 @@ void Hello(bool& isActive)
 void GameSetup()
 {
     // Set up default camera
+    _defaultCamera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
     //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);

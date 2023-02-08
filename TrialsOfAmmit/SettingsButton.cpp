@@ -63,14 +63,22 @@ void SettingsButton::OnCreate()
 
 	//sets up audio settings
 	//audio forward button setup
+	_buttonSprite2 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("SettingsMarkerImage"));
+	_buttonSprite2->SetGridSize(glm::vec2(2, 1));
+	_buttonSprite2->SetGridPos(vec2(1, 1));
+	_buttonSprite2->SetDepthOrder(1);
 	MenuForwardAudio = new Hudson::Entity::GameObject();
-	MenuForwardAudio->AddComponent(_buttonSprite);
+	MenuForwardAudio->AddComponent(_buttonSprite2);
 	MenuForwardAudio->GetTransform().pos.x = 310.0f;
 	MenuForwardAudio->GetTransform().pos.y = 500.0f;
 	_parent->GetScene()->AddObject(MenuForwardAudio);
 	//audio back button setup
+	_buttonSprite3 = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("SettingsMarkerImage"));
+	_buttonSprite3->SetGridSize(glm::vec2(2, 1));
+	_buttonSprite3->SetGridPos(vec2(0, 1));
+	_buttonSprite3->SetDepthOrder(1);
 	MenuBackAudio = new Hudson::Entity::GameObject();
-	MenuBackAudio->AddComponent(_buttonSprite1);
+	MenuBackAudio->AddComponent(_buttonSprite3);
 	MenuBackAudio->GetTransform().pos.x = 90.0f;
 	MenuBackAudio->GetTransform().pos.y = 500.0f;
 	_parent->GetScene()->AddObject(MenuBackAudio);

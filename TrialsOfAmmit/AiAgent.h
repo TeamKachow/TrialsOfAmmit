@@ -34,6 +34,7 @@ protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
 	virtual void AiAttack();
+	void InverseVel();
 	AiMelee _melee;
 	BaseWeaponClass* _aiWeapon = &_melee;
 	Hudson::Render::SpriteComponent* _aiSprite;
@@ -41,6 +42,7 @@ protected:
 	Hudson::Physics::PhysicsComponent*_aiPhysicsComponent;
 	Hudson::World::Scene* _currentScene;
 	Hudson::Physics::ColliderComponent* _aiCollider;
+	Hudson::Physics::ColliderComponent* _aiColliderWall;
 	Player* _player;
 	AiState _currentState;
 	vec2 _target;
@@ -77,5 +79,6 @@ private:
 	float _maxHealth;
 	float _currentHealth;
 	bool _isDamaged;
+	vec2 _lastFramePos;
 };
 
