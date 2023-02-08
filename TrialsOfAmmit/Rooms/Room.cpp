@@ -217,22 +217,8 @@ void Room::OnCreate()
 
 			}
 			else if (value == 2) {
-				// Spawn Mummy AI
-				Hudson::Render::SpriteComponent* spriteComponent = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
-				spriteComponent->SetGridSize(glm::vec2(3, 4));
-				spriteComponent->SetDepthOrder(1);
-
-				Hudson::Physics::PhysicsComponent* physicComponent = new Hudson::Physics::PhysicsComponent();
-				physicComponent->SetMass(1.0f);
-				physicComponent->SetAcceleration(glm::vec2(10, 0), true);
-
-				Hudson::Physics::ColliderComponent* colliderComponent = new Hudson::Physics::ColliderComponent();
-
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Mummy");
-				newObject->AddComponent(physicComponent);
-				newObject->AddComponent(colliderComponent);
-				newObject->AddComponent(spriteComponent);
 				newObject->AddComponent(new AiAgent(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
 				/*newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
