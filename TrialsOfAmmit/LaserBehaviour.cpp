@@ -1,6 +1,6 @@
 #include "LaserBehaviour.h"
 
-LaserBehaviour::LaserBehaviour(glm::vec2 spawnPos, int laserType) : Behaviour("LaserBehavior")
+LaserBehaviour::LaserBehaviour(glm::vec2 spawnPos, int laserType) : Behaviour("LaserBehaviour")
 {
 	_laserType = laserType;
 	_spawnPos = spawnPos;
@@ -92,7 +92,6 @@ void LaserBehaviour::OnTick(const double& dt)
 							break;
 						}
 					}
-
 				}
 			}
 			_laserCooldown -= dt;

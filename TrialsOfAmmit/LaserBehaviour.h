@@ -21,7 +21,6 @@ public:
 	void ToJson(nlohmann::json& j) override;
 
 	void Charge();
-	void DeActivate();
 
 	Hudson::Render::SpriteComponent* LaserSprite;
 	Hudson::Physics::ColliderComponent* CollisionBox;
@@ -33,14 +32,11 @@ private:
 	void OnTick(const double& dt) override;
 
 protected:
-	void CollisionCheck();
 	void Animate(float deltaTime);
-	std::vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
 	Hudson::World::Scene* _currentScene;
 	Player* _player;
 	laserState _currentState;
 	int _laserType;
-	float _currentSpeed;
 	double _chargeTimer;
 	double _fireTimer;
 	double _animTimer;

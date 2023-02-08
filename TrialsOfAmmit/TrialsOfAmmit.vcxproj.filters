@@ -131,6 +131,7 @@
     <ClCompile Include="AnubisBoss.cpp" />
     <ClCompile Include="LaserBehaviour.cpp" />
     <ClCompile Include="LocustBehaviour.cpp" />
+    <ClCompile Include="FireBehaviour.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -240,5 +241,6 @@
     <ClInclude Include="AnubisBoss.h" />
     <ClInclude Include="LaserBehaviour.h" />
     <ClInclude Include="LocustBehaviour.h" />
+    <ClInclude Include="FireBehaviour.h" />
   </ItemGroup>
 </Project>

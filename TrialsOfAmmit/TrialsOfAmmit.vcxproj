@@ -29,6 +29,7 @@
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="FireBehaviour.cpp" />
     <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
     <ClCompile Include="LaserBehaviour.cpp" />
@@ -71,6 +72,7 @@
     <ClInclude Include="Bow.h" />
     <ClInclude Include="Chest.h" />
     <ClInclude Include="facingDirection.h" />
+    <ClInclude Include="FireBehaviour.h" />
     <ClInclude Include="Heal.h" />
     <ClInclude Include="Khopesh.h" />
     <ClInclude Include="LaserBehaviour.h" />
