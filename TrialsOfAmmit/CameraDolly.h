@@ -4,6 +4,10 @@
 using namespace std;
 using namespace glm;
 
+#ifdef _DEBUG
+#define ENABLE_EDITOR
+#endif
+
 class CameraDolly : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:

@@ -88,6 +88,11 @@ void Player::PassiveAddDamageMod(float additionalDamage)
 	_playerDamageMod = _playerDamageMod + additionalDamage;
 }
 
+void Player::SetPosition(glm::vec2 Position)
+{
+	_parent->GetTransform().pos = Position;
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	if (_godMode == false)

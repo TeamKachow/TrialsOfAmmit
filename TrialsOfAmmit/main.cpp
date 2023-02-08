@@ -19,8 +19,8 @@
 #include "Projectile.h"
 #include "MeleeCollider.h"
 #include "CameraDolly.h"
-
 #include "Rooms/Room.h"
+#include "Door.h"
 
 Hudson::Common::Engine* engine;
 
@@ -84,6 +84,7 @@ void InitRegistry()
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
     registry->Register<CameraDolly>("CameraDollyBehaviour");
+    registry->Register<Door>("DoorBehaviour");
 }
 
 void Init() 
@@ -212,7 +213,7 @@ void ToolFunc()
 
 void RoomGameSetup()
 {
-    engine->GetRenderer()->SetCamera(_defaultCamera);
+    //engine->GetRenderer()->SetCamera();
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
 
