@@ -185,6 +185,14 @@ void GameSetup()
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 
+
+    #ifdef ENABLE_EDITOR
+        ToolData toolData;
+        toolData.function = StartRoomMaker;
+        toolData.isRepeatingFunction = true;
+        editor->AddTool("Room Maker", toolData);
+    #endif
+
     std::cout << "Game: engine has been set up!\n";
 }
 
@@ -222,8 +230,8 @@ int main() {
     Init();
 
     // Set up game scene/resources
-    //GameSetup();
-    RoomGameSetup();
+    GameSetup();
+    //RoomGameSetup();
 
     // Run engine loop until it is shut down
     engine->Run();
