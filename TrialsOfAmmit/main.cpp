@@ -173,7 +173,7 @@ void GameSetup()
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    room->AddComponent(new class Room("Rooms/room1.room"));
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
