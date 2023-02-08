@@ -11,6 +11,14 @@ PickupBehaviour::~PickupBehaviour()
 {
 }
 
+void PickupBehaviour::FromJson(const nlohmann::json& j)
+{
+}
+
+void PickupBehaviour::ToJson(nlohmann::json& j)
+{
+}
+
 void PickupBehaviour::CheckCollision()
 {
 	

@@ -24,7 +24,6 @@ private:
 	float _moveX;
 	float _moveY;
 
-
 	float _deathTimer;
 	float _deathAnim;
 	int _deathGridX;
@@ -103,6 +102,9 @@ public:
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
 	void DrawPropertyUI() override;
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 
 

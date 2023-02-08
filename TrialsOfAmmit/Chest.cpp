@@ -49,3 +49,11 @@ void Chest::OnDestroy()
 void Chest::DrawPropertyUI()
 {
 }
+
+void Chest::FromJson(const nlohmann::json& j)
+{
+}
+
+void Chest::ToJson(nlohmann::json& j)
+{
+}

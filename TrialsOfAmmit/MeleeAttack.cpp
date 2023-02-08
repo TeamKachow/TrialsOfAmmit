@@ -21,6 +21,14 @@ MeleeAttack::~MeleeAttack()
 {
 }
 
+void MeleeAttack::FromJson(const nlohmann::json& j)
+{
+}
+
+void MeleeAttack::ToJson(nlohmann::json& j)
+{
+}
+
 void MeleeAttack::OnCreate()
 {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();

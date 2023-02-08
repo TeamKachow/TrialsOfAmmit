@@ -13,6 +13,9 @@ public:
 	Hudson::World::Scene* _currentScene;
 	Hudson::Physics::ColliderComponent* _ThisCollider;
 
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
+
 	Player* _currentPlayer;
 	void CheckCollision();
 	void OnCreate() override;

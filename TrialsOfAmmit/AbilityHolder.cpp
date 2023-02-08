@@ -30,6 +30,14 @@ void AbilityHolder::DrawPropertyUI()
 
 }
 
+void AbilityHolder::FromJson(const nlohmann::json& j)
+{
+}
+
+void AbilityHolder::ToJson(nlohmann::json& j)
+{
+}
+
 void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead
 {
 	if (_currentAbility->_abilityState == ready)

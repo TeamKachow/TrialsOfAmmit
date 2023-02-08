@@ -456,3 +456,13 @@ void Player::DrawPropertyUI()
 
 
 }
+
+void Player::FromJson(const nlohmann::json& j)
+{
+
+}
+
+void Player::ToJson(nlohmann::json& j)
+{
+
+}

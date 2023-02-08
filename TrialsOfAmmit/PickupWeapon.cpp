@@ -103,6 +103,14 @@ void PickupWeapon::RandomiseItem()
 
 }
 
+void PickupWeapon::FromJson(const nlohmann::json& j)
+{
+}
+
+void PickupWeapon::ToJson(nlohmann::json& j)
+{
+}
+
 
 
 void PickupWeapon::OnTick(const double& dt)

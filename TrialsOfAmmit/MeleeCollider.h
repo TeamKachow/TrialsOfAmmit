@@ -5,7 +5,7 @@
 class MeleeCollider : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi);
+	MeleeCollider(facingDirections slashDirection = {Down}, glm::vec2 playerPos = {0,0}, Hudson::World::Scene* currentScene = {nullptr}, float _damage = {0}, bool isAi = {false});
 	~MeleeCollider();
 
 	void OnCreate() override;
