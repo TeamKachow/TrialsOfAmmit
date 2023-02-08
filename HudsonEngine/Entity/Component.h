@@ -25,6 +25,7 @@ namespace Hudson::Entity
         GameObject* _parent = nullptr;
         const char* _typeName;
         uint32_t _id;
+        bool _shouldSave = true;
         
     public:
         /**

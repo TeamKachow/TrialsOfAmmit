@@ -246,25 +246,33 @@
         "Name": "Escape"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "ArrowRight"
+        ],
         "KeyDown": false,
         "KeyID": 262,
         "Name": "Right"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "ArrowLeft"
+        ],
         "KeyDown": false,
         "KeyID": 263,
         "Name": "Left"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "ArrowDown"
+        ],
         "KeyDown": false,
         "KeyID": 264,
         "Name": "Down"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Arrowup"
+        ],
         "KeyDown": false,
         "KeyID": 265,
         "Name": "Up"

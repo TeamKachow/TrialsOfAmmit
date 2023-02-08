@@ -119,6 +119,11 @@ void Player::PassiveAddDamageMod(float additionalDamage)
 	_playerDamageMod = _playerDamageMod + additionalDamage;
 }
 
+void Player::SetPosition(glm::vec2 Position)
+{
+	_parent->GetTransform().pos = Position;
+}
+
 void Player::TakeDamage(float _damageTaken)
 {
 	//God Mode For DEBUG and Unity Frames on Roll
