@@ -227,6 +227,12 @@ void Hudson::Entity::GameObject::ToJson(nlohmann::json& j) const
 
     for (auto&& component: _components.Get())
     {
+        if (!component->_shouldSave)
+        {
+            // Skip temporary components
+            continue;
+        }
+
         nlohmann::json compJson;
         std::string compType = component->GetTypeName();
         
