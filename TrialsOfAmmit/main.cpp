@@ -8,6 +8,7 @@
 #include "SettingsButton.h"
 #include "AbilityHolder.h"
 #include "PickupAbilitys.h"
+#include "LaserBehaviour.h"
 
 Hudson::Common::Engine* engine;
 Hudson::Editor::ComponentRegistry* registry;
@@ -38,6 +39,8 @@ Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
 Hudson::Physics::ColliderComponent* Collider2;
+Hudson::Physics::ColliderComponent* LaserColliderVert;
+Hudson::Physics::ColliderComponent* LaserColliderHori;
 
 Hudson::Render::TextComponent* Text;
 
@@ -159,6 +162,7 @@ void GameSetup()
 
     Collider1 = new Hudson::Physics::ColliderComponent();
     Collider2 = new Hudson::Physics::ColliderComponent();
+    LaserColliderVert = new Hudson::Physics::ColliderComponent();
 
     // Load initial scene from file 
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
@@ -184,18 +188,16 @@ void GameSetup()
     startScene->AddObject(blah);
     blah->GetTransform().pos.x = 200.0f;
 
-    Hudson::Entity::GameObject* LaserUp = new Hudson::Entity::GameObject();
-    LaserUp->AddComponent(LaserSpriteVert);
-    LaserUp->GetTransform().scale.x = 96.0f;
-    LaserUp->GetTransform().scale.y = 960.0f;
-    LaserUp->GetTransform().pos.x = 100.0f;
-    startScene->AddObject(LaserUp);
+    Hudson::Entity::GameObject* Laser1 = new Hudson::Entity::GameObject();
+    Laser1->AddComponent(new LaserBehaviour(glm::vec2(0, 0), 1));
+    Laser1->AddComponent(LaserColliderVert);
+    startScene->AddObject(Laser1);
 
-    Hudson::Entity::GameObject* LaserAcross = new Hudson::Entity::GameObject();
+    /*Hudson::Entity::GameObject* LaserAcross = new Hudson::Entity::GameObject();
     LaserAcross->AddComponent(LaserSpriteHori);
     LaserAcross->GetTransform().scale.x = 960.0f;
     LaserAcross->GetTransform().scale.y = 96.0f;
-    startScene->AddObject(LaserAcross);
+    startScene->AddObject(LaserAcross);*/
 
     Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
     blah2->AddComponent(Sprite1);

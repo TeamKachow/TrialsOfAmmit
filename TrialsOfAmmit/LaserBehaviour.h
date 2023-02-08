@@ -5,6 +5,7 @@
 
 enum laserState
 {
+	IDLE,
 	CHARGING,
 	FIRING,
 	DEACTIVATING
@@ -21,12 +22,12 @@ public:
 
 	Hudson::Render::SpriteComponent* LaserSprite;
 	Hudson::Physics::ColliderComponent* CollisionBox;
+	Hudson::Entity::GameObject* Laser;
 
 private:
 	void OnCreate() override;
-	//void OnDestroy() override;
-	//void OnTick(const double& dt) override;
-	void Firing(float deltaTime);
+	void OnDestroy() override;
+	void OnTick(const double& dt) override;
 
 protected:
 	void CollisionCheck();
@@ -37,5 +38,11 @@ protected:
 	laserState _currentState;
 	int _laserType;
 	float _currentSpeed;
+	double _chargeTimer;
+	double _fireTimer;
+	double _animTimer;
+	double _deactivateTimer;
+	double _laserCooldown;
+	glm::vec2 _spawnPos;
 };
 
