@@ -1,5 +1,6 @@
 #include "Projectile.h"
 #include "AiAgent.h"
+#include "Chest.h"
 
 
 Projectile::~Projectile()
@@ -48,6 +49,7 @@ void Projectile::OnCreate()
 	_projectileSprite->SetGridSize(glm::vec2(3, 4));
 	_projectileSprite->SetGridPos(glm::vec2(0, 0));
 	_projectilePhysics->SetMass(1.0f);
+	_projectileSprite->SetDepthOrder(1);
 
 	_parent->AddComponent(_projectileSprite);
 	_parent->AddComponent(_projectilePhysics);
@@ -130,6 +132,22 @@ void Projectile::OnTick(const double& dt)
 			else
 			{
 				collider->ClearColliding();
+			}
+			if (other->GetParent()->GetComponent<Chest>() != nullptr)
+			{
+				Chest* _chest = other->GetParent()->GetComponent<Chest>();
+				if (_chest != nullptr)
+				{
+					_chest->OnInteract();
+					collider->ClearColliding();
+
+					break;
+				}
+				else
+				{
+					break;
+				}
+
 			}
 
 

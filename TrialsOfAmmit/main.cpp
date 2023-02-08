@@ -128,22 +128,11 @@ void GameSetup()
     player->SetName("Player");
     startScene->AddObject(player);
 
-    Hudson::Entity::GameObject* blah = new Hudson::Entity::GameObject();
-    blah->AddComponent(new AiAgent(vec2(700,700)));
-    startScene->AddObject(blah);
-    blah->GetTransform().pos.x = 200.0f;
 
-    Hudson::Entity::GameObject* blah2 = new Hudson::Entity::GameObject();
-    blah2->AddComponent(new AiAgent(vec2(100, 100)));
-    startScene->AddObject(blah2);
-    blah2->GetTransform().pos.x = 1400.0f;
-
- 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
     room->AddComponent(new class Room("Rooms/roomJson.room"));
     startScene->AddObject(room);
-
 
     Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
     AbilityPickup->AddComponent(new PickupAbilitys(glm::vec2(200.0f, 300.0f)));

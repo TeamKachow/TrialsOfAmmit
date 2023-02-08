@@ -14,7 +14,7 @@ void AiAgent::OnCreate()
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 	_aiSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Mummy"));
 	_aiSprite ->SetGridSize(glm::vec2(3, 4));
-	_aiSprite->SetDepthOrder(9);
+	_aiSprite->SetDepthOrder(8);
 	_parent->AddComponent(_aiSprite);
 
 	//sets up collider

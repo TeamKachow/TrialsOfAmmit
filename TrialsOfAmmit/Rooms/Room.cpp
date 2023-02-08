@@ -233,10 +233,10 @@ void Room::OnCreate()
 				newObject->AddComponent(physicComponent);
 				newObject->AddComponent(colliderComponent);
 				newObject->AddComponent(spriteComponent);
-				newObject->AddComponent(new AiAgent(spriteComponent, 0));
+				newObject->AddComponent(new AiAgent(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
-				newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
-				newObject->GetTransform().pos.y = i * newObject->GetTransform().scale.y;
+				/*newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
+				newObject->GetTransform().pos.y = i * newObject->GetTransform().scale.y;*/
 
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
