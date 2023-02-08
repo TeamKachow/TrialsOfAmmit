@@ -11,7 +11,7 @@ namespace Hudson::Render {
 		void ViewMatrixCalculation();
 
 		const glm::vec3& GetPosition() const { return _position; }
-		void SetPosition(const glm::vec3& position) { _position = position; ViewMatrixCalculation(); }
+		void SetPosition(glm::vec3 position) { _position = position; ViewMatrixCalculation(); }
 
 		const glm::mat4& GetProjectionMatrix() const { return _projection; }
 		const glm::mat4& GetViewMatrix() const { return _view; }

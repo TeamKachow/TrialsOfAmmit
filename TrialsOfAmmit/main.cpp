@@ -18,6 +18,7 @@
 #include "MeleeAttack.h"
 #include "Projectile.h"
 #include "MeleeCollider.h"
+#include "CameraDolly.h"
 
 Hudson::Common::Engine* engine;
 
@@ -33,7 +34,7 @@ Hudson::Common::Engine* engine;
 Hudson::Editor::Editor* editor;
 #endif
 
-Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
+//Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
 
 //UI Scenes
 Hudson::Render::SpriteComponent* ButtonSprite;
@@ -80,6 +81,7 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
+    registry->Register<CameraDolly>("CameraDollyBehaviour");
 }
 
 void Init() 
@@ -100,13 +102,13 @@ void Init()
 
 #ifdef ENABLE_EDITOR
     engine->GetInputManager()->SetEditorRef(editor);
-    engine->GetSceneManager()->SetPaused(true);
+    engine->GetSceneManager()->SetPaused(false);
 #endif
 }
 
 void GameSetup()
 {
-    engine->GetRenderer()->SetCamera(_defaultCamera);
+    //engine->GetRenderer()->SetCamera(_defaultCamera);
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -151,6 +153,13 @@ void GameSetup()
     player->AddComponent(new Player(glm::vec2(500, 500)));
     player->SetName("Player");
     startScene->AddObject(player);
+
+    Hudson::Entity::GameObject* MainCameraDolly = new Hudson::Entity::GameObject();
+    MainCameraDolly->AddComponent(new CameraDolly(engine->GetInputManager()));
+    MainCameraDolly->SetName("Camera");
+    TestScene->AddObject(MainCameraDolly);
+    SettingsScene->AddObject(MainCameraDolly);
+    startScene->AddObject(MainCameraDolly);
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
