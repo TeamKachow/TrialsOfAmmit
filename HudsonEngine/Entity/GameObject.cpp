@@ -144,7 +144,13 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
     _isCurrentlyTicking = true;
 
     // Run cached component adds/removals
-    _components.Update();
+    try {
+        _components.Update();
+    }
+    catch (std::exception& e)
+    {
+        Hudson::Util::Debug::LogError(std::format("Failed to update component list! This is bad!\n    {}", e.what()));
+    }
 
     // Update behaviours
     for (const auto& component : _components.Get())
@@ -152,8 +158,13 @@ void Hudson::Entity::GameObject::OnSceneTick(const double dt)
         auto behaviour = dynamic_cast<Entity::Behaviour*>(component);
         if (behaviour != nullptr)
         {
-            // TODO: exception catching -> stacktrace?
-            behaviour->OnTick(dt);
+            try {
+                behaviour->OnTick(dt);
+            }
+            catch (std::exception& e)
+            {
+                Hudson::Util::Debug::LogError(std::format("Failed to tick behaviour {}\n    {}", (void*)behaviour, e.what()));
+            }
         }
     }
 
