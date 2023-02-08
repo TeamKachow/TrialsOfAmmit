@@ -30,6 +30,9 @@ private:
 	int RandRoomNum;
 	int _minRange;
 	int _maxRange;
+	bool _isActive;
 
+	float _ativeTimer;
+	float _activeSpeed;
 };
 

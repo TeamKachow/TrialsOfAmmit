@@ -12,6 +12,10 @@ Door::~Door()
 
 void Door::OnCreate()
 {
+	_isActive = false;
+	_activeSpeed = 1;
+	
+
 	_minRange = 0;
 	_maxRange = 1;
 
@@ -33,7 +37,12 @@ void Door::OnDestroy()
 
 void Door::OnTick(const double& dt)
 {
-
+	CollisionCheck();
+	_ativeTimer += dt;
+	if (_ativeTimer > _activeSpeed)
+	{
+		_isActive = true;
+	}
 }
 
 void Door::DrawPropertyUI()
@@ -86,11 +95,11 @@ void Door::GenerateNewRoom()
 	Roomname = "Rooms/room" + to_string(RandRoomNum) + ".room";
 	CurrentRoom = new Hudson::Entity::GameObject;
 	CurrentRoom->AddComponent(new class Room (Roomname.c_str()));
-
 	MovePlayer();
 }
 
 void Door::MovePlayer()
 {	
-	//_player->SetPosition();
+	Room* tempRoom = CurrentRoom->GetComponent<Room>();
+	_player->SetPosition(vec2(tempRoom->GetRoomSize().x * tempRoom->GetParent()->GetTransform().scale.x /2, tempRoom->GetRoomSize().y * tempRoom->GetParent()->GetTransform().scale.y));
 }

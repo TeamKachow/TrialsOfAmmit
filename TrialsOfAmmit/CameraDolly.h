@@ -24,7 +24,5 @@ private:
 	void ToJson(nlohmann::json& j) override;
 	Hudson::Render::Camera* _defaultCamera;
 	Hudson::Input::InputManager* _inputManager;
-	const vec3 i = vec3(100, 100, 100);
-
 };
 
