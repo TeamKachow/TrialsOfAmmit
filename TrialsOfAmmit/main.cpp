@@ -18,6 +18,7 @@
 #include "MeleeAttack.h"
 #include "Projectile.h"
 #include "MeleeCollider.h"
+#include "PauseMenu.h"
 
 #include "Rooms/Room.h"
 
@@ -82,6 +83,7 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
+    registry->Register<PauseMenu>("Pause");
 }
 
 void Init() 
@@ -153,6 +155,11 @@ void GameSetup()
     player->AddComponent(new Player(glm::vec2(500, 500)));
     player->SetName("Player");
     startScene->AddObject(player);
+
+    Hudson::Entity::GameObject* _PickupAbilitys = new Hudson::Entity::GameObject();
+    _PickupAbilitys->AddComponent(new PickupAbilitys(glm::vec2(500, 500)));
+    _PickupAbilitys->SetName("Player");
+    startScene->AddObject(_PickupAbilitys);
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");

@@ -3,7 +3,7 @@
 
 Stun::Stun()
 {
-	_abilityActiveTime = 2;
+	_abilityActiveTime = 0.2;
 	_abilityCoolDownTime = 10;
 	_abilityState = ready;
 	_abilityType = AT_STUN;
@@ -25,6 +25,7 @@ void Stun::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_agent = other->GetComponent<AiAgent>();
 			_agent->_maxSpeed = 0;
+			_agent->_aiSprite->SetColor(glm::vec3(0, 0, 1));
 			// need to make it so that ai can't attack  or player is godmode
 		}
 	};
@@ -43,6 +44,7 @@ void Stun::DeactivateAbility(Hudson::World::Scene* _CurrentPassScene)
 		{
 			_agent = other->GetComponent<AiAgent>();
 			_agent->_maxSpeed = 35;
+			_agent->_aiSprite->SetColor(glm::vec3(1, 1, 1));
 			// need to make it so that ai can attack again or player isn't godmode
 		}
 	};
