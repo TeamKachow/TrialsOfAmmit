@@ -145,12 +145,13 @@ void GameSetup()
     // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
     // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
-    engine->GetSceneManager()->AddScene(TestScene);
+    
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
+    
 
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
-
+    engine->GetSceneManager()->AddScene(TestScene);
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
     player->AddComponent(new Player(glm::vec2(500, 500)));
     player->SetName("Player");
