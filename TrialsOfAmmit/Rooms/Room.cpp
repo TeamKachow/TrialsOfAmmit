@@ -12,60 +12,6 @@ Room::Room() : Behaviour("Room")
 
 Room::Room(const char* roomFile) : Behaviour("Room")
 {
-	// Determine x,y from file
-	// This is debug, file will already be wrote to
-
-	//nlohmann::json roomData;
-	//std::ofstream writeFile(roomFile);
-	//roomData["roomX"] = 10;
-	//roomData["roomY"] = 12;
-	//roomData["navGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-	//roomData["texGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-	//roomData["objGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,2,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-
-
-	//roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
-	//writeFile << std::setw(1) << roomData << std::endl;
-
 	// Read from file JSON
 
 	std::ifstream i(roomFile);
@@ -272,7 +218,8 @@ void Room::ToJson(nlohmann::json& j)
 ImGuiRoomData imguiRoomData;
 bool addingTextureRef = false;
 textureRefData newRefData;
-char fileName[128] = "";
+char openFileName[128] = "";
+char saveFileName[128] = "";
 
 void ObjectList() {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
@@ -375,14 +322,22 @@ void StartRoomMaker(bool& isActive)
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				ImGui::MenuItem("Open");
+				if (ImGui::BeginMenu("Open")) {
+					ImGui::InputTextWithHint("Open Name", ".room", openFileName, IM_ARRAYSIZE(openFileName));
+					ImGui::Separator();
+					if (ImGui::Button("Open"))
+					{
+						imguiRoomData.openFromFile(openFileName);
+					}
+					ImGui::EndMenu();
+				}
 				if (ImGui::BeginMenu("Save")) {
 
-					ImGui::InputTextWithHint("File Name", ".room", fileName, IM_ARRAYSIZE(fileName));
+					ImGui::InputTextWithHint("Save Name", ".room", saveFileName, IM_ARRAYSIZE(saveFileName));
 					ImGui::Separator();
 					if (ImGui::Button("Save"))
 					{
-						imguiRoomData.saveToFile(fileName);
+						imguiRoomData.saveToFile(saveFileName);
 					}
 					ImGui::EndMenu();
 
