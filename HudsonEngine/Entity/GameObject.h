@@ -154,10 +154,6 @@ namespace Hudson::Entity
 
         void FromJson(const nlohmann::json& j);
         void ToJson(nlohmann::json& j) const;
-
-        friend void to_json(nlohmann::json& j, const GameObject& gameObject);
-
-        friend void from_json(const nlohmann::json& j, GameObject& gameObject);
     };
 
     template <is_component T>

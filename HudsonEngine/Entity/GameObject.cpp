@@ -29,7 +29,6 @@ void Hudson::Entity::GameObject::OnQueueUpdate(Common::DeferredObjectSet<Compone
     switch (action.second)
     {
     case Common::DeferredObjectSet<Hudson::Entity::Component*>::ActionType::ADD:
-        component->_parent = this;
         if (behaviour != nullptr) behaviour->OnCreate();
         break;
 
@@ -88,6 +87,7 @@ Hudson::Entity::Component* Hudson::Entity::GameObject::AddComponent(Component* c
 
     // Queue for addition
     _components.Add(component);
+    component->_parent = this;
 
     return component;
 }
@@ -127,9 +127,15 @@ Hudson::Entity::GameObject::Transform& Hudson::Entity::GameObject::GetTransform(
 
 void Hudson::Entity::GameObject::OnSceneAdd()
 {
-    for (auto behaviour : this->GetComponents<Behaviour>())
+    for (auto component : GetAllComponents())
     {
-        behaviour->OnCreate();
+        component->_parent = this;
+
+        auto behaviour = dynamic_cast<Behaviour*>(component);
+        if (behaviour)
+        {
+            behaviour->OnCreate();
+        }
     }
 }
 
@@ -170,16 +176,6 @@ Hudson::World::Scene* Hudson::Entity::GameObject::GetScene() const
 uint32_t Hudson::Entity::GameObject::GetSerialID()
 {
     return _serialId;
-}
-
-void Hudson::Entity::to_json(nlohmann::json& j, const GameObject& gameObject)
-{
-    gameObject.ToJson(j);
-}
-
-void Hudson::Entity::from_json(const nlohmann::json& j, GameObject& gameObject)
-{
-    gameObject.FromJson(j);
 }
 
 void Hudson::Entity::GameObject::FromJson(const nlohmann::json& j)
