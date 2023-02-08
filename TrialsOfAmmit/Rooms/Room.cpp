@@ -1,7 +1,9 @@
 ﻿ #include "Room.h"
 
 // Want to spawn something new include here
+#include "../Player.h"
 #include "../AiAgent.h"
+
 
 Room::Room() : Behaviour("Room")
 {
@@ -204,6 +206,8 @@ void Room::OnCreate()
 
 	// 1 = Player
 	// 2 = Mummy AI
+	// 3 = Chest
+	// 4 = MiscObject
 
 	// I want to spawn game object, how do I determine what to spawn based on some things
 
@@ -227,7 +231,9 @@ void Room::OnCreate()
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 3) {
 
+			}
 		}
 	}
 
@@ -329,6 +335,30 @@ void ObjectList() {
 		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
+
+	ImGui::Text("ID: 3 - Chest");
+	ImGui::Image(mummyID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
+
+		imageSize = ImVec2(48, 64);
+
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
 }
 
 void StartRoomMaker(bool& isActive)
@@ -371,10 +401,10 @@ void StartRoomMaker(bool& isActive)
 			ImGui::Text("Room Editor");
 			ImGui::Separator();
 
-			if (ImGui::SliderInt("Room Size X", &imguiRoomData.roomX, 10, 40)) {
+			if (ImGui::SliderInt("Room Size X", &imguiRoomData.roomX, 10, 25)) {
 				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
 			}
-			if (ImGui::SliderInt("Room Size Y", &imguiRoomData.roomY, 10, 40)) {
+			if (ImGui::SliderInt("Room Size Y", &imguiRoomData.roomY, 8, 14)) {
 				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
 			}
 
