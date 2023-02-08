@@ -21,6 +21,7 @@ void PlayerHealthUI::OnCreate()
 	_healthUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("HealthBar"));
 	_healthUISprite->SetGridSize(glm::vec2(1, 1));
 	_healthUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_healthUISprite->SetDepthOrder(30);
 	_parent->AddComponent(_healthUISprite);
 	_parent->SetName("HealthBar");
 	_parent->GetTransform().pos = _currentPos;
