@@ -76,7 +76,9 @@ void DemoBehaviour::OnTick(const double& dt)
 
 	auto& transform = _parent->GetTransform();
 	if (transform.pos.x < 0)
-		transform.pos.x = 1599;
+	{
+		_parent->GetScene()->RemoveObject(_parent);
+	}
 
 	if (transform.pos.x > 1600)
 		transform.pos.x = 1;
