@@ -21,6 +21,7 @@
 #include "LaserBehaviour.h"
 #include "LocustBehaviour.h"
 #include "FireBehaviour.h"
+#include "AnubisBoss.h"
 
 #include "Rooms/Room.h"
 
@@ -95,6 +96,7 @@ void InitRegistry()
     registry->Register<LaserBehaviour>("LaserBehaviour");
     registry->Register<LocustBehaviour>("LocustBehaviour");
     registry->Register<FireBehaviour>("FireBehaviour");
+    registry->Register<AnubisBoss>("AnubisBehaviour");
 }
 
 void Init() 
@@ -144,6 +146,7 @@ void GameSetup()
     resManager->LoadTexture("textures/LaserHorizontal.png", true, "LaserHori");
     resManager->LoadTexture("textures/LocustSpriteSheet.png", true, "Locust");
     resManager->LoadTexture("textures/HellfireWave.png", true, "Fire");
+    resManager->LoadTexture("textures/BossSpriteSheet.png", true, "Anubis");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));

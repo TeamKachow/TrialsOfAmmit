@@ -2,6 +2,7 @@
 #include "AiAgent.h"
 #include "Player.h"
 #include "Chest.h"
+#include "AnubisBoss.h"
 
 MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi) : Behaviour("MeleeCollision")
 {
@@ -87,6 +88,18 @@ void MeleeCollider::OnTick(const double& dt)
 					}
 					else
 					{
+						break;
+					}
+				}
+				if (other->GetParent()->GetComponent<AnubisBoss>() != nullptr)
+				{
+					AnubisBoss* _boss = other->GetParent()->GetComponent<AnubisBoss>();
+					if (_boss != nullptr)
+					{
+						_boss->TakeDamage(_meleeDamage);
+						collider->ClearColliding();
+						_currentScene->RemoveObject(_parent);
+
 						break;
 					}
 				}

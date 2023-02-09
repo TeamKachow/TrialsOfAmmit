@@ -1,7 +1,7 @@
 #include "Projectile.h"
 #include "AiAgent.h"
 #include "Chest.h"
-
+#include "AnubisBoss.h"
 
 Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
 {
@@ -138,6 +138,18 @@ void Projectile::OnTick(const double& dt)
 			else
 			{
 				collider->ClearColliding();
+			}
+			if (other->GetParent()->GetComponent<AnubisBoss>() != nullptr)
+			{
+				AnubisBoss* _boss = other->GetParent()->GetComponent<AnubisBoss>();
+				if (_boss != nullptr)
+				{
+					_boss->TakeDamage(_projectileDamage);
+					collider->ClearColliding();
+					_currentScene->RemoveObject(_parent);
+
+					break;
+				}
 			}
 			if (other->GetParent()->GetComponent<Chest>() != nullptr)
 			{

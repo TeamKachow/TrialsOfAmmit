@@ -39,6 +39,7 @@ void LaserBehaviour::OnCreate()
 	}
 	CollisionBox = new Hudson::Physics::ColliderComponent();
 	_parent->AddComponent(CollisionBox);
+	_parent->SetName("Laser");
 	LaserSprite->SetDepthOrder(20);
 	_parent->AddComponent(LaserSprite);
 	_parent->GetTransform().pos = _spawnPos;
@@ -108,7 +109,6 @@ void LaserBehaviour::OnTick(const double& dt)
 			if (_deactivateTimer >= 1.0)
 			{
 				_currentState = IDLE;
-				Charge();
 			}
 		}
 	}

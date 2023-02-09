@@ -21,6 +21,7 @@ void FireBehaviour::OnCreate()
 	FireSprite->SetDepthOrder(20);
 	_parent->AddComponent(FireSprite);
 	_parent->GetTransform().pos = _spawnPos;
+	_currentScene = _parent->GetScene();
 	_currentState = IGNITE;
 }
 
@@ -85,6 +86,7 @@ void FireBehaviour::OnTick(const double& dt)
 	}
 	case EXTINGUISH:
 	{
+		_currentScene->RemoveObject(_parent);
 		break;
 	}
 	}
