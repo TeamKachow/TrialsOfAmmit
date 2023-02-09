@@ -431,6 +431,9 @@ void StartRoomMaker(bool& isActive)
 			for (textureRefData* textureRef : imguiRoomData.textureRefs) // access by reference to avoid copying
 			{
 				Hudson::Render::Texture* relevantTex = resManager->GetTexture(textureRef->textureRoot);
+				if (resManager->GetTexture(textureRef->textureRoot) == nullptr) {
+					relevantTex = resManager->LoadTexture(textureRef->textureRoot, true, textureRef->textureRoot);
+				}
 
 				ImTextureID textureID = reinterpret_cast<ImTextureID>(relevantTex->ID);
 				ImVec2 pos = ImGui::GetCursorScreenPos();

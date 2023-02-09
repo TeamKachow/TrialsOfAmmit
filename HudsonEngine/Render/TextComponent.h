@@ -20,7 +20,7 @@ namespace Hudson::Render
 	{
 	public:
 		TextComponent();
-		TextComponent(const char* path, glm::vec2 position);
+		TextComponent(const char* path, Hudson::Render::Shader* shader);
 		~TextComponent();
 
         void StartFreeType(const std::filesystem::path& path);
