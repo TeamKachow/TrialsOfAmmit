@@ -149,15 +149,16 @@ struct ImGuiRoomData
 		int offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				if (charArray[i * roomX + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j];
 				}
 				else {
 					++offset;
 				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 
@@ -167,18 +168,20 @@ struct ImGuiRoomData
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+
 		offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				if (charArray[i * roomX + j] != ',') {
-					roomGrid[i * roomX + j].textureRef = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j];
 				}
 				else {
 					++offset;
 				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 
@@ -188,17 +191,19 @@ struct ImGuiRoomData
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+		offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				if (charArray[i * roomX + j] != ',') {
-					roomGrid[i * roomX + j].objectRef = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j];
 				}
 				else {
 					++offset;
 				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 		//std::vector<textureRefData*> textureRefs;

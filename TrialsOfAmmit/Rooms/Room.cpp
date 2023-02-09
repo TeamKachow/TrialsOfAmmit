@@ -86,70 +86,61 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	int offset = 0;
 	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x*2; ++j)
+		for (int j = 0; j < x*2; ++j) //20
 		{
-			if (charArray[i * x + j] != ',') {
-				nav_grid_[i * x + (j - offset)] = charArray[i * x + j];
-				
-				std::cout << nav_grid_[i * x + (j - offset)];
+			if (charArray[i * x*2 + j] != ',') {
+				nav_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
 				//std::cout << i * x + (j - offset) << std::endl;
-				offset = 0;
 			}
 			else {
 				++offset;
-
 			}
 		}
 		offset = 0;
-		std::cout << std::endl;
 	}
 	delete[] charArray;
 
 	standardArray = json["texGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	//standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
 	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j)
 		{
-			if (charArray[i * x + j] != ',') {
-				texture_grid_[i * x + (j - offset)] = charArray[i * x + j];
+			if (charArray[i * x*2 + j] != ',') {
+				texture_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
 			}
 			else {
 				++offset;
 			}
 		}
-		//offset = 0;
-
+		offset = 0;
 	}
 	delete[] charArray;
 
 	standardArray = json["objGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
 	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x * 2; ++j)
 		{
-			if (charArray[i * x + j] != ',') {
-				object_grid[i * x + (j - offset)] = charArray[i * x + j];
+			if (charArray[i * x * 2 + j] != ',') {
+				object_grid[i * x + (j - offset)] = charArray[i * x * 2 + j];
 			}
 			else {
 				++offset;
 			}
 		}
-		//offset = 0;
-
+		offset = 0;
 	}
 	delete[] charArray;
 
@@ -211,7 +202,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			std::cout << texture_grid_[i * x + j] << " ";
+			std::cout << nav_grid_[i * x + j] << " ";
 		}
 		std::cout << std::endl;
 	}
