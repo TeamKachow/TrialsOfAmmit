@@ -223,7 +223,7 @@ struct ImGuiRoomData
 			newTexRef->gridPosX = object["gridPosX"];
 			newTexRef->gridPosY = object["gridPosY"];
 
-			if (resManager->GetTexture(newTexRef->textureRoot) != nullptr) {
+			if (resManager->GetTexture(newTexRef->textureRoot) == nullptr) {
 				resManager->LoadTexture(newTexRef->textureRoot, true, newTexRef->textureRoot);
 			}
 

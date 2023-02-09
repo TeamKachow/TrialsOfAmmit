@@ -178,7 +178,7 @@ void GameSetup()
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
-    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));
+    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
     PlayButton->SetName("PlayButton");
     TestScene->AddObject(PlayButton);
     SettingsScene->AddObject(PlayButton);
@@ -186,7 +186,7 @@ void GameSetup()
     PlayButton->GetTransform().pos.y = 100.0f;
 
     Hudson::Entity::GameObject* MainSettingsButton = new Hudson::Entity::GameObject();
-    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(45,60)));
+    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(-30,-120)));
     MainSettingsButton->SetName("SettingsButton");
     TestScene->AddObject(MainSettingsButton);
     MainSettingsButton->GetTransform().pos.x = 100.0f;

@@ -82,7 +82,7 @@ void Player::OnCreate() //The magic is set up here
 	_pauseScene->AddObject(_pauseMenu);
 	GetEngine()->GetSceneManager()->AddScene(_pauseScene);
 
-	_pauseText = new Hudson::Render::TextComponent("Fonts\\origa___.ttf", glm::vec2(0, 0));
+	_pauseText = new Hudson::Render::TextComponent("Fonts\\origa___.ttf", resManager->GetShader("textShader"));
 	_pauseText->SetText("Pause");
 	_pauseText->SetColor(vec3(1, 1, 1));
 	_pauseText->SetDepthOrder(30);
