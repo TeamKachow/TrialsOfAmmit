@@ -11,6 +11,7 @@ namespace Hudson::Common {
 			std::map<std::string, Render::Shader> _shaders;
 			std::map<std::string, Render::Texture> _textures;
 			// Shader
+			Render::Shader* PreFetchShader(std::string name);
 			Render::Shader* GetShader(std::string name);
 			Render::Shader* LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name);
 			Render::Shader* LoadShaderLiteral(const char* vertShaderCode, const char* fragShaderCode, std::string name);
