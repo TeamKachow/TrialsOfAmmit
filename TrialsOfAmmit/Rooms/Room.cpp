@@ -161,8 +161,8 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 
 Room::~Room()
 {
-	delete nav_grid_;
-	delete texture_grid_;
+	delete[] nav_grid_;
+	delete[] texture_grid_;
 }
 
 void Room::OnCreate()
