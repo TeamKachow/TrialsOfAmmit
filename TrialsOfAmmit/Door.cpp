@@ -1,4 +1,7 @@
 #include "Door.h"
+#include "AiAgent.h"
+#include "Chest.h"
+#include "Rooms/Room.h"
 
 Door::Door() : Behaviour("DoorBehaviour")
 {
@@ -12,13 +15,11 @@ Door::~Door()
 
 void Door::OnCreate()
 {
-	Room* tempRoom = CurrentRoom->GetComponent<Room>();
-	_player->SetPosition(vec2(tempRoom->GetRoomSize().x * tempRoom->GetParent()->GetTransform().scale.x / 2, tempRoom->GetRoomSize().y * tempRoom->GetParent()->GetTransform().scale.y));
 	DoorCollider = new Hudson::Physics::ColliderComponent;
 	_parent->AddComponent(DoorCollider);
 	_isActive = false;
 	_activeSpeed = 1;
-	
+	_isHit = false;
 
 	_minRange = 0;
 	_maxRange = 1;
@@ -32,6 +33,7 @@ void Door::OnCreate()
 			break;
 		}
 	}
+	
 }
 
 void Door::OnDestroy()
@@ -46,6 +48,10 @@ void Door::OnTick(const double& dt)
 	if (_ativeTimer > _activeSpeed)
 	{
 		_isActive = true;
+	}
+	if (_isHit)
+	{
+		GenerateNewRoom();
 	}
 }
 
@@ -78,7 +84,9 @@ void Door::CollisionCheck()
 				Player* _playerCollision = other->GetParent()->GetComponent<Player>();
 				if (_playerCollision != nullptr)
 				{
-					GenerateNewRoom();
+					_isHit = true;
+					collider->ClearColliding();
+
 					break;
 				}
 				else
@@ -98,13 +106,40 @@ void Door::GenerateNewRoom()
 	RandRoomNum = dist(rand);
 
 	Roomname = "Rooms/room" + to_string(RandRoomNum) + ".room";
-	CurrentRoom = new Hudson::Entity::GameObject;
-	CurrentRoom->AddComponent(new class Room (Roomname.c_str()));
+	Room* RoomComp = new class Room(Roomname.c_str());
+
+	newRoomSize = RoomComp->GetRoomSize();
+
+	NewRoom = new Hudson::Entity::GameObject;
+	NewRoom->AddComponent(RoomComp);
 	MovePlayer();
+	_parent->GetScene()->AddObject(NewRoom);
+	DeleteRoomGameObjects();
+
+}
+
+void Door::DeleteRoomGameObjects()
+{
+
+	auto _sceneObjects = _parent->GetScene()->GetObjects();
+	for (Hudson::Entity::GameObject* other : _sceneObjects)
+	{
+		if (other->GetComponent<Room>() != nullptr) {
+			other->GetTransform().pos = glm::vec2(10000, 10000);
+		}
+		else if (other->GetComponent<AiAgent>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+		else if (other->GetComponent<Chest>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+	}
+	_isHit = false;
+	_parent->GetScene()->RemoveObject(_parent);
 }
 
 void Door::MovePlayer()
 {	
-	Room* oldRoom = CurrentRoom->GetComponent<Room>();
-	_parent->RemoveComponent(oldRoom);
+	_player->SetPosition(vec2(newRoomSize.x * NewRoom->GetTransform().scale.x / 2, newRoomSize.y * NewRoom->GetTransform().scale.y - 64));
+	//_player->SetPosition(NewRoom->GetTransform().pos);
 }
