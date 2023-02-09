@@ -37,6 +37,7 @@ private:
 	float _ativeTimer;
 	float _activeSpeed;
 
+	vec2 newRoomPos;
 	vec2 newRoomSize;
 };
 

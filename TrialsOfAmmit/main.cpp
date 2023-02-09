@@ -150,7 +150,7 @@ void GameSetup()
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(new Player(glm::vec2(500, 500)));
+    player->AddComponent(new Player(glm::vec2(750, 600)));
     player->SetName("Player");
     startScene->AddObject(player);
 

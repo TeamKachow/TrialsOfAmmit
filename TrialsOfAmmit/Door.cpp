@@ -2,7 +2,9 @@
 #include "AiAgent.h"
 #include "Chest.h"
 #include "Rooms/Room.h"
-
+#include "PickupWeapon.h"
+#include "PickupAbilitys.h"
+#include "PassivePickups.h"
 Door::Door() : Behaviour("DoorBehaviour")
 {
 
@@ -22,7 +24,7 @@ void Door::OnCreate()
 	_isHit = false;
 
 	_minRange = 0;
-	_maxRange = 1;
+	_maxRange = 5;
 
 	auto _sceneObjects = _parent->GetScene()->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
@@ -133,6 +135,15 @@ void Door::DeleteRoomGameObjects()
 		else if (other->GetComponent<Chest>() != nullptr) {
 			other->GetScene()->RemoveObject(other);
 		}
+		else if (other->GetComponent<PickupWeapon>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+		else if (other->GetComponent<PickupAbilitys>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+		else if (other->GetComponent<PassivePickups>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
 	}
 	_isHit = false;
 	_parent->GetScene()->RemoveObject(_parent);
@@ -140,6 +151,11 @@ void Door::DeleteRoomGameObjects()
 
 void Door::MovePlayer()
 {	
-	_player->SetPosition(vec2(newRoomSize.x * NewRoom->GetTransform().scale.x / 2, newRoomSize.y * NewRoom->GetTransform().scale.y - 64));
+	int maxRoomX = 25;
+	int maxRoomY = 14;
+	
+	vec2 roomTransform((maxRoomX - newRoomSize.x) * 32, (maxRoomY - newRoomSize.y) * 32); // 64 is the room transform size, could do more work to grab room transform
+
+	_player->SetPosition(roomTransform + vec2(newRoomSize.x * 64 / 2, newRoomSize.y * 64 - 128));
 	//_player->SetPosition(NewRoom->GetTransform().pos);
 }
