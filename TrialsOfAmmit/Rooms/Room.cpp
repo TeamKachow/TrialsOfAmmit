@@ -3,6 +3,8 @@
 // Want to spawn something new include here
 #include "../Player.h"
 #include "../AiAgent.h"
+#include "../Chest.h"
+#include "../Door.h"
 
 
 Room::Room() : Behaviour("Room")
@@ -183,21 +185,28 @@ void Room::OnCreate()
 			// relevant texID
 			int value = char(object_grid[i * x + j]) - 48;
 			if (value == 1) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Player");
+				newObject->AddComponent(new Player(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
 			}
 			else if (value == 2) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Mummy");
 				newObject->AddComponent(new AiAgent(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
-				/*newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
-				newObject->GetTransform().pos.y = i * newObject->GetTransform().scale.y;*/
-
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
 			else if (value == 3) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Chest");
+				newObject->AddComponent(new Chest(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
 			}
 		}
 	}
@@ -254,6 +263,7 @@ void ObjectList() {
 	
 	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
 	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
+	ImTextureID chestID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Chest")->ID);
 
 	ImGui::Text("ID: 1 - Player");
 	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
@@ -274,7 +284,7 @@ void ObjectList() {
 
 		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
 		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::Image(playerID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
 
@@ -298,12 +308,12 @@ void ObjectList() {
 
 		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
 		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::Image(mummyID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
 
 	ImGui::Text("ID: 3 - Chest");
-	ImGui::Image(mummyID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
+	ImGui::Image(chestID, ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
@@ -322,9 +332,33 @@ void ObjectList() {
 
 		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
 		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
+
+	ImGui::Text("ID: 4 - Door");
+	ImGui::Image(ImTextureID(-1), ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
+	//if (ImGui::IsItemHovered())
+	//{
+	//	ImGui::BeginTooltip();
+	//	float region_sz = 64.0f;
+	//	float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+	//	float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+	//	float zoom = 4.0f;
+
+	//	imageSize = ImVec2(48, 64);
+
+
+	//	if (region_x < 0.0f) { region_x = 0.0f; }
+	//	else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+	//	if (region_y < 0.0f) { region_y = 0.0f; }
+	//	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+	//	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+	//	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+	//	ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+	//	ImGui::EndTooltip();
+	//}
 }
 
 void StartRoomMaker(bool& isActive)

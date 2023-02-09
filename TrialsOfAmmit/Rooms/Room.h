@@ -132,7 +132,8 @@ struct ImGuiRoomData
 
 	}
 
-	void openFromFile(const char* filePath) {
+	void openFromFile(const char* filePath) 
+	{
 		std::ifstream i(filePath);
 		nlohmann::json json;
 		i >> json;
@@ -140,7 +141,9 @@ struct ImGuiRoomData
 		roomX = json["roomX"];
 		roomY = json["roomY"];
 		
+		clear();
 		roomGrid = new tileData[roomX * roomY];
+
 
 		std::string standardArray = json["navGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
@@ -229,9 +232,11 @@ struct ImGuiRoomData
 
 			textureRefs.push_back(newTexRef);
 		}
+
 	}
 
-	void updateRoomSize(int currentRoomX, int currentRoomY) {
+	void updateRoomSize(int currentRoomX, int currentRoomY) 
+	{
 		
 		if (isResizing == false) {
 			isResizing = true;
@@ -246,6 +251,17 @@ struct ImGuiRoomData
 
 			isResizing = false;
 		}
+	}
+
+	void clear() {
+		roomX = 10;
+		roomY = 10;
+		isResizing = false;
+
+		selected = nullptr;
+		roomGrid = nullptr;
+
+		textureRefs.clear();
 	}
 };
 
