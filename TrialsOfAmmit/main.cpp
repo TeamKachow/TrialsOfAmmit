@@ -166,6 +166,11 @@ void GameSetup()
     room->AddComponent(new class Room("Rooms/room0.room"));
     startScene->AddObject(room);
 
+    Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
+    wpUp->SetName("Room");
+    wpUp->AddComponent(new PickupWeapon(glm::vec2(500,300)));
+    startScene->AddObject(wpUp);
+
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
     PlayButton->SetName("PlayButton");

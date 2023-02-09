@@ -82,17 +82,22 @@ void WeaponDisplayUI::OnTick(const double& dt)
 	{
 	case Wood:
 		_gridY = 0;
+		std::cout << "IS WOOD" << "\n";
 		break;
 	case Stone:
+		std::cout << "IS stone" << "\n";
 		_gridY = 1;
 		break;
 	case Bronze:
+		std::cout << "IS bronze" << "\n";
 		_gridY = 2;
 		break;
 	case Iron:
+		std::cout << "IS iron" << "\n";
 		_gridY = 3;
 		break;
 	case Gold:
+		std::cout << "IS gold" << "\n";
 		_gridY = 4;
 		break;
 	}
