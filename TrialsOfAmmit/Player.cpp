@@ -337,7 +337,7 @@ void Player::CreateUI() //Both functions are to make the UI of the player Stats
 void Player::HealthBarUI()
 {
 	Hudson::Entity::GameObject* HealthBar = new Hudson::Entity::GameObject();
-	HealthBar->AddComponent(new PlayerHealthUI(glm::vec2(25.0f, 25.0f), _currentScene, _parent->GetComponent<Player>()));
+	HealthBar->AddComponent(new PlayerHealthUI(glm::vec2(10.0f, 10.0f), _currentScene, _parent->GetComponent<Player>()));
 	_currentScene->AddObject(HealthBar);
 }
 
