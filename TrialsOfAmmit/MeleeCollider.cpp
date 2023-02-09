@@ -160,6 +160,7 @@ void MeleeCollider::OnTick(const double& dt)
 				}
 
 			}
+			collider->ClearColliding();
 
 		}
 		_deleteTimer += dt;

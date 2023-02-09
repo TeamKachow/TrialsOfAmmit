@@ -198,7 +198,7 @@ void AiAgent::CollisionCheck()
 			{
 				if (other->GetParent()->GetComponent<MeleeCollider>() == nullptr)
 				{
-					//collider->ClearColliding();
+					collider->ClearColliding();
 				}
 				if (other->GetParent()->GetComponent<Room>() != nullptr)
 				{

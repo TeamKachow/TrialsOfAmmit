@@ -22,7 +22,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_spawnPos = spawnPos;
 
 	//Checks
-	_godMode = true;
+	_godMode = false;
 	_isDead = false;
 	_isDamaged = false;
 
