@@ -64,21 +64,16 @@ void FireBehaviour::OnTick(const double& dt)
 			{
 				if (other->GetParent()->GetComponent<Player>() != nullptr)
 				{
-					_player = other->GetParent()->GetComponent<Player>();
-					if (_player != nullptr)
+					Player* player = other->GetParent()->GetComponent<Player>();
+					if (player != nullptr)
 					{
-						if (!_playerDamaged)
-						{
-							_playerDamaged = true;
-							_player->TakeDamage(25.0f);
-							_currentState = EXTINGUISH;
-							collider->ClearColliding();
-						}
+						player->TakeDamage(25.0f);
+						_currentState = EXTINGUISH;
 						break;
 					}
-					break;
 				}
 			}
+			collider->ClearColliding();
 		}
 		break;
 	}

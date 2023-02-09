@@ -143,35 +143,18 @@ void LocustBehaviour::CollisionCheck()
 		auto collidingWith = collider->GetCurrentCollisions();
 		for (auto other : collidingWith)
 		{
-			if (!colliders.empty())
+			if (other->GetParent()->GetComponent<Player>() != nullptr)
 			{
-				Hudson::Physics::ColliderComponent* collider = colliders.at(0);
-				auto collidingWith = collider->GetCurrentCollisions();
-				for (auto other : collidingWith)
+				Player* player = other->GetParent()->GetComponent<Player>();
+				if (player != nullptr)
 				{
-					if (other->GetParent()->GetComponent<Player>() != nullptr)
-					{
-						_player = other->GetParent()->GetComponent<Player>();
-						if (_player != nullptr)
-						{
-							_player->TakeDamage(1.0f);
-							collider->ClearColliding();
-							break;
-						}
-						else
-						{
-							break;
-						}
-						break;
-					}
+					player->TakeDamage(1.0f);
+					break;
 				}
-
 			}
-
 		}
-
+		collider->ClearColliding();
 	}
-
 }
 
 glm::vec2 LocustBehaviour::Seek(glm::vec2 Target)

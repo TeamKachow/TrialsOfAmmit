@@ -145,9 +145,17 @@ void Projectile::OnTick(const double& dt)
 				if (_boss != nullptr)
 				{
 					_boss->TakeDamage(_projectileDamage);
-					collider->ClearColliding();
 					_currentScene->RemoveObject(_parent);
-
+					break;
+				}
+			}
+			if (other->GetParent()->GetComponent<LocustBehaviour>() != nullptr)
+			{
+				LocustBehaviour* _locust = other->GetParent()->GetComponent<LocustBehaviour>();
+				if (_locust != nullptr)
+				{
+					_locust->Kill();
+					_currentScene->RemoveObject(_parent);
 					break;
 				}
 			}

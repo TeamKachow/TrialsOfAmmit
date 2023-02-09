@@ -17,7 +17,7 @@ void AnubisBoss::TakeDamage(float damageTaken)
 {
 	if (shieldState == VULNERABLE)
 	{
-		_currentHealth = _currentHealth - damageTaken;
+  		_currentHealth = _currentHealth - damageTaken;
 		BossSprite->SetColor(vec3(1, 0, 0));
 	}
 
@@ -109,7 +109,7 @@ void AnubisBoss::OnTick(const double& dt)
 				_animTimer = 0.0;
 				if (attacksUsed >= 5)
 				{
-					shieldState == VULNERABLE;
+					shieldState = VULNERABLE;
 					_vulnerableTimer = 0.0;
 				}
 				else if (attackCD <= 0.0)
@@ -298,12 +298,13 @@ void AnubisBoss::OnTick(const double& dt)
 			}
 			break;
 		case VULNERABLE:
-			BossSprite->SetColor(vec3(0, 0, 0));
+			BossSprite->SetColor(vec3(1, 1, 1));
 			_vulnerableTimer += dt;
 			if (_vulnerableTimer >= 10.0)
 			{
 				shieldState = SHIELDED;
 				BossSprite->SetColor(vec3(1, 1, 0));
+				attacksUsed = 0;
 			}
 			break;
 		}

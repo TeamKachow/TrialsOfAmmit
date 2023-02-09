@@ -198,7 +198,7 @@ void AiAgent::CollisionCheck()
 			{
 				if (other->GetParent()->GetComponent<MeleeCollider>() == nullptr)
 				{
-					collider->ClearColliding();
+					//collider->ClearColliding();
 				}
 				if (other->GetParent()->GetComponent<Room>() != nullptr)
 				{
@@ -208,18 +208,19 @@ void AiAgent::CollisionCheck()
 						_aiPhysicsComponent->SetAcceleration(glm::vec2(0, 0), true);
 						_aiPhysicsComponent->SetVelocity(vec2(0, 0));
 						InverseVel();
-						collider->ClearColliding();
+						//collider->ClearColliding();
 						break;
 					}
 				}
 				else
 				{
-					collider->ClearColliding();
-					break;
+					//collider->ClearColliding();
+					//break;
 				}
 			}
 
 		}
+		collider->ClearColliding();
 
 	}
 	

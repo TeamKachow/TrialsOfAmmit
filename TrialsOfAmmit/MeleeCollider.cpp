@@ -98,9 +98,7 @@ void MeleeCollider::OnTick(const double& dt)
 					if (_boss != nullptr)
 					{
 						_boss->TakeDamage(_meleeDamage);
-						collider->ClearColliding();
 						_currentScene->RemoveObject(_parent);
-
 						break;
 					}
 				}
@@ -110,9 +108,7 @@ void MeleeCollider::OnTick(const double& dt)
 					if (_locust != nullptr)
 					{
 						_locust->Kill();
-						collider->ClearColliding();
 						_currentScene->RemoveObject(_parent);
-
 						break;
 					}
 				}

@@ -39,7 +39,7 @@ void PickupBehaviour::CheckCollision()
 						_currentPlayer->_playersWeapon = _pickUp->_weaponPickup;
 						_currentPlayer->_playersWeapon->UpgradeWeapon(_pickUp->_weaponLevel);
 						_currentScene->RemoveObject(other->GetParent());
-						collider->ClearColliding();
+						//collider->ClearColliding();
 					}
 
 				}
@@ -50,7 +50,7 @@ void PickupBehaviour::CheckCollision()
 					{
 						_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility = _pickupAbility->_abilityPickup;
 						_currentScene->RemoveObject(other->GetParent());
-						collider->ClearColliding();
+						//collider->ClearColliding();
 					}
 				}
 				if (other->GetParent()->GetComponent<PassivePickups>() != nullptr)
@@ -67,7 +67,7 @@ void PickupBehaviour::CheckCollision()
 						case PT_SPEED:
 							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(15);
 						}
-						collider->ClearColliding();
+						//collider->ClearColliding();
 						_currentScene->RemoveObject(other->GetParent());
 					}
 
@@ -76,7 +76,7 @@ void PickupBehaviour::CheckCollision()
 			}
 
 		}
-
+		collider->ClearColliding();
 	}
 	
 }
