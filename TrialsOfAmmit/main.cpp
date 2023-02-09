@@ -133,6 +133,7 @@ void GameSetup()
     resManager->LoadTexture("textures/Passives.png", true, "Passives");
     resManager->LoadTexture("textures/Chest.png", true, "Chest");
     resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
+    resManager->LoadTexture("textures/UIHighlight.png", true, "Highlight");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));

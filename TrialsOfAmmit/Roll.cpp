@@ -3,7 +3,7 @@
 Roll::Roll() 
 {
 	_abilityActiveTime = 0.2;
-	_abilityCoolDownTime = 5;
+	_abilityCoolDownTime = 2;
 	_abilityState = ready;
 
 	_rollSpeed = 500;

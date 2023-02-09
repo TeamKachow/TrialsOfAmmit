@@ -5,7 +5,7 @@ PlayerHealthUI::PlayerHealthUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene,
 	_currentScene = _scene;
 	_currentPos = spawnPos;
 	_currentPlayer = _player;
-	_playerHealthScale = 3.84;
+	_playerHealthScale = 3.14;
 
 	
 

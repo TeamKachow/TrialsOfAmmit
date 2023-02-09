@@ -50,9 +50,9 @@ void Bow::UpgradeWeapon(WeaponUpgradeTypes Level)
 		break;
 	case Gold:
 		_weaponAttackDamage = 45;
-		_projectileMovementSpeed = 500;
+		_projectileMovementSpeed = 600;
 		_projectileRange = 1.5;
-		_weaponAttackSpeed = 1;
+		_weaponAttackSpeed = 0.75;
 		_weaponLevel = Gold;
 		break;
 	}
