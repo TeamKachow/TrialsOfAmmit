@@ -145,48 +145,67 @@ struct ImGuiRoomData
 		std::string standardArray = j["navGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 		char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+		int offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				roomGrid[i * roomX + j].isSolid = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j];
+				}
+				else {
+					++offset;
+				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 
 		standardArray = j["texGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+
+		offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				roomGrid[i * roomX + j].textureRef = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j];
+				}
+				else {
+					++offset;
+				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 
 		standardArray = j["objGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+		offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX; ++j)
+			for (int j = 0; j < roomX * 2; ++j) //20
 			{
-				roomGrid[i * roomX + j].objectRef = charArray[i * roomX + j] - 48;
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j];
+				}
+				else {
+					++offset;
+				}
 			}
+			offset = 0;
 		}
 		delete[] charArray;
 		//std::vector<textureRefData*> textureRefs;
