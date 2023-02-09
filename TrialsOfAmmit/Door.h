@@ -23,8 +23,9 @@ private:
 	void ToJson(nlohmann::json& j) override;
 	void CollisionCheck();
 	void GenerateNewRoom();
+	void DeleteRoomGameObjects();
 	void MovePlayer();
-	Hudson::Entity::GameObject* CurrentRoom;
+	Hudson::Entity::GameObject* NewRoom;
 	Hudson::Physics::ColliderComponent* DoorCollider;
 	Player* _player;
 	string Roomname;
@@ -32,8 +33,10 @@ private:
 	int _minRange;
 	int _maxRange;
 	bool _isActive;
-
+	bool _isHit;
 	float _ativeTimer;
 	float _activeSpeed;
+
+	vec2 newRoomSize;
 };
 
