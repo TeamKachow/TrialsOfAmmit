@@ -129,7 +129,12 @@ void Door::DeleteRoomGameObjects()
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
 	{
 		if (other->GetComponent<Room>() != nullptr) {
-			other->GetTransform().pos = glm::vec2(10000, 10000);
+			// This will not work in debug - memory leak present when removing objects
+			#ifdef DEBUG
+				other->GetTransform().pos = glm::vec2(10000, 10000);
+			#else 
+				other->GetScene()->RemoveObject(other);
+			#endif // DEBUG
 		}
 		else if (other->GetComponent<AiAgent>() != nullptr) {
 			other->GetScene()->RemoveObject(other);
