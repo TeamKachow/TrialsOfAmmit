@@ -121,6 +121,16 @@ void MeleeCollider::OnTick(const double& dt)
 					}
 
 				}
+				if (other->GetParent()->GetComponent<MeleeCollider>() != nullptr)
+				{
+					MeleeCollider* enemymeleecollsion = other->GetParent()->GetComponent<MeleeCollider>();
+					if (enemymeleecollsion != nullptr)
+					{
+						break;
+					}
+					break;
+					
+				}
 				
 			}
 			collider->ClearColliding();
@@ -157,6 +167,16 @@ void MeleeCollider::OnTick(const double& dt)
 					{
 						break;
 					}
+				}
+				if (other->GetParent()->GetComponent<MeleeCollider>() != nullptr)
+				{
+					MeleeCollider* enemymeleecollsion = other->GetParent()->GetComponent<MeleeCollider>();
+					if (enemymeleecollsion != nullptr)
+					{
+						break;
+					}
+					break;
+
 				}
 
 			}

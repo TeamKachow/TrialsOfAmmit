@@ -13,7 +13,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_playerFacingDirection = Stopped;
 	
 	//Player Stats
-	_maxHealth = 100;
+	_maxHealth = 150;
 	_playerHealth = _maxHealth;
 	_playerMovementSpeed = 125.0;
 	_playerDamageMod = 1;
