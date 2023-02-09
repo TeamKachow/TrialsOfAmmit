@@ -137,11 +137,11 @@ struct ImGuiRoomData
 		std::ifstream i(filePath);
 		nlohmann::json json;
 		i >> json;
+		clear();
 
 		roomX = json["roomX"];
 		roomY = json["roomY"];
 		
-		clear();
 		roomGrid = new tileData[roomX * roomY];
 
 
