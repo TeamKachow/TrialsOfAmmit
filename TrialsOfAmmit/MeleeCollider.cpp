@@ -82,15 +82,12 @@ void MeleeCollider::OnTick(const double& dt)
 					{
 						_aiAgent->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
-						collider->ClearColliding();
+
 						_currentScene->RemoveObject(_parent);
 
 						break;
 					}
-					else
-					{
-						break;
-					}
+
 				}
 				if (other->GetParent()->GetComponent<AnubisBoss>() != nullptr)
 				{
@@ -118,18 +115,15 @@ void MeleeCollider::OnTick(const double& dt)
 					if (_chest != nullptr)
 					{
 						_chest->OnInteract();
-						collider->ClearColliding();
 
-						break;
-					}
-					else
-					{
+
 						break;
 					}
 
 				}
 				
 			}
+			collider->ClearColliding();
 
 		}
 		_deleteTimer += dt;

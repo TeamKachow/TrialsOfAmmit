@@ -1,6 +1,16 @@
 ﻿#pragma once
 #include "../Util/stdafx.h"
 
+namespace Hudson::World
+{
+    class Scene;
+}
+
+namespace Hudson::Render
+{
+    class Camera;
+}
+
 namespace Hudson::Util::Debug
 {
     /**
@@ -18,5 +28,7 @@ namespace Hudson::Util::Debug
      * \brief Register the engine's abort handler.
      */
     void RegisterAbortHandler();
+
+    void DumpColliders(Hudson::World::Scene* scene, Hudson::Render::Camera* camera, std::ostream& out = std::cerr);
     
 }

@@ -22,7 +22,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_spawnPos = spawnPos;
 
 	//Checks
-	_godMode = false;
+	_godMode = true;
 	_isDead = false;
 	_isDamaged = false;
 
@@ -360,6 +360,7 @@ void Player::WallCollisions()//Checks the First collision box on the player to s
 		{
 			if (other != nullptr)
 			{
+				//std::cout << other->GetParent()->GetName() << "\n";
 				if (other->GetParent()->GetComponent<Room>() != nullptr)
 				{
 					Room* _Room = other->GetParent()->GetComponent<Room>();
@@ -367,17 +368,15 @@ void Player::WallCollisions()//Checks the First collision box on the player to s
 					{
 						playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 						InverseForce();
+						break;
 					}
-				}
-				else
-				{
-					collider->ClearColliding();
-					break;
 				}
 			}
 			
 		}
+		collider->ClearColliding();
 
+		collider->ClearColliding();
 	}
 }
 
