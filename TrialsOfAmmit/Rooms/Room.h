@@ -211,7 +211,6 @@ struct ImGuiRoomData
 			offset = 0;
 		}
 		delete[] charArray;
-		//std::vector<textureRefData*> textureRefs;
 
 		nlohmann::json texRef = json["texReference"];
 		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();

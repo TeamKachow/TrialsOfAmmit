@@ -176,7 +176,18 @@ void Room::OnCreate()
 	// 3 = Chest
 	// 4 = MiscObject
 
-	// I want to spawn game object, how do I determine what to spawn based on some things
+	// Based on roomX and roomY
+
+	int maxRoomX = 25;
+	int maxRoomY = 14;
+
+	int offsetAmountX = (maxRoomX - x) * _parent->GetTransform().scale.x / 2;
+	int offsetAmountY = (maxRoomY - y) * _parent->GetTransform().scale.y / 2;
+
+	_parent->GetTransform().pos.x = offsetAmountX;
+	_parent->GetTransform().pos.y = offsetAmountY;
+
+
 
 	for (int i = 0; i < y; ++i)
 	{
@@ -187,7 +198,7 @@ void Room::OnCreate()
 			if (value == 1) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Player");
-				newObject->AddComponent(new Player(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
+				newObject->AddComponent(new Player(_parent->GetTransform().pos + glm::vec2(j * _parent->GetTransform().scale.x, i * _parent->GetTransform().scale.y)));
 
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
@@ -195,7 +206,7 @@ void Room::OnCreate()
 			else if (value == 2) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Mummy");
-				newObject->AddComponent(new AiAgent(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
+				newObject->AddComponent(new AiAgent(_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
@@ -203,7 +214,7 @@ void Room::OnCreate()
 			else if (value == 3) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Chest");
-				newObject->AddComponent(new Chest(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
+				newObject->AddComponent(new Chest((_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y))));
 
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
@@ -212,7 +223,7 @@ void Room::OnCreate()
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Door");
 				newObject->AddComponent(new Door());
-				newObject->GetTransform().pos = glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y);
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
