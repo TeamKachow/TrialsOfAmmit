@@ -7,6 +7,11 @@ using namespace Hudson;
 
 Common::ResourceManager* Common::ResourceManager::INSTANCE = nullptr;
 
+Render::Shader* Hudson::Common::ResourceManager::PreFetchShader(std::string name)
+{
+	return &_shaders[name];
+}
+
 Render::Shader* Common::ResourceManager::GetShader(std::string name)
 {
 	if (_shaders.find(name) != _shaders.end()) {
