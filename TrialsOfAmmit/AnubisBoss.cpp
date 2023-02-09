@@ -25,7 +25,6 @@ void AnubisBoss::TakeDamage(float damageTaken)
 	{
 		currentPhase = BOSS_DEAD;
 	}
-	isDamaged = true;
 }
 
 void AnubisBoss::FromJson(const nlohmann::json& j)
@@ -297,8 +296,9 @@ void AnubisBoss::OnTick(const double& dt)
 				break;
 			break;
 		case VULNERABLE:
+			BossSprite->SetColor(vec3(0, 0, 0));
 			_vulnerableTimer += dt;
-			if (_vulnerableTimer >= 5.0)
+			if (_vulnerableTimer >= 10.0)
 			{
 				shieldState = SHIELDED;
 				BossSprite->SetColor(vec3(1, 1, 0));

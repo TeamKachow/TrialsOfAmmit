@@ -32,7 +32,7 @@ enum attackState
 class AnubisBoss : public Hudson::Entity::Behaviour
 {
 public:
-	AnubisBoss(glm::vec2 spawnPos = { 100,100 });
+	AnubisBoss(glm::vec2 spawnPos = { 280.0f , 125.0f });
 	~AnubisBoss();
 	float _maxHealth;
 	float _currentHealth;
