@@ -12,6 +12,10 @@ Door::~Door()
 
 void Door::OnCreate()
 {
+	Room* tempRoom = CurrentRoom->GetComponent<Room>();
+	_player->SetPosition(vec2(tempRoom->GetRoomSize().x * tempRoom->GetParent()->GetTransform().scale.x / 2, tempRoom->GetRoomSize().y * tempRoom->GetParent()->GetTransform().scale.y));
+	DoorCollider = new Hudson::Physics::ColliderComponent;
+	_parent->AddComponent(DoorCollider);
 	_isActive = false;
 	_activeSpeed = 1;
 	
@@ -88,6 +92,7 @@ void Door::CollisionCheck()
 
 void Door::GenerateNewRoom()
 {
+	
 	random_device rand;
 	uniform_int_distribution<int> dist(_minRange, _maxRange);
 	RandRoomNum = dist(rand);
@@ -100,6 +105,6 @@ void Door::GenerateNewRoom()
 
 void Door::MovePlayer()
 {	
-	Room* tempRoom = CurrentRoom->GetComponent<Room>();
-	_player->SetPosition(vec2(tempRoom->GetRoomSize().x * tempRoom->GetParent()->GetTransform().scale.x /2, tempRoom->GetRoomSize().y * tempRoom->GetParent()->GetTransform().scale.y));
+	Room* oldRoom = CurrentRoom->GetComponent<Room>();
+	_parent->RemoveComponent(oldRoom);
 }

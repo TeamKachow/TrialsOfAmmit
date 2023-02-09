@@ -1,6 +1,5 @@
 #include <iostream>
 #include <Hudson.h>
-//#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "MenuButton.h"
 #include "Player.h"
@@ -93,10 +92,8 @@ void InitRegistry()
 void Init() 
 {
     Hudson::Util::Debug::RegisterAbortHandler();
-
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
-
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
@@ -114,7 +111,6 @@ void Init()
 
 void GameSetup()
 {
-    //engine->GetRenderer()->SetCamera(_defaultCamera);
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -145,9 +141,6 @@ void GameSetup()
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
 
-    // Load initial scene from file 
-    // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
-    // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
@@ -167,15 +160,10 @@ void GameSetup()
     TestScene->AddObject(MainCameraDolly);
     SettingsScene->AddObject(MainCameraDolly);
     startScene->AddObject(MainCameraDolly);
-    Hudson::Entity::GameObject* _PickupAbilitys = new Hudson::Entity::GameObject();
-    _PickupAbilitys->AddComponent(new PickupAbilitys(glm::vec2(500, 500)));
-    _PickupAbilitys->SetName("Player");
-    startScene->AddObject(_PickupAbilitys);
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/roomjson.room"));
-    //room->AddComponent(new class Room("Rooms/room2.room"));
+    room->AddComponent(new class Room("Rooms/room0.room"));
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
@@ -204,7 +192,6 @@ void GameSetup()
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 
-
     #ifdef ENABLE_EDITOR
         ToolData toolData;
         toolData.function = StartRoomMaker;
@@ -225,7 +212,6 @@ void RoomGameSetup()
     //engine->GetRenderer()->SetCamera();
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
-
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);

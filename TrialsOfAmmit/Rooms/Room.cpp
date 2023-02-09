@@ -208,6 +208,14 @@ void Room::OnCreate()
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 4) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Door");
+				newObject->AddComponent(new Door());
+				newObject->GetTransform().pos = glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y);
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
 		}
 	}
 
