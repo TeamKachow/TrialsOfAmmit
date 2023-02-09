@@ -89,10 +89,14 @@ void AbilityDisplayUI::OnTick(const double& dt)
 			_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		}
 	}
+
+	if (_currentPlayer->GetParent()->GetComponent<AbilityHolder>() != nullptr)
+	{
+		float percentage = _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_timer / _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityCoolDownTime;
+
+		HighlightObject->GetTransform().scale.y = 64 * percentage;
+	}
 	
-	float percentage =  _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_timer / _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityCoolDownTime;
-		
-	HighlightObject->GetTransform().scale.y = 64 * percentage;
 	
 }
 
