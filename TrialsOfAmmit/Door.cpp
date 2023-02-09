@@ -130,7 +130,7 @@ void Door::DeleteRoomGameObjects()
 	{
 		if (other->GetComponent<Room>() != nullptr) {
 			// This will not work in debug - memory leak present when removing objects
-			#ifdef DEBUG
+			#ifdef _DEBUG
 				other->GetTransform().pos = glm::vec2(10000, 10000);
 			#else 
 				other->GetScene()->RemoveObject(other);
