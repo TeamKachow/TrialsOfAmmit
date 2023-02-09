@@ -11,7 +11,7 @@ enum LocustState
 	LS_DEAD
 };
 
-class LocustBehaviour : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
+class LocustBehaviour : public Hudson::Entity::Behaviour
 {
 public:
 	LocustBehaviour(glm::vec2 spawnPos = { 0, 0 });
@@ -20,6 +20,8 @@ public:
 	float _maxSpeed;
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
+
+	void Kill();
 
 protected:
 	void CollisionCheck();
@@ -54,9 +56,7 @@ private:
 	void OnCreate() override;
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;
-	void DrawPropertyUI() override;
 	void Move(float deltatime);
-	void GetPlayerPos();
 	void SetPlayerPos();
 	glm::vec2 Seek(glm::vec2 Target);
 	glm::vec2 _lastFramePos;

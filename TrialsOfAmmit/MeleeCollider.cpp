@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Chest.h"
 #include "AnubisBoss.h"
+#include "LocustBehaviour.h"
 
 MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi) : Behaviour("MeleeCollision")
 {
@@ -97,6 +98,18 @@ void MeleeCollider::OnTick(const double& dt)
 					if (_boss != nullptr)
 					{
 						_boss->TakeDamage(_meleeDamage);
+						collider->ClearColliding();
+						_currentScene->RemoveObject(_parent);
+
+						break;
+					}
+				}
+				if (other->GetParent()->GetComponent<LocustBehaviour>() != nullptr)
+				{
+					LocustBehaviour* _locust = other->GetParent()->GetComponent<LocustBehaviour>();
+					if (_locust != nullptr)
+					{
+						_locust->Kill();
 						collider->ClearColliding();
 						_currentScene->RemoveObject(_parent);
 

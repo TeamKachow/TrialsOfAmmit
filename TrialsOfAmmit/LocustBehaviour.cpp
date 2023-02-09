@@ -122,12 +122,14 @@ void LocustBehaviour::OnTick(const double& dt)
 			Blood->GetTransform().pos = _parent->GetTransform().pos;
 			_maxSpeed = 0;
 			_alive = false;
+			break;
 		}
 		_aiAnimDeathTimer += dt;
 		if (_aiAnimDeathTimer > 0.5)
 		{
 			_currentScene->RemoveObject(Blood);
 			_currentScene->RemoveObject(_parent);
+			break;
 		}
 		break;
 	}
@@ -156,6 +158,7 @@ void LocustBehaviour::CollisionCheck()
 						if (_player != nullptr)
 						{
 							_player->TakeDamage(1.0f);
+							collider->ClearColliding();
 							_currentState = LS_DEAD;
 							break;
 						}
@@ -222,14 +225,15 @@ void LocustBehaviour::SetPlayerPos()
 	}
 }
 
-void LocustBehaviour::DrawPropertyUI()
-{
-}
-
 void LocustBehaviour::FromJson(const nlohmann::json& j)
 {
 }
 
 void LocustBehaviour::ToJson(nlohmann::json& j)
 {
+}
+
+void LocustBehaviour::Kill()
+{
+	_currentState = LS_DEAD;
 }

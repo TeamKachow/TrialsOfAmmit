@@ -6,11 +6,11 @@
 #include "LocustBehaviour.h"
 #include "FireBehaviour.h"
 #include "AiAgent.h"
+#include <random>
 
 enum phase
 {
 	PHASE1,
-	PHASE2,
 	BOSS_DEAD
 };
 
@@ -49,11 +49,8 @@ private:
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;
 
-	void SpawnLasers();
-	void SpawnSwarm();
-	void FireWave();
-	void SpawnMummies();
-
+	void AiDead();
+	void Animate(float deltaTime);
 protected:
 	Hudson::World::Scene* _currentScene;
 	double attackCD;
@@ -63,12 +60,25 @@ protected:
 	double spawnCD;
 	bool isDamaged;
 	int attacksUsed;
+	int _fireSpawned;
+	double _fireTimer;
+	double _locustTimer;
+	int _locustSpawned;
+	double _vulnerableTimer;
+	double _mummyTimer;
+	double _animTimer;
+	bool _animStart;
+	bool _laserAnimDone;
 	Player* _player;
 	damageState shieldState;
 	attackState currentAction;
 	phase currentPhase;
 	glm::vec2 _spawnPos;
+	glm::vec2 _currentPos;
 	glm::vec2 _playerPos;
+	Hudson::Render::SpriteComponent* _aiDeathSprite;
+	Hudson::Entity::GameObject* Blood;
+	void SetCurrentPos();
 	void SetPlayerPos();
 };
 

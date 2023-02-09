@@ -49,6 +49,11 @@ void FireBehaviour::OnTick(const double& dt)
 	}
 	case BURN:
 	{
+		if (_BurnTimer >= 0.5)
+		{
+			_currentState = EXTINGUISH;
+
+		}
 		_BurnTimer += dt;
 		std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 		if (!colliders.empty())
@@ -66,21 +71,13 @@ void FireBehaviour::OnTick(const double& dt)
 						{
 							_playerDamaged = true;
 							_player->TakeDamage(25.0f);
+							collider->ClearColliding();
 						}
-						break;
-					}
-					else
-					{
 						break;
 					}
 					break;
 				}
 			}
-
-		}
-		if (_BurnTimer >= 0.5)
-		{
-			_currentState = EXTINGUISH;
 		}
 		break;
 	}
