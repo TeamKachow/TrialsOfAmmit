@@ -115,6 +115,7 @@ void Door::GenerateNewRoom()
 	newRoomSize = RoomComp->GetRoomSize();
 
 	NewRoom = new Hudson::Entity::GameObject;
+	NewRoom->SetName(std::format("Room - {}", Roomname));
 	NewRoom->AddComponent(RoomComp);
 	MovePlayer();
 	_parent->GetScene()->AddObject(NewRoom);
@@ -129,12 +130,7 @@ void Door::DeleteRoomGameObjects()
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
 	{
 		if (other->GetComponent<Room>() != nullptr) {
-			// This will not work in debug - memory leak present when removing objects
-			#ifdef _DEBUG
-				other->GetTransform().pos = glm::vec2(10000, 10000);
-			#else 
-				other->GetScene()->RemoveObject(other);
-			#endif // DEBUG
+			other->GetScene()->RemoveObject(other);
 		}
 		else if (other->GetComponent<AiAgent>() != nullptr) {
 			other->GetScene()->RemoveObject(other);

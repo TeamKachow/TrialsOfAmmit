@@ -367,17 +367,14 @@ void Player::WallCollisions()//Checks the First collision box on the player to s
 					{
 						playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 						InverseForce();
+						break;
 					}
-				}
-				else
-				{
-					collider->ClearColliding();
-					break;
 				}
 			}
 			
 		}
 
+		collider->ClearColliding();
 	}
 }
 
