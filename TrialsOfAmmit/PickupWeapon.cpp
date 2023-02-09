@@ -77,27 +77,27 @@ void PickupWeapon::RandomiseItem()
 
 	if (_randomRarityInt >= 0 && _randomRarityInt <= 35)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 0;
 		_weaponLevel = Wood;
 	}
-	else if (_randomRarityInt >= 36 && _randomRarityInt >= 65)
+	else if (_randomRarityInt >= 36 && _randomRarityInt <= 65)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 1;
 		_weaponLevel = Stone;
 	}
-	else if (_randomRarityInt >= 66 && _randomRarityInt >= 80)
+	else if (_randomRarityInt >= 66 && _randomRarityInt <= 80)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 2;
 		_weaponLevel = Bronze;
 	}
-	else if (_randomRarityInt >= 81 && _randomRarityInt >= 92)
+	else if (_randomRarityInt >= 81 && _randomRarityInt <= 92)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 3;
 		_weaponLevel = Iron;
 	}
-	else if (_randomRarityInt >= 92 && _randomRarityInt >= 100)
+	else if (_randomRarityInt >= 92 && _randomRarityInt <= 100)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 4;
 		_weaponLevel = Gold;
 	}
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));
