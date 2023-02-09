@@ -107,6 +107,8 @@ void Door::GenerateNewRoom()
 	uniform_int_distribution<int> dist(_minRange, _maxRange);
 	RandRoomNum = dist(rand);
 
+	std::cout << "Random Room Num: " << RandRoomNum << std::endl;
+
 	Roomname = "Rooms/room" + to_string(RandRoomNum) + ".room";
 	Room* RoomComp = new class Room(Roomname.c_str());
 
