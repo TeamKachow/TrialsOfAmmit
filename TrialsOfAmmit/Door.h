@@ -25,6 +25,7 @@ private:
 	void GenerateNewRoom();
 	void MovePlayer();
 	Hudson::Entity::GameObject* CurrentRoom;
+	Hudson::Physics::ColliderComponent* DoorCollider;
 	Player* _player;
 	string Roomname;
 	int RandRoomNum;
