@@ -184,6 +184,11 @@ void GameSetup()
     room->AddComponent(new class Room("Rooms/room4.room"));
     startScene->AddObject(room);
 
+    Hudson::Entity::GameObject* Boss = new Hudson::Entity::GameObject();
+    Boss->SetName("Room");
+    Boss->AddComponent(new AnubisBoss(glm::vec2(200,200)));
+    startScene->AddObject(Boss);
+
     Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
     wpUp->SetName("Room");
     wpUp->AddComponent(new PickupWeapon(glm::vec2(500,300)));
