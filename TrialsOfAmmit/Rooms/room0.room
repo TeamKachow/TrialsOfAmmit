@@ -5,7 +5,7 @@
   1,
   1,
   1,
-  0,
+  1,
   1,
   1,
   1,
@@ -339,83 +339,83 @@
  ],
  "texReference": [
   {
-   "gridPosX": 1,
-   "gridPosY": 1,
+   "gridPosX": 0,
+   "gridPosY": 0,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 1,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 2,
+   "gridPosX": 1,
    "gridPosY": 1,
+   "gridSizeX": 22,
+   "gridSizeY": 6,
+   "textureID": 0,
+   "textureRoot": "textures/dungeon_tiles.png"
+  },
+  {
+   "gridPosX": 1,
+   "gridPosY": 0,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 2,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 12,
-   "gridPosY": 3,
-   "gridSizeX": 22,
-   "gridSizeY": 6,
-   "textureID": 6,
-   "textureRoot": "textures/dungeon_tiles.png"
-  },
-  {
-   "gridPosX": 1,
-   "gridPosY": 2,
-   "gridSizeX": 22,
-   "gridSizeY": 6,
-   "textureID": 4,
-   "textureRoot": "textures/dungeon_tiles.png"
-  },
-  {
-   "gridPosX": 5,
-   "gridPosY": 1,
+   "gridPosX": 4,
+   "gridPosY": 0,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 3,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 1,
-   "gridPosY": 5,
+   "gridPosX": 0,
+   "gridPosY": 1,
+   "gridSizeX": 22,
+   "gridSizeY": 6,
+   "textureID": 4,
+   "textureRoot": "textures/dungeon_tiles.png"
+  },
+  {
+   "gridPosX": 0,
+   "gridPosY": 4,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 5,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 5,
+   "gridPosX": 11,
    "gridPosY": 2,
    "gridSizeX": 22,
    "gridSizeY": 6,
-   "textureID": 7,
+   "textureID": 6,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 5,
-   "gridPosY": 5,
+   "gridPosX": 4,
+   "gridPosY": 4,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 8,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 5,
-   "gridPosY": 2,
+   "gridPosX": 4,
+   "gridPosY": 1,
    "gridSizeX": 22,
    "gridSizeY": 6,
    "textureID": 9,
    "textureRoot": "textures/dungeon_tiles.png"
   },
   {
-   "gridPosX": 2,
-   "gridPosY": 2,
+   "gridPosX": 1,
+   "gridPosY": 4,
    "gridSizeX": 22,
    "gridSizeY": 6,
-   "textureID": 0,
+   "textureID": 7,
    "textureRoot": "textures/dungeon_tiles.png"
   }
  ]
