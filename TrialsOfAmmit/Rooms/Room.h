@@ -134,15 +134,15 @@ struct ImGuiRoomData
 
 	void openFromFile(const char* filePath) {
 		std::ifstream i(filePath);
-		nlohmann::json j;
-		i >> j;
+		nlohmann::json json;
+		i >> json;
 
-		roomX = j["roomX"];
-		roomY = j["roomY"];
+		roomX = json["roomX"];
+		roomY = json["roomY"];
 		
 		roomGrid = new tileData[roomX * roomY];
 
-		std::string standardArray = j["navGrid"].dump();
+		std::string standardArray = json["navGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
 		char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
@@ -154,7 +154,7 @@ struct ImGuiRoomData
 			for (int j = 0; j < roomX * 2; ++j) //20
 			{
 				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j];
+					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j] - 48;
 				}
 				else {
 					++offset;
@@ -164,7 +164,7 @@ struct ImGuiRoomData
 		}
 		delete[] charArray;
 
-		standardArray = j["texGrid"].dump();
+		standardArray = json["texGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
@@ -177,7 +177,7 @@ struct ImGuiRoomData
 			for (int j = 0; j < roomX * 2; ++j) //20
 			{
 				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j];
+					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j] - 48;
 				}
 				else {
 					++offset;
@@ -187,7 +187,7 @@ struct ImGuiRoomData
 		}
 		delete[] charArray;
 
-		standardArray = j["objGrid"].dump();
+		standardArray = json["objGrid"].dump();
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
 		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
@@ -199,7 +199,7 @@ struct ImGuiRoomData
 			for (int j = 0; j < roomX * 2; ++j) //20
 			{
 				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j];
+					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j] - 48;
 				}
 				else {
 					++offset;
@@ -210,7 +210,7 @@ struct ImGuiRoomData
 		delete[] charArray;
 		//std::vector<textureRefData*> textureRefs;
 
-		nlohmann::json texRef = j["texReference"];
+		nlohmann::json texRef = json["texReference"];
 		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
 		for (const auto& object : texRef)
@@ -223,7 +223,10 @@ struct ImGuiRoomData
 			newTexRef->gridPosX = object["gridPosX"];
 			newTexRef->gridPosY = object["gridPosY"];
 
-			resManager->LoadTexture(newTexRef->textureRoot, true, newTexRef->textureRoot);
+			if (resManager->GetTexture(newTexRef->textureRoot) != nullptr) {
+				resManager->LoadTexture(newTexRef->textureRoot, true, newTexRef->textureRoot);
+			}
+
 			textureRefs.push_back(newTexRef);
 		}
 	}
