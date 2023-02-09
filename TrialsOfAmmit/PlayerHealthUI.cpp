@@ -5,7 +5,7 @@ PlayerHealthUI::PlayerHealthUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene,
 	_currentScene = _scene;
 	_currentPos = spawnPos;
 	_currentPlayer = _player;
-	_playerHealthScale = 3.84;
+	_playerHealthScale = 3.14;
 
 	
 
@@ -24,6 +24,7 @@ void PlayerHealthUI::OnCreate()
 	_healthUISprite->SetDepthOrder(30);
 	_parent->AddComponent(_healthUISprite);
 	_parent->SetName("HealthBar");
+	_parent->GetTransform().scale.y = 32;
 	_parent->GetTransform().pos = _currentPos;
 	_parent->GetTransform().scale.x = 256;
 }

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <Hudson.h>
-//#include "DemoBehaviour.h"
 #include "AiAgent.h"
 #include "MenuButton.h"
 #include "Player.h"
@@ -10,7 +9,6 @@
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
 #include "Chest.h"
-#include "Rooms/Room.h"
 #include "WeaponDisplayUI.h"
 #include "PlayerHealthUI.h"
 #include "AbilityDisplayUI.h"
@@ -22,8 +20,10 @@
 #include "LocustBehaviour.h"
 #include "FireBehaviour.h"
 #include "AnubisBoss.h"
-
+#include "CameraDolly.h"
+#include "PauseMenu.h"
 #include "Rooms/Room.h"
+#include "Door.h"
 
 Hudson::Common::Engine* engine;
 
@@ -39,7 +39,7 @@ Hudson::Common::Engine* engine;
 Hudson::Editor::Editor* editor;
 #endif
 
-Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
+//Hudson::Render::Camera* _defaultCamera = new Hudson::Render::Camera(0.0f, 1600.0f, 900.0f, 0.0f, -50.0f, 50.0f);
 
 //UI Scenes
 Hudson::Render::SpriteComponent* ButtonSprite;
@@ -97,15 +97,16 @@ void InitRegistry()
     registry->Register<LocustBehaviour>("LocustBehaviour");
     registry->Register<FireBehaviour>("FireBehaviour");
     registry->Register<AnubisBoss>("AnubisBehaviour");
+    registry->Register<CameraDolly>("CameraDollyBehaviour");
+    registry->Register<Door>("DoorBehaviour");
+    registry->Register<PauseMenu>("Pause");
 }
 
 void Init() 
 {
     Hudson::Util::Debug::RegisterAbortHandler();
-
     Hudson::Common::ResourceManager::SetupInstance(); // Set up single resource manager (TODO: decide per-scene/per-game)
     resManager = Hudson::Common::ResourceManager::GetInstance();
-
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
@@ -117,13 +118,12 @@ void Init()
 
 #ifdef ENABLE_EDITOR
     engine->GetInputManager()->SetEditorRef(editor);
-    engine->GetSceneManager()->SetPaused(true);
+    engine->GetSceneManager()->SetPaused(false);
 #endif
 }
 
 void GameSetup()
 {
-    engine->GetRenderer()->SetCamera(_defaultCamera);
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -147,6 +147,7 @@ void GameSetup()
     resManager->LoadTexture("textures/LocustSpriteSheet.png", true, "Locust");
     resManager->LoadTexture("textures/HellfireWave.png", true, "Fire");
     resManager->LoadTexture("textures/BossSpriteSheet.png", true, "Anubis");
+    resManager->LoadTexture("textures/UIHighlight.png", true, "Highlight");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));
@@ -158,29 +159,38 @@ void GameSetup()
     backgroundImage->SetDepthOrder(-1);
     backgroundImage->SetGridSize(glm::vec2(1, 1));
 
-    // Load initial scene from file 
-    // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
-    // TODO: startScene.resManager.loadTexture, startScene.resManager.loadShader etc - Brandon B
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
-
+    
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
 
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(new Player(glm::vec2(500, 500)));
+    player->AddComponent(new Player(glm::vec2(750, 600)));
     player->SetName("Player");
     startScene->AddObject(player);
 
+    Hudson::Entity::GameObject* MainCameraDolly = new Hudson::Entity::GameObject();
+    MainCameraDolly->AddComponent(new CameraDolly(engine->GetInputManager()));
+    MainCameraDolly->SetName("Camera");
+    TestScene->AddObject(MainCameraDolly);
+    SettingsScene->AddObject(MainCameraDolly);
+    startScene->AddObject(MainCameraDolly);
+
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    room->AddComponent(new class Room("Rooms/room0.room"));
     startScene->AddObject(room);
 
+    Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
+    wpUp->SetName("Room");
+    wpUp->AddComponent(new PickupWeapon(glm::vec2(500,300)));
+    startScene->AddObject(wpUp);
+
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
-    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));
+    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
     PlayButton->SetName("PlayButton");
     TestScene->AddObject(PlayButton);
     SettingsScene->AddObject(PlayButton);
@@ -188,7 +198,7 @@ void GameSetup()
     PlayButton->GetTransform().pos.y = 100.0f;
 
     Hudson::Entity::GameObject* MainSettingsButton = new Hudson::Entity::GameObject();
-    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(45,60)));
+    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(-30,-120)));
     MainSettingsButton->SetName("SettingsButton");
     TestScene->AddObject(MainSettingsButton);
     MainSettingsButton->GetTransform().pos.x = 100.0f;
@@ -205,13 +215,17 @@ void GameSetup()
     Background->GetTransform().scale.x = 1600.0f;
     Background->GetTransform().scale.y = 900.0f;
 
-
     #ifdef ENABLE_EDITOR
         ToolData toolData;
         toolData.function = StartRoomMaker;
         toolData.isRepeatingFunction = true;
         editor->AddTool("Room Maker", toolData);
     #endif
+
+    engine->RegisterPreFrameHook([](Hudson::Common::Engine* engine)
+        {
+            glfwSetWindowTitle(engine->GetRenderer()->GetWindow()->GetWindow(), "Trials of Ammit");
+        });
 
     std::cout << "Game: engine has been set up!\n";
 }
@@ -223,10 +237,9 @@ void ToolFunc()
 
 void RoomGameSetup()
 {
-    engine->GetRenderer()->SetCamera(_defaultCamera);
+    //engine->GetRenderer()->SetCamera();
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/PlayerSpriteSheet.png", true, "Player");
-
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     engine->GetSceneManager()->AddScene(startScene);

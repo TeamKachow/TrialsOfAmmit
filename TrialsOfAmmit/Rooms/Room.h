@@ -23,6 +23,8 @@ public:
 
 	void DrawPropertyUI() override;
 
+	glm::vec2 GetRoomSize() { return glm::vec2(x, y); }
+
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
 
@@ -130,7 +132,110 @@ struct ImGuiRoomData
 
 	}
 
-	void updateRoomSize(int currentRoomX, int currentRoomY) {
+	void openFromFile(const char* filePath) 
+	{
+		std::ifstream i(filePath);
+		nlohmann::json json;
+		i >> json;
+		clear();
+
+		roomX = json["roomX"];
+		roomY = json["roomY"];
+		
+		roomGrid = new tileData[roomX * roomY];
+
+
+		std::string standardArray = json["navGrid"].dump();
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
+		char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
+		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
+
+		int offset = 0;
+		for (int i = 0; i < roomY; ++i)
+		{
+			for (int j = 0; j < roomX * 2; ++j) //20
+			{
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j] - 48;
+				}
+				else {
+					++offset;
+				}
+			}
+			offset = 0;
+		}
+		delete[] charArray;
+
+		standardArray = json["texGrid"].dump();
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
+		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
+		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
+
+
+		offset = 0;
+		for (int i = 0; i < roomY; ++i)
+		{
+			for (int j = 0; j < roomX * 2; ++j) //20
+			{
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j] - 48;
+				}
+				else {
+					++offset;
+				}
+			}
+			offset = 0;
+		}
+		delete[] charArray;
+
+		standardArray = json["objGrid"].dump();
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
+		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
+		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
+		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
+
+		offset = 0;
+		for (int i = 0; i < roomY; ++i)
+		{
+			for (int j = 0; j < roomX * 2; ++j) //20
+			{
+				if (charArray[i * roomX * 2 + j] != ',') {
+					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j] - 48;
+				}
+				else {
+					++offset;
+				}
+			}
+			offset = 0;
+		}
+		delete[] charArray;
+
+		nlohmann::json texRef = json["texReference"];
+		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+
+		for (const auto& object : texRef)
+		{
+			textureRefData* newTexRef = new textureRefData;
+			newTexRef->textureID = object["textureID"];
+			newTexRef->textureRoot = object["textureRoot"];
+			newTexRef->gridSizeX = object["gridSizeX"];
+			newTexRef->gridSizeY = object["gridSizeY"];
+			newTexRef->gridPosX = object["gridPosX"];
+			newTexRef->gridPosY = object["gridPosY"];
+
+			if (resManager->GetTexture(newTexRef->textureRoot) == nullptr) {
+				resManager->LoadTexture(newTexRef->textureRoot, true, newTexRef->textureRoot);
+			}
+
+			textureRefs.push_back(newTexRef);
+		}
+
+	}
+
+	void updateRoomSize(int currentRoomX, int currentRoomY) 
+	{
 		
 		if (isResizing == false) {
 			isResizing = true;
@@ -145,6 +250,17 @@ struct ImGuiRoomData
 
 			isResizing = false;
 		}
+	}
+
+	void clear() {
+		roomX = 10;
+		roomY = 10;
+		isResizing = false;
+
+		selected = nullptr;
+		roomGrid = nullptr;
+
+		textureRefs.clear();
 	}
 };
 

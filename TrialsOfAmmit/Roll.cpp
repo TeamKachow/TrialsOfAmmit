@@ -3,12 +3,12 @@
 Roll::Roll() 
 {
 	_abilityActiveTime = 0.2;
-	_abilityCoolDownTime = 5;
+	_abilityCoolDownTime = 2;
 	_abilityState = ready;
 
 	_rollSpeed = 500;
 	_defaultSpeed = 100;
-	_abilityState = ready;
+	//_abilityState = ready;
 	_abilityType = AT_ROLL;
 	
 }

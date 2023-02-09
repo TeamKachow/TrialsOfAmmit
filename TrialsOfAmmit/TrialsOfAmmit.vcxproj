@@ -28,8 +28,10 @@
     <ClCompile Include="BaseAbilityClass.cpp" />
     <ClCompile Include="BaseWeaponClass.cpp" />
     <ClCompile Include="Bow.cpp" />
+    <ClCompile Include="CameraDolly.cpp" />
     <ClCompile Include="Chest.cpp" />
     <ClCompile Include="FireBehaviour.cpp" />
+    <ClCompile Include="Door.cpp" />
     <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
     <ClCompile Include="LaserBehaviour.cpp" />
@@ -39,7 +41,9 @@
     <ClCompile Include="MeleeBaseWeaponClass.cpp" />
     <ClCompile Include="MeleeCollider.cpp" />
     <ClCompile Include="MenuButton.cpp" />
+    <ClCompile Include="OneUP.cpp" />
     <ClCompile Include="PassivePickups.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="PickupAbilitys.cpp" />
     <ClCompile Include="PickupBehaviour.cpp" />
     <ClCompile Include="PickupWeapon.cpp" />
@@ -70,7 +74,9 @@
     <ClInclude Include="BaseAbilityClass.h" />
     <ClInclude Include="BaseWeaponClass.h" />
     <ClInclude Include="Bow.h" />
+    <ClInclude Include="CameraDolly.h" />
     <ClInclude Include="Chest.h" />
+    <ClInclude Include="Door.h" />
     <ClInclude Include="facingDirection.h" />
     <ClInclude Include="FireBehaviour.h" />
     <ClInclude Include="Heal.h" />
@@ -81,8 +87,10 @@
     <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />
     <ClInclude Include="MenuButton.h" />
+    <ClInclude Include="OneUP.h" />
     <ClInclude Include="PassivePickups.h" />
     <ClInclude Include="PassiveType.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="PickupAbilitys.h" />
     <ClInclude Include="PickupBehaviour.h" />
     <ClInclude Include="PickupWeapon.h" />

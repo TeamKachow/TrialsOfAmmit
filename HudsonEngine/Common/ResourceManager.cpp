@@ -7,9 +7,19 @@ using namespace Hudson;
 
 Common::ResourceManager* Common::ResourceManager::INSTANCE = nullptr;
 
-Render::Shader* Common::ResourceManager::GetShader(std::string name)
+Render::Shader* Hudson::Common::ResourceManager::PreFetchShader(std::string name)
 {
 	return &_shaders[name];
+}
+
+Render::Shader* Common::ResourceManager::GetShader(std::string name)
+{
+	if (_shaders.find(name) != _shaders.end()) {
+		return &_shaders[name];
+	}
+	else {
+		return nullptr;
+	}
 }
 
 Render::Shader* Common::ResourceManager::LoadShader(const char* vertShaderFile, const char* fragShaderFile, std::string name)
@@ -42,7 +52,12 @@ std::string Common::ResourceManager::GetShaderName(Render::Shader* shader)
 
 Render::Texture* Common::ResourceManager::GetTexture(std::string name)
 {
-	return &_textures[name];
+	if (_textures.find(name) != _textures.end()) {
+		return &_textures[name];
+	}
+	else {
+		return nullptr;
+	}
 }
 
 std::string Common::ResourceManager::GetTextureName(Render::Texture* texture)

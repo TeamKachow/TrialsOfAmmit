@@ -1,7 +1,11 @@
 ﻿ #include "Room.h"
 
 // Want to spawn something new include here
+#include "../Player.h"
 #include "../AiAgent.h"
+#include "../Chest.h"
+#include "../Door.h"
+
 
 Room::Room() : Behaviour("Room")
 {
@@ -10,125 +14,90 @@ Room::Room() : Behaviour("Room")
 
 Room::Room(const char* roomFile) : Behaviour("Room")
 {
-	// Determine x,y from file
-	// This is debug, file will already be wrote to
-
-	//nlohmann::json roomData;
-	//std::ofstream writeFile(roomFile);
-	//roomData["roomX"] = 10;
-	//roomData["roomY"] = 12;
-	//roomData["navGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-	//roomData["texGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,1,1,1,1,1,1,1,1,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-	//roomData["objGrid"] = {
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,2,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0,
-	//	0,0,0,0,0,0,0,0,0,0
-	//};
-
-
-	//roomData["texReference"] = { { {"textureID", 0}, {"gridPosX", 1}, {"gridPosY", 1}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} }, { {"textureID", 1 }, {"gridPosX", 1}, {"gridPosY", 6}, {"textureRoot", "textures/level1room.png"}, {"gridSizeX", 15}, {"gridSizeY", 18} } };
-	//writeFile << std::setw(1) << roomData << std::endl;
-
 	// Read from file JSON
 
 	std::ifstream i(roomFile);
-	nlohmann::json j;
-	i >> j;
+	nlohmann::json json;
+	i >> json;
 
-	x = j["roomX"];
-	y = j["roomY"];
+	x = json["roomX"];
+	y = json["roomY"];
 
 	nav_grid_ = new char[x * y];
 	texture_grid_ = new char[x * y];
 	object_grid = new char[x * y];
 
-	std::string standardArray = j["navGrid"].dump();
+	std::string standardArray = json["navGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	int offset = 0;
 	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j) //20
 		{
-			nav_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x*2 + j] != ',') {
+				nav_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
+				//std::cout << i * x + (j - offset) << std::endl;
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
-	standardArray = j["texGrid"].dump();
+	standardArray = json["texGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j)
 		{
-			texture_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x*2 + j] != ',') {
+				texture_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
-	standardArray = j["objGrid"].dump();
+	standardArray = json["objGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x * 2; ++j)
 		{
-			object_grid[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x * 2 + j] != ',') {
+				object_grid[i * x + (j - offset)] = charArray[i * x * 2 + j];
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
 	// map local texture ids to std::map<int, Texture*>
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
-	nlohmann::json texRef = j["texReference"];
+	nlohmann::json texRef = json["texReference"];
 	for (const auto &object : texRef)
 	{
 		// TODO determine alpha channel in storage of tex
@@ -183,7 +152,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			std::cout << texture_grid_[i * x + j] << " ";
+			std::cout << nav_grid_[i * x + j] << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -204,8 +173,21 @@ void Room::OnCreate()
 
 	// 1 = Player
 	// 2 = Mummy AI
+	// 3 = Chest
+	// 4 = MiscObject
 
-	// I want to spawn game object, how do I determine what to spawn based on some things
+	// Based on roomX and roomY
+
+	int maxRoomX = 25;
+	int maxRoomY = 14;
+
+	int offsetAmountX = (maxRoomX - x) * _parent->GetTransform().scale.x / 2;
+	int offsetAmountY = (maxRoomY - y) * _parent->GetTransform().scale.y / 2;
+
+	_parent->GetTransform().pos.x = offsetAmountX;
+	_parent->GetTransform().pos.y = offsetAmountY;
+
+
 
 	for (int i = 0; i < y; ++i)
 	{
@@ -214,20 +196,37 @@ void Room::OnCreate()
 			// relevant texID
 			int value = char(object_grid[i * x + j]) - 48;
 			if (value == 1) {
-
-			}
-			else if (value == 2) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
-				newObject->SetName("Mummy");
-				newObject->AddComponent(new AiAgent(glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
-
-				/*newObject->GetTransform().pos.x = j * newObject->GetTransform().scale.x;
-				newObject->GetTransform().pos.y = i * newObject->GetTransform().scale.y;*/
+				newObject->SetName("Player");
+				newObject->AddComponent(new Player(_parent->GetTransform().pos + glm::vec2(j * _parent->GetTransform().scale.x, i * _parent->GetTransform().scale.y)));
 
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 2) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Mummy");
+				newObject->AddComponent(new AiAgent(_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y)));
 
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
+			else if (value == 3) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Chest");
+				newObject->AddComponent(new Chest((_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y))));
+
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
+			else if (value == 4) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Door");
+				newObject->AddComponent(new Door());
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
 		}
 	}
 
@@ -266,7 +265,8 @@ void Room::ToJson(nlohmann::json& j)
 ImGuiRoomData imguiRoomData;
 bool addingTextureRef = false;
 textureRefData newRefData;
-char fileName[128] = "";
+char openFileName[128] = "";
+char saveFileName[128] = "";
 
 void ObjectList() {
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
@@ -282,6 +282,7 @@ void ObjectList() {
 	
 	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
 	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
+	ImTextureID chestID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Chest")->ID);
 
 	ImGui::Text("ID: 1 - Player");
 	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
@@ -302,7 +303,7 @@ void ObjectList() {
 
 		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
 		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::Image(playerID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
 
@@ -326,9 +327,57 @@ void ObjectList() {
 
 		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
 		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		ImGui::Image(reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID), ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::Image(mummyID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
 		ImGui::EndTooltip();
 	}
+
+	ImGui::Text("ID: 3 - Chest");
+	ImGui::Image(chestID, ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
+
+		imageSize = ImVec2(48, 64);
+
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
+
+	ImGui::Text("ID: 4 - Door");
+	ImGui::Image(ImTextureID(-1), ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
+	//if (ImGui::IsItemHovered())
+	//{
+	//	ImGui::BeginTooltip();
+	//	float region_sz = 64.0f;
+	//	float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+	//	float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+	//	float zoom = 4.0f;
+
+	//	imageSize = ImVec2(48, 64);
+
+
+	//	if (region_x < 0.0f) { region_x = 0.0f; }
+	//	else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+	//	if (region_y < 0.0f) { region_y = 0.0f; }
+	//	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+	//	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+	//	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+	//	ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+	//	ImGui::EndTooltip();
+	//}
 }
 
 void StartRoomMaker(bool& isActive)
@@ -345,14 +394,22 @@ void StartRoomMaker(bool& isActive)
 		{
 			if (ImGui::BeginMenu("File"))
 			{
-				ImGui::MenuItem("Open");
+				if (ImGui::BeginMenu("Open")) {
+					ImGui::InputTextWithHint("Open Name", ".room", openFileName, IM_ARRAYSIZE(openFileName));
+					ImGui::Separator();
+					if (ImGui::Button("Open"))
+					{
+						imguiRoomData.openFromFile(openFileName);
+					}
+					ImGui::EndMenu();
+				}
 				if (ImGui::BeginMenu("Save")) {
 
-					ImGui::InputTextWithHint("File Name", ".room", fileName, IM_ARRAYSIZE(fileName));
+					ImGui::InputTextWithHint("Save Name", ".room", saveFileName, IM_ARRAYSIZE(saveFileName));
 					ImGui::Separator();
 					if (ImGui::Button("Save"))
 					{
-						imguiRoomData.saveToFile(fileName);
+						imguiRoomData.saveToFile(saveFileName);
 					}
 					ImGui::EndMenu();
 
@@ -371,10 +428,10 @@ void StartRoomMaker(bool& isActive)
 			ImGui::Text("Room Editor");
 			ImGui::Separator();
 
-			if (ImGui::SliderInt("Room Size X", &imguiRoomData.roomX, 10, 40)) {
+			if (ImGui::SliderInt("Room Size X", &imguiRoomData.roomX, 10, 25)) {
 				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
 			}
-			if (ImGui::SliderInt("Room Size Y", &imguiRoomData.roomY, 10, 40)) {
+			if (ImGui::SliderInt("Room Size Y", &imguiRoomData.roomY, 8, 14)) {
 				imguiRoomData.updateRoomSize(imguiRoomData.roomX, imguiRoomData.roomY);
 			}
 
@@ -427,6 +484,9 @@ void StartRoomMaker(bool& isActive)
 			for (textureRefData* textureRef : imguiRoomData.textureRefs) // access by reference to avoid copying
 			{
 				Hudson::Render::Texture* relevantTex = resManager->GetTexture(textureRef->textureRoot);
+				if (resManager->GetTexture(textureRef->textureRoot) == nullptr) {
+					relevantTex = resManager->LoadTexture(textureRef->textureRoot, true, textureRef->textureRoot);
+				}
 
 				ImTextureID textureID = reinterpret_cast<ImTextureID>(relevantTex->ID);
 				ImVec2 pos = ImGui::GetCursorScreenPos();

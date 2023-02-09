@@ -49,53 +49,55 @@ void PickupWeapon::RandomiseItem()
 	if (_randomWeaponInt == 0)
 	{
 		_weaponPickup = new Axe;
-		_gridX = _randomWeaponInt;
+		_gridX = 0;
 	}
 	else if (_randomWeaponInt == 1)
 	{
 		_weaponPickup = new Khopesh;
-		_gridX = _randomWeaponInt;
+		_gridX = 1;
 	}
 	else if (_randomWeaponInt == 2)
 	{
 		_weaponPickup = new Spear;
-		_gridX = _randomWeaponInt;
+		_gridX = 2;
 	}
 	else if (_randomWeaponInt == 3)
 	{
 		_weaponPickup = new Bow;
-		_gridX = _randomWeaponInt;
+		_gridX = 3;
 	}
 	else if (_randomWeaponInt == 4)
 	{
 		_weaponPickup = new SlingShot;
-		_gridX = _randomWeaponInt;
+		_gridX = 4;
 	}
+	random_device random;
+	uniform_int_distribution<int> dists(0, 100);
+	_randomRarityInt = dists(random);
 
-	_randomRarityInt = dist(rand);
-	if (_randomRarityInt == 0)
+	if (_randomRarityInt >= 0 && _randomRarityInt <= 35)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 0;
 		_weaponLevel = Wood;
 	}
-	else if (_randomRarityInt == 1)
+	else if (_randomRarityInt >= 36 && _randomRarityInt <= 65)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 1;
 		_weaponLevel = Stone;
 	}
-	else if (_randomRarityInt == 2)
+	else if (_randomRarityInt >= 66 && _randomRarityInt <= 80)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 2;
 		_weaponLevel = Bronze;
 	}
-	else if (_randomRarityInt == 3)
+	else if (_randomRarityInt >= 81 && _randomRarityInt <= 92)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 3;
 		_weaponLevel = Iron;
 	}
-	else if (_randomRarityInt == 4)
+	else if (_randomRarityInt >= 92 && _randomRarityInt <= 100)
 	{
-		_gridY = _randomRarityInt;
+		_gridY = 4;
 		_weaponLevel = Gold;
 	}
 	_weaponSprite->SetGridPos(glm::vec2(_gridX, _gridY));

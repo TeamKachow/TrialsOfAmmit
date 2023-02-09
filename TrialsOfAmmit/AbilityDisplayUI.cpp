@@ -49,6 +49,19 @@ void AbilityDisplayUI::OnCreate()
 	AbilityUISprite->GetTransform().scale = (glm::vec2(64, 64));
 	AbilityUISprite->AddComponent(_abilitySprite);
 	_currentScene->AddObject(AbilityUISprite);	
+
+
+	HighlightObject = new Hudson::Entity::GameObject();
+	_highlightSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Highlight"));
+	_highlightSprite->SetGridSize(glm::vec2(1, 1));
+	_highlightSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_highlightSprite->SetGridPos(glm::vec2(0, 1));
+	_highlightSprite->SetDepthOrder(10);
+	HighlightObject->SetName("AbilityUIIcon");
+	HighlightObject->GetTransform().pos = _currentPos;
+	HighlightObject->GetTransform().scale = (glm::vec2(64, 64));
+	HighlightObject->AddComponent(_highlightSprite);
+	_currentScene->AddObject(HighlightObject);
 }
 
 void AbilityDisplayUI::OnTick(const double& dt)
@@ -76,6 +89,15 @@ void AbilityDisplayUI::OnTick(const double& dt)
 			_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		}
 	}
+
+	if (_currentPlayer->GetParent()->GetComponent<AbilityHolder>() != nullptr)
+	{
+		float percentage = _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_timer / _currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility->_abilityCoolDownTime;
+
+		HighlightObject->GetTransform().scale.y = 64 * percentage;
+	}
+	
+	
 }
 
 void AbilityDisplayUI::OnDestroy()

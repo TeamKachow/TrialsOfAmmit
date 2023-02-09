@@ -15,6 +15,9 @@ public:
 	Hudson::Render::SpriteComponent* _frameSprite;
 	Hudson::World::Scene* _currentScene;
 	Hudson::Render::SpriteComponent* _abilitySprite;
+
+	Hudson::Render::SpriteComponent* _highlightSprite;
+	Hudson::Entity::GameObject* HighlightObject;
 	Player* _currentPlayer;
 	glm::uvec2 _currentPos;
 
