@@ -15,68 +15,87 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	// Read from file JSON
 
 	std::ifstream i(roomFile);
-	nlohmann::json j;
-	i >> j;
+	nlohmann::json json;
+	i >> json;
 
-	x = j["roomX"];
-	y = j["roomY"];
+	x = json["roomX"];
+	y = json["roomY"];
 
 	nav_grid_ = new char[x * y];
 	texture_grid_ = new char[x * y];
 	object_grid = new char[x * y];
 
-	std::string standardArray = j["navGrid"].dump();
+	std::string standardArray = json["navGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	int offset = 0;
 	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j) //20
 		{
-			nav_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x*2 + j] != ',') {
+				nav_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
+				//std::cout << i * x + (j - offset) << std::endl;
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
-	standardArray = j["texGrid"].dump();
+	standardArray = json["texGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x*2; ++j)
 		{
-			texture_grid_[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x*2 + j] != ',') {
+				texture_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
-	standardArray = j["objGrid"].dump();
+	standardArray = json["objGrid"].dump();
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
 	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ','), standardArray.end());
 	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
+	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x; ++j)
+		for (int j = 0; j < x * 2; ++j)
 		{
-			object_grid[i * x + j] = charArray[i * x + j];
+			if (charArray[i * x * 2 + j] != ',') {
+				object_grid[i * x + (j - offset)] = charArray[i * x * 2 + j];
+			}
+			else {
+				++offset;
+			}
 		}
+		offset = 0;
 	}
 	delete[] charArray;
 
 	// map local texture ids to std::map<int, Texture*>
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
-	nlohmann::json texRef = j["texReference"];
+	nlohmann::json texRef = json["texReference"];
 	for (const auto &object : texRef)
 	{
 		// TODO determine alpha channel in storage of tex
@@ -131,7 +150,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			std::cout << texture_grid_[i * x + j] << " ";
+			std::cout << nav_grid_[i * x + j] << " ";
 		}
 		std::cout << std::endl;
 	}
@@ -412,6 +431,9 @@ void StartRoomMaker(bool& isActive)
 			for (textureRefData* textureRef : imguiRoomData.textureRefs) // access by reference to avoid copying
 			{
 				Hudson::Render::Texture* relevantTex = resManager->GetTexture(textureRef->textureRoot);
+				if (resManager->GetTexture(textureRef->textureRoot) == nullptr) {
+					relevantTex = resManager->LoadTexture(textureRef->textureRoot, true, textureRef->textureRoot);
+				}
 
 				ImTextureID textureID = reinterpret_cast<ImTextureID>(relevantTex->ID);
 				ImVec2 pos = ImGui::GetCursorScreenPos();

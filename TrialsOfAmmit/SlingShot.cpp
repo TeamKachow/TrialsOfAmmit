@@ -35,21 +35,21 @@ void SlingShot::UpgradeWeapon(WeaponUpgradeTypes Level)
 		_weaponAttackDamage = 25;
 		_projectileMovementSpeed = 250;
 		_projectileRange = 2.25;
-		_weaponAttackSpeed = 0.65;
+		_weaponAttackSpeed = 0.5;
 		_weaponLevel = Bronze;
 		break;
 	case Iron:
 		_weaponAttackDamage = 30;
 		_projectileMovementSpeed = 250;
 		_projectileRange = 2.5;
-		_weaponAttackSpeed = 0.6;
+		_weaponAttackSpeed = 0.4;
 		_weaponLevel = Iron;
 		break;
 	case Gold:
-		_weaponAttackDamage = 35;
-		_projectileMovementSpeed = 250;
+		_weaponAttackDamage = 33;
+		_projectileMovementSpeed = 275;
 		_projectileRange = 2.5;
-		_weaponAttackSpeed = 0.5;
+		_weaponAttackSpeed = 0.3;
 		_weaponLevel = Gold;
 		break;
 	}

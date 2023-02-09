@@ -4,22 +4,15 @@
 
 extern const std::filesystem::path filePath;
 
-Hudson::Render::TextComponent::TextComponent() : TextComponent("../DemoGame/Fonts/arial.ttf", {0, 0})
+Hudson::Render::TextComponent::TextComponent() : TextComponent("../DemoGame/Fonts/arial.ttf", nullptr)
 {
+
 }
 
 
-Hudson::Render::TextComponent::TextComponent(const char* path, glm::vec2 position) : Component("Text")
+Hudson::Render::TextComponent::TextComponent(const char* path, Hudson::Render::Shader* newShader) : Component("Text")
 {
-	auto resManager = Hudson::Common::ResourceManager::GetInstance();
-	shader = resManager->GetShader("textShader");
-
-	// Use before sending things over to the shader
-
-	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, glm::vec3(position, 0.0f));
-	shader->Use();
-	shader->SetMatrix4("model", model);
+	shader = newShader;
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -113,7 +106,10 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 	scale = _parent->GetTransform().scale.x;
 
 	// activate corresponding render state	
+	glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(position, 0.0f));
 	shader->Use();
+
+	shader->SetMatrix4("model", model);
 
 	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
 	shader->SetFloat3("textColor", color.x, color.y, color.z);
