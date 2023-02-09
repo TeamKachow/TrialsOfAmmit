@@ -5,6 +5,8 @@
 #include "PickupWeapon.h"
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
+#include "AnubisBoss.h"
+
 Door::Door() : Behaviour("DoorBehaviour")
 {
 
@@ -145,6 +147,9 @@ void Door::DeleteRoomGameObjects()
 			other->GetScene()->RemoveObject(other);
 		}
 		else if (other->GetComponent<PassivePickups>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+		else if (other->GetComponent<AnubisBoss>() != nullptr) {
 			other->GetScene()->RemoveObject(other);
 		}
 	}
