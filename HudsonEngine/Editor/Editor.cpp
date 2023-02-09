@@ -9,6 +9,7 @@
 
 constexpr ImVec4 IM_COLOR_GRAY = { 0.7f, 0.7f, 0.7f, 1.0f };
 constexpr ImVec4 IM_COLOR_ORANGE = { 1.0f, 0.8f, 0.0f, 1.0f };
+constexpr ImVec4 IM_COLOR_CYAN = { 0.05f, 0.8f, 1.0f, 1.0f };
 
 const char* MODAL_HELP = "'How to Hudson', a memoir by best-selling author Doc Hudson";
 const char* MODAL_SCENE_SAVE = "Save Scene";
@@ -35,6 +36,14 @@ Hudson::Editor::Editor::Editor(Common::Engine* engine) : _engine(engine), curren
 	engine->RegisterMidFrameHook([&](Common::Engine* engine)
 		{
 			this->Draw();
+		});
+
+	engine->RegisterObjectRemovalHook([&](Entity::GameObject* object)
+		{
+			if (_selectedObj == object)
+			{
+				_selectedObj = nullptr;
+			}
 		});
 }
 
@@ -504,116 +513,122 @@ void Hudson::Editor::Editor::ObjectProperties()
 	}
 	else
 	{
-		if (ImGui::BeginTable("ObjEditor", 2, ImGuiTableFlags_Resizable))
-		{
-			ImGui::TableNextColumn();
-
-			ImGui::Text("Name");
-			ImGui::TableNextColumn();
-
-			ImGui::PushID("ObjEditor_Rename");
-			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::InputText("", &_selectedObj->GetName());
-			ImGui::PopID();
-			ImGui::TableNextColumn();
-
-			if (_showIds)
+		try {
+			if (ImGui::BeginTable("ObjEditor", 2, ImGuiTableFlags_Resizable))
 			{
-				ImGui::Text("Runtime ID (?)");
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%p", (void*)_selectedObj);
+				ImGui::Text("Name");
 				ImGui::TableNextColumn();
 
-				ImGui::Text("Serial ID (?)");
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
+				ImGui::PushID("ObjEditor_Rename");
+				ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+				ImGui::InputText("", &_selectedObj->GetName());
+				ImGui::PopID();
 				ImGui::TableNextColumn();
 
-				ImGui::Text("%u", _selectedObj->GetSerialID());
-				ImGui::TableNextColumn();
-			}
-
-			ImGui::Text("Position");
-			ImGui::TableNextColumn();
-
-			ImGui::PushID("ObjEditor_Pos");
-			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selectedObj->GetTransform().pos.x, 0.5f);
-			ImGui::PopID();
-			ImGui::TableNextColumn();
-
-			ImGui::Text("Scale");
-			ImGui::TableNextColumn();
-
-			ImGui::PushID("ObjEditor_Scale");
-			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat2("", &_selectedObj->GetTransform().scale.x, 0.5f);
-			ImGui::PopID();
-			ImGui::TableNextColumn();
-
-			ImGui::Text("Rotation");
-			ImGui::TableNextColumn();
-
-			ImGui::PushID("ObjEditor_Rotate");
-			ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
-			ImGui::DragFloat("", &_selectedObj->GetTransform().rotateZ, 0.5f);
-			ImGui::PopID();
-			ImGui::TableNextColumn();
-
-			ImGui::EndTable();
-		}
-
-        for (auto component : _selectedObj->GetAllComponents())
-        {
-			Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
-			ImGuiTreeNodeFlags headerFlags = 0;
-			if (!editable && !_showIds)
-				headerFlags |= ImGuiTreeNodeFlags_Leaf;
-
-			ImGui::PushID((void*)component);
-			bool compOpen = ImGui::CollapsingHeader(component->GetTypeName(), headerFlags);
-			if (ImGui::BeginPopupContextItem())
-			{
-				if (ImGui::MenuItem("Copy Component...", 0, false, false))
-				{
-					// TODO
-				}
-				if (ImGui::MenuItem("Delete Component"))
-				{
-					component->GetParent()->RemoveComponent(component);
-				}
-				ImGui::EndPopup();
-			}
-			if (compOpen)
-			{
 				if (_showIds)
 				{
-					if (ImGui::BeginTable("CompEditor", 2, ImGuiTableFlags_Resizable))
+					ImGui::Text("Runtime ID (?)");
+					if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
+					ImGui::TableNextColumn();
+
+					ImGui::Text("%p", (void*)_selectedObj);
+					ImGui::TableNextColumn();
+
+					ImGui::Text("Serial ID (?)");
+					if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
+					ImGui::TableNextColumn();
+
+					ImGui::Text("%u", _selectedObj->GetSerialID());
+					ImGui::TableNextColumn();
+				}
+
+				ImGui::Text("Position");
+				ImGui::TableNextColumn();
+
+				ImGui::PushID("ObjEditor_Pos");
+				ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+				ImGui::DragFloat2("", &_selectedObj->GetTransform().pos.x, 0.5f);
+				ImGui::PopID();
+				ImGui::TableNextColumn();
+
+				ImGui::Text("Scale");
+				ImGui::TableNextColumn();
+
+				ImGui::PushID("ObjEditor_Scale");
+				ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+				ImGui::DragFloat2("", &_selectedObj->GetTransform().scale.x, 0.5f);
+				ImGui::PopID();
+				ImGui::TableNextColumn();
+
+				ImGui::Text("Rotation");
+				ImGui::TableNextColumn();
+
+				ImGui::PushID("ObjEditor_Rotate");
+				ImGui::SetNextItemWidth(ImGui::GetColumnWidth());
+				ImGui::DragFloat("", &_selectedObj->GetTransform().rotateZ, 0.5f);
+				ImGui::PopID();
+				ImGui::TableNextColumn();
+
+				ImGui::EndTable();
+			}
+
+			for (auto component : _selectedObj->GetAllComponents())
+			{
+				Common::IEditable* editable = dynamic_cast<Common::IEditable*>(component);
+				ImGuiTreeNodeFlags headerFlags = 0;
+				if (!editable && !_showIds)
+					headerFlags |= ImGuiTreeNodeFlags_Leaf;
+
+				ImGui::PushID((void*)component);
+				bool compOpen = ImGui::CollapsingHeader(component->GetTypeName(), headerFlags);
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Copy Component...", 0, false, false))
 					{
-						ImGui::TableNextColumn();
-						ImGui::Text("Runtime ID (?)");
-						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
-						ImGui::TableNextColumn();
+						// TODO
+					}
+					if (ImGui::MenuItem("Delete Component"))
+					{
+						component->GetParent()->RemoveComponent(component);
+					}
+					ImGui::EndPopup();
+				}
+				if (compOpen)
+				{
+					if (_showIds)
+					{
+						if (ImGui::BeginTable("CompEditor", 2, ImGuiTableFlags_Resizable))
+						{
+							ImGui::TableNextColumn();
+							ImGui::Text("Runtime ID (?)");
+							if (ImGui::IsItemHovered()) ImGui::SetTooltip("The runtime ID (pointer) is logged in debug messages.");
+							ImGui::TableNextColumn();
 
-						ImGui::Text("%p", (void*)_selectedObj);
-						ImGui::TableNextColumn();
+							ImGui::Text("%p", (void*)_selectedObj);
+							ImGui::TableNextColumn();
 
-						ImGui::Text("Serial ID (?)");
-						if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
-						ImGui::TableNextColumn();
+							ImGui::Text("Serial ID (?)");
+							if (ImGui::IsItemHovered()) ImGui::SetTooltip("The serial ID is stored in .scene files. (WIP)");
+							ImGui::TableNextColumn();
 
-						ImGui::Text("%u", _selectedObj->GetSerialID()); // TODO
-						ImGui::EndTable();
+							ImGui::Text("%u", _selectedObj->GetSerialID()); // TODO
+							ImGui::EndTable();
+						}
+					}
+
+					if (editable)
+					{
+						editable->DrawPropertyUI();
 					}
 				}
-
-				if (editable)
-				{
-					editable->DrawPropertyUI();
-				}
+				ImGui::PopID();
 			}
-			ImGui::PopID();
+		}
+		catch (std::exception& e)
+		{
+			Hudson::Util::Debug::LogError(std::format("Error in property panel for object {}:\n    {}", (void*)_selectedObj, e.what()));
 		}
 	}
 
@@ -674,8 +689,9 @@ void Hudson::Editor::Editor::Help()
 {
 	if (ImGui::BeginPopupModal(MODAL_HELP, &_showHelp))
 	{
-		ImGui::Text("Just try right-clicking things to see what menus exist");
-		ImGui::Text("The end");
+		ImGui::TextColored(IM_COLOR_CYAN, "Editing scenes");
+		ImGui::Text("Right-click scenes to edit their properties, add empty objects and save them.");
+		ImGui::Text("Double-click objects in the hierarchy.");
 
 		ImGui::EndPopup();
 	}
