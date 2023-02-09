@@ -150,7 +150,7 @@ void GameSetup()
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(new Player(glm::vec2(750, 600)));
+    player->AddComponent(new Player(glm::vec2(750, 500)));
     player->SetName("Player");
     startScene->AddObject(player);
 
@@ -163,7 +163,7 @@ void GameSetup()
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/room0.room"));
+    room->AddComponent(new class Room("Rooms/room4.room"));
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
