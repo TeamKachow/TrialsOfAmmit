@@ -78,7 +78,7 @@ void Player::OnCreate() //The magic is set up here
 	_pauseScene = new Hudson::World::Scene();
 	_pauseScene->SetName("PauseScene");
 	_pauseMenu = new Hudson::Entity::GameObject();
-	_pauseMenu->AddComponent(new PauseMenu(glm::vec2(500, 500), _parent->GetScene(), _parent->GetComponent<Player>()));
+	_pauseMenu->AddComponent(new PauseMenu(glm::vec2(232, 200), _parent->GetScene(), _parent->GetComponent<Player>()));
 	_pauseScene->AddObject(_pauseMenu);
 	GetEngine()->GetSceneManager()->AddScene(_pauseScene);
 
@@ -180,7 +180,7 @@ void Player::OnTick(const double& dt)
 	{
 		if (_isPaused == false)
 		{
-			PauseText->GetTransform().pos = vec2(500, 200);
+			PauseText->GetTransform().pos = vec2(232, 200);
 			_pauseMenu->GetComponent<PauseMenu>()->PauseScene();
 			
 			
