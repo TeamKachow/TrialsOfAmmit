@@ -63,9 +63,9 @@ void PickupBehaviour::CheckCollision()
 						case PT_HEAL:
 							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(10);
 						case PT_ATTACK:
-							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddDamageMod(0.1);
+							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddDamageMod(0.01);
 						case PT_SPEED:
-							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(5);
+							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(15);
 						}
 						collider->ClearColliding();
 						_currentScene->RemoveObject(other->GetParent());

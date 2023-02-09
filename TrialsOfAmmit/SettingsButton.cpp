@@ -50,15 +50,15 @@ void SettingsButton::OnCreate()
 	_parent->GetTransform().pos.x = 100.0f;
 	_parent->GetTransform().pos.y = 300.0f;
 	//sets up the text object and sets it to a game object and sets the object to the scene
-	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf", glm::vec2(0, 0));
+	_buttonTextObject = new Hudson::Render::TextComponent("Fonts\\arial.ttf", resManager->GetShader("textShader"));
 	_buttonTextObject->SetText(to_string(static_cast<int>(_resolution[_currentResIndex].x)) + "X" + to_string(static_cast<int>(_resolution[_currentResIndex].y)));
 	_buttonTextObject->SetColor(vec3(1, 1, 1));
 	_buttonTextObject->SetDepthOrder(2);
 	Hudson::Entity::GameObject* MenuText = new Hudson::Entity::GameObject();
 	MenuText->AddComponent(_buttonTextObject);
 	MenuText->GetTransform().scale = vec2(1, 1);
-	MenuText->GetTransform().pos.x = 150.0f;
-	MenuText->GetTransform().pos.y = 350.0f;
+	MenuText->GetTransform().pos.x = 75.0f;
+	MenuText->GetTransform().pos.y = 170.0f;
 	_parent->GetScene()->AddObject(MenuText);
 
 	//sets up audio settings
@@ -88,15 +88,15 @@ void SettingsButton::OnCreate()
 	_parent->GetTransform().pos.x = 100.0f;
 	_parent->GetTransform().pos.y = 500.0f;
 	//sets up the text object and sets it to a game object and sets the object to the scene
-	_buttonTextObjectAudio = new Hudson::Render::TextComponent("Fonts\\arial.ttf", glm::vec2(0, 0));
+	_buttonTextObjectAudio = new Hudson::Render::TextComponent("Fonts\\arial.ttf", resManager->GetShader("textShader"));
 	_buttonTextObjectAudio->SetText("Audio Test");
 	_buttonTextObjectAudio->SetColor(vec3(1, 1, 1));
 	_buttonTextObjectAudio->SetDepthOrder(2);
 	Hudson::Entity::GameObject* MenuTextAudio = new Hudson::Entity::GameObject();
 	MenuTextAudio->AddComponent(_buttonTextObjectAudio);
-	MenuTextAudio->GetTransform().scale = vec2(1, 1);
-	MenuTextAudio->GetTransform().pos.x = 150.0f;
-	MenuTextAudio->GetTransform().pos.y = 550.0f;
+	MenuTextAudio->GetTransform().scale = vec2(0.9, 0.9);
+	MenuTextAudio->GetTransform().pos.x = 82.0f;
+	MenuTextAudio->GetTransform().pos.y = 270.0f;
 	_parent->GetScene()->AddObject(MenuTextAudio);
 
 	//creates forward button and sets componants
@@ -115,15 +115,15 @@ void SettingsButton::OnCreate()
 	_parent->GetTransform().pos.x = 100.0f;
 	_parent->GetTransform().pos.y = 300.0f;
 	//sets up the text object and sets it to a game object and sets the object to the scene
-	_buttonTextObjectFullScreen = new Hudson::Render::TextComponent("Fonts\\arial.ttf", glm::vec2(0, 0));
+	_buttonTextObjectFullScreen = new Hudson::Render::TextComponent("Fonts\\arial.ttf", resManager->GetShader("textShader"));
 	_buttonTextObjectFullScreen->SetText("Full Screen");
 	_buttonTextObjectFullScreen->SetColor(vec3(1, 1, 1));
 	_buttonTextObjectFullScreen->SetDepthOrder(2);
 	Hudson::Entity::GameObject* FullScreenText = new Hudson::Entity::GameObject();
 	FullScreenText->AddComponent(_buttonTextObjectFullScreen);
 	FullScreenText->GetTransform().scale = vec2(1, 1);
-	FullScreenText->GetTransform().pos.x = 175.0f;
-	FullScreenText->GetTransform().pos.y = 700.0f;
+	FullScreenText->GetTransform().pos.x = 80.0f;
+	FullScreenText->GetTransform().pos.y = 345.0f;
 	_parent->GetScene()->AddObject(FullScreenText);
 	//stops the button clicking once per frame
 	_clicked = false;

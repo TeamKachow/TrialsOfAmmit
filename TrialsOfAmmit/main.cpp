@@ -129,6 +129,7 @@ void GameSetup()
     resManager->LoadTexture("textures/Passives.png", true, "Passives");
     resManager->LoadTexture("textures/Chest.png", true, "Chest");
     resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
+    resManager->LoadTexture("textures/UIHighlight.png", true, "Highlight");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
     ButtonSprite->SetGridSize(glm::vec2(1, 1));
@@ -143,7 +144,7 @@ void GameSetup()
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
-
+    
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
 
     engine->GetSceneManager()->AddScene(TestScene);
@@ -162,11 +163,11 @@ void GameSetup()
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    room->AddComponent(new class Room("Rooms/roomjson.room"));
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
-    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(70,60)));
+    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
     PlayButton->SetName("PlayButton");
     TestScene->AddObject(PlayButton);
     SettingsScene->AddObject(PlayButton);
@@ -174,7 +175,7 @@ void GameSetup()
     PlayButton->GetTransform().pos.y = 100.0f;
 
     Hudson::Entity::GameObject* MainSettingsButton = new Hudson::Entity::GameObject();
-    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(45,60)));
+    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(-30,-120)));
     MainSettingsButton->SetName("SettingsButton");
     TestScene->AddObject(MainSettingsButton);
     MainSettingsButton->GetTransform().pos.x = 100.0f;

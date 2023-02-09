@@ -3,7 +3,7 @@
 
 Stun::Stun()
 {
-	_abilityActiveTime = 0.2;
+	_abilityActiveTime = 2;
 	_abilityCoolDownTime = 10;
 	_abilityState = ready;
 	_abilityType = AT_STUN;
