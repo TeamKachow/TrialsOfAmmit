@@ -76,14 +76,15 @@ void OneUP::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 
 			//std::cout << " Ability OneUP is active ! \n";
 
-			while (_abilityState = active)
+			/*while (_abilityState = active)
 			{
+			}*/
 				std::cout << " Ability OneUP is active ! \n";
 
 				if (_player->_playerHealth < _healthThreshold)
 				{
 					_playerDead = true;
-
+					
 					if (_playerDead)
 					{
 						std::cout << " Ability OneUP is activated !!! \n";
@@ -91,7 +92,6 @@ void OneUP::UseAbility(Hudson::World::Scene* _CurrentPassScene)
 						DeactivateAbility(_CurrentPassScene);
 					}
 				}
-			}
 
 			break;
 		}

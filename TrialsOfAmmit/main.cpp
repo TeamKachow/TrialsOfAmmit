@@ -232,7 +232,8 @@ void RoomGameSetup()
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/roomJson.room"));
+    room->AddComponent(new class Room("Rooms/room2.room"));
+    //room->AddComponent(new class Room("Rooms/roomJson.room"));
     startScene->AddObject(room);
 
 	#ifdef ENABLE_EDITOR
