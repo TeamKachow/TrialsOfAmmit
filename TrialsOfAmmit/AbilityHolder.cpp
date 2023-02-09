@@ -10,6 +10,8 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_rage = new Rage;
 	_heal = new Heal;
 	_roomaoe = new RoomAOE;
+	_oneup = new OneUP;
+	//_currentAbility = _oneup;
 	_currentAbility = _roll;
 }
 
@@ -28,6 +30,14 @@ void AbilityHolder::OnDestroy()
 void AbilityHolder::DrawPropertyUI()
 {
 
+}
+
+void AbilityHolder::FromJson(const nlohmann::json& j)
+{
+}
+
+void AbilityHolder::ToJson(nlohmann::json& j)
+{
 }
 
 void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead

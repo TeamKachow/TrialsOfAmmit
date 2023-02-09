@@ -18,35 +18,31 @@ enum AiState
 	DEAD
 };
 
-//enum facingDirections
-//{
-//	UP,
-//	DOWN,
-//	LEFT,
-//	RIGHT
-//};
-
 class AiAgent : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:  
-	AiAgent(Hudson::Render::SpriteComponent* aiSprite, double animSpeed);
+	AiAgent(vec2 spawnPos = { 100, 100 });
 	~AiAgent();
 	void TakeDamage(int damageAmount);
-	Hudson::Render::SpriteComponent* _aiSprite;
-	float _maxHealth;
-	float _currentHealth;
 	float _meleeDamage;
 	virtual void AiDead();
 	float _maxSpeed;
-
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
+	Hudson::Render::SpriteComponent* _aiSprite;
 protected:
 	void CollisionCheck();
 	void Animate(float deltaTime);
 	virtual void AiAttack();
+	void InverseVel();
 	AiMelee _melee;
 	BaseWeaponClass* _aiWeapon = &_melee;
-	vector<Hudson::Physics::PhysicsComponent*>_aiPhysicsComponent;
+
+	Hudson::Render::SpriteComponent* _aiDeathSprite;
+	Hudson::Physics::PhysicsComponent*_aiPhysicsComponent;
 	Hudson::World::Scene* _currentScene;
+	Hudson::Physics::ColliderComponent* _aiCollider;
+	Hudson::Physics::ColliderComponent* _aiColliderWall;
 	Player* _player;
 	AiState _currentState;
 	vec2 _target;
@@ -57,15 +53,17 @@ protected:
 	float _distanceFromPlayer;
 	facingDirections _facingDirection;
 	float _currentSpeed;
-	
+	vec2 _spawnPosition;
 	float _mass;
 	float _maxRange;
 	float _minRange;
 	float _attackTimer;
 	double _aiAnimSpeed;
 	double _aiAnimTimer;
+	double _aiAnimDeathTimer;
 	bool _alive;
 	bool _arrive;
+	Hudson::Entity::GameObject* Blood;
 
 private: 
 	void OnCreate() override;
@@ -78,5 +76,9 @@ private:
 	void SetPlayerPos();
 	vec2 Seek(vec2 Target);
 	vec2 Wander(vec2 Target);
+	float _maxHealth;
+	float _currentHealth;
+	bool _isDamaged;
+	vec2 _lastFramePos;
 };
 

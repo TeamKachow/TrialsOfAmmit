@@ -5,7 +5,6 @@
 #include "DemoBehaviour.h"
 
 Hudson::Common::Engine* engine;
-Hudson::Editor::ComponentRegistry* registry;
 
 #ifdef _DEBUG
 #define ENABLE_EDITOR
@@ -36,7 +35,7 @@ Hudson::Common::ResourceManager* resManager;
 
 void InitRegistry()
 {
-    registry = new Hudson::Editor::ComponentRegistry();
+    Hudson::Common::ComponentRegistry* registry = engine->GetComponentRegistry();
     registry->RegisterEngineComponents();
 
     registry->Register<DemoBehaviour>("Demo Behaviour");
@@ -51,18 +50,18 @@ void Init()
     engine = new Hudson::Common::Engine();
 
 #ifdef ENABLE_EDITOR
-    InitRegistry();
-    editor = new Hudson::Editor::Editor(engine, registry);
+    editor = new Hudson::Editor::Editor(engine);
 #endif
 
     engine->Setup();
+    InitRegistry();
+    
     engine->GetRenderer()->SetupDefaultShaders();
 
 #ifdef ENABLE_EDITOR
     engine->GetInputManager()->SetEditorRef(editor);
+    engine->GetSceneManager()->SetPaused(true);
 #endif
-
-
 }
 
 void Hello(bool& isActive)
@@ -74,6 +73,7 @@ void Hello(bool& isActive)
 void GameSetup()
 {
     // Set up default camera
+    _defaultCamera->SetPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     engine->GetRenderer()->SetCamera(_defaultCamera);
 
     //glfwSetWindowSize(engine->GetRenderer()->GetWindow()->GetWindow(), 1920, 1080);
@@ -116,13 +116,13 @@ void GameSetup()
         Collider1 = new Hudson::Physics::ColliderComponent();
         Collider2 = new Hudson::Physics::ColliderComponent();
 
-        Text1 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
+        Text1 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", resManager->GetShader("textShader"));
         Text1->SetText("the quick brown fox jumps over the lazy dog");
         Text1->SetColor(glm::vec3(0.5, 0.8f, 0.2f));
 
-        Text2 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", glm::vec2(20.0f, 20.0f));
+        Text2 = new Hudson::Render::TextComponent("../DemoGame/Fonts/arial.ttf", resManager->GetShader("textShader"));
         Text2->SetText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG");
-        Text2->SetColor(glm::vec3(0.0f, 0.0f, 0.0f));
+        Text2->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
         // Load initial scene from file 
         // TODO: Hudson::World::Scene* startScene = engine->GetSceneManager()->LoadScene("menu.scene");
@@ -153,14 +153,14 @@ void GameSetup()
         Hudson::Entity::GameObject* hud = new Hudson::Entity::GameObject();
         hud->SetName("Text");
         hud->AddComponent(Text1);
-        Hudson::Entity::GameObject::Transform transform = { glm::vec2(-10,100), glm::vec2(1,1), 0 };
+        Hudson::Entity::GameObject::Transform transform = { glm::vec2(0,100), glm::vec2(1,1), 0 };
         hud->SetTransform(transform);
         startScene->AddObject(hud);
 
         Hudson::Entity::GameObject* hud2 = new Hudson::Entity::GameObject();
         hud2->SetName("Text");
         hud2->AddComponent(Text2);
-        transform = { glm::vec2(-10,200), glm::vec2(1,1), 0 };
+        transform = { glm::vec2(0,200), glm::vec2(1,1), 0 };
         hud2->SetTransform(transform);
         startScene->AddObject(hud2);
 

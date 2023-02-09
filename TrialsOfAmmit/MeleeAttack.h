@@ -5,8 +5,11 @@
 class MeleeAttack : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	MeleeAttack(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene);
+	MeleeAttack(facingDirections slashDirection = { Down }, glm::vec2 playerPos = { 0,0 }, Hudson::World::Scene* currentScene = { nullptr });
 	~MeleeAttack();
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	void OnCreate() override;
 	void OnTick(const double& dt) override;

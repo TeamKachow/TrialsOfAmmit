@@ -20,6 +20,7 @@ void PassivePickups::OnCreate()
 	_passiveSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Passives"));
 	_passiveSprite->SetGridSize(glm::vec2(3, 1));
 	_passiveSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_passiveSprite->SetDepthOrder(1);
 	_passiveCollider = new Hudson::Physics::ColliderComponent();
 
 	_parent->AddComponent(_passiveSprite);
@@ -56,5 +57,13 @@ void PassivePickups::OnDestroy()
 }
 
 void PassivePickups::DrawPropertyUI()
+{
+}
+
+void PassivePickups::FromJson(const nlohmann::json& j)
+{
+}
+
+void PassivePickups::ToJson(nlohmann::json& j)
 {
 }

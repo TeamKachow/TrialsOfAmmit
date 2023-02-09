@@ -25,6 +25,7 @@ namespace Hudson::Entity
         GameObject* _parent = nullptr;
         const char* _typeName;
         uint32_t _id;
+        bool _shouldSave = true;
         
     public:
         /**
@@ -48,5 +49,16 @@ namespace Hudson::Entity
          * \return The name identifying this type of component.
          */
         [[nodiscard]] const char* GetTypeName() const;
+
+        /**
+         * \brief Initialise a component's values from a JSON object.
+         * \param j The JSON object to initialise this component from
+         */
+        virtual void FromJson(const nlohmann::json& j) = 0;
+        /**
+         * \brief Store a component's values to a JSON object.
+         * \param j The JSON object to store the component's values to
+         */
+        virtual void ToJson(nlohmann::json& j) = 0;
     };
 }

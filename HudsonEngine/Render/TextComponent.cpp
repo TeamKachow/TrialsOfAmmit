@@ -4,22 +4,15 @@
 
 extern const std::filesystem::path filePath;
 
-Hudson::Render::TextComponent::TextComponent() : TextComponent("../DemoGame/Fonts/arial.ttf", {0, 0})
+Hudson::Render::TextComponent::TextComponent() : TextComponent("../DemoGame/Fonts/arial.ttf", nullptr)
 {
+
 }
 
 
-Hudson::Render::TextComponent::TextComponent(const char* path, glm::vec2 position) : Component("Text")
+Hudson::Render::TextComponent::TextComponent(const char* path, Hudson::Render::Shader* newShader) : Component("Text")
 {
-	auto resManager = Hudson::Common::ResourceManager::GetInstance();
-	shader = resManager->GetShader("textShader");
-
-	// Use before sending things over to the shader
-
-	glm::mat4 model = glm::mat4(1);
-	model = glm::translate(model, glm::vec3(position, 0.0f));
-	shader->Use();
-	shader->SetMatrix4("model", model);
+	shader = newShader;
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -39,7 +32,8 @@ Hudson::Render::TextComponent::TextComponent(const char* path, glm::vec2 positio
 
 Hudson::Render::TextComponent::~TextComponent()
 {
-
+	FT_Done_Face(_face);
+	FT_Done_FreeType(_ft);
 }
 
 void Hudson::Render::TextComponent::StartFreeType(const std::filesystem::path& path)
@@ -112,7 +106,10 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 	scale = _parent->GetTransform().scale.x;
 
 	// activate corresponding render state	
+	glm::mat4 model = glm::translate(glm::mat4(1), glm::vec3(position, 0.0f));
 	shader->Use();
+
+	shader->SetMatrix4("model", model);
 
 	//glUniform3f(glGetUniformLocation(s.Program, "textColor"), color.x, color.y, color.z);
 	shader->SetFloat3("textColor", color.x, color.y, color.z);
@@ -177,6 +174,8 @@ void Hudson::Render::TextComponent::Draw(glm::vec2 position)
 
 void Hudson::Render::TextComponent::DrawPropertyUI()
 {
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
 	ImGui::InputTextMultiline("Content", &text);
 
 	ImGui::DragFloat3("Color RGB", &color.x, 0.1f, 0.0f, 1.0f);
@@ -194,6 +193,8 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 
 			std::wcout << path << std::endl;
 
+			_fontPath = converter.to_bytes(std::filesystem::relative(std::filesystem::path(filePath) / path));
+
 			Characters.clear();
 
 			StartFreeType(std::filesystem::path(filePath) / path);
@@ -201,5 +202,35 @@ void Hudson::Render::TextComponent::DrawPropertyUI()
 		}
 		ImGui::EndDragDropTarget();
 	}
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip("Font path: %s", _fontPath.c_str());
+	}
+}
 
+void Hudson::Render::TextComponent::FromJson(const nlohmann::json& j)
+{
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+
+	std::string fontPath = j.at("fontPath");
+	if (!fontPath.empty())
+	{
+		_fontPath = fontPath;
+		StartFreeType(_fontPath);
+		StoreCharacters(_fontPath);
+	}
+
+	text = j.at("text");
+	scale = j.at("scale");
+	color = j.at("color");
+	newLineOffset = j.at("newLineOffset");
+}
+
+void Hudson::Render::TextComponent::ToJson(nlohmann::json& j)
+{
+	j["text"] = text;
+	j["scale"] = scale;
+	j["color"] = color;
+	j["newLineOffset"] = newLineOffset;
+	j["fontPath"] = _fontPath;
 }

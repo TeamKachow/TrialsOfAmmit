@@ -10,7 +10,8 @@
 class WeaponDisplayUI : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 {
 public:
-	WeaponDisplayUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene, Player* _player);
+	//WeaponDisplayUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene, Player* _player);
+	WeaponDisplayUI(glm::vec2 spawnPos = { 1450.0f, 25.0f }, Hudson::World::Scene* _scene = nullptr, Player* _player = nullptr);
 	~WeaponDisplayUI();
 
 	Hudson::Entity::GameObject* _weaponUI;
@@ -23,6 +24,9 @@ public:
 	Player* _currentPlayer;
 
 	glm::uvec2 _currentPos;
+
+	void FromJson(const nlohmann::json& j) override;
+	void ToJson(nlohmann::json& j) override;
 
 	void OnCreate() override;
 	void OnTick(const double& dt) override;

@@ -8,7 +8,14 @@ Hudson::World::SceneManager::SceneManager()
         {
             for (auto& scene : _scenes.Get())
             {
-                scene->Tick(dt);
+                if (_paused)
+                {
+                    scene->UpdateDeferredObjects();
+                }
+                else
+                {
+                    scene->Tick(dt);
+                }
             }
         });
 }
@@ -27,15 +34,31 @@ void Hudson::World::SceneManager::HandlePostTick()
 Hudson::World::Scene* Hudson::World::SceneManager::LoadScene(const std::string& path)
 {
     std::ifstream file(path);
-    // todo: cereal archive
 
-    return nullptr;
+    if (!file.is_open())
+    {
+        return nullptr;
+    }
+
+    nlohmann::json jsonIn = nlohmann::json::parse(file);
+    Scene* scene = new Scene();
+    scene->FromJson(jsonIn);
+
+    return scene;
 }
 
 void Hudson::World::SceneManager::SaveScene(const std::string& path, Scene* scene)
 {
+    std::filesystem::path parentDir = std::filesystem::path(path).parent_path();
+    if (!std::filesystem::exists(parentDir))
+    {
+        std::filesystem::create_directories(parentDir);
+    }
+
     std::ofstream file(path);
-    // TODO: cereal archive
+    nlohmann::json jsonOut;
+    scene->ToJson(jsonOut);
+    file << jsonOut.dump(2);
 }
 
 const std::set<Hudson::World::Scene*> Hudson::World::SceneManager::GetLoadedScenes()
@@ -86,4 +109,14 @@ void Hudson::World::SceneManager::Tick()
 
     // Clear ticking flag
     _isTicking = false;
+}
+
+bool Hudson::World::SceneManager::IsPaused() const
+{
+    return _paused;
+}
+
+void Hudson::World::SceneManager::SetPaused(bool paused)
+{
+    _paused = paused;
 }

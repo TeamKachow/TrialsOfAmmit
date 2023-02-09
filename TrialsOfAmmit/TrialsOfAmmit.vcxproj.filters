@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -37,6 +37,9 @@
     </Filter>
     <Filter Include="Ai">
       <UniqueIdentifier>{572c0137-974f-4dce-b2a2-5b3c8f44ef6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{58c8adb5-f9f0-44e1-828f-9028aafbc298}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,21 +119,42 @@
     <ClCompile Include="MenuButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Heal.cpp">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClCompile>
-    <ClCompile Include="Rage.cpp">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomAOE.cpp">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClCompile>
     <ClCompile Include="Heal.cpp" />
-    <ClCompile Include="PassivePickups.cpp" />
     <ClCompile Include="Rage.cpp" />
     <ClCompile Include="RoomAOE.cpp" />
-    <ClCompile Include="SettingsButton.cpp" />
-    <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="Rooms\Room.cpp">
+      <Filter>Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraDolly.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Chest.cpp">
+      <Filter>Pickups</Filter>
+    </ClCompile>
+    <ClCompile Include="Door.cpp">
+      <Filter>Rooms</Filter>
+    </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="OneUP.cpp">
+      <Filter>AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="PassivePickups.cpp">
+      <Filter>AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="Rage.cpp">
+      <Filter>AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="RoomAOE.cpp">
+      <Filter>AbilityStuff</Filter>
+    </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsButton.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -214,7 +238,6 @@
     <ClInclude Include="AbilityType.h">
       <Filter>AbilityStuff</Filter>
     </ClInclude>
-    <ClInclude Include="facingDirection.h" />
     <ClInclude Include="AiAgent.h">
       <Filter>Ai</Filter>
     </ClInclude>
@@ -224,21 +247,47 @@
     <ClInclude Include="MenuButton.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Heal.h">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClInclude>
-    <ClInclude Include="Rage.h">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClInclude>
-    <ClInclude Include="RoomAOE.h">
-      <Filter>Source Files\AbilityStuff</Filter>
-    </ClInclude>
     <ClInclude Include="Heal.h" />
-    <ClInclude Include="PassivePickups.h" />
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RoomAOE.h" />
-    <ClInclude Include="SettingsButton.h" />
-    <ClInclude Include="PassiveType.h" />
-    <ClInclude Include="Chest.h" />
+    <ClInclude Include="Rooms\Room.h">
+      <Filter>Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraDolly.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Chest.h">
+      <Filter>Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="Door.h">
+      <Filter>Rooms</Filter>
+    </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="OneUP.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PassivePickups.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PassiveType.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="Rage.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="RoomAOE.h">
+      <Filter>AbilityStuff</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsButton.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="facingDirection.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

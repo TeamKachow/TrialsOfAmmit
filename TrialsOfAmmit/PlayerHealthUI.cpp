@@ -5,7 +5,7 @@ PlayerHealthUI::PlayerHealthUI(glm::vec2 spawnPos, Hudson::World::Scene* _scene,
 	_currentScene = _scene;
 	_currentPos = spawnPos;
 	_currentPlayer = _player;
-	_playerHealthScale = 3.84;
+	_playerHealthScale = 3.14;
 
 	
 
@@ -21,8 +21,10 @@ void PlayerHealthUI::OnCreate()
 	_healthUISprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("HealthBar"));
 	_healthUISprite->SetGridSize(glm::vec2(1, 1));
 	_healthUISprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
+	_healthUISprite->SetDepthOrder(30);
 	_parent->AddComponent(_healthUISprite);
 	_parent->SetName("HealthBar");
+	_parent->GetTransform().scale.y = 32;
 	_parent->GetTransform().pos = _currentPos;
 	_parent->GetTransform().scale.x = 256;
 }
@@ -45,5 +47,13 @@ void PlayerHealthUI::OnDestroy()
 }
 
 void PlayerHealthUI::DrawPropertyUI()
+{
+}
+
+void PlayerHealthUI::FromJson(const nlohmann::json& j)
+{
+}
+
+void PlayerHealthUI::ToJson(nlohmann::json& j)
 {
 }

@@ -1,11 +1,7 @@
 #include "Projectile.h"
 #include "AiAgent.h"
+#include "Chest.h"
 
-
-Projectile::~Projectile()
-{
-
-}
 
 Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos, Hudson::World::Scene* CurrentScene, WeaponTypes _weaponFiring, float _damage, float _speed, float _range) : Behaviour("ProjectileUpdatedBehaviour")
 {
@@ -29,6 +25,17 @@ Projectile::Projectile(facingDirections projectileDirection, glm::vec2 spawnPos,
 	_currentScene = CurrentScene;
 	
 }
+Projectile::~Projectile()
+{
+
+}
+void Projectile::FromJson(const nlohmann::json& j)
+{
+}
+
+void Projectile::ToJson(nlohmann::json& j)
+{
+}
 
 void Projectile::OnCreate()
 {
@@ -48,6 +55,7 @@ void Projectile::OnCreate()
 	_projectileSprite->SetGridSize(glm::vec2(3, 4));
 	_projectileSprite->SetGridPos(glm::vec2(0, 0));
 	_projectilePhysics->SetMass(1.0f);
+	_projectileSprite->SetDepthOrder(1);
 
 	_parent->AddComponent(_projectileSprite);
 	_parent->AddComponent(_projectilePhysics);
@@ -130,6 +138,22 @@ void Projectile::OnTick(const double& dt)
 			else
 			{
 				collider->ClearColliding();
+			}
+			if (other->GetParent()->GetComponent<Chest>() != nullptr)
+			{
+				Chest* _chest = other->GetParent()->GetComponent<Chest>();
+				if (_chest != nullptr)
+				{
+					_chest->OnInteract();
+					collider->ClearColliding();
+
+					break;
+				}
+				else
+				{
+					break;
+				}
+
 			}
 
 

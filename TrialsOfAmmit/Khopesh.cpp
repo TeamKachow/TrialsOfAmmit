@@ -2,8 +2,8 @@
 
 Khopesh::Khopesh()
 {
-	_weaponAttackDamage = 20;
-	_weaponAttackSpeed = 1;
+	_weaponAttackDamage = 35;
+	_weaponAttackSpeed = 0.75;
 	_weaponLevel = Wood;
 	_weaponType = WT_Khopesh;
 }
@@ -18,28 +18,28 @@ void Khopesh::UpgradeWeapon(WeaponUpgradeTypes CurrentWeaponLevel)
 	switch (CurrentWeaponLevel)
 	{
 	case Wood:
-		_weaponAttackDamage = 20;
-		_weaponAttackSpeed = 1;
+		_weaponAttackDamage = 35;
+		_weaponAttackSpeed = 0.75;
 		_weaponLevel = Wood;
 		break;
 	case Stone:
-		_weaponAttackDamage = 25;
-		_weaponAttackSpeed = 1;
+		_weaponAttackDamage = 40;
+		_weaponAttackSpeed = 0.75;
 		_weaponLevel = Stone;
 		break;
 	case Bronze:
-		_weaponAttackDamage = 30;
-		_weaponAttackSpeed = 1.1;
+		_weaponAttackDamage = 45;
+		_weaponAttackSpeed = 0.6;
 		_weaponLevel = Bronze;
 		break;
 	case Iron:
-		_weaponAttackDamage = 35;
-		_weaponAttackSpeed = 1.2;
+		_weaponAttackDamage = 50;
+		_weaponAttackSpeed = 0.6;
 		_weaponLevel = Iron;
 		break;
 	case Gold:
-		_weaponAttackDamage = 45;
-		_weaponAttackSpeed = 1.25;
+		_weaponAttackDamage = 55;
+		_weaponAttackSpeed = 0.5;
 		_weaponLevel = Gold;
 		break;
 	}
