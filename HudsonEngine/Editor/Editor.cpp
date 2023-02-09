@@ -166,6 +166,16 @@ void Hudson::Editor::Editor::MenuBar()
 		if (ImGui::BeginMenu("Debug"))
 		{
 			ImGui::MenuItem("Show IDs", "", &_showIds);
+			if (ImGui::MenuItem("Dump colliders to file"))
+			{
+				for (World::Scene* scene : _engine->GetSceneManager()->GetLoadedScenes())
+				{
+					auto currentTime = std::chrono::system_clock::now().time_since_epoch().count();
+					auto debugFile = std::ofstream(std::format("debug_{}_.txt", currentTime, (void*)scene));
+					Hudson::Util::Debug::DumpColliders(scene, nullptr, debugFile);
+
+				}
+			}
 			ImGui::EndMenu();
 		}
 
