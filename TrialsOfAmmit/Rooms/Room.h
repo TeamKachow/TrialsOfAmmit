@@ -30,10 +30,11 @@ public:
 
 private:
 	int x, y;
+	std::string roomName = "unknown";
 	
-	char* nav_grid_; // dynamic array 
-	char* texture_grid_; // dynamic array 
-	char* object_grid; // dynamic array
+	std::vector<int8_t> nav_grid_; // dynamic array 
+	std::vector<int8_t> texture_grid_; // dynamic array 
+	std::vector<int8_t> object_grid; // dynamic array
 
 	std::map<int, Hudson::Render::SpriteComponent*> texture_reference_;
 	std::map<int, Hudson::Entity::GameObject*> obj_reference_;
@@ -73,7 +74,7 @@ struct ImGuiRoomData
 	bool isResizing = false;
 
 	tileData* selected = nullptr;
-	tileData* roomGrid = new tileData[roomX * roomY];
+	std::vector<tileData> roomGrid = std::vector<tileData>(100);
 
 	std::vector<textureRefData*> textureRefs;
 
@@ -142,75 +143,25 @@ struct ImGuiRoomData
 		roomX = json["roomX"];
 		roomY = json["roomY"];
 		
-		roomGrid = new tileData[roomX * roomY];
+		roomGrid.clear();
+		roomGrid.reserve(roomX * roomY);
 
+		std::vector<int8_t> navGridTemp = json.at("navGrid").get<std::vector<int8_t>>();
+		std::vector<int8_t> texGridTemp = json.at("texGrid").get<std::vector<int8_t>>();
+		std::vector<int8_t> objGridTemp = json.at("objGrid").get<std::vector<int8_t>>();
 
-		std::string standardArray = json["navGrid"].dump();
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-		int offset = 0;
 		for (int i = 0; i < roomY; ++i)
 		{
-			for (int j = 0; j < roomX * 2; ++j) //20
+			for (int j = 0; j < roomX; ++j)
 			{
-				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].isSolid = charArray[i * roomX * 2 + j] - 48;
-				}
-				else {
-					++offset;
-				}
+				int index = i * roomX + j;
+				tileData td;
+				td.isSolid = navGridTemp[index];
+				td.textureRef = texGridTemp[index];
+				td.objectRef = objGridTemp[index];
+				roomGrid.push_back(td);
 			}
-			offset = 0;
 		}
-		delete[] charArray;
-
-		standardArray = json["texGrid"].dump();
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-
-		offset = 0;
-		for (int i = 0; i < roomY; ++i)
-		{
-			for (int j = 0; j < roomX * 2; ++j) //20
-			{
-				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].textureRef = charArray[i * roomX * 2 + j] - 48;
-				}
-				else {
-					++offset;
-				}
-			}
-			offset = 0;
-		}
-		delete[] charArray;
-
-		standardArray = json["objGrid"].dump();
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-		standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-		charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-		strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-		offset = 0;
-		for (int i = 0; i < roomY; ++i)
-		{
-			for (int j = 0; j < roomX * 2; ++j) //20
-			{
-				if (charArray[i * roomX * 2 + j] != ',') {
-					roomGrid[i * roomX + (j - offset)].objectRef = charArray[i * roomX * 2 + j] - 48;
-				}
-				else {
-					++offset;
-				}
-			}
-			offset = 0;
-		}
-		delete[] charArray;
 
 		nlohmann::json texRef = json["texReference"];
 		Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
@@ -242,11 +193,7 @@ struct ImGuiRoomData
 
 			// make temp copy
 			int size = (currentRoomX * currentRoomY) * 2;
-			tileData* tempGridData = new tileData[size];
-			for (int i = 0; i < size; ++i) {
-				tempGridData[i] = roomGrid[i];
-			}
-			roomGrid = tempGridData;
+			roomGrid.resize(size);
 
 			isResizing = false;
 		}
@@ -258,7 +205,7 @@ struct ImGuiRoomData
 		isResizing = false;
 
 		selected = nullptr;
-		roomGrid = nullptr;
+		roomGrid.clear();
 
 		textureRefs.clear();
 	}

@@ -1,4 +1,4 @@
-﻿ #include "Room.h"
+﻿#include "Room.h"
 
 // Want to spawn something new include here
 #include "../Player.h"
@@ -15,7 +15,7 @@ Room::Room() : Behaviour("Room")
 Room::Room(const char* roomFile) : Behaviour("Room")
 {
 	// Read from file JSON
-
+	roomName = roomFile;
 	std::ifstream i(roomFile);
 	nlohmann::json json;
 	i >> json;
@@ -23,77 +23,16 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	x = json["roomX"];
 	y = json["roomY"];
 
-	nav_grid_ = new char[x * y];
-	texture_grid_ = new char[x * y];
-	object_grid = new char[x * y];
+	int expectedSize = x * y;
+	nav_grid_ = json.at("navGrid").get<std::vector<int8_t>>();
+	texture_grid_ = json.at("texGrid").get<std::vector<int8_t>>();
+	object_grid = json.at("objGrid").get<std::vector<int8_t>>();
 
-	std::string standardArray = json["navGrid"].dump();
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	char* charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-	int offset = 0;
-	for(int i = 0; i < y; ++i)
+	if (nav_grid_.size() != expectedSize || texture_grid_.size() != expectedSize || object_grid.size() != expectedSize)
 	{
-		for (int j = 0; j < x*2; ++j) //20
-		{
-			if (charArray[i * x*2 + j] != ',') {
-				nav_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
-				//std::cout << i * x + (j - offset) << std::endl;
-			}
-			else {
-				++offset;
-			}
-		}
-		offset = 0;
+		Hudson::Util::Debug::LogError(std::format("Wrong grid size! Expected {}, got nav = {}, tex = {}, obj = {}", expectedSize, nav_grid_.size(), texture_grid_.size(), object_grid.size()));
 	}
-	delete[] charArray;
-
-	standardArray = json["texGrid"].dump();
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-	offset = 0;
-	for (int i = 0; i < y; ++i)
-	{
-		for (int j = 0; j < x*2; ++j)
-		{
-			if (charArray[i * x*2 + j] != ',') {
-				texture_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
-			}
-			else {
-				++offset;
-			}
-		}
-		offset = 0;
-	}
-	delete[] charArray;
-
-	standardArray = json["objGrid"].dump();
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), '['), standardArray.end());
-	standardArray.erase(std::remove(standardArray.begin(), standardArray.end(), ']'), standardArray.end());
-	charArray = new char[standardArray.length() + 1]; // +1 for std::string null terminator
-	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
-
-	offset = 0;
-	for (int i = 0; i < y; ++i)
-	{
-		for (int j = 0; j < x * 2; ++j)
-		{
-			if (charArray[i * x * 2 + j] != ',') {
-				object_grid[i * x + (j - offset)] = charArray[i * x * 2 + j];
-			}
-			else {
-				++offset;
-			}
-		}
-		offset = 0;
-	}
-	delete[] charArray;
-
+	
 	// map local texture ids to std::map<int, Texture*>
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
@@ -114,9 +53,10 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		for (int j = 0; j < x; ++j)
 		{
 			// relevant texID
-			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
+			int value = nav_grid_[i * x + j]; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
 			if(value == 1)
 			{
+				std::cout << "collider at " << j << "," << i << " idx " << i * x + j << "\n";
 				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent(j, i);
 				
 				colliderComponents.push_back(newCollider);
@@ -131,7 +71,7 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		for (int j = 0; j < x; ++j)
 		{
 			// relevant texID
-			int value = char(texture_grid_[i * x + j]) - 48;
+			int value = texture_grid_[i * x + j];
 
 			if (texture_reference_.find(value) != texture_reference_.end()) {
 				// Do something related to texture
@@ -152,17 +92,36 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	{
 		for (int j = 0; j < x; ++j)
 		{
-			std::cout << nav_grid_[i * x + j] << " ";
+			std::cout << (int)nav_grid_[i * x + j] << " ";
 		}
 		std::cout << std::endl;
 	}
+	std::cout << std::endl;
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			std::cout << (int)texture_grid_[i * x + j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+
+	for (int i = 0; i < y; ++i)
+	{
+		for (int j = 0; j < x; ++j)
+		{
+			std::cout << (int)object_grid[i * x + j] << " ";
+		}
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
 
 }
 
 Room::~Room()
 {
-	delete nav_grid_;
-	delete texture_grid_;
 }
 
 void Room::OnCreate()
@@ -194,7 +153,7 @@ void Room::OnCreate()
 		for (int j = 0; j < x; ++j)
 		{
 			// relevant texID
-			int value = char(object_grid[i * x + j]) - 48;
+			int value = object_grid[i * x + j];
 			if (value == 1) {
 				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
 				newObject->SetName("Player");
@@ -229,7 +188,6 @@ void Room::OnCreate()
 			}
 		}
 	}
-
 }
 
 void Room::OnTick(const double& dt)
@@ -250,7 +208,8 @@ void Room::OnDestroy()
 
 void Room::DrawPropertyUI()
 {
-
+	ImGui::Text("Room: ", roomName.c_str());
+	ImGui::Text("Dimensions: %d, %d", x, y);
 }
 
 void Room::FromJson(const nlohmann::json& j)
