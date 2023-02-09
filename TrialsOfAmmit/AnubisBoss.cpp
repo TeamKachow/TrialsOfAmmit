@@ -45,7 +45,7 @@ void AnubisBoss::OnCreate()
 	_parent->AddComponent(BossSprite);
 	_parent->GetTransform().scale.y = 128.0f;
 	_parent->GetTransform().scale.x = 96.0f;
-	_parent->GetTransform().pos = { 280.0f , 125.0f };
+	_parent->GetTransform().pos = { 700.0f , 200.0f };
 
 	//sets up collider
 	CollisionBox = new Hudson::Physics::ColliderComponent();
@@ -68,6 +68,7 @@ void AnubisBoss::OnCreate()
 		}
 	}
 	BossSprite->SetColor(vec3(1, 1, 0));
+	attackCD = 5.0;
 }
 
 void AnubisBoss::OnDestroy()
@@ -277,7 +278,6 @@ void AnubisBoss::OnTick(const double& dt)
 					break;
 				}
 				break;
-			}
 			case NECROMANCY:
 				if (attackCD <= 0.0)
 				{
@@ -295,6 +295,7 @@ void AnubisBoss::OnTick(const double& dt)
 					}
 				}
 				break;
+			}
 			break;
 		case VULNERABLE:
 			BossSprite->SetColor(vec3(0, 0, 0));

@@ -136,10 +136,7 @@ void LocustBehaviour::OnTick(const double& dt)
 }
 void LocustBehaviour::CollisionCheck()
 {
-	//TODO: Remove code and change to check for collision with the wall 
-
-	// pushes Ai back and choses a new destination when trying to leave the map bounds 
-	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>(); //TODO Make it so it can only Collide Once
+	std::vector<Hudson::Physics::ColliderComponent*> colliders = _parent->GetComponents<Hudson::Physics::ColliderComponent>();
 	if (!colliders.empty())
 	{
 		Hudson::Physics::ColliderComponent* collider = colliders.at(0);
@@ -159,7 +156,6 @@ void LocustBehaviour::CollisionCheck()
 						{
 							_player->TakeDamage(1.0f);
 							collider->ClearColliding();
-							_currentState = LS_DEAD;
 							break;
 						}
 						else

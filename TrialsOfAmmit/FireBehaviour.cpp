@@ -71,6 +71,7 @@ void FireBehaviour::OnTick(const double& dt)
 						{
 							_playerDamaged = true;
 							_player->TakeDamage(25.0f);
+							_currentState = EXTINGUISH;
 							collider->ClearColliding();
 						}
 						break;
