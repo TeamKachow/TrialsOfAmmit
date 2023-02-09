@@ -310,6 +310,7 @@ void AnubisBoss::OnTick(const double& dt)
 		}
 		break;
 	case BOSS_DEAD:
+
 		AiDead();
 		break;
 	}
@@ -345,6 +346,13 @@ void AnubisBoss::SetPlayerPos()
 void AnubisBoss::AiDead()
 {
 	//TODO: Remove the AI from the scene after the animaion 
+	_aiDeathSprite->SetGridSize(glm::vec2(3, 1));
+	_aiDeathSprite->SetGridPos(glm::vec2(1, 1));
+	_aiDeathSprite->SetDepthOrder(9);
+	_parent->RemoveComponent(BossSprite);
+	Blood->AddComponent(_aiDeathSprite);
+	_currentScene->AddObject(Blood);
+	Blood->GetTransform().pos = _parent->GetTransform().pos;
 	_currentScene->RemoveObject(Blood);
 	_currentScene->RemoveObject(_parent);
 }
