@@ -204,6 +204,11 @@ void GameSetup()
         editor->AddTool("Room Maker", toolData);
     #endif
 
+    engine->RegisterPreFrameHook([](Hudson::Common::Engine* engine)
+        {
+            glfwSetWindowTitle(engine->GetRenderer()->GetWindow()->GetWindow(), "Trials of Ammit");
+        });
+
     std::cout << "Game: engine has been set up!\n";
 }
 
