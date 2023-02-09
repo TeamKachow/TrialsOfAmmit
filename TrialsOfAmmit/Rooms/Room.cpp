@@ -5,6 +5,7 @@
 #include "../AiAgent.h"
 #include "../Chest.h"
 #include "../Door.h"
+#include "../AnubisBoss.h"
 
 
 Room::Room() : Behaviour("Room")
@@ -186,6 +187,14 @@ void Room::OnCreate()
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 5) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Anubis");
+				newObject->AddComponent(new AnubisBoss());
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
 		}
 	}
 }
@@ -242,6 +251,8 @@ void ObjectList() {
 	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
 	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
 	ImTextureID chestID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Chest")->ID);
+	//ImTextureID doorID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Door")->ID);
+	ImTextureID anubisID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Anubis")->ID);
 
 	ImGui::Text("ID: 1 - Player");
 	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
@@ -300,7 +311,7 @@ void ObjectList() {
 		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
 		float zoom = 4.0f;
 
-		imageSize = ImVec2(48, 64);
+		imageSize = ImVec2(64, 32);
 
 
 		if (region_x < 0.0f) { region_x = 0.0f; }
@@ -315,28 +326,34 @@ void ObjectList() {
 	}
 
 	ImGui::Text("ID: 4 - Door");
-	ImGui::Image(ImTextureID(-1), ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
-	//if (ImGui::IsItemHovered())
-	//{
-	//	ImGui::BeginTooltip();
-	//	float region_sz = 64.0f;
-	//	float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
-	//	float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
-	//	float zoom = 4.0f;
-
-	//	imageSize = ImVec2(48, 64);
+	ImGui::Image(ImTextureID(0), ImVec2(128, 64), uv_min, uv_max, tint_col, border_col);
 
 
-	//	if (region_x < 0.0f) { region_x = 0.0f; }
-	//	else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
-	//	if (region_y < 0.0f) { region_y = 0.0f; }
-	//	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+	ImGui::Text("ID: 5 - Anubis");
+	ImGui::Image(ImTextureID(anubisID), ImVec2(128, 128), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
 
-	//	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
-	//	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-	//	ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
-	//	ImGui::EndTooltip();
-	//}
+		imageSize = ImVec2(64, 64);
+
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(anubisID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
+
+	
 }
 
 void StartRoomMaker(bool& isActive)
