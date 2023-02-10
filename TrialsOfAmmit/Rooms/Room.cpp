@@ -195,6 +195,14 @@ void Room::OnCreate()
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 6) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Laser");
+				newObject->AddComponent(new LaserBehaviour());
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
 		}
 	}
 }
@@ -251,8 +259,8 @@ void ObjectList() {
 	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
 	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
 	ImTextureID chestID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Chest")->ID);
-	//ImTextureID doorID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Door")->ID);
 	ImTextureID anubisID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Anubis")->ID);
+	ImTextureID laserID = reinterpret_cast<ImTextureID>(resManager->GetTexture("LaserVert")->ID);
 
 	ImGui::Text("ID: 1 - Player");
 	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
@@ -353,6 +361,29 @@ void ObjectList() {
 		ImGui::EndTooltip();
 	}
 
+	ImGui::Text("ID: 6 - Laser");
+	ImGui::Image(ImTextureID(laserID), ImVec2(128, 128), uv_min, uv_max, tint_col, border_col);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		float region_sz = 64.0f;
+		float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
+		float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
+		float zoom = 4.0f;
+
+		imageSize = ImVec2(64, 64);
+
+
+		if (region_x < 0.0f) { region_x = 0.0f; }
+		else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
+		if (region_y < 0.0f) { region_y = 0.0f; }
+		else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
+
+		ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+		ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+		ImGui::Image(laserID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+		ImGui::EndTooltip();
+	}
 	
 }
 
