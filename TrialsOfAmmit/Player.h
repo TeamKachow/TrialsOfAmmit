@@ -31,7 +31,7 @@ private:
 	Hudson::Render::SpriteComponent* GraveSprite;
 	glm::vec2 _lastFramePos;
 	glm::vec2 _lastLastFramePos;
-
+	Hudson::Audio::AudioManager* _audioMan;
 
 
 	float _deathTimer;

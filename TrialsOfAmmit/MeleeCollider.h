@@ -19,6 +19,7 @@ public:
 	Hudson::Render::SpriteComponent* _slashSprite;
 	facingDirections _slashDirection;
 	glm::vec2 _playerPos;
+	Hudson::Audio::AudioManager* _audioMan;
 
 	Hudson::World::Scene* _currentScene;
 

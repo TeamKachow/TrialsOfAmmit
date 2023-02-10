@@ -26,6 +26,7 @@ public:
 	float _timer;
 	Hudson::Input::InputManager* _input;
 	
+	Hudson::Audio::AudioManager* _audioMan;
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;

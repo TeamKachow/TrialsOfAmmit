@@ -21,6 +21,7 @@ AbilityHolder::~AbilityHolder()
 
 void AbilityHolder::OnCreate()
 {
+	_audioMan = GetAudioManager();
 }
 
 void AbilityHolder::OnDestroy()
@@ -46,6 +47,7 @@ void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be
 	{
 		if (_input->getActionState("Ability")) //Key Checks --- Currently been made to E in game
 		{
+			_audioMan->playSound("audio/PlayerUseAbility.wav", false, 0);
 			_currentAbility->UseAbility(_parent->GetScene());
 		}
 	}

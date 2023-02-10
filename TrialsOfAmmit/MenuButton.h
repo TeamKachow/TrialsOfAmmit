@@ -19,6 +19,8 @@ public:
 	vec2 _buttonScale;
 	string _buttonText;
 	vec2 _textOffset;
+	Hudson::Audio::AudioManager* _audioMan;
+
 protected:
 
 private:

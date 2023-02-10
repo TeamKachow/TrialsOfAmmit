@@ -22,6 +22,7 @@ public:
 	Hudson::Render::TextComponent* _buttonTextObject;
 	Hudson::Render::TextComponent* _buttonTextObjectAudio;
 	Hudson::Render::TextComponent* _buttonTextObjectFullScreen;
+	Hudson::Audio::AudioManager* _audioMan;
 
 	vec2 _buttonScale;
 	string _buttonText;

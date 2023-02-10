@@ -164,7 +164,7 @@ void GameSetup()
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
-
+    
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
