@@ -227,9 +227,24 @@ void Room::OnCreate()
 				// Get room parent - get scene - add new game object to scene
 				_parent->GetScene()->AddObject(newObject);
 			}
+			else if (value == 5) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Anubis");
+				newObject->AddComponent(new AnubisBoss());
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
+			else if (value == 6) {
+				Hudson::Entity::GameObject* newObject = new Hudson::Entity::GameObject();
+				newObject->SetName("Laser");
+				newObject->AddComponent(new LaserBehaviour());
+				newObject->GetTransform().pos = (_parent->GetTransform().pos + glm::vec2(j * newObject->GetTransform().scale.x, i * newObject->GetTransform().scale.y));
+				// Get room parent - get scene - add new game object to scene
+				_parent->GetScene()->AddObject(newObject);
+			}
 		}
 	}
-
 }
 
 void Room::OnTick(const double& dt)
