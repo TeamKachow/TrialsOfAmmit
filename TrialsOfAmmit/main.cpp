@@ -181,7 +181,7 @@ void GameSetup()
 
     Hudson::Entity::GameObject* room = new Hudson::Entity::GameObject();
     room->SetName("Room");
-    room->AddComponent(new class Room("Rooms/room4.room"));
+    room->AddComponent(new class Room("Rooms/room8.room"));
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* Boss = new Hudson::Entity::GameObject();
