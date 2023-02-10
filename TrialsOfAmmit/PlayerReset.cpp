@@ -8,7 +8,6 @@ PlayerReset::PlayerReset(glm::vec2 spawnPos, Hudson::World::Scene* sceneToPause,
 	_player = player;
 	_isKeyRelease = false;
 	_canRun = true;
-	_canRun2 = false;
 	Timer = 0;
 	UpPauseTimer = 1;
 }
@@ -24,7 +23,7 @@ void PlayerReset::OnCreate()
 void PlayerReset::OnTick(const double& dt)
 {
 	std::cout << "Is rUNnning " << "\n";
-	if (_inputManager->getActionState("Respawn"))
+	if (_inputManager->getActionState("Respawn") && _player->_playerHealth <= 0)
 	{
 		
 		_sceneToPause->SetActive(true);
@@ -66,6 +65,5 @@ void PlayerReset::PauseScene()
 	_sceneToPause->SetActive(false);
 	_player->_isPaused = true;
 	_canRun = false;
-	_canRun2 = false;
 	Timer = 0;
 }

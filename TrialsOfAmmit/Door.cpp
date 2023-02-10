@@ -26,7 +26,7 @@ void Door::OnCreate()
 	_isHit = false;
 
 	_minRange = 0;
-	_maxRange = 5;
+	_maxRange = 8;
 
 	_audioMan = GetAudioManager();
 
