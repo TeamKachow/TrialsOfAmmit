@@ -17,7 +17,7 @@ public:
 	Rage* _rage;
 	Heal* _heal;
 	RoomAOE* _roomaoe;
-	OneUP* _oneup;
+	//OneUP* _oneup;
 	
 
 	AbilityHolder();
