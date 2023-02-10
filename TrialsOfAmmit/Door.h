@@ -27,6 +27,7 @@ private:
 	void MovePlayer();
 	Hudson::Entity::GameObject* NewRoom;
 	Hudson::Physics::ColliderComponent* DoorCollider;
+	Hudson::Audio::AudioManager* _audioMan;
 	Player* _player;
 	string Roomname;
 	int RandRoomNum;

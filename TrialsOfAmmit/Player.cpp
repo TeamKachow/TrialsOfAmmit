@@ -93,7 +93,7 @@ void Player::OnCreate() //The magic is set up here
 	PauseText->GetTransform().pos = vec2(500, 200);
 	PauseText->GetTransform().scale = vec2(5, 1);
 	_parent->GetScene()->AddObject(PauseText);
-
+	_audioMan = GetAudioManager();
 
 	CreateUI();
 	HealthBarUI();
@@ -227,6 +227,7 @@ void Player::OnTick(const double& dt)
 	{
 		if (_attackTimer > _playersWeapon->_weaponAttackSpeed)
 		{
+			_audioMan->playSound("audio/PlayerMeleeAttackSwing.wav", false, 0);
 			Fire();
 			_attackTimer = 0;
 		}

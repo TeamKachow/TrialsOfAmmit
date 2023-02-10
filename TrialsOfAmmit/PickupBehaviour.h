@@ -15,6 +15,7 @@ public:
 
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
+	Hudson::Audio::AudioManager* _audioMan;
 
 	Player* _currentPlayer;
 	void CheckCollision();

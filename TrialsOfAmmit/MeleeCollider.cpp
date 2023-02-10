@@ -37,7 +37,7 @@ void MeleeCollider::OnCreate()
 	_parent->AddComponent(_slashCollider);
 	_parent->SetName("SlashCollider");
 
-
+	_audioMan = GetAudioManager();
 
 	switch (_slashDirection) {
 	case Down:
@@ -156,6 +156,7 @@ void MeleeCollider::OnTick(const double& dt)
 					Player* _player = other->GetParent()->GetComponent<Player>();
 					if (_player != nullptr)
 					{
+						_audioMan->playSound("audio/PlayerMeleeAttackSwing.wav", false, 0);
 						_player->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
 						collider->ClearColliding();

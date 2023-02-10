@@ -125,6 +125,9 @@ void SettingsButton::OnCreate()
 	FullScreenText->GetTransform().pos.x = 80.0f;
 	FullScreenText->GetTransform().pos.y = 345.0f;
 	_parent->GetScene()->AddObject(FullScreenText);
+
+	_audioMan = GetAudioManager();
+
 	//stops the button clicking once per frame
 	_clicked = false;
 	_fullScreen = false;
@@ -141,7 +144,7 @@ void SettingsButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
-			
+			_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 			Forawrd();
 		}
 	}
@@ -150,6 +153,7 @@ void SettingsButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
+			_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 			Back();
 		}
 	}
@@ -159,7 +163,7 @@ void SettingsButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
-
+			_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 			ForawrdAudio();
 		}
 	}
@@ -168,6 +172,7 @@ void SettingsButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
+			_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 			BackAudio();
 		}
 	}
@@ -177,6 +182,7 @@ void SettingsButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
+			_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 			SetFullScreen();
 		}
 	}
