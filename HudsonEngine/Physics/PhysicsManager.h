@@ -32,7 +32,6 @@ namespace Hudson::Physics
 		void UpdatePhysics();
 		void UpdateMovement(double deltaTime);
 		void UpdateCollider();
-		void RemoveColliders(const std::vector<ColliderComponent*>& toRemove);
 
 	private:
 		Hudson::Physics::PhysicsComponent* _physics;
