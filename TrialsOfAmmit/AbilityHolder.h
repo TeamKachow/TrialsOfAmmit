@@ -21,10 +21,11 @@ public:
 	
 
 	AbilityHolder();
-
 	~AbilityHolder();
+
 	float _timer;
 	Hudson::Input::InputManager* _input;
+	
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;
