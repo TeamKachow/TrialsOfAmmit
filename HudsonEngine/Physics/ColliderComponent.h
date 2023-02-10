@@ -17,8 +17,12 @@ struct AABB
 
 namespace Hudson::Physics
 {
+	class PhysicsManager;
+
 	class ColliderComponent : public Entity::Component, public Common::IEditable
 	{
+		friend class PhysicsManager;
+
 	public:
 		ColliderComponent();
 		ColliderComponent(const ColliderComponent& other) = default;
