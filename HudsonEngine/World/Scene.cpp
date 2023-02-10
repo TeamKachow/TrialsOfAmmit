@@ -1,5 +1,6 @@
 ﻿#include "../World/Scene.h"
 
+#include "../Common/Engine.h"
 #include "../Entity/Behaviour.h"
 #include "../Entity/GameObject.h"
 #include "../Util/Debug.h"
@@ -15,6 +16,7 @@ void Hudson::World::Scene::OnQueueUpdate(Common::DeferredObjectSet<Entity::GameO
         break;
 
     case Common::DeferredObjectSet<Hudson::Entity::GameObject*>::ActionType::REMOVE:
+        Common::Engine::GetInstance()->CallObjectRemovalHooks(object);
         object->OnSceneRemove();
         object->_scene = nullptr;
         delete object;
