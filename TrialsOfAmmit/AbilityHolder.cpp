@@ -43,6 +43,12 @@ void AbilityHolder::ToJson(nlohmann::json& j)
 
 void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead
 {
+	if (!_currentAbility)
+	{
+		// bug: sometimes this becomes null, fix it -- mat
+		_currentAbility = _roll;
+	}
+
 	if (_currentAbility->_abilityState == ready)
 	{
 		if (_input->getActionState("Ability")) //Key Checks --- Currently been made to E in game
