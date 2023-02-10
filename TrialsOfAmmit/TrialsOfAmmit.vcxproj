@@ -101,6 +101,7 @@
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Roll.h" />
     <ClInclude Include="RoomAOE.h" />
     <ClInclude Include="Rooms\Room.h" />
@@ -116,6 +117,12 @@
     <ProjectReference Include="..\HudsonEngine\HudsonEngine.vcxproj">
       <Project>{a3131986-a32a-41cd-877a-66c5219d4623}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TrialsOfAmmit.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Ammit.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

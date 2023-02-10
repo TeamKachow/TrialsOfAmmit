@@ -122,8 +122,18 @@ void Init()
 #endif
 }
 
+void SetGlfwWindowIcon()
+{
+    GLFWimage images[1];
+    images[0].pixels = stbi_load("textures/GameIcon.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+    glfwSetWindowIcon(engine->GetRenderer()->GetWindow()->GetWindow(), 1, images);
+    stbi_image_free(images[0].pixels);
+}
+
 void GameSetup()
 {
+    SetGlfwWindowIcon();
+
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
