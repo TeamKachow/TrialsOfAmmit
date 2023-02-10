@@ -26,7 +26,9 @@ void Door::OnCreate()
 	_isHit = false;
 
 	_minRange = 0;
-	_maxRange = 5;
+	_maxRange = 8;
+
+	_audioMan = GetAudioManager();
 
 	auto _sceneObjects = _parent->GetScene()->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
@@ -104,7 +106,7 @@ void Door::CollisionCheck()
 
 void Door::GenerateNewRoom()
 {
-	
+	_audioMan->playSound("audio/RoomEnter.wav", false, 0);
 	random_device rand;
 	uniform_int_distribution<int> dist(_minRange, _maxRange);
 	RandRoomNum = dist(rand);

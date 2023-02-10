@@ -17,7 +17,6 @@ public:
 	float Timer;
 	float UpPauseTimer;
 	bool _canRun;
-	bool _canRun2;
 	Player* _player;
 
 	Hudson::Input::InputManager* _inputManager;

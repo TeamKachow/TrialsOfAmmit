@@ -46,6 +46,7 @@ namespace Hudson::Editor
 		Entity::GameObject* _selectedObj = nullptr;
 		bool _showIds = false;
 		bool _showHelp = false;
+		bool _showImguiDemo = false;
 
 		std::map<World::Scene*, SceneMeta> _sceneMeta;
 		World::Scene* _sceneToSave;
@@ -74,7 +75,7 @@ namespace Hudson::Editor
 		void ComponentList();
 		void Tools();
 		void ObjectProperties();
-		void Debug();
+		void DebugLog();
 		void Help();
 		void Input();
 		void SaveDialogs();

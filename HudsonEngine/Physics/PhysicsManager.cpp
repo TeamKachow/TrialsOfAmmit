@@ -19,6 +19,12 @@ Hudson::Physics::PhysicsManager::PhysicsManager(Hudson::Common::Engine* engine) 
 			UpdateMovement(dt);
 			UpdateCollider();
 		});
+
+	engine->RegisterObjectRemovalHook([&](Entity::GameObject* object)
+		{
+			std::vector<ColliderComponent*> toDelete = object->GetComponents<ColliderComponent>();
+	        RemoveColliders(toDelete);
+		});
 }
 
 Hudson::Physics::PhysicsManager::~PhysicsManager()
@@ -98,3 +104,20 @@ void Hudson::Physics::PhysicsManager::UpdateCollider()
 	}
 }
 
+void Hudson::Physics::PhysicsManager::RemoveColliders(const std::vector<ColliderComponent*>& toRemove)
+{
+	auto scenes = _engine->GetSceneManager()->GetLoadedScenes();
+    for (auto scene : scenes)
+    {
+        for (auto object : scene->GetObjects())
+        {
+            for (auto collider : object->GetComponents<ColliderComponent>())
+            {
+                for (auto colliderToRemove : toRemove)
+                {
+					collider->_colliderList.erase(colliderToRemove);
+                }
+            }
+        }
+    }
+}

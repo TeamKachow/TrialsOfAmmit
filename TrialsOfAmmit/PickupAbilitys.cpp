@@ -63,11 +63,11 @@ void PickupAbilitys::OnCreate()
 		_abilitySprite->SetGridPos(glm::vec2(4, 1));
 		_abilityPickup = new RoomAOE;
 	}
-	if (_randomAbilityInt == 5)
+	/*if (_randomAbilityInt == 5)
 	{
 		_abilitySprite->SetGridPos(glm::vec2(5, 1));
 		_abilityPickup = new OneUP;
-	}
+	}*/
 
 }
 

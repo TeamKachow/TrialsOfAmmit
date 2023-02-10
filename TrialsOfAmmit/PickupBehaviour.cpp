@@ -33,6 +33,7 @@ void PickupBehaviour::CheckCollision()
 			{
 				if (other->GetParent()->GetComponent<PickupWeapon>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PickupWeapon* _pickUp = other->GetParent()->GetComponent<PickupWeapon>();
 					if (_pickUp != nullptr)
 					{
@@ -45,6 +46,7 @@ void PickupBehaviour::CheckCollision()
 				}
 				if (other->GetParent()->GetComponent<PickupAbilitys>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PickupAbilitys* _pickupAbility = other->GetParent()->GetComponent<PickupAbilitys>();
 					if (_pickupAbility != nullptr)
 					{
@@ -55,6 +57,7 @@ void PickupBehaviour::CheckCollision()
 				}
 				if (other->GetParent()->GetComponent<PassivePickups>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PassivePickups* _pickupPassive = other->GetParent()->GetComponent<PassivePickups>();
 					if (_pickupPassive != nullptr)
 					{
@@ -87,6 +90,7 @@ void PickupBehaviour::OnCreate()
 	_currentPlayer = _parent->GetComponent<Player>();
 	_ThisCollider = new Hudson::Physics::ColliderComponent;
 	_parent->AddComponent(_ThisCollider);
+	_audioMan = GetAudioManager();
 }
 
 void PickupBehaviour::OnTick(const double& dt)

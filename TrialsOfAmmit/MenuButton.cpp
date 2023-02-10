@@ -38,12 +38,15 @@ void MenuButton::OnCreate()
 	MenuText->AddComponent(_buttonTextObject);
 	MenuText->GetTransform().scale = vec2(1, 1);
 	MenuText->GetTransform().pos = vec2(_parent->GetTransform().pos.x + _textOffset.x, _parent->GetTransform().pos.y + _textOffset.y);
+
+	_audioMan = GetAudioManager();
 	
 	_clicked = false;
 	_nextScene->SetActive(false);
 
 	_currentScene = _parent->GetScene();
 	_currentScene->AddObject(MenuText);
+	
 }
 
 void MenuButton::OnDestroy()
@@ -58,6 +61,7 @@ void MenuButton::OnTick(const double& dt)
 	{
 		if (_inputManager->getM1Click() && _clicked == false)
 		{
+			
 			if (_nextScene->IsActive() == false)
 			{
 				OnClick();
@@ -75,6 +79,7 @@ void MenuButton::DrawPropertyUI()
 void MenuButton::OnClick()
 {
 	cout << "Play CLicked" << endl;
+	_audioMan->playSound("audio/UIMenuClick.wav", false, 0);
 	_nextScene->SetActive(true);
 	GetSceneManager()->AddScene(_nextScene);
 	GetSceneManager()->RemoveScene(_currentScene);

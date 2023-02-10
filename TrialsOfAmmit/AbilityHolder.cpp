@@ -10,7 +10,7 @@ AbilityHolder::AbilityHolder() : Behaviour ("Ability")
 	_rage = new Rage;
 	_heal = new Heal;
 	_roomaoe = new RoomAOE;
-	_oneup = new OneUP;
+	//_oneup = new OneUP;
 	_currentAbility = _roll;
 	//_currentAbility = _oneup;
 }
@@ -21,6 +21,7 @@ AbilityHolder::~AbilityHolder()
 
 void AbilityHolder::OnCreate()
 {
+	_audioMan = GetAudioManager();
 }
 
 void AbilityHolder::OnDestroy()
@@ -42,10 +43,17 @@ void AbilityHolder::ToJson(nlohmann::json& j)
 
 void AbilityHolder::OnTick(const double& dt) // need to make so that it can't be used if player is dead
 {
+	if (!_currentAbility)
+	{
+		// bug: sometimes this becomes null, fix it -- mat
+		_currentAbility = _roll;
+	}
+
 	if (_currentAbility->_abilityState == ready)
 	{
 		if (_input->getActionState("Ability")) //Key Checks --- Currently been made to E in game
 		{
+			_audioMan->playSound("audio/PlayerUseAbility.wav", false, 0);
 			_currentAbility->UseAbility(_parent->GetScene());
 		}
 	}

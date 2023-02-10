@@ -122,8 +122,18 @@ void Init()
 #endif
 }
 
+void SetGlfwWindowIcon()
+{
+    GLFWimage images[1];
+    images[0].pixels = stbi_load("textures/GameIcon.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+    glfwSetWindowIcon(engine->GetRenderer()->GetWindow()->GetWindow(), 1, images);
+    stbi_image_free(images[0].pixels);
+}
+
 void GameSetup()
 {
+    SetGlfwWindowIcon();
+
     resManager->LoadTexture("textures/mummy_texture.png", true, "Mummy");
     resManager->LoadTexture("textures/ArrowSpriteSheet.png", true, "Projectile");
     resManager->LoadTexture("textures/RockSpriteSheet.png", true, "Rock");
@@ -164,7 +174,7 @@ void GameSetup()
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     
     Hudson::World::Scene* SettingsScene = new Hudson::World::Scene();
-
+    
     engine->GetSceneManager()->AddScene(TestScene);
 
     Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
@@ -183,16 +193,6 @@ void GameSetup()
     room->SetName("Room");
     room->AddComponent(new class Room("Rooms/room8.room"));
     startScene->AddObject(room);
-
-    Hudson::Entity::GameObject* Boss = new Hudson::Entity::GameObject();
-    Boss->SetName("Room");
-    Boss->AddComponent(new AnubisBoss(glm::vec2(200,200)));
-    startScene->AddObject(Boss);
-
-    Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
-    wpUp->SetName("Room");
-    wpUp->AddComponent(new PickupWeapon(glm::vec2(500,300)));
-    startScene->AddObject(wpUp);
 
     Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
     PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
