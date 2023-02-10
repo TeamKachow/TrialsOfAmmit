@@ -26,6 +26,8 @@ private:
 	Hudson::Render::TextComponent* _resetText;
 	Hudson::Entity::GameObject* _resetTextObj;
 
+	Hudson::Entity::GameObject* Grave;
+
 	Hudson::Render::SpriteComponent* GraveSprite;
 	glm::vec2 _lastFramePos;
 	glm::vec2 _lastLastFramePos;
