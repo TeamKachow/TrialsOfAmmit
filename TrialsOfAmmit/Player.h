@@ -18,9 +18,15 @@ private:
 	Hudson::Physics::ColliderComponent* playerCollider;
 
 	Hudson::World::Scene* _pauseScene;
+	Hudson::World::Scene* _resetScene;
 
 	Hudson::Render::TextComponent* _pauseText;
 	Hudson::Entity::GameObject* PauseText;
+
+	Hudson::Render::TextComponent* _resetText;
+	Hudson::Entity::GameObject* _resetTextObj;
+
+	Hudson::Entity::GameObject* Grave;
 
 	Hudson::Render::SpriteComponent* GraveSprite;
 	glm::vec2 _lastFramePos;
@@ -76,7 +82,7 @@ private:
 	void CreateUI();
 	void HealthBarUI();
 
-	void Respawn();
+	
 	void WallCollisions();
 	void InverseForce();
 	//Anim Functions
@@ -91,6 +97,7 @@ public:
 	Hudson::Render::SpriteComponent* _playerSprite;
 
 	Hudson::Entity::GameObject* _pauseMenu;
+	Hudson::Entity::GameObject* _resetMenu;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
 	float _maxHealth;
@@ -98,6 +105,8 @@ public:
 	float _playerHealth = 100.0f;
 	float _playerDamageMod;
 	bool _godMode;
+
+	void Respawn();
 
 	void PassiveAddMaxHealth(float additionalHealth);
 	void PassiveAddSpeed(float additionalSpeed);

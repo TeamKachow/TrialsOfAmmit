@@ -159,6 +159,7 @@
     <ClCompile Include="SettingsButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerReset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -297,5 +298,6 @@
     <ClInclude Include="facingDirection.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerReset.h" />
   </ItemGroup>
 </Project>

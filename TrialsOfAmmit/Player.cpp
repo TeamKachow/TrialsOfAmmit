@@ -5,6 +5,7 @@
 #include "PickupBehaviour.h"
 #include "Rooms/Room.h"
 #include "PauseMenu.h"
+#include "PlayerReset.h"
 
 Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 {
@@ -82,6 +83,25 @@ void Player::OnCreate() //The magic is set up here
 	_pauseScene->AddObject(_pauseMenu);
 	GetEngine()->GetSceneManager()->AddScene(_pauseScene);
 
+	_resetScene = new Hudson::World::Scene();
+	_resetScene->SetName("ResetScene");
+	_resetMenu = new Hudson::Entity::GameObject();
+	_resetMenu->AddComponent(new PlayerReset(glm::vec2(232, 200), _parent->GetScene(), _parent->GetComponent<Player>()));
+	_resetScene->AddObject(_resetMenu);
+	GetEngine()->GetSceneManager()->AddScene(_resetScene);
+
+	_resetText = new Hudson::Render::TextComponent("Fonts\\origa___.ttf", resManager->GetShader("textShader"));
+	_resetText->SetText("Press K To Restart");
+	_resetText->SetColor(vec3(1, 1, 1));
+	_resetText->SetDepthOrder(30);
+
+	_resetTextObj = new Hudson::Entity::GameObject();
+	_resetTextObj->AddComponent(_resetText);
+	_resetTextObj->SetName("ResetText");
+	_resetTextObj->GetTransform().pos = vec2(2000, 2000);
+	_resetTextObj->GetTransform().scale = vec2(2, 1);
+	_parent->GetScene()->AddObject(_resetTextObj);
+
 	_pauseText = new Hudson::Render::TextComponent("Fonts\\origa___.ttf", resManager->GetShader("textShader"));
 	_pauseText->SetText("Pause");
 	_pauseText->SetColor(vec3(1, 1, 1));
@@ -134,6 +154,8 @@ void Player::TakeDamage(float _damageTaken)
 		_isDamaged = true;
 		if (_playerHealth <= 0)
 		{
+			_resetTextObj->GetTransform().pos = vec2(232, 200);
+			_resetMenu->GetComponent<PlayerReset>()->PauseScene();
 			OnDeath();
 			_isDead = true;
 		}
@@ -164,11 +186,12 @@ void Player::OnTick(const double& dt)
 		_deathTimer += dt;
 		if (_deathTimer >= _deathAnim)
 		{
-			GraveSprite->SetGridPos(glm::vec2(_deathGridX, 0));
+			//GraveSprite->SetGridPos(glm::vec2(_deathGridX, 0));
 			_deathTimer = 0;
 			_deathGridX += 1;
 			if (_deathGridX >= 3)
 			{
+				//Grave->GetTransform().pos = vec2(2000, 2000);
 				_isDead = false;
 				_deathGridX = 0;
 			}
@@ -343,9 +366,13 @@ void Player::HealthBarUI()
 
 void Player::Respawn() //DEBUG RESPAWN PLAYER
 {
-	_parent->GetTransform().pos = glm::vec2(500, 500);
-	_playerHealth = 100;
+	
+	_isDead = false;
+	_parent->GetTransform().pos = glm::vec2(750, 500);
+	_playerHealth = _maxHealth;
 	_playersWeapon = new Axe;
+
+	_resetTextObj->GetTransform().pos = vec2(2000, 2000);
 }
 
 void Player::WallCollisions()//Checks the First collision box on the player to see if they are hitting walls
@@ -432,8 +459,8 @@ void Player::AnimMove()//Animation is based of player moving and called when it 
 
 void Player::OnDeath() //Makes the graves stone and animates after
 {
-	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
-	Hudson::Entity::GameObject* Grave = new Hudson::Entity::GameObject;
+	/*Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
+	Grave = new Hudson::Entity::GameObject;
 	GraveSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Grave"));
 	GraveSprite->SetGridSize(glm::vec2(3, 1));
 	GraveSprite->SetColor(glm::vec3(1.0f, 1.0f, 1.0f));
@@ -444,7 +471,7 @@ void Player::OnDeath() //Makes the graves stone and animates after
 	_currentScene->AddObject(Grave);
 	Grave->GetTransform().pos = _parent->GetTransform().pos;
 	_parent->GetTransform().pos = glm::vec2(1000, 2000);
-	Grave->SetName("Blood");
+	Grave->SetName("Grave");*/
 }
 
 

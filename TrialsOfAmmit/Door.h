@@ -12,17 +12,19 @@ class Door : public Hudson::Entity::Behaviour, public Hudson::Common::IEditable
 public:
 	Door();
 	~Door();
+	void GenerateNewRoom();
+	void OnCreate() override;
 protected:
 
 private:
-	void OnCreate() override;
+	
 	void OnDestroy() override;
 	void OnTick(const double& dt) override;
 	void DrawPropertyUI() override;
 	void FromJson(const nlohmann::json& j) override;
 	void ToJson(nlohmann::json& j) override;
 	void CollisionCheck();
-	void GenerateNewRoom();
+
 	void DeleteRoomGameObjects();
 	void MovePlayer();
 	Hudson::Entity::GameObject* NewRoom;
