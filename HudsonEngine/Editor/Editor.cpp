@@ -175,6 +175,8 @@ void Hudson::Editor::Editor::MenuBar()
 		if (ImGui::BeginMenu("Debug"))
 		{
 			ImGui::MenuItem("Show IDs", "", &_showIds);
+			ImGui::MenuItem("Show ImGui demo", "", &_showImguiDemo);
+			ImGui::Separator();
 			if (ImGui::MenuItem("Dump colliders to file"))
 			{
 				for (World::Scene* scene : _engine->GetSceneManager()->GetLoadedScenes())
@@ -688,7 +690,7 @@ void Hudson::Editor::Editor::Tools()
 	ImGui::End();
 }
 
-void Hudson::Editor::Editor::Debug()
+void Hudson::Editor::Editor::DebugLog()
 {
 	ImGui::Begin("Debug");
 	ImGui::TextColored(IM_COLOR_GRAY, "Not yet implemented");
@@ -701,7 +703,8 @@ void Hudson::Editor::Editor::Help()
 	{
 		ImGui::TextColored(IM_COLOR_CYAN, "Editing scenes");
 		ImGui::Text("Right-click scenes to edit their properties, add empty objects and save them.");
-		ImGui::Text("Double-click objects in the hierarchy.");
+		ImGui::Text("Click objects in the hierarchy to open the object editor.");
+		ImGui::Text("Right-click objects in the hierarchy to delete them.");
 
 		ImGui::EndPopup();
 	}
@@ -893,6 +896,10 @@ void Hudson::Editor::Editor::SaveDialogs()
 
 void Hudson::Editor::Editor::Draw()
 {
+	if (_showImguiDemo)
+	{
+		ImGui::ShowDemoWindow(&_showImguiDemo);
+	}
 	MenuBar();
 	Viewport();
 	Hierarchy();
@@ -900,7 +907,7 @@ void Hudson::Editor::Editor::Draw()
 	ComponentList();
 	ObjectProperties();
 	Tools();
-	Debug();
+	//DebugLog();
 	Help();
 	SaveDialogs();
 	if (openInput)
