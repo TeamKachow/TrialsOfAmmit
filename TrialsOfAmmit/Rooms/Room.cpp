@@ -1,4 +1,4 @@
-﻿#include "Room.h"
+﻿ #include "Room.h"
 
 // Want to spawn something new include here
 #include "../Player.h"
@@ -34,12 +34,12 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	strcpy_s(charArray, standardArray.length() + 1, standardArray.c_str());
 
 	int offset = 0;
-	for (int i = 0; i < y; ++i)
+	for(int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x * 2; ++j) //20
+		for (int j = 0; j < x*2; ++j) //20
 		{
-			if (charArray[i * x * 2 + j] != ',') {
-				nav_grid_[i * x + (j - offset)] = charArray[i * x * 2 + j];
+			if (charArray[i * x*2 + j] != ',') {
+				nav_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
 				//std::cout << i * x + (j - offset) << std::endl;
 			}
 			else {
@@ -59,10 +59,10 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	offset = 0;
 	for (int i = 0; i < y; ++i)
 	{
-		for (int j = 0; j < x * 2; ++j)
+		for (int j = 0; j < x*2; ++j)
 		{
-			if (charArray[i * x * 2 + j] != ',') {
-				texture_grid_[i * x + (j - offset)] = charArray[i * x * 2 + j];
+			if (charArray[i * x*2 + j] != ',') {
+				texture_grid_[i * x + (j - offset)] = charArray[i * x*2 + j];
 			}
 			else {
 				++offset;
@@ -98,14 +98,14 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 	Hudson::Common::ResourceManager* resManager = Hudson::Common::ResourceManager::GetInstance();
 
 	nlohmann::json texRef = json["texReference"];
-	for (const auto& object : texRef)
+	for (const auto &object : texRef)
 	{
 		// TODO determine alpha channel in storage of tex
 		resManager->LoadTexture(object["textureRoot"], true, "Dummy");
-
+		
 		Hudson::Render::SpriteComponent* newSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("Dummy"), glm::vec2(object["gridSizeX"], object["gridSizeY"]), glm::vec2(object["gridPosX"], object["gridPosY"]));
 		newSprite->SetDepthOrder(0);
-		texture_reference_.insert({ object["textureID"], newSprite });
+		texture_reference_.insert({ object["textureID"], newSprite});
 
 	}
 
@@ -115,10 +115,10 @@ Room::Room(const char* roomFile) : Behaviour("Room")
 		{
 			// relevant texID
 			int value = char(nav_grid_[i * x + j]) - 48; // This isn't a great solution but due to time constraints im sticking with this flaw in the planned design
-			if (value == 1)
+			if(value == 1)
 			{
 				Hudson::Physics::ColliderComponent* newCollider = new Hudson::Physics::ColliderComponent(j, i);
-
+				
 				colliderComponents.push_back(newCollider);
 			}
 
@@ -294,17 +294,12 @@ void ObjectList() {
 	ImVec2 uv_max = ImVec2(0.0f, 1.0f); // Lower-right
 	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);   // No tint
 	ImVec4 border_col = ImVec4(1.0f, 1.0f, 1.0f, 0.5f); // 50% opaque white
-
+	
 	ImTextureID playerID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Player")->ID);
 	ImTextureID mummyID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Mummy")->ID);
 	ImTextureID chestID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Chest")->ID);
-	<<<<<< < Updated upstream
-		====== =
-		ImTextureID anubisID = reinterpret_cast<ImTextureID>(resManager->GetTexture("Anubis")->ID);
-	ImTextureID laserID = reinterpret_cast<ImTextureID>(resManager->GetTexture("LaserVert")->ID);
-	>>>>>> > Stashed changes
 
-		ImGui::Text("ID: 1 - Player");
+	ImGui::Text("ID: 1 - Player");
 	ImGui::Image(playerID, ImVec2(96, 128), uv_min, uv_max, tint_col, border_col);
 	if (ImGui::IsItemHovered())
 	{
@@ -393,53 +388,11 @@ void ObjectList() {
 	//	if (region_y < 0.0f) { region_y = 0.0f; }
 	//	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
 
-	<<<<<< < Updated upstream
-		//	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
-		//	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-		//	ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
-		//	ImGui::EndTooltip();
-		//}
-		====== =
-		imageSize = ImVec2(64, 64);
-
-
-	if (region_x < 0.0f) { region_x = 0.0f; }
-	else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
-	if (region_y < 0.0f) { region_y = 0.0f; }
-	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
-
-	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
-	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-	ImGui::Image(anubisID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
-	ImGui::EndTooltip();
-}
-
-ImGui::Text("ID: 6 - Laser");
-ImGui::Image(ImTextureID(laserID), ImVec2(128, 128), uv_min, uv_max, tint_col, border_col);
-if (ImGui::IsItemHovered())
-{
-	ImGui::BeginTooltip();
-	float region_sz = 64.0f;
-	float region_x = io.MousePos.x - pos.x - region_sz * 0.5f;
-	float region_y = io.MousePos.y - pos.y - region_sz * 0.5f;
-	float zoom = 4.0f;
-
-	imageSize = ImVec2(64, 64);
-
-
-	if (region_x < 0.0f) { region_x = 0.0f; }
-	else if (region_x > imageSize.x - region_sz) { region_x = imageSize.x - region_sz; }
-	if (region_y < 0.0f) { region_y = 0.0f; }
-	else if (region_y > imageSize.y - region_sz) { region_y = imageSize.y - region_sz; }
-
-	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
-	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
-	ImGui::Image(laserID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
-	ImGui::EndTooltip();
-}
-
-
->>>>>> > Stashed changes
+	//	ImVec2 uv0 = ImVec2((region_x) / imageSize.x, (region_y) / imageSize.y);
+	//	ImVec2 uv1 = ImVec2((region_x + region_sz) / imageSize.x, (region_y + region_sz) / imageSize.y);
+	//	ImGui::Image(chestID, ImVec2(region_sz * zoom, region_sz * zoom), uv0, uv1, tint_col, border_col);
+	//	ImGui::EndTooltip();
+	//}
 }
 
 void StartRoomMaker(bool& isActive)
