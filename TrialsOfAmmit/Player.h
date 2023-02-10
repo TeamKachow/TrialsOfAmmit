@@ -83,13 +83,16 @@ private:
 	void AnimMove();
 	void OnDeath();
 
-	
+	void SendPlayerToMenu();
+
+	Hudson::World::Scene* _testScene;
 public:
 	bool toPause;
 	bool _isPaused;
 	bool _pauseKeyIsDeactive;
 	Hudson::Render::SpriteComponent* _playerSprite;
 
+	Hudson::Entity::GameObject* RestartButton;
 	Hudson::Entity::GameObject* _pauseMenu;
 	//Accessable player Stats
 	BaseWeaponClass* _playersWeapon = &_axe;
@@ -99,14 +102,17 @@ public:
 	float _playerDamageMod;
 	bool _godMode;
 
+	Hudson::World::Scene* _playscene;
+	Hudson::World::Scene* _settingScene;
+
 	void PassiveAddMaxHealth(float additionalHealth);
 	void PassiveAddSpeed(float additionalSpeed);
 	void PassiveAddDamageMod(float additionalDamage);
 	void SetPosition(glm::vec2 Position);
 
 	void TakeDamage(float _damageTaken);
-	Player(const Player& other) = default;
-	Player(glm::vec2 spawnPos = glm::vec2(0,0));
+	//Player(const Player& other) = default;
+	Player(glm::vec2 spawnPos = glm::vec2(0,0), Hudson::World::Scene* playScene = { nullptr }, Hudson::World::Scene* settingScene = { nullptr });
 	~Player() override;
 	
 	//Base Needed Functions

@@ -24,6 +24,7 @@
 #include "PauseMenu.h"
 #include "Rooms/Room.h"
 #include "Door.h"
+#include "MainMenu.h"
 
 Hudson::Common::Engine* engine;
 
@@ -100,6 +101,7 @@ void InitRegistry()
     registry->Register<CameraDolly>("CameraDollyBehaviour");
     registry->Register<Door>("DoorBehaviour");
     registry->Register<PauseMenu>("Pause");
+    registry->Register<MainMenu>("MainMenuBehavoiur");
 }
 
 void Init() 
@@ -155,11 +157,9 @@ void GameSetup()
     SettingsMarkerImage = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("SettingsMarkerImage"));
     SettingsMarkerImage->SetGridSize(glm::vec2(1, 1));
 
-    backgroundImage = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("backgroundImage"));
-    backgroundImage->SetDepthOrder(-1);
-    backgroundImage->SetGridSize(glm::vec2(1, 1));
-
+    
     Hudson::World::Scene* TestScene = new Hudson::World::Scene();
+    TestScene->SetName("Menu");
 
     Hudson::World::Scene* startScene = new Hudson::World::Scene();
     
@@ -167,10 +167,13 @@ void GameSetup()
 
     engine->GetSceneManager()->AddScene(TestScene);
 
-    Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
-    player->AddComponent(new Player(glm::vec2(750, 500)));
-    player->SetName("Player");
-    startScene->AddObject(player);
+   
+
+    Hudson::Entity::GameObject* menu = new Hudson::Entity::GameObject();
+    TestScene->AddObject(menu);
+    menu->AddComponent(new MainMenu(engine->GetInputManager(), startScene, SettingsScene));
+    menu->SetName("Menu");
+
 
     Hudson::Entity::GameObject* MainCameraDolly = new Hudson::Entity::GameObject();
     MainCameraDolly->AddComponent(new CameraDolly(engine->GetInputManager()));
@@ -185,40 +188,17 @@ void GameSetup()
     startScene->AddObject(room);
 
     Hudson::Entity::GameObject* Boss = new Hudson::Entity::GameObject();
-    Boss->SetName("Room");
+    Boss->SetName("Boss");
     Boss->AddComponent(new AnubisBoss(glm::vec2(200,200)));
     startScene->AddObject(Boss);
 
-    Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
-    wpUp->SetName("Room");
-    wpUp->AddComponent(new PickupWeapon(glm::vec2(500,300)));
-    startScene->AddObject(wpUp);
+    Hudson::Entity::GameObject* player = new Hudson::Entity::GameObject();
+    player->AddComponent(new Player(glm::vec2(750, 500), TestScene, SettingsScene));
+    player->SetName("Player");
+    startScene->AddObject(player);
 
-    Hudson::Entity::GameObject* PlayButton = new Hudson::Entity::GameObject();
-    PlayButton->AddComponent(new MenuButton("Play", startScene, engine->GetInputManager(), vec2(-15,-20)));
-    PlayButton->SetName("PlayButton");
-    TestScene->AddObject(PlayButton);
-    SettingsScene->AddObject(PlayButton);
-    PlayButton->GetTransform().pos.x = 100.0f;
-    PlayButton->GetTransform().pos.y = 100.0f;
 
-    Hudson::Entity::GameObject* MainSettingsButton = new Hudson::Entity::GameObject();
-    MainSettingsButton->AddComponent(new MenuButton("Settings", SettingsScene, engine->GetInputManager(), vec2(-30,-120)));
-    MainSettingsButton->SetName("SettingsButton");
-    TestScene->AddObject(MainSettingsButton);
-    MainSettingsButton->GetTransform().pos.x = 100.0f;
-    MainSettingsButton->GetTransform().pos.y = 300.0f;
-
-    Hudson::Entity::GameObject* SettingsMarker = new Hudson::Entity::GameObject();
-    SettingsMarker->AddComponent(new SettingsButton(engine->GetInputManager()));
-    SettingsScene->AddObject(SettingsMarker);
-
-    Hudson::Entity::GameObject* Background = new Hudson::Entity::GameObject();
-    Background->AddComponent(backgroundImage);
-    TestScene->AddObject(Background);
-    SettingsScene->AddObject(Background);
-    Background->GetTransform().scale.x = 1600.0f;
-    Background->GetTransform().scale.y = 900.0f;
+    
 
     #ifdef ENABLE_EDITOR
         ToolData toolData;

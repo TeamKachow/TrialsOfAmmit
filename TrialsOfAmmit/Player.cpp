@@ -5,12 +5,17 @@
 #include "PickupBehaviour.h"
 #include "Rooms/Room.h"
 #include "PauseMenu.h"
+#include "MenuButton.h"
+#include "MainMenu.h"
 
-Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
+Player::Player(glm::vec2 spawnPos , Hudson::World::Scene* playScene , Hudson::World::Scene* settingScene ) : Behaviour("PlayerTest")
 {
 	//Player Moving Directions
 	_playerDirection = Stopped;
 	_playerFacingDirection = Stopped;
+
+	_playscene = playScene;
+	_settingScene = settingScene;
 	
 	//Player Stats
 	_maxHealth = 150;
@@ -40,6 +45,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_isHittingRight = false;
 	_isHittingLeft = false;
 
+	
 	toPause = false;
 }
 
@@ -169,8 +175,11 @@ void Player::OnTick(const double& dt)
 			_deathGridX += 1;
 			if (_deathGridX >= 3)
 			{
+				SendPlayerToMenu();
+				GetSceneManager()->RemoveScene(_pauseScene);
 				_isDead = false;
 				_deathGridX = 0;
+				
 			}
 		}
 	}
@@ -444,7 +453,35 @@ void Player::OnDeath() //Makes the graves stone and animates after
 	_currentScene->AddObject(Grave);
 	Grave->GetTransform().pos = _parent->GetTransform().pos;
 	_parent->GetTransform().pos = glm::vec2(1000, 2000);
-	Grave->SetName("Blood");
+	Grave->SetName("Grave");
+}
+
+void Player::SendPlayerToMenu()
+{
+	/*Hudson::Entity::GameObject* menu = new Hudson::Entity::GameObject();
+	menu->AddComponent(new MainMenu(GetEngine()->GetInputManager(), _playscene, _settingScene));
+	menu->SetName("Menu");
+	_playscene->AddObject(menu);*/
+
+
+	_parent->GetScene()->SetActive(false);
+	auto allScene =  GetSceneManager()->GetLoadedScenes();
+	
+	for (Hudson::World::Scene* otherScene : allScene)
+	{
+		if (otherScene->GetName() == "Menu")
+		{
+			otherScene->SetActive(true);
+			otherScene->SetRendering(true);
+		}
+	}
+	GetSceneManager()->RemoveScene(_parent->GetScene());
+	
+
+
+	
+
+
 }
 
 

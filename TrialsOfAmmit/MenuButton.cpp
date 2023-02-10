@@ -1,4 +1,5 @@
 #include "MenuButton.h"
+#include "Player.h"
 
 MenuButton::MenuButton(string Text, Hudson::World::Scene* NextScene, Hudson::Input::InputManager* InputRef, vec2 textOffset) : Behaviour("ButtonBehaviour")
 {
@@ -60,8 +61,11 @@ void MenuButton::OnTick(const double& dt)
 		{
 			if (_nextScene->IsActive() == false)
 			{
+				cout << "Hit" << endl;
 				OnClick();
+				
 			}
+			
 			return;
 		}
 	}
@@ -77,5 +81,22 @@ void MenuButton::OnClick()
 	cout << "Play CLicked" << endl;
 	_nextScene->SetActive(true);
 	GetSceneManager()->AddScene(_nextScene);
-	GetSceneManager()->RemoveScene(_currentScene);
+	//GetSceneManager()->RemoveScene(_currentScene);
+	_parent->GetScene()->SetActive(false);
+	_parent->GetScene()->SetRendering(false);
+
+	auto _sceneObjects = _nextScene->GetObjects();
+
+	for (Hudson::Entity::GameObject* other : _sceneObjects)
+	{
+		if (other->GetComponent<Player>() != nullptr)
+		{
+			other->GetComponent<Player>()->OnCreate();
+			
+		}
+	}
+	
+
+	
+
 }
