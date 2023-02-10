@@ -22,6 +22,7 @@
     <ClCompile Include="AbilityDisplayUI.cpp" />
     <ClCompile Include="AbilityHolder.cpp" />
     <ClCompile Include="AiAgent.cpp" />
+    <ClCompile Include="AnubisBoss.cpp" />
     <ClCompile Include="AiMelee.cpp" />
     <ClCompile Include="Axe.cpp" />
     <ClCompile Include="BaseAbilityClass.cpp" />
@@ -29,9 +30,12 @@
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="CameraDolly.cpp" />
     <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="FireBehaviour.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Khopesh.cpp" />
+    <ClCompile Include="LaserBehaviour.cpp" />
+    <ClCompile Include="LocustBehaviour.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeleeAttack.cpp" />
     <ClCompile Include="MeleeBaseWeaponClass.cpp" />
@@ -45,6 +49,7 @@
     <ClCompile Include="PickupWeapon.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerHealthUI.cpp" />
+    <ClCompile Include="PlayerReset.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="Rage.cpp" />
     <ClCompile Include="RangedBaseWeaponClass.cpp" />
@@ -64,6 +69,7 @@
     <ClInclude Include="abilityTargets.h" />
     <ClInclude Include="AbilityType.h" />
     <ClInclude Include="AiAgent.h" />
+    <ClInclude Include="AnubisBoss.h" />
     <ClInclude Include="AiMelee.h" />
     <ClInclude Include="Axe.h" />
     <ClInclude Include="BaseAbilityClass.h" />
@@ -73,8 +79,11 @@
     <ClInclude Include="Chest.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="facingDirection.h" />
+    <ClInclude Include="FireBehaviour.h" />
     <ClInclude Include="Heal.h" />
     <ClInclude Include="Khopesh.h" />
+    <ClInclude Include="LaserBehaviour.h" />
+    <ClInclude Include="LocustBehaviour.h" />
     <ClInclude Include="MeleeAttack.h" />
     <ClInclude Include="MeleeBaseWeaponClass.h" />
     <ClInclude Include="MeleeCollider.h" />
@@ -88,6 +97,7 @@
     <ClInclude Include="PickupWeapon.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerHealthUI.h" />
+    <ClInclude Include="PlayerReset.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="Rage.h" />
     <ClInclude Include="RangedBaseWeaponClass.h" />

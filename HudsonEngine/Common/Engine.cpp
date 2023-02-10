@@ -167,3 +167,16 @@ void Hudson::Common::Engine::RegisterShutdownHook(std::function<void(Engine*)> h
 {
     _shutdownHooks.push_back(hook);
 }
+
+void Hudson::Common::Engine::RegisterObjectRemovalHook(std::function<void(Entity::GameObject*)> hook)
+{
+    _objectRemoveHooks.push_back(hook);
+}
+
+void Hudson::Common::Engine::CallObjectRemovalHooks(Entity::GameObject* removed)
+{
+    for (std::function<void(Entity::GameObject*)> hook : _objectRemoveHooks)
+    {
+        hook(removed);
+    }
+}

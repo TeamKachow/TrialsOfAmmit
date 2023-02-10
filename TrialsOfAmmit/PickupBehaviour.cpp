@@ -33,28 +33,31 @@ void PickupBehaviour::CheckCollision()
 			{
 				if (other->GetParent()->GetComponent<PickupWeapon>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PickupWeapon* _pickUp = other->GetParent()->GetComponent<PickupWeapon>();
 					if (_pickUp != nullptr)
 					{
 						_currentPlayer->_playersWeapon = _pickUp->_weaponPickup;
 						_currentPlayer->_playersWeapon->UpgradeWeapon(_pickUp->_weaponLevel);
 						_currentScene->RemoveObject(other->GetParent());
-						collider->ClearColliding();
+						//collider->ClearColliding();
 					}
 
 				}
 				if (other->GetParent()->GetComponent<PickupAbilitys>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PickupAbilitys* _pickupAbility = other->GetParent()->GetComponent<PickupAbilitys>();
 					if (_pickupAbility != nullptr)
 					{
 						_currentPlayer->GetParent()->GetComponent<AbilityHolder>()->_currentAbility = _pickupAbility->_abilityPickup;
 						_currentScene->RemoveObject(other->GetParent());
-						collider->ClearColliding();
+						//collider->ClearColliding();
 					}
 				}
 				if (other->GetParent()->GetComponent<PassivePickups>() != nullptr)
 				{
+					_audioMan->playSound("audio/PlayerItemPickup.wav", false, 0);
 					PassivePickups* _pickupPassive = other->GetParent()->GetComponent<PassivePickups>();
 					if (_pickupPassive != nullptr)
 					{
@@ -67,7 +70,7 @@ void PickupBehaviour::CheckCollision()
 						case PT_SPEED:
 							_currentPlayer->GetParent()->GetComponent<Player>()->PassiveAddSpeed(15);
 						}
-						collider->ClearColliding();
+						//collider->ClearColliding();
 						_currentScene->RemoveObject(other->GetParent());
 					}
 
@@ -76,7 +79,7 @@ void PickupBehaviour::CheckCollision()
 			}
 
 		}
-
+		collider->ClearColliding();
 	}
 	
 }
@@ -87,6 +90,7 @@ void PickupBehaviour::OnCreate()
 	_currentPlayer = _parent->GetComponent<Player>();
 	_ThisCollider = new Hudson::Physics::ColliderComponent;
 	_parent->AddComponent(_ThisCollider);
+	_audioMan = GetAudioManager();
 }
 
 void PickupBehaviour::OnTick(const double& dt)

@@ -5,6 +5,8 @@
 #include "PickupWeapon.h"
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
+#include "AnubisBoss.h"
+
 Door::Door() : Behaviour("DoorBehaviour")
 {
 
@@ -25,6 +27,8 @@ void Door::OnCreate()
 
 	_minRange = 0;
 	_maxRange = 5;
+
+	_audioMan = GetAudioManager();
 
 	auto _sceneObjects = _parent->GetScene()->GetObjects();
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
@@ -102,7 +106,7 @@ void Door::CollisionCheck()
 
 void Door::GenerateNewRoom()
 {
-	
+	_audioMan->playSound("audio/RoomEnter.wav", false, 0);
 	random_device rand;
 	uniform_int_distribution<int> dist(_minRange, _maxRange);
 	RandRoomNum = dist(rand);
@@ -115,6 +119,7 @@ void Door::GenerateNewRoom()
 	newRoomSize = RoomComp->GetRoomSize();
 
 	NewRoom = new Hudson::Entity::GameObject;
+	NewRoom->SetName(std::format("Room - {}", Roomname));
 	NewRoom->AddComponent(RoomComp);
 	MovePlayer();
 	_parent->GetScene()->AddObject(NewRoom);
@@ -129,12 +134,7 @@ void Door::DeleteRoomGameObjects()
 	for (Hudson::Entity::GameObject* other : _sceneObjects)
 	{
 		if (other->GetComponent<Room>() != nullptr) {
-			// This will not work in debug - memory leak present when removing objects
-			#ifdef _DEBUG
-				other->GetTransform().pos = glm::vec2(10000, 10000);
-			#else 
-				other->GetScene()->RemoveObject(other);
-			#endif // DEBUG
+			other->GetScene()->RemoveObject(other);
 		}
 		else if (other->GetComponent<AiAgent>() != nullptr) {
 			other->GetScene()->RemoveObject(other);
@@ -149,6 +149,9 @@ void Door::DeleteRoomGameObjects()
 			other->GetScene()->RemoveObject(other);
 		}
 		else if (other->GetComponent<PassivePickups>() != nullptr) {
+			other->GetScene()->RemoveObject(other);
+		}
+		else if (other->GetComponent<AnubisBoss>() != nullptr) {
 			other->GetScene()->RemoveObject(other);
 		}
 	}

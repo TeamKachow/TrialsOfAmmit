@@ -136,7 +136,9 @@
         "Name": "J"
     },
     {
-        "Actions": [],
+        "Actions": [
+            "Respawn"
+        ],
         "KeyDown": false,
         "KeyID": 75,
         "Name": "K"

@@ -125,6 +125,10 @@
     <ClCompile Include="Rooms\Room.cpp">
       <Filter>Rooms</Filter>
     </ClCompile>
+    <ClCompile Include="AnubisBoss.cpp" />
+    <ClCompile Include="LaserBehaviour.cpp" />
+    <ClCompile Include="LocustBehaviour.cpp" />
+    <ClCompile Include="FireBehaviour.cpp" />
     <ClCompile Include="CameraDolly.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
@@ -155,6 +159,7 @@
     <ClCompile Include="SettingsButton.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerReset.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Axe.h">
@@ -253,6 +258,10 @@
     <ClInclude Include="Rooms\Room.h">
       <Filter>Rooms</Filter>
     </ClInclude>
+    <ClInclude Include="AnubisBoss.h" />
+    <ClInclude Include="LaserBehaviour.h" />
+    <ClInclude Include="LocustBehaviour.h" />
+    <ClInclude Include="FireBehaviour.h" />
     <ClInclude Include="CameraDolly.h">
       <Filter>Camera</Filter>
     </ClInclude>
@@ -289,5 +298,6 @@
     <ClInclude Include="facingDirection.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerReset.h" />
   </ItemGroup>
 </Project>

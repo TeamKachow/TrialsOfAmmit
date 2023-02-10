@@ -17,14 +17,16 @@ public:
 	Rage* _rage;
 	Heal* _heal;
 	RoomAOE* _roomaoe;
-	OneUP* _oneup;
+	//OneUP* _oneup;
 	
 
 	AbilityHolder();
-
 	~AbilityHolder();
+
 	float _timer;
 	Hudson::Input::InputManager* _input;
+	
+	Hudson::Audio::AudioManager* _audioMan;
 	void OnCreate() override;
 	void OnTick(const double& dt) override;
 	void OnDestroy() override;

@@ -196,10 +196,6 @@ void AiAgent::CollisionCheck()
 		{
 			if (other != nullptr)
 			{
-				if (other->GetParent()->GetComponent<MeleeCollider>() == nullptr)
-				{
-					collider->ClearColliding();
-				}
 				if (other->GetParent()->GetComponent<Room>() != nullptr)
 				{
 					Room* _Room = other->GetParent()->GetComponent<Room>();
@@ -208,7 +204,7 @@ void AiAgent::CollisionCheck()
 						_aiPhysicsComponent->SetAcceleration(glm::vec2(0, 0), true);
 						_aiPhysicsComponent->SetVelocity(vec2(0, 0));
 						InverseVel();
-						collider->ClearColliding();
+						//collider->ClearColliding();
 						break;
 					}
 				}
@@ -220,6 +216,7 @@ void AiAgent::CollisionCheck()
 			}
 
 		}
+		collider->ClearColliding();
 
 	}
 	
@@ -505,18 +502,18 @@ void AiAgent::AiDead()
 	random_device rand;
 	uniform_int_distribution<int> dist(1, 100);
 	int randChance = dist(rand);
-	if (randChance < 60)
+	if (randChance < 20)
+	{
+		Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
+		AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
+		_currentScene->AddObject(AbilityPickup);
+	}
+	if (randChance > 50)
 	{
 		//TODO: make a random chance of dropping an item 
 		Hudson::Entity::GameObject* PassivePickup = new Hudson::Entity::GameObject();
 		PassivePickup->AddComponent(new PassivePickups(_parent->GetTransform().pos));
 		_currentScene->AddObject(PassivePickup);
-	}
-	if (randChance < 30 && randChance > 60)
-	{
-		Hudson::Entity::GameObject* AbilityPickup = new Hudson::Entity::GameObject();
-		AbilityPickup->AddComponent(new PickupAbilitys(_parent->GetTransform().pos));
-		_currentScene->AddObject(AbilityPickup);
 	}
 	//TODO: Remove the AI from the scene after the animaion 
 	_currentScene->RemoveObject(Blood);

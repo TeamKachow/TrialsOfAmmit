@@ -2,6 +2,8 @@
 #include "AiAgent.h"
 #include "Player.h"
 #include "Chest.h"
+#include "AnubisBoss.h"
+#include "LocustBehaviour.h"
 
 MeleeCollider::MeleeCollider(facingDirections slashDirection, glm::vec2 playerPos, Hudson::World::Scene* currentScene, float _damage, bool isAi) : Behaviour("MeleeCollision")
 {
@@ -35,7 +37,7 @@ void MeleeCollider::OnCreate()
 	_parent->AddComponent(_slashCollider);
 	_parent->SetName("SlashCollider");
 
-
+	_audioMan = GetAudioManager();
 
 	switch (_slashDirection) {
 	case Down:
@@ -80,13 +82,30 @@ void MeleeCollider::OnTick(const double& dt)
 					{
 						_aiAgent->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
-						collider->ClearColliding();
+
 						_currentScene->RemoveObject(_parent);
 
 						break;
 					}
-					else
+
+				}
+				if (other->GetParent()->GetComponent<AnubisBoss>() != nullptr)
+				{
+					AnubisBoss* _boss = other->GetParent()->GetComponent<AnubisBoss>();
+					if (_boss != nullptr)
 					{
+						_boss->TakeDamage(_meleeDamage);
+						_currentScene->RemoveObject(_parent);
+						break;
+					}
+				}
+				if (other->GetParent()->GetComponent<LocustBehaviour>() != nullptr)
+				{
+					LocustBehaviour* _locust = other->GetParent()->GetComponent<LocustBehaviour>();
+					if (_locust != nullptr)
+					{
+						_locust->Kill();
+						_currentScene->RemoveObject(_parent);
 						break;
 					}
 				}
@@ -96,18 +115,25 @@ void MeleeCollider::OnTick(const double& dt)
 					if (_chest != nullptr)
 					{
 						_chest->OnInteract();
-						collider->ClearColliding();
 
-						break;
-					}
-					else
-					{
+
 						break;
 					}
 
 				}
+				if (other->GetParent()->GetComponent<MeleeCollider>() != nullptr)
+				{
+					MeleeCollider* enemymeleecollsion = other->GetParent()->GetComponent<MeleeCollider>();
+					if (enemymeleecollsion != nullptr)
+					{
+						break;
+					}
+					break;
+					
+				}
 				
 			}
+			collider->ClearColliding();
 
 		}
 		_deleteTimer += dt;
@@ -130,6 +156,7 @@ void MeleeCollider::OnTick(const double& dt)
 					Player* _player = other->GetParent()->GetComponent<Player>();
 					if (_player != nullptr)
 					{
+						_audioMan->playSound("audio/PlayerMeleeAttackSwing.wav", false, 0);
 						_player->TakeDamage(_meleeDamage);
 						std::cout << "Melee Damage : " << _meleeDamage << "\n";
 						collider->ClearColliding();
@@ -142,8 +169,19 @@ void MeleeCollider::OnTick(const double& dt)
 						break;
 					}
 				}
+				if (other->GetParent()->GetComponent<MeleeCollider>() != nullptr)
+				{
+					MeleeCollider* enemymeleecollsion = other->GetParent()->GetComponent<MeleeCollider>();
+					if (enemymeleecollsion != nullptr)
+					{
+						break;
+					}
+					break;
+
+				}
 
 			}
+			collider->ClearColliding();
 
 		}
 		_deleteTimer += dt;
