@@ -13,7 +13,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_playerFacingDirection = Stopped;
 	
 	//Player Stats
-	_maxHealth = 100;
+	_maxHealth = 150;
 	_playerHealth = _maxHealth;
 	_playerMovementSpeed = 125.0;
 	_playerDamageMod = 1;
@@ -22,7 +22,7 @@ Player::Player(glm::vec2 spawnPos) : Behaviour("PlayerTest")
 	_spawnPos = spawnPos;
 
 	//Checks
-	_godMode = true;
+	_godMode = false;
 	_isDead = false;
 	_isDamaged = false;
 
@@ -368,14 +368,15 @@ void Player::WallCollisions()//Checks the First collision box on the player to s
 					{
 						playerPhysics->SetAcceleration(glm::vec2(0, 0), true);
 						InverseForce();
+						break;
 					}
 				}
-				
 			}
 			
 		}
 		collider->ClearColliding();
 
+		collider->ClearColliding();
 	}
 }
 

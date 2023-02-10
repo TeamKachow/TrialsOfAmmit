@@ -37,6 +37,7 @@ namespace Hudson::Common
         std::vector<std::function<void(Engine*)>> _preFrameHooks;
         std::vector<std::function<void(Engine*)>> _midFrameHooks;
         std::vector<std::function<void(Engine*)>> _shutdownHooks;
+        std::vector<std::function<void(Entity::GameObject*)>> _objectRemoveHooks;
 
     protected:
         EngineAccessors* GetEngineAccessorDelegate() override;
@@ -123,5 +124,16 @@ namespace Hudson::Common
          * \param hook The function to call before the engine shuts down
          */
         void RegisterShutdownHook(std::function<void(Engine*)> hook);
+
+        /**
+         * \brief Register a hook to run before an object is removed from a scene.
+         * \param hook The function to call before an object is removed from a scene
+         */
+        void RegisterObjectRemovalHook(std::function<void(Entity::GameObject*)> hook);
+
+        /**
+         * \brief Call object removal hooks. This is for use by SceneManager only!
+         */
+        void CallObjectRemovalHooks(Entity::GameObject* removed);
     };
 }

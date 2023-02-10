@@ -9,7 +9,6 @@
 #include "PickupAbilitys.h"
 #include "PassivePickups.h"
 #include "Chest.h"
-#include "Rooms/Room.h"
 #include "WeaponDisplayUI.h"
 #include "PlayerHealthUI.h"
 #include "AbilityDisplayUI.h"
@@ -17,9 +16,12 @@
 #include "MeleeAttack.h"
 #include "Projectile.h"
 #include "MeleeCollider.h"
+#include "LaserBehaviour.h"
+#include "LocustBehaviour.h"
+#include "FireBehaviour.h"
+#include "AnubisBoss.h"
 #include "CameraDolly.h"
 #include "PauseMenu.h"
-
 #include "Rooms/Room.h"
 #include "Door.h"
 
@@ -51,6 +53,13 @@ Hudson::Physics::PhysicsComponent* Physics1;
 Hudson::Physics::PhysicsComponent* Physics2;
 Hudson::Physics::ColliderComponent* Collider1;
 Hudson::Physics::ColliderComponent* Collider2;
+Hudson::Physics::ColliderComponent* LaserColliderVert;
+Hudson::Physics::ColliderComponent* LaserColliderHori;
+
+Hudson::Render::TextComponent* Text;
+
+Hudson::Render::SpriteComponent* LaserSpriteVert;
+Hudson::Render::SpriteComponent* LaserSpriteHori;
 
 //Player 
 Hudson::Render::SpriteComponent* playerSprite;
@@ -84,6 +93,10 @@ void InitRegistry()
     registry->Register<MeleeAttack>("MeleeBehaviour");
     registry->Register<Projectile>("ProjectileUpdatedBehaviour");
     registry->Register<MeleeCollider>("MeleeCollision");
+    registry->Register<LaserBehaviour>("LaserBehaviour");
+    registry->Register<LocustBehaviour>("LocustBehaviour");
+    registry->Register<FireBehaviour>("FireBehaviour");
+    registry->Register<AnubisBoss>("AnubisBehaviour");
     registry->Register<CameraDolly>("CameraDollyBehaviour");
     registry->Register<Door>("DoorBehaviour");
     registry->Register<PauseMenu>("Pause");
@@ -129,6 +142,11 @@ void GameSetup()
     resManager->LoadTexture("textures/Passives.png", true, "Passives");
     resManager->LoadTexture("textures/Chest.png", true, "Chest");
     resManager->LoadTexture("textures/MenuCheckBox.png", true, "CheckBox");
+    resManager->LoadTexture("textures/LaserVertical.png", true, "LaserVert");
+    resManager->LoadTexture("textures/LaserHorizontal.png", true, "LaserHori");
+    resManager->LoadTexture("textures/LocustSpriteSheet.png", true, "Locust");
+    resManager->LoadTexture("textures/HellfireWave.png", true, "Fire");
+    resManager->LoadTexture("textures/BossSpriteSheet.png", true, "Anubis");
     resManager->LoadTexture("textures/UIHighlight.png", true, "Highlight");
 
     ButtonSprite = new Hudson::Render::SpriteComponent(resManager->GetShader("spriteShader"), resManager->GetTexture("MainButtonImage"));
@@ -165,6 +183,11 @@ void GameSetup()
     room->SetName("Room");
     room->AddComponent(new class Room("Rooms/room4.room"));
     startScene->AddObject(room);
+
+    Hudson::Entity::GameObject* Boss = new Hudson::Entity::GameObject();
+    Boss->SetName("Room");
+    Boss->AddComponent(new AnubisBoss(glm::vec2(200,200)));
+    startScene->AddObject(Boss);
 
     Hudson::Entity::GameObject* wpUp = new Hudson::Entity::GameObject();
     wpUp->SetName("Room");

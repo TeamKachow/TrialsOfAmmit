@@ -2,6 +2,9 @@
 
 #include <boost/stacktrace/stacktrace.hpp>
 #include "../Common/Engine.h"
+#include "../Entity/GameObject.h"
+#include "../Physics/ColliderComponent.h"
+#include "../World/Scene.h"
 
 static void CreateDumpFile()
 {
@@ -53,4 +56,23 @@ void Hudson::Util::Debug::RegisterAbortHandler()
             CreateDumpFile();
             std::abort();
         });
+}
+
+void Hudson::Util::Debug::DumpColliders(Hudson::World::Scene* scene, Hudson::Render::Camera* camera, std::ostream& out)
+{
+    std::vector<Hudson::Physics::ColliderComponent*> colliders;
+    for (auto obj : scene->GetObjects())
+    {
+        auto objColliders = obj->GetComponents<Hudson::Physics::ColliderComponent>();
+        for (auto collider : objColliders)
+        {
+            colliders.push_back(collider);
+        }
+    }
+
+    for (auto collider : colliders)
+    {
+        AABB aabb = collider->GetAABB();
+        out << std::format("{} {} x: {:.2f},{:.2f}   y: {:.2f},{:.2f}\n", (void*)collider->GetParent(), (void*)collider, aabb.Left, aabb.Right, aabb.Up, aabb.Down);
+    }
 }
